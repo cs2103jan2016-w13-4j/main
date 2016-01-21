@@ -1,1 +1,3 @@
 language: java
+notifications:
+  slack: cs2101-3:E1DS0j1BcbtN3576qEBy1SOY

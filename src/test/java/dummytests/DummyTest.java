@@ -16,9 +16,9 @@ public class DummyTest {
 	* Test whether the dummy exists
 	*/
 	@Test
-	public void testDummy(){
+	public void testDummy() {
 		Dummy myDummy = new Dummy();
-		assertTrue(myDummy.exists());
+		assertTrue(myDummy.isPresent());
 	}
 
 }

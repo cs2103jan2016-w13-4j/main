@@ -1,0 +1,26 @@
+root = true
+
+[*]
+# Use Unix-style newlines
+end_of_line = lf
+
+# Force newline at end of file
+insert_final_newline = true
+
+# Strip trailing whitespace
+trim_trailing_whitespace = true
+
+# Set default charset
+charset = utf-8
+
+# Use 2-space indentation
+indent_style = space
+indent_size = 2
+
+[*.java]
+# Use 4-space indentation for Java
+indent_size = 4
+
+# Limit max line length
+max_line_length = 120
+

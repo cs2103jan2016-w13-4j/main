@@ -1,10 +1,9 @@
 package dummy;
 
 import static org.junit.Assert.*;
-
 import org.junit.Test;
 
-import test.Dummy;
+import dummy.Dummy;
 
 /**
 * DummyTest

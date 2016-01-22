@@ -21,7 +21,3 @@ jacocoTestReport {
     html.enabled true
   }
 }
-
-coveralls {
-  sourceDirs = allprojects.sourceSets.main.allSource.srcDirs.flatten()
-}

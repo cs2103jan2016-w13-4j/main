@@ -1,9 +1,9 @@
 package dummy;
 
 /**
- * Dummy
+ * Dummy is used to validate the functionality of the test utility
+ *
  * @author Kai Yuan
- * Description: Used to validate the functionality of the test utility
  */
 public class Dummy {
 

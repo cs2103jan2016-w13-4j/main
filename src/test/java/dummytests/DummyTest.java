@@ -6,9 +6,9 @@ import org.junit.Test;
 import dummy.Dummy;
 
 /**
- * DummyTest
+ * DummyTest checks whether the test utility works
+ *
  * @author Kai Yuan
- * Description: Checks whether the test utility works
  */
 public class DummyTest {
 

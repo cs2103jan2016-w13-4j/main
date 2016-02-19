@@ -11,11 +11,13 @@ group 'cs2103jan2016-w13-4j'
 version '0.0'
 
 repositories {
+  jcenter()
   mavenCentral()
 }
 
 dependencies {
   testCompile group: 'junit', name: 'junit', version: '4.12'
+  testCompile group: 'org.mockito', name: 'mockito-core', version: '1.+'
 }
 
 jacocoTestReport {

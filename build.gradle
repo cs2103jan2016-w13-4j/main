@@ -1,8 +1,9 @@
 plugins {
   id 'checkstyle'
   id 'com.github.kt3k.coveralls' version '2.5.0'
-  id 'java'
+  id 'findbugs'
   id 'jacoco'
+  id 'java'
 }
 
 group 'cs2103jan2016-w13-4j'

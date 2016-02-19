@@ -4,6 +4,7 @@ plugins {
   id 'findbugs'
   id 'jacoco'
   id 'java'
+  id 'pmd'
 }
 
 group 'cs2103jan2016-w13-4j'
@@ -26,4 +27,22 @@ jacocoTestReport {
 
 checkstyle {
   toolVersion '6.7'
+}
+
+findbugs {
+  effort = "max"
+}
+
+tasks.withType(FindBugs) {
+  reports {
+    xml.enabled = false
+    html.enabled = true
+  }
+}
+
+tasks.withType(Pmd) {
+  reports {
+    xml.enabled = false
+    html.enabled = true
+  }
 }

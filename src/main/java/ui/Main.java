@@ -27,7 +27,7 @@ public class Main extends Application {
         setStageTransparent();
         loadFonts(); // if any
         initRootLayut();
-        showJFDIView();	
+        showView();
 
     }
 
@@ -52,14 +52,14 @@ public class Main extends Application {
     }
 
     private void initRootLayut() throws IOException {
-        
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(null); // set URL of fxml file
-		rootLayout = loader.load();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(null); // set URL of fxml file
+        rootLayout = loader.load();
 
     }
 
-    private void showJFDIView() {
+    private void showView() {
         // Initialize UI
         // Load View
         // Initialize Controller
@@ -69,16 +69,16 @@ public class Main extends Application {
 
     /**
      * LEVEL 2 of abstraction
-     */	
+     */
 
     /**
      * Get Methods for private variables
      */
     public Stage getPrimaryStage() {
         return this.primaryStage;
-	}
+    }
 
-    public Scene getJFDIScene() {
+    public Scene getScene() {
         return this.scene;
     }
 
@@ -91,5 +91,4 @@ public class Main extends Application {
     }
 
     // create a get method for private controller
-
 }

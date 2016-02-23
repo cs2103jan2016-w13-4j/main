@@ -23,6 +23,9 @@ public class Constants {
     // Empty string
     public static final String EMPTY_STRING = "";
 
+    // Error messages
+    public static final String MESSAGE_INVALID_PATH = "The directory %s cannot be used to store the program data.";
+
     // Default charset
     public static final String CHARSET = "UTF-8";
 

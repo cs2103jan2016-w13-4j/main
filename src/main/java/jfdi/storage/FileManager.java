@@ -71,6 +71,11 @@ public class FileManager {
         FilePathPair filePathPair = null;
 
         for (Path path : filePaths) {
+            File file = path.toFile();
+            if (!file.exists()) {
+                continue;
+            }
+
             String filename = path.getFileName().toString();
             Path destination = Paths.get(newStorageFolderPath, filename);
             filePathPair = moveAndBackup(path, destination);

@@ -20,8 +20,9 @@ public class Constants {
     // File extensions
     public static final String EXTENSION_BACKUP = ".bak";
 
-    // Empty string
+    // Empty stuff
     public static final String EMPTY_STRING = "";
+    public static final String EMPTY_LIST_STRING = "[]";
 
     // Error messages
     public static final String MESSAGE_INVALID_PATH = "The directory %s cannot be used to store the program data.";
@@ -29,6 +30,11 @@ public class Constants {
 
     // Default charset
     public static final String CHARSET = "UTF-8";
+
+    // Test-specific constants
+    public static final String TEST_DIRECTORY_PREFIX = "CS2103-JFDI";
+    public static final String TEST_DIRECTORY_NAME = "Data";
+    public static final String TEST_SUBDIRECTORY_NAME = "Data2";
 
     // List of records
     private static final List<Class<?>> RECORDS = Arrays.asList(Task.class, Alias.class);

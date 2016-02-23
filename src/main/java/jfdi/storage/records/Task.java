@@ -49,14 +49,16 @@ public class Task {
 
         String persistedJsonData = FileManager.readFileToString(filePath);
         Task[] taskArray = Serializer.deserialize(persistedJsonData, Task[].class);
-        if (taskArray != null) {
+
+        if (taskArray == null) {
+            String movedTo = FileManager.backupAndRemove(filePath);
+            return new FilePathPair(filePath.toString(), movedTo);
+        } else if (taskArray.length > 0) {
             populateTaskList(taskArray);
             nextId = taskList.lastKey() + 1;
-            return null;
         }
 
-        String movedTo = FileManager.backupAndRemove(filePath);
-        return new FilePathPair(filePath.toString(), movedTo);
+        return null;
     }
 
     private static void populateTaskList(Task[] taskArray) {

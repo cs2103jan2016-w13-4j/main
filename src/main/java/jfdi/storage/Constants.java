@@ -25,6 +25,7 @@ public class Constants {
 
     // Error messages
     public static final String MESSAGE_INVALID_PATH = "The directory %s cannot be used to store the program data.";
+    public static final String MESSAGE_UNINITIALIZED_STORAGE = "Storage needs to be initialized first.";
 
     // Default charset
     public static final String CHARSET = "UTF-8";

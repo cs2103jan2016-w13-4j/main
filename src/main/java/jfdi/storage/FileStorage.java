@@ -14,6 +14,9 @@ public class FileStorage implements IStorage {
     // The singleton instance of FileStorage
     private static FileStorage instance = null;
 
+    // Boolean indicating if storage has been initialized
+    private boolean isInitialized = false;
+
     /**
      * This private constructor prevents itself from being called by other
      * components. An instance of FileStorage should be initialized using the
@@ -38,11 +41,17 @@ public class FileStorage implements IStorage {
         FileManager.prepareDirectory(storageFolderPath);
         RecordManager.setAllFilePaths(storageFolderPath);
         RecordManager.loadAllRecords();
+        isInitialized = true;
     }
 
     @Override
     public void changeDirectory(String newStorageFolderPath) throws InvalidPathException,
-    ExistingFilesFoundException {
+            ExistingFilesFoundException, IllegalAccessException {
+
+        if (!isInitialized) {
+            throw new IllegalAccessException(Constants.MESSAGE_UNINITIALIZED_STORAGE);
+        }
+
         FileManager.prepareDirectory(newStorageFolderPath);
         FileManager.moveFilesToDirectory(newStorageFolderPath);
         RecordManager.setAllFilePaths(newStorageFolderPath);

@@ -46,7 +46,10 @@ public interface IStorage {
      * @throws ExistingFilesFoundException
      *             if existing files had to be replaced (with backups made) in
      *             the newStorageFolderPath
+     * @throws IllegalAccessException
+     *             if changeDirectory is called before Storage is initialized
      */
-    void changeDirectory(String newStorageFolderPath) throws InvalidPathException, ExistingFilesFoundException;
+    void changeDirectory(String newStorageFolderPath) throws InvalidPathException,
+            ExistingFilesFoundException, IllegalAccessException;
 
 }

@@ -58,4 +58,12 @@ public class FileStorage implements IStorage {
         RecordManager.loadAllRecords();
     }
 
+    /**
+     * This method sets the existing instance to null. It should only be used
+     * for testing/debugging purposes only.
+     */
+    public void removeInstance() {
+        instance = null;
+    }
+
 }

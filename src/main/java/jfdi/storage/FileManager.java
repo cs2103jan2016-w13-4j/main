@@ -4,15 +4,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.InvalidPathException;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import jfdi.storage.exceptions.ExistingFilesFoundException;
 import jfdi.storage.exceptions.FilePathPair;
-import jfdi.storage.exceptions.InvalidPathException;
 
 /**
  * This class manages file operations required by Storage
@@ -49,7 +51,8 @@ public class FileManager {
         }
 
         if (!isValidDirectory) {
-            throw new InvalidPathException(storageFolderPath);
+            String errorMessage = String.format(Constants.MESSAGE_INVALID_PATH, storageFolderPath);
+            throw new InvalidPathException(storageFolderPath, errorMessage);
         }
     }
 

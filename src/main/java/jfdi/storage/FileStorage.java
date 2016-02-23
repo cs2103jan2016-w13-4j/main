@@ -1,7 +1,8 @@
 package jfdi.storage;
 
+import java.nio.file.InvalidPathException;
+
 import jfdi.storage.exceptions.ExistingFilesFoundException;
-import jfdi.storage.exceptions.InvalidPathException;
 
 /**
  * This class serves as the facade of the Storage component.

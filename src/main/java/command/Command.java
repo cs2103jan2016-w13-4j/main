@@ -3,6 +3,8 @@ package command;
 import java.util.ArrayList;
 import java.util.List;
 
+import parser.ActionType;
+
 /**
  * Command class that represents the functionality of a command object.
  *
@@ -11,7 +13,7 @@ import java.util.List;
  */
 public class Command {
 
-    private String action;
+    private ActionType action;
     private String task;
     private String deadline;
     private String startDateTime;
@@ -21,7 +23,7 @@ public class Command {
     public Command() {
     }
 
-    public Command(String action, String task, String deadline,
+    public Command(ActionType action, String task, String deadline,
             String startDateTime, String endDateTime, List<String> tags) {
         this.action = action;
         this.task = task;

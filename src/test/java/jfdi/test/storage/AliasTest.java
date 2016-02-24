@@ -1,6 +1,7 @@
 package jfdi.test.storage;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -53,7 +54,7 @@ public class AliasTest {
         expectedAliasList.add(alias2);
 
         ArrayList<Alias> obtainedAliasList = new ArrayList<Alias>(Alias.getAllAliases());
-        assertEquals(expectedAliasList, obtainedAliasList);
+        assertTrue(TestHelper.hasSameElements(expectedAliasList, obtainedAliasList));
     }
 
     @Test

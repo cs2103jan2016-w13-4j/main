@@ -6,12 +6,20 @@ import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 
 import org.apache.commons.io.FileUtils;
 
 import jfdi.storage.Constants;
 
 public class TestHelper {
+
+    public static <T> boolean hasSameElements(Collection<T> collection1, Collection<T> collection2) {
+        HashSet<T> set1 = new HashSet<T>(collection1);
+        HashSet<T> set2 = new HashSet<T>(collection2);
+        return set1.equals(set2);
+    }
 
     /**
      * This method creates valid data files in directoryPath

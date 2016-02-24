@@ -38,6 +38,10 @@ public class Constants {
     public static final String TEST_SUBDIRECTORY_NAME = "Data2";
     public static final String TEST_FILE_NAME = "test.txt";
     public static final String TEST_FILE_DATA = "hello world!";
+    public static final String TEST_ALIAS = "somealias";
+    public static final String TEST_COMMAND = "somecommand";
+    public static final String TEST_ALIAS_2 = "somealias2";
+    public static final String TEST_COMMAND_2 = "somecommand2";
 
     // List of records
     private static final List<Class<?>> RECORDS = Arrays.asList(Task.class, Alias.class);

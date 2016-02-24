@@ -29,9 +29,11 @@ public class Alias {
     }
 
     /**
-     * This method returns all the aliases currently persisted to Storage.
+     * This method returns all the aliases currently stored in the program's
+     * internal state. The returned collection may not be synchronized with the
+     * disk data if the method is called before data is persisted to disk.
      *
-     * @return a Collection of aliases currently persisted to Storage
+     * @return a Collection of aliases currently stored in the program
      */
     public static Collection<Alias> getAllAliases() {
         return aliasList;

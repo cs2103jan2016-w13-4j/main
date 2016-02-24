@@ -32,6 +32,7 @@ public class ListCommandTest {
 
     @Before
     public void setUp() throws Exception {
+        // Mocking Task
         mockStatic(Task.class);
         when(Task.getAll()).thenReturn(items);
     }
@@ -57,11 +58,11 @@ public class ListCommandTest {
         listCommandWithoutTags.execute();
 
         verifyStatic();
-        Task.getAll(); // @CheckReturnValue
+        Task.getAll();
     }
 
     @Test
-    public void testOnSuccess() throws Exception {
+    public void testAddSuccessHookAndOnSuccess() throws Exception {
         ListCommand.addSuccessHook(successHook);
         listCommandWithoutTags.execute();
 
@@ -69,26 +70,11 @@ public class ListCommandTest {
     }
 
     @Test
-    public void testOnFailure() throws Exception {
+    public void testAddFailureHookAndOnFailure() throws Exception {
         ListCommand.addFailureHook(failureHook);
         listCommandWithTags.execute();
 
         verify(failureHook).accept(listCommandWithTags);
     }
 
-    @Test
-    public void testAddSuccessHook() throws Exception {
-        ListCommand.addSuccessHook(successHook);
-        listCommandWithoutTags.execute();
-
-        verify(successHook).accept(listCommandWithoutTags);
-    }
-
-    @Test
-    public void testAddFailureHook() throws Exception {
-        ListCommand.addFailureHook(failureHook);
-        listCommandWithTags.execute();
-
-        verify(failureHook).accept(listCommandWithTags);
-    }
 }

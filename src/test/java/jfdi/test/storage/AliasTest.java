@@ -66,7 +66,7 @@ public class AliasTest {
         assertEquals(expectedAliasPath, Alias.getFilePath());
 
         // Reset back to the original filepath
-        Alias.setFilePath(testDirectoryString);;
+        Alias.setFilePath(testDirectoryString);
     }
 
     @Test

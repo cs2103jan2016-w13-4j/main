@@ -42,10 +42,9 @@ public class TestHelper {
         File parentDirectory = new File(directoryPath);
         parentDirectory.mkdirs();
 
-        String[] dataFilenames = {Constants.FILENAME_TASK, Constants.FILENAME_ALIAS};
         Path dataPath;
         File dataFile;
-        for (String dataFilename : dataFilenames) {
+        for (String dataFilename : Constants.ARRAY_FILENAMES) {
             dataPath = Paths.get(directoryPath, dataFilename);
             dataFile = dataPath.toFile();
             writeToFile(dataFile, data);

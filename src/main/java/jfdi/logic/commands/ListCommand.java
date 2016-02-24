@@ -129,5 +129,4 @@ public class ListCommand extends AbstractCommand {
     public static void addFailureHook(Consumer<ListCommand> hook) {
         failureHooks.add(hook);
     }
-
 }

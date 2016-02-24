@@ -37,6 +37,7 @@ public class Constants {
     // Default charset
     public static final String CHARSET = "UTF-8";
 
+
     /**
      * Test-specific constants
      */

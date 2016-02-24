@@ -4,6 +4,7 @@ import jfdi.logic.commands.ListCommand;
 import jfdi.logic.interfaces.ILogic;
 import jfdi.storage.records.Task;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -24,9 +25,16 @@ public class ControlCenter implements ILogic {
     public void handleInput(String input) {
         // TODO: Integrate when parser is ready.
         // Right now it is executing a ListCommand no matter what the input is.
+        ArrayList<String> tags = new ArrayList<>();
+        tags.add("deadline");
+        tags.add("work");
+        tags.add("overdue");
+
         ListCommand.Builder builder = new ListCommand.Builder();
-        builder.addTag("important");
-        builder.addTag("urgent");
+        builder.addTag("important")
+            .addTag("urgent")
+            .addTag("personal")
+            .addTags(tags);
         ListCommand ls = builder.build();
         ls.execute();
     }

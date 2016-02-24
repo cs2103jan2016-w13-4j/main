@@ -3,7 +3,7 @@ package command;
 import java.util.ArrayList;
 import java.util.List;
 
-import parser.ActionType;
+import jfdi.parser.ActionType;
 
 /**
  * Command class that represents the functionality of a command object.
@@ -31,7 +31,55 @@ public class Command {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.tags = new ArrayList<String>();
-        tags.addAll(tags);
+        // tags.addAll(tags);
+    }
+
+    public ActionType getAction() {
+        return action;
+    }
+
+    public void setAction(ActionType action) {
+        this.action = action;
+    }
+
+    public String getTask() {
+        return task;
+    }
+
+    public void setTask(String task) {
+        this.task = task;
+    }
+
+    public String getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
+
+    public String getStartDateTime() {
+        return startDateTime;
+    }
+
+    public void setStartDateTime(String startDateTime) {
+        this.startDateTime = startDateTime;
+    }
+
+    public String getEndDateTime() {
+        return endDateTime;
+    }
+
+    public void setEndDateTime(String endDateTime) {
+        this.endDateTime = endDateTime;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
     @Override

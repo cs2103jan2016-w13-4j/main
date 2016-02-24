@@ -1,8 +1,10 @@
-package parser;
+package jfdi.parser;
 
 import java.util.Arrays;
 import java.util.List;
 
+import jfdi.parser.commandparsers.AddCommandParser;
+import jfdi.parser.commandparsers.ListCommandParser;
 import command.Command;
 
 /**
@@ -12,17 +14,9 @@ import command.Command;
  *
  */
 public class Parser implements IParser {
-    private static final String REGEX_WHITESPACE = " ";
-    private static final String REGEX_ADD = "^(add)";
-    private static final String REGEX_READ = "^(see)";
-    private static final String REGEX_EDIT = "^(edit)";
-    private static final String REGEX_DELETE = "^(delete)";
+    private static Parser parserInstance;
 
-    private static final int INDEX_ACTION = 0;
-
-    private Parser parserInstance;
-
-    public Parser getInstance() {
+    public static Parser getInstance() {
         if (parserInstance == null) {
             parserInstance = new Parser();
         }
@@ -37,27 +31,30 @@ public class Parser implements IParser {
     }
 
     private List<String> getUserArgumentsFromInput(String userInput) {
-        String[] userArgumentsAsArray = userInput.split(REGEX_WHITESPACE);
+        String[] userArgumentsAsArray = userInput
+                .split(Constants.REGEX_WHITESPACE);
         return getList(userArgumentsAsArray);
     }
 
     private String getActionAsString(List<String> userArguments) {
-        String userActionAsString = userArguments.get(INDEX_ACTION);
+        String userActionAsString = userArguments.get(Constants.INDEX_ACTION);
         return userActionAsString;
     }
 
     private Command getCommand(String userActionAsString, String input) {
         switch (userActionAsString) {
-            case REGEX_ADD:
-                return new AddCommandBuilder(input).build();
-            case REGEX_READ:
-                return new ReadCommandBuilder(input).build();
-            case REGEX_EDIT:
-                return new EditCommandBuilder(input).build();
-            case REGEX_DELETE:
-                return new DeleteCommandBuilder(input).build();
+            case Constants.REGEX_ADD:
+                return AddCommandParser.getInstance().build(input);
+            case Constants.REGEX_LIST:
+                return ListCommandParser.getInstance().build(input);
+                /*
+                 * case Constants.REGEX_EDIT: return
+                 * EditCommandParser.getInstance().build(input); case
+                 * Constants.REGEX_DELETE: return
+                 * DeleteCommandParser.getInstance().build(input);
+                 */
             default:
-                return new AddCommandBuilder(input).build();
+                return AddCommandParser.getInstance().build(input);
         }
     }
 

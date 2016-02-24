@@ -1,4 +1,4 @@
-package parser;
+package jfdi.parser;
 
 public enum ActionType {
     ADD,

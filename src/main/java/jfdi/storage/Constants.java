@@ -36,6 +36,8 @@ public class Constants {
     public static final String TEST_DIRECTORY_PREFIX = "CS2103-JFDI";
     public static final String TEST_DIRECTORY_NAME = "Data";
     public static final String TEST_SUBDIRECTORY_NAME = "Data2";
+    public static final String TEST_FILE_NAME = "test.txt";
+    public static final String TEST_FILE_DATA = "hello world!";
 
     // List of records
     private static final List<Class<?>> RECORDS = Arrays.asList(Task.class, Alias.class);

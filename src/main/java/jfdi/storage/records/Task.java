@@ -102,15 +102,19 @@ public class Task {
      * @return the Task if it exists in Storage, null otherwise
      */
     public static Task getById(Integer id) {
+        if (id == null) {
+            return null;
+        }
+
         return taskList.get(id);
     }
 
     public static boolean markAsComplete(Integer id) {
-        if (!taskList.containsKey(id)) {
+        Task task = Task.getById(id);
+        if (task == null) {
             return false;
         }
 
-        Task task = taskList.get(id);
         if (task.isCompleted()) {
             return false;
         }
@@ -120,11 +124,11 @@ public class Task {
     }
 
     public static boolean markAsIncomplete(Integer id) {
-        if (!taskList.containsKey(id)) {
+        Task task = Task.getById(id);
+        if (task == null) {
             return false;
         }
 
-        Task task = taskList.get(id);
         if (!task.isCompleted()) {
             return false;
         }
@@ -134,7 +138,8 @@ public class Task {
     }
 
     public static boolean destroy(Integer id) {
-        if (taskList.containsKey(id)) {
+        Task task = Task.getById(id);
+        if (task != null) {
             softDelete(id);
             return true;
         }
@@ -143,7 +148,7 @@ public class Task {
     }
 
     public static boolean undestroy(Integer id) {
-        if (deletedTaskList.containsKey(id)) {
+        if (id != null && deletedTaskList.containsKey(id)) {
             undelete(id);
             return true;
         }

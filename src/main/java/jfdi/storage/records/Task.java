@@ -191,6 +191,25 @@ public class Task {
     }
 
     /**
+     * This method adds the given reminder to a task with the given id.
+     *
+     * @param id
+     *            the id of the task that we want to add the reminder to
+     * @param reminder
+     *            the reminder that we want to add to the task
+     * @return boolean indicating if the reminder was added to the task with the
+     *         given id
+     */
+    public static boolean addReminderById(Integer id, Duration reminder) {
+        Task task = Task.getById(id);
+        if (task == null) {
+            return false;
+        }
+
+        return task.addReminder(reminder);
+    }
+
+    /**
      * This method adds the given tag to a task with the given id.
      *
      * @param id
@@ -395,5 +414,17 @@ public class Task {
     private boolean hasTag(String tag) {
         HashSet<String> tags = this.getTags();
         return tags.contains(tag);
+    }
+
+    /**
+     * This method adds a given reminder to the task.
+     *
+     * @param reminder
+     *          the reminder that is to be added to the task
+     * @return boolean indicating if the reminder was added to the task
+     */
+    private boolean addReminder(Duration reminder) {
+        TreeSet<Duration> reminders = this.getReminders();
+        return reminders.add(reminder);
     }
 }

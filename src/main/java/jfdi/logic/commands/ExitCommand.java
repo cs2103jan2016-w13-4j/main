@@ -1,5 +1,6 @@
 package jfdi.logic.commands;
 
+import jfdi.CoverageIgnore;
 import jfdi.logic.interfaces.AbstractCommand;
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class ExitCommand extends AbstractCommand {
     }
 
     @Override
+    @CoverageIgnore
     protected void onFailure() {
         for (Consumer<ExitCommand> hook : failureHooks) {
             hook.accept(this);

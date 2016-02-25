@@ -68,6 +68,15 @@ public class ListCommand extends AbstractCommand {
         return errorType;
     }
 
+    /**
+     * Get the tags requested in the input.
+     *
+     * @return List of tags
+     */
+    public ArrayList<String> getTags() {
+        return tags;
+    }
+
     @Override
     public void execute() {
         if (tags.isEmpty()) {

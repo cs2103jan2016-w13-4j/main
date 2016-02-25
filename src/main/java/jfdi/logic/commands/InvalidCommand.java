@@ -1,5 +1,6 @@
 package jfdi.logic.commands;
 
+import jfdi.CoverageIgnore;
 import jfdi.logic.interfaces.AbstractCommand;
 
 import java.util.ArrayList;
@@ -30,8 +31,9 @@ public class InvalidCommand extends AbstractCommand {
     }
 
     @Override
+    @CoverageIgnore
     protected void onSuccess() {
-        for (Consumer<InvalidCommand> hook : successHooks) {
+        for (Consumer<InvalidCommand> hook : successHooks) { // $COVERAGE-IGNORE$
             hook.accept(this);
         }
     }

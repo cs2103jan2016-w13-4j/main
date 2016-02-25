@@ -18,7 +18,6 @@ public class UserInterface implements IUserInterface {
     LogicInterfaceDummy logic;
     private MainController controller;
 
-
     public UserInterface() {
         // what to do for constructor?
     }

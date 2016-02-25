@@ -147,6 +147,50 @@ public class TaskTest {
         assertEquals(retrievedTask.getDescription(), Constants.TEST_TASK_DESCRIPTION);
     }
 
+    @Test
+    public void testRemoveTagFromNonExistentTask() {
+        boolean isSuccessful = false;
+
+        isSuccessful = Task.removeTag(-1, Constants.TEST_TASK_TAG_1);
+        assertFalse(isSuccessful);
+
+        isSuccessful = Task.removeTag(5, Constants.TEST_TASK_TAG_1);
+        assertFalse(isSuccessful);
+    }
+
+    @Test
+    public void testRemoveNonExistentTag() {
+        boolean isSuccessful = false;
+
+        Task task = new Task();
+        HashSet<String> tags = new HashSet<String>();
+        tags.add(Constants.TEST_TASK_TAG_1);
+        task.setTags(tags);
+        task.createAndPersist();
+
+        isSuccessful = Task.removeTag(task.getId(), Constants.TEST_TASK_TAG_2);
+        assertFalse(isSuccessful);
+    }
+
+    @Test
+    public void testRemoveTag() {
+        boolean isSuccessful = false;
+
+        Task task = new Task();
+        HashSet<String> tags = new HashSet<String>();
+        tags.add(Constants.TEST_TASK_TAG_1);
+        tags.add(Constants.TEST_TASK_TAG_2);
+        task.setTags(tags);
+        task.createAndPersist();
+
+        isSuccessful = Task.removeTag(task.getId(), Constants.TEST_TASK_TAG_1);
+        assertTrue(isSuccessful);
+
+        tags = task.getTags();
+        assertFalse(tags.contains(Constants.TEST_TASK_TAG_1));
+        assertTrue(tags.contains(Constants.TEST_TASK_TAG_2));
+    }
+
     private void clearTaskList() {
         ArrayList<Task> taskList = new ArrayList<Task>(Task.getAll());
         for (Task task : taskList) {

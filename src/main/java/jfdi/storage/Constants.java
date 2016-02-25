@@ -52,6 +52,7 @@ public class Constants {
     // Tasks
     public static final String TEST_TASK_DESCRIPTION = "my favourite description";
     public static final String TEST_TASK_TAG_1 = "tagged";
+    public static final String TEST_TASK_TAG_2 = "tagged2";
     public static final LocalDateTime TEST_TASK_STARTDATETIME = LocalDateTime.MIN;
     public static final LocalDateTime TEST_TASK_ENDDATETIME = LocalDateTime.MAX;
     public static final Duration TEST_TASK_REMINDER_DURATION = Duration.ZERO.plusDays(1);

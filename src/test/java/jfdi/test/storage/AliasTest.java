@@ -31,7 +31,7 @@ public class AliasTest {
 
     @After
     public void tearDown() throws Exception {
-        clearAliasList();
+        Alias.resetProgramStorage();
     }
 
     @Test
@@ -98,16 +98,6 @@ public class AliasTest {
 
         Alias.load();
         assertEquals(Alias.getCommandFromAlias(alias.getAlias()), alias.getCommand());
-    }
-
-    /**
-     * This method deletes all existing aliases from the program storage.
-     */
-    private void clearAliasList() {
-        ArrayList<Alias> aliasList = new ArrayList<Alias>(Alias.getAllAliases());
-        for (Alias alias : aliasList) {
-            Alias.destroy(alias.getAlias());
-        }
     }
 
 }

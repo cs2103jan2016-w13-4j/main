@@ -6,7 +6,6 @@ import dummy.LogicDummy;
 import dummy.LogicInterfaceDummy;
 import dummy.TaskDummy;
 
-
 public class UserInterface implements IUserInterface {
 
     private static final String UI_MESSAGE_INIT = "Initializing UI...";
@@ -17,7 +16,7 @@ public class UserInterface implements IUserInterface {
     private static final String UI_MESSAGE_QUIT = "Bye Bye! See you next time! :)";
 
     private MainController controller;
-    LogicInterfaceDummy logic;
+    public LogicInterfaceDummy logic;
 
     public UserInterface() {
         // what to do for constructor?
@@ -80,7 +79,6 @@ public class UserInterface implements IUserInterface {
         this.controller = controller;
     }
 
-
     /***************************
      *** LEVEL 1 Abstraction ***
      ***************************/
@@ -97,6 +95,4 @@ public class UserInterface implements IUserInterface {
     private void doUserCmd() {
 
     }
-
-
 }

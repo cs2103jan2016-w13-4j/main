@@ -40,7 +40,7 @@ public class MainController {
         this.main = main;
     }
 
-    public void setUI(IUserInterface ui) {
+    public void setUi(IUserInterface ui) {
         this.ui = ui;
     }
 
@@ -53,41 +53,30 @@ public class MainController {
      ***************************/
 
     private void initList() {
-        // TODO Auto-generated method stub
 
     }
 
     private void initCommandPane() {
-        // TODO Auto-generated method stub
 
     }
 
     private void initCommandField() {
-        // TODO Auto-generated method stub
 
     }
 
     private void initFeedbackPane() {
-        // TODO Auto-generated method stub
 
     }
 
     private void initFeedbackField() {
-        // TODO Auto-generated method stub
 
     }
-
-
     /***************************
      *** LEVEL 2 Abstraction ***
      ***************************/
-
-
     /***************************
      *** LEVEL 3 Abstraction ***
      ***************************/
-
-
     // Initialize the controller object
     // Deal with all UI elements, style setting, layout setting, listeners etc
 }

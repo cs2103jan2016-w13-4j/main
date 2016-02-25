@@ -83,7 +83,7 @@ public class MainSetUp extends Application {
         controller.setStage(primaryStage);
 
         // Link Controller with UI and Main (set up MainController Class first)
-        controller.setUI(userInterface);
+        controller.setUi(userInterface);
         controller.setMainApp(this);
 
         // Link UI with Controller
@@ -94,8 +94,6 @@ public class MainSetUp extends Application {
     /***************************
      *** LEVEL 2 Abstraction ***
      ***************************/
-
-
     /**
      * Get Methods for private variables
      */

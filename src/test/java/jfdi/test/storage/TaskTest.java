@@ -33,7 +33,7 @@ public class TaskTest {
 
     @After
     public void tearDown() throws Exception {
-        clearTaskList();
+        Task.resetProgramStorage();
     }
 
     @Test
@@ -188,11 +188,41 @@ public class TaskTest {
         assertTrue(tags.contains(Constants.TEST_TASK_TAG_2));
     }
 
-    private void clearTaskList() {
-        ArrayList<Task> taskList = new ArrayList<Task>(Task.getAll());
-        for (Task task : taskList) {
-            Task.destroy(task.getId());
-        }
+    @Test
+    public void testGetByTag() {
+        HashSet<String> tags = null;
+
+        Task task1 = new Task();
+        tags = new HashSet<String>();
+        tags.add(Constants.TEST_TASK_TAG_1);
+        task1.setTags(tags);
+        task1.createAndPersist();
+
+        Task task2 = new Task();
+        tags = new HashSet<String>();
+        tags.add(Constants.TEST_TASK_TAG_2);
+        task2.setTags(tags);
+        task2.createAndPersist();
+
+        Task task3 = new Task();
+        tags = new HashSet<String>();
+        tags.add(Constants.TEST_TASK_TAG_1);
+        tags.add(Constants.TEST_TASK_TAG_2);
+        task3.setTags(tags);
+        task3.createAndPersist();
+
+        HashSet<Task> tasksWithTag1 = new HashSet<Task>();
+        tasksWithTag1.add(task1);
+        tasksWithTag1.add(task3);
+
+        HashSet<Task> tasksWithTag2 = new HashSet<Task>();
+        tasksWithTag2.add(task2);
+        tasksWithTag2.add(task3);
+
+        assertSame(Task.getByTag(null), null);
+        assertTrue(Task.getByTag(Constants.TEST_TASK_DESCRIPTION).isEmpty());
+        assertTrue(TestHelper.hasSameElements(tasksWithTag1, Task.getByTag(Constants.TEST_TASK_TAG_1)));
+        assertTrue(TestHelper.hasSameElements(tasksWithTag2, Task.getByTag(Constants.TEST_TASK_TAG_2)));
     }
 
 }

@@ -313,8 +313,11 @@ public class Task {
      * @param tags
      *            the tags to set
      */
-    public void setTags(HashSet<String> tags) {
-        this.tags = tags;
+    public void setTags(String... tags) {
+        this.tags = new HashSet<String>();
+        for (String tag : tags) {
+            this.addTag(tag);
+        }
     }
 
     /**

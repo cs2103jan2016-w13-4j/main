@@ -12,12 +12,12 @@ import jfdi.parser.commandparsers.ListCommandParser;
  * @author leona_000
  *
  */
-public class Parser implements IParser {
-    private static Parser parserInstance;
+public class InputParser implements IParser {
+    private static InputParser parserInstance;
 
-    public static Parser getInstance() {
+    public static InputParser getInstance() {
         if (parserInstance == null) {
-            parserInstance = new Parser();
+            parserInstance = new InputParser();
         }
         return parserInstance;
     }

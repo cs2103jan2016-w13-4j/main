@@ -249,22 +249,27 @@ public class TaskTest {
         reminders = task.getReminders();
         assertTrue(reminders.isEmpty());
 
-        boolean isAddReminderToNullSuccessful = Task.addReminderById(null, Constants.TEST_TASK_REMINDER_DURATION_1);
+        boolean isAddReminderToNullSuccessful = Task.addReminderById(null,
+                Constants.TEST_TASK_REMINDER_DURATION_1);
         assertFalse(isAddReminderToNullSuccessful);
 
-        boolean isAddReminderToNonExistentIdSuccessful = Task.addReminderById(-1, Constants.TEST_TASK_REMINDER_DURATION_1);
+        boolean isAddReminderToNonExistentIdSuccessful = Task.addReminderById(-1,
+                Constants.TEST_TASK_REMINDER_DURATION_1);
         assertFalse(isAddReminderToNonExistentIdSuccessful);
 
         assertFalse(reminders.contains(Constants.TEST_TASK_REMINDER_DURATION_1));
-        boolean isAddReminderToExistentIdSuccessful = Task.addReminderById(task.getId(), Constants.TEST_TASK_REMINDER_DURATION_1);
+        boolean isAddReminderToExistentIdSuccessful = Task.addReminderById(task.getId(),
+                Constants.TEST_TASK_REMINDER_DURATION_1);
         assertTrue(isAddReminderToExistentIdSuccessful);
         assertTrue(reminders.contains(Constants.TEST_TASK_REMINDER_DURATION_1));
 
-        boolean isAddDuplicateReminderSuccessful = Task.addReminderById(task.getId(), Constants.TEST_TASK_REMINDER_DURATION_1);
+        boolean isAddDuplicateReminderSuccessful = Task.addReminderById(task.getId(),
+                Constants.TEST_TASK_REMINDER_DURATION_1);
         assertFalse(isAddDuplicateReminderSuccessful);
 
         assertFalse(reminders.contains(Constants.TEST_TASK_REMINDER_DURATION_2));
-        boolean isAddAnotherReminderSuccessful = Task.addReminderById(task.getId(), Constants.TEST_TASK_REMINDER_DURATION_2);
+        boolean isAddAnotherReminderSuccessful = Task.addReminderById(task.getId(),
+                Constants.TEST_TASK_REMINDER_DURATION_2);
         assertTrue(isAddAnotherReminderSuccessful);
         assertTrue(reminders.contains(Constants.TEST_TASK_REMINDER_DURATION_2));
     }

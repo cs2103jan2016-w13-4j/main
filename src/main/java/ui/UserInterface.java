@@ -15,8 +15,9 @@ public class UserInterface implements IUserInterface {
     private static final String UI_MESSAGE_USERCMD = "Your input: %1$s";
     private static final String UI_MESSAGE_QUIT = "Bye Bye! See you next time! :)";
 
+    LogicInterfaceDummy logic;
     private MainController controller;
-    public LogicInterfaceDummy logic;
+
 
     public UserInterface() {
         // what to do for constructor?
@@ -59,12 +60,12 @@ public class UserInterface implements IUserInterface {
 
         // Update UI according to reply from logic
         switch (feedback) {
-        case "QUIT":
-            doQuit();
-            break;
-        default:
-            doUserCmd();
-            break;
+            case "QUIT":
+                doQuit();
+                break;
+            default:
+                doUserCmd();
+                break;
         }
     }
 

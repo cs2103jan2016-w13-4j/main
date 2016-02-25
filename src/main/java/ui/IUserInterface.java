@@ -14,5 +14,6 @@ public interface IUserInterface {
 
     ArrayList<TaskDummy> getList();
     // Change "string" to the relevant task class once created
+
     void setController(MainController controller);
 }

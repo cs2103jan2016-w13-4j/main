@@ -166,7 +166,7 @@ public class Task {
      * @return boolean indicating if the tag was removed from the task with the
      *         given id
      */
-    public static boolean removeTag(Integer id, String tag) {
+    public static boolean removeTagById(Integer id, String tag) {
         Task task = Task.getById(id);
         if (task == null) {
             return false;

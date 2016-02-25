@@ -151,10 +151,7 @@ public class TaskTest {
     public void testRemoveTagFromNonExistentTask() {
         boolean isSuccessful = false;
 
-        isSuccessful = Task.removeTag(-1, Constants.TEST_TASK_TAG_1);
-        assertFalse(isSuccessful);
-
-        isSuccessful = Task.removeTag(5, Constants.TEST_TASK_TAG_1);
+        isSuccessful = Task.removeTagById(-1, Constants.TEST_TASK_TAG_1);
         assertFalse(isSuccessful);
     }
 
@@ -168,7 +165,7 @@ public class TaskTest {
         task.setTags(tags);
         task.createAndPersist();
 
-        isSuccessful = Task.removeTag(task.getId(), Constants.TEST_TASK_TAG_2);
+        isSuccessful = Task.removeTagById(task.getId(), Constants.TEST_TASK_TAG_2);
         assertFalse(isSuccessful);
     }
 
@@ -183,7 +180,7 @@ public class TaskTest {
         task.setTags(tags);
         task.createAndPersist();
 
-        isSuccessful = Task.removeTag(task.getId(), Constants.TEST_TASK_TAG_1);
+        isSuccessful = Task.removeTagById(task.getId(), Constants.TEST_TASK_TAG_1);
         assertTrue(isSuccessful);
 
         tags = task.getTags();

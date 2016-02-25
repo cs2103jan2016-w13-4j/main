@@ -29,9 +29,11 @@ public class Alias {
     }
 
     /**
-     * This method returns all the aliases currently persisted to Storage.
+     * This method returns all the aliases currently stored in the program's
+     * internal state. The returned collection may not be synchronized with the
+     * disk data if the method is called before data is persisted to disk.
      *
-     * @return a Collection of aliases currently persisted to Storage
+     * @return a Collection of aliases currently stored in the program
      */
     public static Collection<Alias> getAllAliases() {
         return aliasList;
@@ -47,11 +49,23 @@ public class Alias {
         Alias[] aliasArray = Serializer.deserialize(persistedJsonData, Alias[].class);
         if (aliasArray != null) {
             aliasList = new ArrayList<Alias>(Arrays.asList(aliasArray));
+            deletedAliasList = new ArrayList<Alias>();
             return null;
+        } else {
+            resetProgramStorage();
         }
 
         String movedTo = FileManager.backupAndRemove(filePath);
         return new FilePathPair(filePath.toString(), movedTo);
+    }
+
+    /**
+     * This method resets the program's internal storage of aliases. This method
+     * should only be used by the public in tests.
+     */
+    public static void resetProgramStorage() {
+        aliasList = new ArrayList<Alias>();
+        deletedAliasList = new ArrayList<Alias>();
     }
 
     public static void setFilePath(String absoluteFolderPath) {

@@ -42,10 +42,7 @@ public class TaskTest {
         task.setDescription(Constants.TEST_TASK_DESCRIPTION);
         task.setStartDateTime(Constants.TEST_TASK_STARTDATETIME);
         task.setEndDateTime(Constants.TEST_TASK_ENDDATETIME);
-
-        HashSet<String> tags = new HashSet<String>();
-        tags.add(Constants.TEST_TASK_TAG_1);
-        task.setTags(tags);
+        task.setTags(Constants.TEST_TASK_TAG_1);
 
         TreeSet<Duration> reminders = new TreeSet<Duration>();
         reminders.add(Constants.TEST_TASK_REMINDER_DURATION);
@@ -56,7 +53,10 @@ public class TaskTest {
         assertEquals(task.getDescription(), Constants.TEST_TASK_DESCRIPTION);
         assertEquals(task.getStartDateTime(), Constants.TEST_TASK_STARTDATETIME);
         assertEquals(task.getEndDateTime(), Constants.TEST_TASK_ENDDATETIME);
-        assertSame(task.getTags(), tags);
+
+        HashSet<String> tags = task.getTags();
+        assertEquals(tags.size(), 1);
+        assertTrue(tags.contains(Constants.TEST_TASK_TAG_1));
         assertSame(task.getReminders(), reminders);
         assertEquals(task.isCompleted(), true);
     }
@@ -160,9 +160,7 @@ public class TaskTest {
         boolean isSuccessful = false;
 
         Task task = new Task();
-        HashSet<String> tags = new HashSet<String>();
-        tags.add(Constants.TEST_TASK_TAG_1);
-        task.setTags(tags);
+        task.setTags(Constants.TEST_TASK_TAG_1);
         task.createAndPersist();
 
         isSuccessful = Task.removeTagById(task.getId(), Constants.TEST_TASK_TAG_2);
@@ -174,41 +172,29 @@ public class TaskTest {
         boolean isSuccessful = false;
 
         Task task = new Task();
-        HashSet<String> tags = new HashSet<String>();
-        tags.add(Constants.TEST_TASK_TAG_1);
-        tags.add(Constants.TEST_TASK_TAG_2);
-        task.setTags(tags);
+        task.setTags(Constants.TEST_TASK_TAG_1, Constants.TEST_TASK_TAG_2);
         task.createAndPersist();
 
         isSuccessful = Task.removeTagById(task.getId(), Constants.TEST_TASK_TAG_1);
         assertTrue(isSuccessful);
 
-        tags = task.getTags();
+        HashSet<String> tags = task.getTags();
         assertFalse(tags.contains(Constants.TEST_TASK_TAG_1));
         assertTrue(tags.contains(Constants.TEST_TASK_TAG_2));
     }
 
     @Test
     public void testGetByTag() {
-        HashSet<String> tags = null;
-
         Task task1 = new Task();
-        tags = new HashSet<String>();
-        tags.add(Constants.TEST_TASK_TAG_1);
-        task1.setTags(tags);
+        task1.setTags(Constants.TEST_TASK_TAG_1);
         task1.createAndPersist();
 
         Task task2 = new Task();
-        tags = new HashSet<String>();
-        tags.add(Constants.TEST_TASK_TAG_2);
-        task2.setTags(tags);
+        task2.setTags(Constants.TEST_TASK_TAG_2);
         task2.createAndPersist();
 
         Task task3 = new Task();
-        tags = new HashSet<String>();
-        tags.add(Constants.TEST_TASK_TAG_1);
-        tags.add(Constants.TEST_TASK_TAG_2);
-        task3.setTags(tags);
+        task3.setTags(Constants.TEST_TASK_TAG_1, Constants.TEST_TASK_TAG_2);
         task3.createAndPersist();
 
         HashSet<Task> tasksWithTag1 = new HashSet<Task>();

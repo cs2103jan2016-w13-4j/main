@@ -191,6 +191,25 @@ public class Task {
     }
 
     /**
+     * This method adds the given tag to a task with the given id.
+     *
+     * @param id
+     *            the id of the task that we want to add the tag to
+     * @param tag
+     *            the tag that we want to add to the task
+     * @return boolean indicating if the tag was added to the task with the
+     *         given id
+     */
+    public static boolean addTagById(Integer id, String tag) {
+        Task task = Task.getById(id);
+        if (task == null) {
+            return false;
+        }
+
+        return task.addTag(tag);
+    }
+
+    /**
      * This method removes the given tag from a task with the given id.
      *
      * @param id
@@ -349,6 +368,18 @@ public class Task {
     private boolean removeTag(String tag) {
         HashSet<String> tags = this.getTags();
         return tags.remove(tag);
+    }
+
+    /**
+     * This method adds a given tag to the task.
+     *
+     * @param tag
+     *            the tag that is to be added
+     * @return boolean indicating if the tag was added
+     */
+    private boolean addTag(String tag) {
+        HashSet<String> tags = this.getTags();
+        return tags.add(tag);
     }
 
     /**

@@ -23,7 +23,7 @@ public class SerializerTest {
         task.setEndDateTime(Constants.TEST_TASK_ENDDATETIME);
         task.setTags(Constants.TEST_TASK_TAG_1);
         TreeSet<Duration> reminders = new TreeSet<Duration>();
-        reminders.add(Constants.TEST_TASK_REMINDER_DURATION);
+        reminders.add(Constants.TEST_TASK_REMINDER_DURATION_1);
         task.setReminders(reminders);
         task.setCompleted(true);
 

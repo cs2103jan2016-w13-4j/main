@@ -55,7 +55,8 @@ public class Constants {
     public static final String TEST_TASK_TAG_2 = "tagged2";
     public static final LocalDateTime TEST_TASK_STARTDATETIME = LocalDateTime.MIN;
     public static final LocalDateTime TEST_TASK_ENDDATETIME = LocalDateTime.MAX;
-    public static final Duration TEST_TASK_REMINDER_DURATION = Duration.ZERO.plusDays(1);
+    public static final Duration TEST_TASK_REMINDER_DURATION_1 = Duration.ZERO.plusDays(1);
+    public static final Duration TEST_TASK_REMINDER_DURATION_2 = Duration.ZERO.plusDays(2);
 
     // List of records
     private static final List<Class<?>> RECORDS = Arrays.asList(Task.class, Alias.class);

@@ -45,7 +45,7 @@ public class TaskTest {
         task.setTags(Constants.TEST_TASK_TAG_1);
 
         TreeSet<Duration> reminders = new TreeSet<Duration>();
-        reminders.add(Constants.TEST_TASK_REMINDER_DURATION);
+        reminders.add(Constants.TEST_TASK_REMINDER_DURATION_1);
         task.setReminders(reminders);
 
         task.setCompleted(true);
@@ -238,6 +238,35 @@ public class TaskTest {
         boolean isAddAnotherTagSuccessful = Task.addTagById(task.getId(), Constants.TEST_TASK_TAG_2);
         assertTrue(isAddAnotherTagSuccessful);
         assertTrue(tags.contains(Constants.TEST_TASK_TAG_2));
+    }
+
+    @Test
+    public void testAddReminderById() {
+        TreeSet<Duration> reminders = null;
+        Task task = new Task();
+        task.createAndPersist();
+
+        reminders = task.getReminders();
+        assertTrue(reminders.isEmpty());
+
+        boolean isAddReminderToNullSuccessful = Task.addReminderById(null, Constants.TEST_TASK_REMINDER_DURATION_1);
+        assertFalse(isAddReminderToNullSuccessful);
+
+        boolean isAddReminderToNonExistentIdSuccessful = Task.addReminderById(-1, Constants.TEST_TASK_REMINDER_DURATION_1);
+        assertFalse(isAddReminderToNonExistentIdSuccessful);
+
+        assertFalse(reminders.contains(Constants.TEST_TASK_REMINDER_DURATION_1));
+        boolean isAddReminderToExistentIdSuccessful = Task.addReminderById(task.getId(), Constants.TEST_TASK_REMINDER_DURATION_1);
+        assertTrue(isAddReminderToExistentIdSuccessful);
+        assertTrue(reminders.contains(Constants.TEST_TASK_REMINDER_DURATION_1));
+
+        boolean isAddDuplicateReminderSuccessful = Task.addReminderById(task.getId(), Constants.TEST_TASK_REMINDER_DURATION_1);
+        assertFalse(isAddDuplicateReminderSuccessful);
+
+        assertFalse(reminders.contains(Constants.TEST_TASK_REMINDER_DURATION_2));
+        boolean isAddAnotherReminderSuccessful = Task.addReminderById(task.getId(), Constants.TEST_TASK_REMINDER_DURATION_2);
+        assertTrue(isAddAnotherReminderSuccessful);
+        assertTrue(reminders.contains(Constants.TEST_TASK_REMINDER_DURATION_2));
     }
 
 }

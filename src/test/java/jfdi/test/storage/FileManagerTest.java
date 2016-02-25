@@ -1,16 +1,15 @@
 package jfdi.test.storage;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
 import java.io.File;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.apache.commons.io.FileUtils;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -109,6 +108,18 @@ public class FileManagerTest {
         File backupFile = new File(backupPath);
         assertFalse(testFile.exists());
         assertTrue(backupFile.exists());
+    }
+
+    @Test
+    public void testWriteAndRead() {
+        Path filePath = Paths.get(testDirectoryString, Constants.TEST_FILE_NAME);
+        File parentFile = filePath.getParent().toFile();
+        parentFile.mkdirs();
+
+        FileManager.writeToFile(Constants.TEST_FILE_DATA, filePath);
+        String readString = FileManager.readFileToString(filePath);
+
+        assertEquals(readString, Constants.TEST_FILE_DATA);
     }
 
 }

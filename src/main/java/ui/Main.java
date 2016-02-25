@@ -57,7 +57,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(null); // set URL of fxml file
         rootLayout = (BorderPane) loader.load();
-        
+
         // Display scene with root layout
         Scene scene = new Scene(rootLayout);
         scene.setFill(Color.TRANSPARENT);
@@ -71,21 +71,21 @@ public class Main extends Application {
         // Initialize UI
         IUserInterface userInterface = new UserInterface();
         userInterface.init();
-        
+
         // Load View
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(null); // set URL of fxml file
         AnchorPane appView = (AnchorPane) loader.load();
         rootLayout.setCenter(appView);
-        
+
         // Initialize Controller (set up MainController Class first)
         controller = loader.getController();
         controller.setStage(primaryStage);
-        
+
         // Link Controller with UI and Main (set up MainController Class first)
         controller.setUI(userInterface);
         controller.setMainApp(this);
-        
+
         // Link UI with Controller
         userInterface.setController(controller);
         userInterface.displayWelcome();
@@ -94,6 +94,7 @@ public class Main extends Application {
     /***************************
      *** LEVEL 2 Abstraction ***
      ***************************/
+
 
     /**
      * Get Methods for private variables

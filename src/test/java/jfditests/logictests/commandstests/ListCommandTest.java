@@ -10,7 +10,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.function.Consumer;
 
 import static org.junit.Assert.*;
@@ -24,26 +23,32 @@ import static org.powermock.api.mockito.PowerMockito.*;
 @PrepareForTest({Task.class})
 public class ListCommandTest {
 
-    @Mock private Collection<Task> items;
     @Mock private Consumer<ListCommand> successHook;
     @Mock private Consumer<ListCommand> failureHook;
 
-    private ListCommand listCommandWithTags = new ListCommand.Builder().addTag("test").build();
-    private ListCommand listCommandWithoutTags = new ListCommand.Builder().build();
+    private ArrayList<Task> allItems = new ArrayList<>();
+    private ArrayList<Task> taggedItems = new ArrayList<>();
+    private ArrayList<Task> noItems = new ArrayList<>();
 
     @Before
     public void setUp() throws Exception {
         // Mocking Task
         mockStatic(Task.class);
-        when(Task.getAll()).thenReturn(items);
+        when(Task.getAll()).thenReturn(allItems);
+        when(Task.getByTag("tag")).thenReturn(taggedItems);
+        when(Task.getByTag("non-exist")).thenReturn(noItems);
+
+        allItems.add(mock(Task.class));
+        taggedItems.add(mock(Task.class));
     }
 
     @Test
     public void testGetItems() throws Exception {
         // Command must be executed before there is any items to be gotten.
-        listCommandWithoutTags.execute();
+        ListCommand lsAll = new ListCommand.Builder().build();
+        lsAll.execute();
 
-        assertSame(items, listCommandWithoutTags.getItems());
+        assertEquals(allItems, lsAll.getItems());
     }
 
     @Test
@@ -60,18 +65,28 @@ public class ListCommandTest {
 
     @Test
     public void testGetErrorType() throws Exception {
-        assertNull(listCommandWithTags.getErrorType());
+        ListCommand lsNonExist = new ListCommand.Builder().addTag("non-exist").build();
+        assertNull(lsNonExist.getErrorType());
 
-        listCommandWithTags.execute();
-        assertEquals(listCommandWithTags.getErrorType(), ListCommand.ErrorType.UNKNOWN);
+        lsNonExist.execute();
+        assertEquals(lsNonExist.getErrorType(), ListCommand.ErrorType.NON_EXISTENT_TAG);
     }
 
     @Test
     public void testExecute() throws Exception {
-        listCommandWithoutTags.execute();
+        ListCommand lsWithoutTags = new ListCommand.Builder().build();
+        lsWithoutTags.execute();
 
         verifyStatic();
         Task.getAll();
+        assertEquals(allItems, lsWithoutTags.getItems());
+
+        ListCommand lsWithTags = new ListCommand.Builder().addTag("tag").build();
+        lsWithTags.execute();
+
+        verifyStatic();
+        Task.getByTag("tag");
+        assertEquals(taggedItems, lsWithTags.getItems());
     }
 
     @Test(expected = IllegalStateException.class)
@@ -83,17 +98,21 @@ public class ListCommandTest {
     @Test
     public void testAddSuccessHookAndOnSuccess() throws Exception {
         ListCommand.addSuccessHook(successHook);
-        listCommandWithoutTags.execute();
 
-        verify(successHook).accept(listCommandWithoutTags);
+        ListCommand ls = new ListCommand.Builder().build();
+        ls.execute();
+
+        verify(successHook).accept(ls);
     }
 
     @Test
     public void testAddFailureHookAndOnFailure() throws Exception {
         ListCommand.addFailureHook(failureHook);
-        listCommandWithTags.execute();
 
-        verify(failureHook).accept(listCommandWithTags);
+        ListCommand ls = new ListCommand.Builder().addTag("non-exist").build();
+        ls.execute();
+
+        verify(failureHook).accept(ls);
     }
 
 }

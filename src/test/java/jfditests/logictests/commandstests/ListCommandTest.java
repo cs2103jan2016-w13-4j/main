@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.function.Consumer;
 
@@ -46,6 +47,18 @@ public class ListCommandTest {
     }
 
     @Test
+    public void testGetTags() throws Exception {
+        ArrayList<String> tags = new ArrayList<>();
+        tags.add("tag1");
+        tags.add("tag2");
+        tags.add("tag3");
+
+        ListCommand command = new ListCommand.Builder().addTags(tags).build();
+
+        assertArrayEquals(tags.toArray(), command.getTags().toArray());
+    }
+
+    @Test
     public void testGetErrorType() throws Exception {
         assertNull(listCommandWithTags.getErrorType());
 
@@ -59,6 +72,12 @@ public class ListCommandTest {
 
         verifyStatic();
         Task.getAll();
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testGetItemsBeforeExecute() throws Exception {
+        ListCommand command = new ListCommand.Builder().build();
+        command.getItems();
     }
 
     @Test

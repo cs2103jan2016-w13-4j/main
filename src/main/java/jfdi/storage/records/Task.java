@@ -32,8 +32,8 @@ public class Task {
     private String description = null;
     private LocalDateTime startDateTime = null;
     private LocalDateTime endDateTime = null;
-    private HashSet<String> tags = null;
-    private TreeSet<Duration> reminders = null;
+    private HashSet<String> tags = new HashSet<String>();
+    private TreeSet<Duration> reminders = new TreeSet<Duration>();
     private boolean completed = false;
 
     static {

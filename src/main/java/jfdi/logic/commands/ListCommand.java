@@ -20,7 +20,7 @@ public class ListCommand extends AbstractCommand {
     private static ArrayList<Consumer<ListCommand>> failureHooks = new ArrayList<>();
 
     private ArrayList<String> tags;
-    private Collection<Task> items = null;
+    private ArrayList<Task> items = null;
     private ErrorType errorType = null;
 
     private ListCommand(Builder builder) {
@@ -79,13 +79,20 @@ public class ListCommand extends AbstractCommand {
 
     @Override
     public void execute() {
+        items = new ArrayList<>();
         if (tags.isEmpty()) {
-            items = Task.getAll();
-            onSuccess();
+            items.addAll(Task.getAll());
         } else {
-            // TODO: Add filtering when Task supports that.
-            errorType = ErrorType.UNKNOWN;
+            for (String tag : tags) {
+                items.addAll(Task.getByTag(tag));
+            }
+        }
+
+        if (items.isEmpty()) {
+            errorType = ErrorType.NON_EXISTENT_TAG;
             onFailure();
+        } else {
+            onSuccess();
         }
     }
 
@@ -122,4 +129,5 @@ public class ListCommand extends AbstractCommand {
     public static void addFailureHook(Consumer<ListCommand> hook) {
         failureHooks.add(hook);
     }
+
 }

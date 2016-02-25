@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.TreeMap;
@@ -18,9 +19,9 @@ import jfdi.storage.serializer.Serializer;
 public class Task {
 
     // All persisted Tasks
-    private static TreeMap<Integer, Task> taskList = new TreeMap<Integer, Task>();
+    private static TreeMap<Integer, Task> taskList = null;
     // All deleted Tasks
-    private static TreeMap<Integer, Task> deletedTaskList = new TreeMap<Integer, Task>();
+    private static TreeMap<Integer, Task> deletedTaskList = null;
     // The ID that will be assigned to the next new task
     private static int nextId = 1;
     // The filepath to the data file
@@ -34,6 +35,22 @@ public class Task {
     private HashSet<String> tags = null;
     private TreeSet<Duration> reminders = null;
     private boolean completed = false;
+
+    static {
+        if (taskList == null) {
+            resetProgramStorage();
+        }
+    }
+
+    /**
+     * This method resets the program's internal storage of tasks. This method
+     * should only be used by the public in tests.
+     */
+    public static void resetProgramStorage() {
+        taskList = new TreeMap<Integer, Task>();
+        deletedTaskList = new TreeMap<Integer, Task>();
+        nextId = 1;
+    }
 
     /**
      * This method loads/refreshes the record (taskList) based on data contained
@@ -59,12 +76,6 @@ public class Task {
         }
 
         return null;
-    }
-
-    private static void populateTaskList(Task[] taskArray) {
-        for (Task task : taskArray) {
-            taskList.put(task.getId(), task);
-        }
     }
 
     /**
@@ -107,6 +118,29 @@ public class Task {
         }
 
         return taskList.get(id);
+    }
+
+    /**
+     * This method returns an ArrayList of tasks that contain the specified tag.
+     *
+     * @param tag
+     *            the search tag
+     * @return an ArrayList of tasks that contains the specified tag, or null if
+     *         tag is null
+     */
+    public static ArrayList<Task> getByTag(String tag) {
+        if (tag == null) {
+            return null;
+        }
+
+        ArrayList<Task> taskList = new ArrayList<Task>();
+        for (Task task : Task.getAll()) {
+            if (task.hasTag(tag)) {
+                taskList.add(task);
+            }
+        }
+
+        return taskList;
     }
 
     public static boolean markAsComplete(Integer id) {
@@ -188,6 +222,13 @@ public class Task {
     private static void undelete(Integer id) {
         Task task = deletedTaskList.remove(id);
         taskList.put(task.getId(), task);
+    }
+
+    private static void populateTaskList(Task[] taskArray) {
+        resetProgramStorage();
+        for (Task task : taskArray) {
+            taskList.put(nextId++, task);
+        }
     }
 
     /**
@@ -308,5 +349,17 @@ public class Task {
     private boolean removeTag(String tag) {
         HashSet<String> tags = this.getTags();
         return tags.remove(tag);
+    }
+
+    /**
+     * This method checks if the task contains the given tag.
+     *
+     * @param tag
+     *            the tag to be searched for
+     * @return boolean indicating if the task contains the given tag
+     */
+    private boolean hasTag(String tag) {
+        HashSet<String> tags = this.getTags();
+        return tags.contains(tag);
     }
 }

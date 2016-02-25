@@ -225,4 +225,33 @@ public class TaskTest {
         assertTrue(TestHelper.hasSameElements(tasksWithTag2, Task.getByTag(Constants.TEST_TASK_TAG_2)));
     }
 
+    @Test
+    public void testAddTagById() {
+        HashSet<String> tags = null;
+        Task task = new Task();
+        task.createAndPersist();
+
+        tags = task.getTags();
+        assertTrue(tags.isEmpty());
+
+        boolean isAddTagToNullSuccessful = Task.addTagById(null, Constants.TEST_TASK_TAG_1);
+        assertFalse(isAddTagToNullSuccessful);
+
+        boolean isAddTagToNonExistentIdSuccessful = Task.addTagById(-1, Constants.TEST_TASK_TAG_1);
+        assertFalse(isAddTagToNonExistentIdSuccessful);
+
+        assertFalse(tags.contains(Constants.TEST_TASK_TAG_1));
+        boolean isAddTagToExistentIdSuccessful = Task.addTagById(task.getId(), Constants.TEST_TASK_TAG_1);
+        assertTrue(isAddTagToExistentIdSuccessful);
+        assertTrue(tags.contains(Constants.TEST_TASK_TAG_1));
+
+        boolean isAddDuplicateTagSuccessful = Task.addTagById(task.getId(), Constants.TEST_TASK_TAG_1);
+        assertFalse(isAddDuplicateTagSuccessful);
+
+        assertFalse(tags.contains(Constants.TEST_TASK_TAG_2));
+        boolean isAddAnotherTagSuccessful = Task.addTagById(task.getId(), Constants.TEST_TASK_TAG_2);
+        assertTrue(isAddAnotherTagSuccessful);
+        assertTrue(tags.contains(Constants.TEST_TASK_TAG_2));
+    }
+
 }

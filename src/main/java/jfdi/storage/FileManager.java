@@ -70,6 +70,10 @@ public class FileManager {
         ArrayList<FilePathPair> replacedFiles = new ArrayList<FilePathPair>();
         FilePathPair filePathPair = null;
 
+        // Create the new folder if it doesn't already exist
+        File newStorageFolder = new File(newStorageFolderPath);
+        newStorageFolder.mkdirs();
+
         for (Path path : filePaths) {
             File file = path.toFile();
             if (!file.exists()) {

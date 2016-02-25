@@ -102,15 +102,19 @@ public class Task {
      * @return the Task if it exists in Storage, null otherwise
      */
     public static Task getById(Integer id) {
+        if (id == null) {
+            return null;
+        }
+
         return taskList.get(id);
     }
 
     public static boolean markAsComplete(Integer id) {
-        if (!taskList.containsKey(id)) {
+        Task task = Task.getById(id);
+        if (task == null) {
             return false;
         }
 
-        Task task = taskList.get(id);
         if (task.isCompleted()) {
             return false;
         }
@@ -120,11 +124,11 @@ public class Task {
     }
 
     public static boolean markAsIncomplete(Integer id) {
-        if (!taskList.containsKey(id)) {
+        Task task = Task.getById(id);
+        if (task == null) {
             return false;
         }
 
-        Task task = taskList.get(id);
         if (!task.isCompleted()) {
             return false;
         }
@@ -134,7 +138,8 @@ public class Task {
     }
 
     public static boolean destroy(Integer id) {
-        if (taskList.containsKey(id)) {
+        Task task = Task.getById(id);
+        if (task != null) {
             softDelete(id);
             return true;
         }
@@ -143,7 +148,7 @@ public class Task {
     }
 
     public static boolean undestroy(Integer id) {
-        if (deletedTaskList.containsKey(id)) {
+        if (id != null && deletedTaskList.containsKey(id)) {
             undelete(id);
             return true;
         }
@@ -151,9 +156,38 @@ public class Task {
         return false;
     }
 
+    /**
+     * This method removes the given tag from a task with the given id.
+     *
+     * @param id
+     *            the id of the task that we want to remove the tag from
+     * @param tag
+     *            the tag that we want to remove from the task
+     * @return boolean indicating if the tag was removed from the task with the
+     *         given id
+     */
+    public static boolean removeTagById(Integer id, String tag) {
+        Task task = Task.getById(id);
+        if (task == null) {
+            return false;
+        }
+
+        return task.removeTag(tag);
+    }
+
     public static void persist() {
         String json = Serializer.serialize(taskList.values());
         FileManager.writeToFile(json, filePath);
+    }
+
+    private static void softDelete(Integer id) {
+        Task task = taskList.remove(id);
+        deletedTaskList.put(task.getId(), task);
+    }
+
+    private static void undelete(Integer id) {
+        Task task = deletedTaskList.remove(id);
+        taskList.put(task.getId(), task);
     }
 
     /**
@@ -264,13 +298,15 @@ public class Task {
         return true;
     }
 
-    private static void softDelete(Integer id) {
-        Task task = taskList.remove(id);
-        deletedTaskList.put(task.getId(), task);
-    }
-
-    private static void undelete(Integer id) {
-        Task task = deletedTaskList.remove(id);
-        taskList.put(task.getId(), task);
+    /**
+     * This method removes a given tag from the task.
+     *
+     * @param tag
+     *            the tag that is to be removed
+     * @return boolean indicating if the tag was removed
+     */
+    private boolean removeTag(String tag) {
+        HashSet<String> tags = this.getTags();
+        return tags.remove(tag);
     }
 }

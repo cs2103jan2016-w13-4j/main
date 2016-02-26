@@ -26,9 +26,13 @@ public class AddCommandParser extends CommandParser {
     @Override
     /**
      * All user inputs for adding tasks adhere to the following format:
-     * "<add command>(optional) <task description> <date time identifier)(optional) <tags>(optional)
+     * "<add identifier>(optional) <task description> <date time identifier)(optional) <tags>(optional)
      * To build the add command, we traverse from the back, retrieving the tags
      * first, then the date time identifiers if present, then the task.
+     *
+     * @param input
+     *            the user input String
+     * @return the AddCommand.
      */
     public AddCommandStub build(String input) {
         Builder addCommandBuilder = new Builder();
@@ -44,8 +48,11 @@ public class AddCommandParser extends CommandParser {
      * Finds instances that match the tag Regex specified in
      * parser.Constants.java, removes them from the input string, then adds the
      * list of tags found into the Builder object.
+     *
      * @param input
-     *            typically the user input
+     *            the user input String
+     * @param builder
+     *            the builder object for AddCommand
      * @return the input, trimmed and without tags.
      */
     private String setAndRemoveTags(String input, Builder builder) {
@@ -70,15 +77,18 @@ public class AddCommandParser extends CommandParser {
     }
 
     /**
-     * Finds the date time identifier in the string input, if available. If the
-     * user input has many instances of substrings that match the Regex for date
-     * time identifiers (see parser.Constants.java), then only the one closest
-     * to the tail of the string is taken as the date time identifier. This is
-     * to allow for the user to both specify date times for his task, while
-     * still allowing him the flexibility of typing in dates and times in his
-     * task description.
+     * Sets the date time identifier field in the builder, if it can be found in
+     * the string input. If the user input has many instances of substrings that
+     * match the Regex for date time identifiers (see parser.Constants.java),
+     * then only the one closest to the tail of the string is taken as the date
+     * time identifier. This is to allow for the user to both specify date times
+     * for his task, while still allowing him the flexibility of typing in dates
+     * and times in his task description.
+     *
      * @param input
      *            the input string
+     * @param builder
+     *            the builder object for AddCommand
      * @return the input, trimmed and without date time identifiers.
      */
     private String setAndRemoveDateTime(String input, Builder builder) {
@@ -105,16 +115,30 @@ public class AddCommandParser extends CommandParser {
         return input;
     }
 
-    private void setDescription(String input, Builder addCommandBuilder) {
-        String firstWord = getFirstWord(input);
-        String taskDescription = null;
-        if (firstWord.matches(Constants.REGEX_ADD)) {
-            taskDescription = removeFirstWord(input);
-        } else {
-            taskDescription = input;
-        }
+    /**
+     * Sets the description field of the builder object. Sets it to null if the
+     * input String is empty, or just an add identifier without any task
+     * descriptions.
+     *
+     * @param input
+     *            is the input string from which the description is extracted.
+     * @param builder
+     *            the builder object for AddCommand
+     */
+    private void setDescription(String input, Builder builder) {
+        if (!input.isEmpty()) {
+            String firstWord = getFirstWord(input);
+            String taskDescription = null;
+            if (firstWord.matches(Constants.REGEX_ADD)) {
+                taskDescription = removeFirstWord(input);
+            } else {
+                taskDescription = input;
+            }
 
-        addCommandBuilder.addDescription(taskDescription);
+            builder.addDescription(taskDescription);
+        } else {
+            builder.addDescription(null);
+        }
     }
 
     private String removeFirstChar(String string) {
@@ -124,6 +148,7 @@ public class AddCommandParser extends CommandParser {
     /**
      * Get the substring of an input String from startindex inclusive to
      * endindex exclusive, trimming it at the same time.
+     *
      * @param input
      *            a string to get substring of
      * @param startIndex
@@ -141,8 +166,23 @@ public class AddCommandParser extends CommandParser {
         return input.split(Constants.REGEX_WHITESPACE)[0];
     }
 
+    /**
+     * Removes the first word in the input string, and returns the rest of the
+     * input.
+     *
+     * @param input
+     *            the string from which the first word is to be removed
+     * @return the input string without the first word and the whitespace
+     *         separating the first word from the rest of the string. If the
+     *         string only consists of one word, return null.
+     */
     private String removeFirstWord(String input) {
-        return input.split(Constants.REGEX_WHITESPACE, 2)[1];
+        String[] splitInput = input.split(Constants.REGEX_WHITESPACE, 2);
+        if (splitInput.length == 1) {
+            return null;
+        } else {
+            return splitInput[1];
+        }
     }
 
 }

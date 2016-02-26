@@ -16,6 +16,9 @@ import jfdi.storage.records.Task;
  */
 public class Constants {
 
+    /**
+     * General purpose constants
+     */
     // Filenames
     public static final String FILENAME_TASK = "tasks.txt";
     public static final String FILENAME_ALIAS = "aliases.txt";
@@ -35,7 +38,10 @@ public class Constants {
     // Default charset
     public static final String CHARSET = "UTF-8";
 
-    // Test-specific constants
+
+    /**
+     * Test-specific constants
+     */
     // Files
     public static final String TEST_DIRECTORY_PREFIX = "CS2103-JFDI";
     public static final String TEST_DIRECTORY_NAME = "Data";
@@ -58,8 +64,13 @@ public class Constants {
     public static final Duration TEST_TASK_REMINDER_DURATION_1 = Duration.ZERO.plusDays(1);
     public static final Duration TEST_TASK_REMINDER_DURATION_2 = Duration.ZERO.plusDays(2);
 
+
+    /**
+     * Private variables
+     */
     // List of records
     private static final List<Class<?>> RECORDS = Arrays.asList(Task.class, Alias.class);
+
 
     /**
      * @return an immutable array of record classes

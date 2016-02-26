@@ -34,7 +34,7 @@ public class Task {
     private LocalDateTime endDateTime = null;
     private HashSet<String> tags = new HashSet<String>();
     private TreeSet<Duration> reminders = new TreeSet<Duration>();
-    private boolean completed = false;
+    private boolean isCompleted = false;
 
     static {
         if (taskList == null) {
@@ -353,11 +353,11 @@ public class Task {
     }
 
     public boolean isCompleted() {
-        return completed;
+        return isCompleted;
     }
 
     public void setCompleted(boolean completed) {
-        this.completed = completed;
+        this.isCompleted = completed;
     }
 
 

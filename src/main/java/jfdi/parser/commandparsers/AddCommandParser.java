@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jfdi.logic.commands.AddCommandStub;
 import jfdi.logic.commands.AddCommandStub.Builder;
-import jfdi.logic.commands.ListCommand;
 import jfdi.parser.Constants;
 import jfdi.parser.DateTimeParser;
 
@@ -26,18 +26,18 @@ public class AddCommandParser extends CommandParser {
     @Override
     /**
      * All user inputs for adding tasks adhere to the following format:
-     * "add(optional) <task description> <date time identifier)(optional) <tags>(optional)
+     * "<add command>(optional) <task description> <date time identifier)(optional) <tags>(optional)
      * To build the add command, we traverse from the back, retrieving the tags
      * first, then the date time identifiers if present, then the task.
      */
-    public ListCommand build(String input) {
+    public AddCommandStub build(String input) {
         Builder addCommandBuilder = new Builder();
         input = setAndRemoveTags(input, addCommandBuilder);
         input = setAndRemoveDateTime(input, addCommandBuilder);
-        // String taskType = getTaskType(input);
-        // String description = getDescription(input);
+        setDescription(input, addCommandBuilder);
 
-        return new ListCommand.Builder().build();
+        AddCommandStub addCommand = addCommandBuilder.build();
+        return addCommand;
     }
 
     /**
@@ -62,8 +62,6 @@ public class AddCommandParser extends CommandParser {
             input = getTrimmedSubstringInRange(input, 0, matcher.start());
             tags.add(tag);
             matcher.reset(input);
-
-            System.out.println(tag);
         }
 
         builder.addTags(tags);
@@ -92,8 +90,6 @@ public class AddCommandParser extends CommandParser {
         if (matcher.find()) {
             dateTimeIdentifier = getTrimmedSubstringInRange(input,
                     matcher.start(), matcher.end());
-            System.out.println(dateTimeIdentifier);
-
             input = getTrimmedSubstringInRange(input, 0, matcher.start());
         }
 
@@ -107,6 +103,18 @@ public class AddCommandParser extends CommandParser {
         }
 
         return input;
+    }
+
+    private void setDescription(String input, Builder addCommandBuilder) {
+        String firstWord = getFirstWord(input);
+        String taskDescription = null;
+        if (firstWord.matches(Constants.REGEX_ADD)) {
+            taskDescription = removeFirstWord(input);
+        } else {
+            taskDescription = input;
+        }
+
+        addCommandBuilder.addDescription(taskDescription);
     }
 
     private String removeFirstChar(String string) {
@@ -129,8 +137,12 @@ public class AddCommandParser extends CommandParser {
         return input.substring(startIndex, endIndex).trim();
     }
 
-    public static void main(String[] args) {
-        AddCommandParser.getInstance().build(
-                "add task description from 23rd Dec to 25th Dec +helo +itsme");
+    private String getFirstWord(String input) {
+        return input.split(Constants.REGEX_WHITESPACE)[0];
     }
+
+    private String removeFirstWord(String input) {
+        return input.split(Constants.REGEX_WHITESPACE, 2)[1];
+    }
+
 }

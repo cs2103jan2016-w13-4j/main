@@ -21,18 +21,21 @@ public class AddCommandStub extends AbstractCommand {
     private static ArrayList<Consumer<AddCommandStub>> failureHooks = new ArrayList<>();
 
     private ArrayList<String> tags;
+    private String description;
     private ArrayList<LocalDateTime> dateTimes;
     private Collection<Task> items = null;
     private ErrorType errorType = null;
 
     private AddCommandStub(Builder builder) {
         this.tags = builder.tags;
-        this.dateTimes = builder.dateTimes;
+        this.setDateTimes(builder.dateTimes);
+        this.setDescription(builder.description);
     }
 
     public static class Builder {
 
         ArrayList<String> tags = new ArrayList<>();
+        String description = null;
         ArrayList<LocalDateTime> dateTimes = new ArrayList<>();
 
         public Builder addTag(String tag) {
@@ -47,6 +50,11 @@ public class AddCommandStub extends AbstractCommand {
 
         public Builder addDateTimes(ArrayList<LocalDateTime> dateTimes) {
             this.dateTimes.addAll(dateTimes);
+            return this;
+        }
+
+        public Builder addDescription(String s) {
+            this.description = s;
             return this;
         }
 
@@ -123,5 +131,21 @@ public class AddCommandStub extends AbstractCommand {
      */
     public static void addFailureHook(Consumer<AddCommandStub> hook) {
         failureHooks.add(hook);
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public ArrayList<LocalDateTime> getDateTimes() {
+        return dateTimes;
+    }
+
+    public void setDateTimes(ArrayList<LocalDateTime> dateTimes) {
+        this.dateTimes = dateTimes;
     }
 }

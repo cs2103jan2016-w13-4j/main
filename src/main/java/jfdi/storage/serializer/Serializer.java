@@ -1,7 +1,5 @@
 package jfdi.storage.serializer;
 
-import java.time.Duration;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -12,9 +10,7 @@ public class Serializer {
 
     static {
         if (gson == null) {
-            gson = new GsonBuilder().setPrettyPrinting()
-                    .registerTypeAdapter(Duration.class, new DurationSerializer())
-                    .registerTypeAdapter(Duration.class, new DurationDeserializer()).create();
+            gson = new GsonBuilder().setPrettyPrinting().create();
         }
     }
 

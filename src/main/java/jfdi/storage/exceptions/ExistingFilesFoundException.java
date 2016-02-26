@@ -4,24 +4,20 @@ import java.util.ArrayList;
 
 /**
  * ExistingFilesFoundException is thrown when files are replaced with backups
- * made.
+ * made. The exception would contain an ArrayList of FilePathPairs that map
+ * the replaced files to the location of their backups.
  *
  * @author Thng Kai Yuan
  */
 @SuppressWarnings("serial")
 public class ExistingFilesFoundException extends Exception {
 
-    // An ArrayList of FilePathPairs pairing each original filepath to their
-    // backup filepath
     private ArrayList<FilePathPair> replacedFilePairs = null;
 
     public ExistingFilesFoundException(ArrayList<FilePathPair> replacedFilePairs) {
         this.replacedFilePairs = replacedFilePairs;
     }
 
-    /**
-     * @return the ArrayList of replacedFilePairs
-     */
     public ArrayList<FilePathPair> getReplacedFilePairs() {
         return replacedFilePairs;
     }

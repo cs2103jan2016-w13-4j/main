@@ -4,12 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.InvalidPathException;
-
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -17,11 +15,15 @@ import jfdi.storage.exceptions.ExistingFilesFoundException;
 import jfdi.storage.exceptions.FilePathPair;
 
 /**
- * This class manages file operations required by Storage
+ * This class manages file operations required by Storage.
  *
  * @author Thng Kai Yuan
  */
 public class FileManager {
+
+    /*
+     * Public APIs
+     */
 
     /**
      * This method creates the necessary directories for files to be stored in
@@ -40,6 +42,7 @@ public class FileManager {
         Path directoryPath = Paths.get(storageFolderPath);
         boolean isValidDirectory = true;
 
+        // Attempt to create/load the storage directory with the right permissions
         try {
             directoryPath = Files.createDirectories(directoryPath);
             File directory = directoryPath.toFile();
@@ -66,28 +69,15 @@ public class FileManager {
      *             made)
      */
     public static void moveFilesToDirectory(String newStorageFolderPath) throws ExistingFilesFoundException {
-        ArrayList<Path> filePaths = RecordManager.getAllFilePaths();
-        ArrayList<FilePathPair> replacedFiles = new ArrayList<FilePathPair>();
-        FilePathPair filePathPair = null;
-
         // Create the new folder if it doesn't already exist
         File newStorageFolder = new File(newStorageFolderPath);
         newStorageFolder.mkdirs();
 
-        for (Path path : filePaths) {
-            File file = path.toFile();
-            if (!file.exists()) {
-                continue;
-            }
+        // Get the paths of all data file and move them
+        ArrayList<Path> filePaths = RecordManager.getAllFilePaths();
+        ArrayList<FilePathPair> replacedFiles = moveFilesTo(filePaths, newStorageFolderPath);
 
-            String filename = path.getFileName().toString();
-            Path destination = Paths.get(newStorageFolderPath, filename);
-            filePathPair = moveAndBackup(path, destination);
-            if (filePathPair != null) {
-                replacedFiles.add(filePathPair);
-            }
-        }
-
+        // Let the caller know if files were replaced
         if (!replacedFiles.isEmpty()) {
             throw new ExistingFilesFoundException(replacedFiles);
         }
@@ -102,18 +92,22 @@ public class FileManager {
      * @return the path of the backup file created
      */
     public static String backupAndRemove(Path sourcePath) {
-        int attempts = 0;
+        String sourceDirectoryPath = sourcePath.getParent().toString();
         String originalFilename = sourcePath.getFileName().toString();
-        String destinationFilename;
-        File destinationFile;
+        String destinationFilename = null;
+        Path destinationPath = null;
+        File destinationFile = null;
+        int attempts = 0;
 
+        // Try a different backup filename until we get one that doesn't yet exist
         do {
             destinationFilename = originalFilename + getBackupExtension(attempts++);
-            Path destinationPath = Paths.get(sourcePath.getParent().toString(), destinationFilename);
+            destinationPath = Paths.get(sourceDirectoryPath, destinationFilename);
             destinationFile = destinationPath.toFile();
         } while (destinationFile.exists());
 
-        Path destinationPath = destinationFile.toPath();
+        // Once we find a backup name that doesn't yet exist, we rename the
+        // original file to this filename
         try {
             Files.move(sourcePath, destinationPath);
         } catch (IOException e) {
@@ -121,6 +115,84 @@ public class FileManager {
         }
 
         return destinationFile.getAbsolutePath();
+    }
+
+    /**
+     * This method is used to write data into the file given at filePath.
+     *
+     * @param data
+     *            the data to be written into the specified file
+     * @param filePath
+     *            the path of the file that we want to write data into
+     */
+    public static void writeToFile(String data, Path filePath) {
+        try {
+            File file = filePath.toFile();
+            PrintWriter writer = new PrintWriter(file, Constants.CHARSET);
+            writer.println(data);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * This method reads the content in the file specified by filePath and
+     * returns the content in a String.
+     *
+     * @param filePath
+     *            the path of the file that we want to read
+     * @return a String of the file content, or an empty string if there was an
+     *         error reading the file
+     */
+    public static String readFileToString(Path filePath) {
+        File file = filePath.toFile();
+        try {
+            Scanner scanner = new Scanner(file, Constants.CHARSET);
+            scanner.useDelimiter("\\Z");
+            String data = scanner.next();
+            scanner.close();
+            return data;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return Constants.EMPTY_STRING;
+        }
+    }
+
+
+    /*
+     * Private helper methods
+     */
+
+    /**
+     * This method moves all existing files in filePaths to the destination folder.
+     *
+     * @param filePaths
+     *            an ArrayList of Paths for the files that are to be moved
+     * @param destination
+     *            the destination directory
+     * @return an ArrayList of FilePathPairs for every file that was replaced in
+     *         the destination directory
+     */
+    private static ArrayList<FilePathPair> moveFilesTo(ArrayList<Path> filePaths, String destination) {
+        ArrayList<FilePathPair> replacedFiles = new ArrayList<FilePathPair>();
+        FilePathPair filePathPair = null;
+
+        for (Path sourcePath : filePaths) {
+            File sourceFile = sourcePath.toFile();
+            if (!sourceFile.exists()) {
+                continue;
+            }
+
+            String filename = sourcePath.getFileName().toString();
+            Path destinationPath = Paths.get(destination, filename);
+            filePathPair = moveAndBackup(sourcePath, destinationPath);
+            if (filePathPair != null) {
+                replacedFiles.add(filePathPair);
+            }
+        }
+
+        return replacedFiles;
     }
 
     /**
@@ -154,9 +226,11 @@ public class FileManager {
 
     /**
      * This method returns the constant backup file extension concatenated with
-     * the given integer i if i != 0.
+     * the given integer i if i != 0. Examples of extensions generated: .bak,
+     * .bak1, .bak2, etc.
      *
-     * @param i the number that will be appended to the back of the extension
+     * @param i
+     *            the number that will be appended to the back of the extension
      * @return a backup file extension
      */
     private static String getBackupExtension(int i) {
@@ -178,31 +252,6 @@ public class FileManager {
      */
     private static boolean canUseDirectory(File directory) {
         return directory.canExecute() && directory.canWrite();
-    }
-
-    public static void writeToFile(String json, Path filePath) {
-        try {
-            File file = filePath.toFile();
-            PrintWriter writer = new PrintWriter(file, Constants.CHARSET);
-            writer.println(json);
-            writer.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static String readFileToString(Path filePath) {
-        File file = filePath.toFile();
-        try {
-            Scanner scanner = new Scanner(file, Constants.CHARSET);
-            scanner.useDelimiter("\\Z");
-            String data = scanner.next();
-            scanner.close();
-            return data;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return Constants.EMPTY_STRING;
-        }
     }
 
 }

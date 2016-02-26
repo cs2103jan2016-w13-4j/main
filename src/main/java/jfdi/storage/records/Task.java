@@ -143,6 +143,13 @@ public class Task {
         return taskList;
     }
 
+    /**
+     * This method marks a task (given by its ID) as completed.
+     *
+     * @param id
+     *          id of the task to be marked
+     * @return boolean indicating if the status of the task was changed
+     */
     public static boolean markAsComplete(Integer id) {
         Task task = Task.getById(id);
         if (task == null) {
@@ -157,6 +164,13 @@ public class Task {
         return true;
     }
 
+    /**
+     * This method marks a task (given by its ID) as incomplete.
+     *
+     * @param id
+     *          id of the task to be marked
+     * @return boolean indicating if the status of the task was changed
+     */
     public static boolean markAsIncomplete(Integer id) {
         Task task = Task.getById(id);
         if (task == null) {
@@ -171,6 +185,13 @@ public class Task {
         return true;
     }
 
+    /**
+     * This method soft-deletes the task given by the ID.
+     *
+     * @param id
+     *          the task to be deleted
+     * @return boolean indicating if the task was deleted
+     */
     public static boolean destroy(Integer id) {
         Task task = Task.getById(id);
         if (task != null) {
@@ -181,6 +202,13 @@ public class Task {
         return false;
     }
 
+    /**
+     * This method recovers the task given by the ID.
+     *
+     * @param id
+     *          the task to be recovered
+     * @return boolean indicating if the task was recovered
+     */
     public static boolean undestroy(Integer id) {
         if (id != null && deletedTaskList.containsKey(id)) {
             undelete(id);
@@ -247,10 +275,95 @@ public class Task {
         return task.removeTag(tag);
     }
 
+    /**
+     * This method persists all existing tasks to the file system.
+     */
     public static void persist() {
         String json = Serializer.serialize(taskList.values());
         FileManager.writeToFile(json, filePath);
     }
+
+    /**
+     * This method adds a task to the program's internal storage and assigns it
+     * an ID. All task data is then persisted to the file system.
+     *
+     * @return boolean indicating if the task was added and persisted
+     */
+    public boolean createAndPersist() {
+        if (id != null) {
+            return false;
+        }
+
+        id = nextId++;
+        taskList.put(this.getId(), this);
+        Task.persist();
+        return true;
+    }
+
+
+    /*
+     * Getters and setters
+     */
+
+    public int getId() {
+        return id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
+    }
+
+    public void setStartDateTime(LocalDateTime startDateTime) {
+        this.startDateTime = startDateTime;
+    }
+
+    public LocalDateTime getEndDateTime() {
+        return endDateTime;
+    }
+
+    public void setEndDateTime(LocalDateTime endDateTime) {
+        this.endDateTime = endDateTime;
+    }
+
+    public HashSet<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(String... tags) {
+        this.tags = new HashSet<String>();
+        for (String tag : tags) {
+            this.addTag(tag);
+        }
+    }
+
+    public TreeSet<Duration> getReminders() {
+        return reminders;
+    }
+
+    public void setReminders(TreeSet<Duration> reminders) {
+        this.reminders = reminders;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+
+    /*
+     * Private helper methods
+     */
 
     private static void softDelete(Integer id) {
         Task task = taskList.remove(id);
@@ -262,122 +375,17 @@ public class Task {
         taskList.put(task.getId(), task);
     }
 
+    /**
+     * This method populates the task list with tasks given in the taskArray.
+     *
+     * @param taskArray
+     *          the array of tasks that we want to populate the program with
+     */
     private static void populateTaskList(Task[] taskArray) {
         resetProgramStorage();
         for (Task task : taskArray) {
             taskList.put(nextId++, task);
         }
-    }
-
-    /**
-     * @return the id
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * @param description
-     *            the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * @return the startDateTime
-     */
-    public LocalDateTime getStartDateTime() {
-        return startDateTime;
-    }
-
-    /**
-     * @param startDateTime
-     *            the startDateTime to set
-     */
-    public void setStartDateTime(LocalDateTime startDateTime) {
-        this.startDateTime = startDateTime;
-    }
-
-    /**
-     * @return the endDateTime
-     */
-    public LocalDateTime getEndDateTime() {
-        return endDateTime;
-    }
-
-    /**
-     * @param endDateTime
-     *            the endDateTime to set
-     */
-    public void setEndDateTime(LocalDateTime endDateTime) {
-        this.endDateTime = endDateTime;
-    }
-
-    /**
-     * @return the tags
-     */
-    public HashSet<String> getTags() {
-        return tags;
-    }
-
-    /**
-     * @param tags
-     *            the tags to set
-     */
-    public void setTags(String... tags) {
-        this.tags = new HashSet<String>();
-        for (String tag : tags) {
-            this.addTag(tag);
-        }
-    }
-
-    /**
-     * @return the reminders
-     */
-    public TreeSet<Duration> getReminders() {
-        return reminders;
-    }
-
-    /**
-     * @param reminders
-     *            the reminders to set
-     */
-    public void setReminders(TreeSet<Duration> reminders) {
-        this.reminders = reminders;
-    }
-
-    /**
-     * @return the completed
-     */
-    public boolean isCompleted() {
-        return completed;
-    }
-
-    /**
-     * @param completed
-     *            the completed to set
-     */
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
-
-    public boolean createAndPersist() {
-        if (id != null) {
-            return false;
-        }
-
-        id = nextId++;
-        taskList.put(this.getId(), this);
-        Task.persist();
-        return true;
     }
 
     /**

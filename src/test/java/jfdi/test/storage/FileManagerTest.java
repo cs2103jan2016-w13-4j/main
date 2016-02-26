@@ -1,13 +1,18 @@
 package jfdi.test.storage;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import jfdi.storage.Constants;
+import jfdi.storage.FileManager;
+import jfdi.storage.FileStorage;
+import jfdi.storage.exceptions.ExistingFilesFoundException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -15,11 +20,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import jfdi.storage.Constants;
-import jfdi.storage.FileManager;
-import jfdi.storage.FileStorage;
-import jfdi.storage.exceptions.ExistingFilesFoundException;
 
 public class FileManagerTest {
 

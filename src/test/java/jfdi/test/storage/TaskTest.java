@@ -1,6 +1,9 @@
 package jfdi.test.storage;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,22 +41,21 @@ public class TaskTest {
 
     @Test
     public void testSettersAndGetters() {
+        // Use the setters to set the task's attributes
         Task task = new Task();
         task.setDescription(Constants.TEST_TASK_DESCRIPTION);
         task.setStartDateTime(Constants.TEST_TASK_STARTDATETIME);
         task.setEndDateTime(Constants.TEST_TASK_ENDDATETIME);
         task.setTags(Constants.TEST_TASK_TAG_1);
-
         TreeSet<Duration> reminders = new TreeSet<Duration>();
         reminders.add(Constants.TEST_TASK_REMINDER_DURATION_1);
         task.setReminders(reminders);
-
         task.setCompleted(true);
 
+        // Assert that the getter returns the same attributes
         assertEquals(task.getDescription(), Constants.TEST_TASK_DESCRIPTION);
         assertEquals(task.getStartDateTime(), Constants.TEST_TASK_STARTDATETIME);
         assertEquals(task.getEndDateTime(), Constants.TEST_TASK_ENDDATETIME);
-
         HashSet<String> tags = task.getTags();
         assertEquals(tags.size(), 1);
         assertTrue(tags.contains(Constants.TEST_TASK_TAG_1));
@@ -102,12 +104,10 @@ public class TaskTest {
 
         // Testing mark as complete
         Task.markAsComplete(task.getId());
-
         assertTrue(task.isCompleted());
 
         // Testing mark as incomplete
         Task.markAsIncomplete(task.getId());
-
         assertFalse(task.isCompleted());
     }
 
@@ -116,6 +116,7 @@ public class TaskTest {
         Task task = new Task();
         task.createAndPersist();
 
+        // Ensure that the task exists
         assertSame(Task.getById(task.getId()), task);
 
         // Testing destroy
@@ -131,51 +132,44 @@ public class TaskTest {
     public void testCreateAndPersistAndLoad() {
         Task task = new Task();
         task.setDescription(Constants.TEST_TASK_DESCRIPTION);
-        task.createAndPersist();
 
         // Testing create
+        task.createAndPersist();
         assertSame(Task.getById(task.getId()), task);
 
+        // Remove the task
         Task.destroy(task.getId());
-
         assertSame(Task.getById(task.getId()), null);
 
-        // Testing persistence and load
+        // Test load by loading the task back from disk
         Task.load();
-        // There should only be 1 task loaded
         Task retrievedTask = Task.getById(1);
         assertEquals(retrievedTask.getDescription(), Constants.TEST_TASK_DESCRIPTION);
     }
 
     @Test
     public void testRemoveTagFromNonExistentTask() {
-        boolean isSuccessful = false;
-
-        isSuccessful = Task.removeTagById(-1, Constants.TEST_TASK_TAG_1);
+        boolean isSuccessful = Task.removeTagById(-1, Constants.TEST_TASK_TAG_1);
         assertFalse(isSuccessful);
     }
 
     @Test
     public void testRemoveNonExistentTag() {
-        boolean isSuccessful = false;
-
         Task task = new Task();
         task.setTags(Constants.TEST_TASK_TAG_1);
         task.createAndPersist();
 
-        isSuccessful = Task.removeTagById(task.getId(), Constants.TEST_TASK_TAG_2);
+        boolean isSuccessful = Task.removeTagById(task.getId(), Constants.TEST_TASK_TAG_2);
         assertFalse(isSuccessful);
     }
 
     @Test
     public void testRemoveTag() {
-        boolean isSuccessful = false;
-
         Task task = new Task();
         task.setTags(Constants.TEST_TASK_TAG_1, Constants.TEST_TASK_TAG_2);
         task.createAndPersist();
 
-        isSuccessful = Task.removeTagById(task.getId(), Constants.TEST_TASK_TAG_1);
+        boolean isSuccessful = Task.removeTagById(task.getId(), Constants.TEST_TASK_TAG_1);
         assertTrue(isSuccessful);
 
         HashSet<String> tags = task.getTags();

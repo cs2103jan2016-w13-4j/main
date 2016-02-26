@@ -28,6 +28,14 @@ public class Alias {
         this.command = command;
     }
 
+    public static void setFilePath(String absoluteFolderPath) {
+        filePath = Paths.get(absoluteFolderPath, Constants.FILENAME_ALIAS);
+    }
+
+    public static Path getFilePath() {
+        return filePath;
+    }
+
     /**
      * This method returns all the aliases currently stored in the program's
      * internal state. The returned collection may not be synchronized with the
@@ -39,6 +47,20 @@ public class Alias {
         return aliasList;
     }
 
+    /**
+     * This method resets the program's internal storage of aliases. This method
+     * should only be used by the public in tests.
+     */
+    public static void resetProgramStorage() {
+        aliasList = new ArrayList<Alias>();
+        deletedAliasList = new ArrayList<Alias>();
+    }
+
+    /**
+     * This method loads the aliases currently stored in the file given by filePath
+     *
+     * @return a FilePathPair if the existing file cannot be read and was renamed
+     */
     public static FilePathPair load() {
         File dataFile = filePath.toFile();
         if (!dataFile.exists()) {
@@ -60,22 +82,14 @@ public class Alias {
     }
 
     /**
-     * This method resets the program's internal storage of aliases. This method
-     * should only be used by the public in tests.
+     * This method returns the command corresponding to an alias currently
+     * stored in the program
+     *
+     * @param alias
+     *            the alias whose command we want to retrieve
+     * @return the command if the given alias exists in the program's storage,
+     *         null otherwise
      */
-    public static void resetProgramStorage() {
-        aliasList = new ArrayList<Alias>();
-        deletedAliasList = new ArrayList<Alias>();
-    }
-
-    public static void setFilePath(String absoluteFolderPath) {
-        filePath = Paths.get(absoluteFolderPath, Constants.FILENAME_ALIAS);
-    }
-
-    public static Path getFilePath() {
-        return filePath;
-    }
-
     public static String getCommandFromAlias(String alias) {
         String alias2 = null;
         for (Alias aliasRecord : aliasList) {
@@ -88,6 +102,13 @@ public class Alias {
         return null;
     }
 
+    /**
+     * This method soft-deletes an existing alias.
+     *
+     * @param alias
+     *          the alias that we want to delete
+     * @return boolean indicating if the alias was deleted
+     */
     public static boolean destroy(String alias) {
         String alias2 = null;
         for (Alias aliasRecord : aliasList) {
@@ -102,9 +123,17 @@ public class Alias {
         return false;
     }
 
+    /**
+     * This method restores an alias that was soft-deleted earlier.
+     *
+     * @param alias
+     *          the alias that we want to recover
+     * @return boolean indicating if the alias was recovered
+     */
     public static boolean undestroy(String alias) {
         Alias deletedAlias = null;
-        // Start searching from the back to undestroy the latest alias
+
+        // Start searching from the back to undestroy the latest matching alias
         for (int i = deletedAliasList.size() - 1; i >= 0; i--) {
             deletedAlias = deletedAliasList.get(i);
             if (alias.equals(deletedAlias.getAlias()) && !isDuplicate(deletedAlias)) {
@@ -117,35 +146,14 @@ public class Alias {
         return false;
     }
 
-    public boolean createAndPersist() {
-        if (isDuplicate(this)) {
-            return false;
-        }
-
-        aliasList.add(this);
-        Alias.persist();
-        return true;
-    }
-
-    public static void persist() {
-        String json = Serializer.serialize(aliasList);
-        FileManager.writeToFile(json, filePath);
-    }
-
     /**
-     * @return the alias
+     * This method checks if the given alias already exists in the program's
+     * storage.
+     *
+     * @param alias
+     *            the alias that we want to check
+     * @return boolean indicating if the alias already exists
      */
-    public String getAlias() {
-        return alias;
-    }
-
-    /**
-     * @return the command
-     */
-    public String getCommand() {
-        return command;
-    }
-
     private static boolean isDuplicate(Alias alias) {
         String alias1 = alias.getAlias();
         String alias2;
@@ -157,5 +165,37 @@ public class Alias {
         }
 
         return false;
+    }
+
+    /**
+     * This method creates the new alias record and persists all existing Alias
+     * records in the program to the file system.
+     *
+     * @return boolean indicating if the alias was created and persisted
+     */
+    public boolean createAndPersist() {
+        if (isDuplicate(this)) {
+            return false;
+        }
+
+        aliasList.add(this);
+        Alias.persist();
+        return true;
+    }
+
+    /**
+     * This method persists all existing aliases to the file system.
+     */
+    public static void persist() {
+        String json = Serializer.serialize(aliasList);
+        FileManager.writeToFile(json, filePath);
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public String getCommand() {
+        return command;
     }
 }

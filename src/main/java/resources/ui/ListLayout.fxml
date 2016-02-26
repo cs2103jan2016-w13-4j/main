@@ -1,8 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+ 
+<?import javafx.scene.image.*?>
+<?import java.net.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
-
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1">
-	<!-- TODO Add Nodes -->
+<?import javafx.scene.control.Control?>
+ 
+<AnchorPane fx:controller="ui.MainController" 
+    xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" 
+    prefHeight="200" prefWidth="400" >
+ 
+   <children>
+      <AnchorPane prefHeight="662.0" prefWidth="900.0" AnchorPane.bottomAnchor="20.0" AnchorPane.topAnchor="35.0">
+         <children>
+            <SplitPane id="upper-split-pane" dividerPositions="0.8012048192771084" focusTraversable="false" 
+            	layoutX="330.0" layoutY="340.0" orientation="VERTICAL" prefHeight="657.0" prefWidth="900.0" 
+            	AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" 
+            	AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            </SplitPane>
+         </children>
+      </AnchorPane>
+   </children>
+         
 </AnchorPane>
-

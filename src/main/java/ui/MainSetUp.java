@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -15,7 +16,7 @@ public class MainSetUp extends Application {
 
     private Stage primaryStage;
     private Scene scene;
-    private BorderPane rootLayout;
+    private Parent rootLayout;
     private AnchorPane listLayout;
     private MainController controller;
 
@@ -25,7 +26,7 @@ public class MainSetUp extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("JFDI");
 
-        setStageTransparent();
+        //setStageTransparent();
         loadFonts(); // if any
         initRootLayout();
         initView();
@@ -54,9 +55,7 @@ public class MainSetUp extends Application {
 
     private void initRootLayout() throws IOException {
 
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(null); // set URL of fxml file
-        rootLayout = (BorderPane) loader.load();
+        rootLayout = (BorderPane) FXMLLoader.load(getClass().getResource("/resources/ui/RootLayout.fxml"));
 
         // Display scene with root layout
         Scene scene = new Scene(rootLayout);
@@ -68,18 +67,18 @@ public class MainSetUp extends Application {
     }
 
     private void initView() throws IOException {
+
         // Initialize UI
         IUserInterface userInterface = new UserInterface();
         userInterface.init();
 
         // Load View
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(null); // set URL of fxml file
-        AnchorPane appView = (AnchorPane) loader.load();
-        rootLayout.setCenter(appView);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/ui/ListLayout.fxml"));
+        listLayout = (AnchorPane) loader.load();
+        ((BorderPane) rootLayout).setCenter(listLayout);
 
-        // Initialize Controller (set up MainController Class first)
-        controller = loader.getController();
+        // Initialize Controller
+        controller = loader.<MainController>getController();
         controller.setStage(primaryStage);
 
         // Link Controller with UI and Main (set up MainController Class first)
@@ -105,7 +104,7 @@ public class MainSetUp extends Application {
         return this.scene;
     }
 
-    public BorderPane getRootLayout() {
+    public Parent getRootLayout() {
         return this.rootLayout;
     }
 

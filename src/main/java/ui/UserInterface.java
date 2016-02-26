@@ -41,8 +41,8 @@ public class UserInterface implements IUserInterface {
         // Create and display a default view
         // display default list
 
-        controller.clearFeedback();
-        controller.displayFeedback(UI_MESSAGE_WELCOME);
+        //controller.clearFeedback();
+        showToUser(UI_MESSAGE_WELCOME);
     }
 
     @Override

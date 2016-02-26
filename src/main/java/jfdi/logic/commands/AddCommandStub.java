@@ -1,0 +1,127 @@
+package jfdi.logic.commands;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.function.Consumer;
+
+import jfdi.logic.interfaces.AbstractCommand;
+import jfdi.storage.records.Task;
+
+/**
+ * @author Liu Xinan
+ */
+public class AddCommandStub extends AbstractCommand {
+
+    public enum ErrorType {
+        NON_EXISTENT_TAG, UNKNOWN
+    }
+
+    private static ArrayList<Consumer<AddCommandStub>> successHooks = new ArrayList<>();
+    private static ArrayList<Consumer<AddCommandStub>> failureHooks = new ArrayList<>();
+
+    private ArrayList<String> tags;
+    private ArrayList<LocalDateTime> dateTimes;
+    private Collection<Task> items = null;
+    private ErrorType errorType = null;
+
+    private AddCommandStub(Builder builder) {
+        this.tags = builder.tags;
+        this.dateTimes = builder.dateTimes;
+    }
+
+    public static class Builder {
+
+        ArrayList<String> tags = new ArrayList<>();
+        ArrayList<LocalDateTime> dateTimes = new ArrayList<>();
+
+        public Builder addTag(String tag) {
+            this.tags.add(tag);
+            return this;
+        }
+
+        public Builder addTags(ArrayList<String> tags) {
+            this.tags.addAll(tags);
+            return this;
+        }
+
+        public Builder addDateTimes(ArrayList<LocalDateTime> dateTimes) {
+            this.dateTimes.addAll(dateTimes);
+            return this;
+        }
+
+        public AddCommandStub build() {
+            return new AddCommandStub(this);
+        }
+    }
+
+    /**
+     * Get the items to for listing.
+     *
+     * @return A Collection of Tasks resulted from the command.
+     */
+    public Collection<Task> getItems() {
+        if (items == null) {
+            throw new IllegalStateException("Command not yet executed!");
+        }
+
+        return items;
+    }
+
+    /**
+     * Get the error type that the command encountered.
+     *
+     * @return Error type
+     */
+    public ErrorType getErrorType() {
+        return errorType;
+    }
+
+    @Override
+    public void execute() {
+        if (tags.isEmpty()) {
+            items = Task.getAll();
+            onSuccess();
+        } else {
+            // TODO: Add filtering when Task supports that.
+            errorType = ErrorType.UNKNOWN;
+            onFailure();
+        }
+    }
+
+    @Override
+    protected void onSuccess() {
+        for (Consumer<AddCommandStub> hook : successHooks) {
+            hook.accept(this);
+        }
+    }
+
+    @Override
+    protected void onFailure() {
+        for (Consumer<AddCommandStub> hook : failureHooks) {
+            hook.accept(this);
+        }
+    }
+
+    /**
+     * Add a hook to be run when the command executes successfully. The hook
+     * will be passed the command object as argument.
+     *
+     * @param hook
+     *            Command hook to be run upon success
+     */
+    public static void addSuccessHook(Consumer<AddCommandStub> hook) {
+        successHooks.add(hook);
+    }
+
+    /**
+     * Add a hook to be run when the command encounters error. The hook will be
+     * passed the command object as argument.
+     *
+     * @param hook
+     *            Command hook to be run upon failure
+     */
+    public static void addFailureHook(Consumer<AddCommandStub> hook) {
+        failureHooks.add(hook);
+    }
+}

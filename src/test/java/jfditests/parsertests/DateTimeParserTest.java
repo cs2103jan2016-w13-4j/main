@@ -2,7 +2,6 @@ package jfditests.parsertests;
 
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.Calendar;
 import java.util.List;
 
 import jfdi.parser.DateTimeParser;
@@ -12,6 +11,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class DateTimeParserTest {
+    final int year = 2017;
+    final int month = 2;
+    final int dayOfMonth = 26;
     DateTimeParser parser;
 
     @Before
@@ -36,7 +38,7 @@ public class DateTimeParserTest {
         String dateTimeInput = "26th February 2017";
         List<LocalDateTime> res = parser.parseDateTime(dateTimeInput);
         Assert.assertTrue(res.size() == 1);
-        LocalDateTime testDateTime = LocalDateTime.of(2017, 2, 26,
+        LocalDateTime testDateTime = LocalDateTime.of(year, month, dayOfMonth,
                 getCurrentHour(), getCurrentMinutes());
         Assert.assertEquals(testDateTime.toLocalDate(), res.get(0)
                 .toLocalDate());

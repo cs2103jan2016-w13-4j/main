@@ -25,6 +25,7 @@ public class DateTimeParser {
             dates.forEach((date) -> ldtList.add(getLocalDateTimeFromDate(date)));
         }
 
+        ldtList.forEach(System.out::println);
         return ldtList;
     }
 
@@ -32,9 +33,4 @@ public class DateTimeParser {
         return LocalDateTime.ofInstant(d.toInstant(), Constants.ZONE_ID);
     }
 
-    public static void main(String[] args) {
-        DateTimeParser parser = DateTimeParser.getInstance();
-        parser.parseDateTime("friday\nsaturday");
-
-    }
 }

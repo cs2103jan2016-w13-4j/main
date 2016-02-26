@@ -19,7 +19,7 @@ public class Constants {
     // Filenames
     public static final String FILENAME_TASK = "tasks.txt";
     public static final String FILENAME_ALIAS = "aliases.txt";
-    public static final String[] ARRAY_FILENAMES = {Constants.FILENAME_TASK, Constants.FILENAME_ALIAS};
+    public static final String[] FILENAME_ARRAY = {Constants.FILENAME_TASK, Constants.FILENAME_ALIAS};
 
     // File extensions
     public static final String EXTENSION_BACKUP = ".bak";

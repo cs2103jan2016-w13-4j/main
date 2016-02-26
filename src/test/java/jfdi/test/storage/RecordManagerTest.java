@@ -36,7 +36,7 @@ public class RecordManagerTest {
         ArrayList<Path> obtainedFilePaths = RecordManager.getAllFilePaths();
         ArrayList<Path> expectedFilePaths = new ArrayList<Path>();
         Path filePath;
-        for (String filename : Constants.ARRAY_FILENAMES) {
+        for (String filename : Constants.FILENAME_ARRAY) {
             filePath = Paths.get(testDirectoryString, filename);
             expectedFilePaths.add(filePath);
         }

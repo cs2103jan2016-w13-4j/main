@@ -56,7 +56,7 @@ public class TestHelper {
 
         Path dataPath;
         File dataFile;
-        for (String dataFilename : Constants.ARRAY_FILENAMES) {
+        for (String dataFilename : Constants.FILENAME_ARRAY) {
             dataPath = Paths.get(directoryPath, dataFilename);
             dataFile = dataPath.toFile();
             writeToFile(dataFile, data);
@@ -100,7 +100,7 @@ public class TestHelper {
         File destinationFile = null;
 
         // Obtain a list of data files that exist in sourceDirectory
-        for (String filename : Constants.ARRAY_FILENAMES) {
+        for (String filename : Constants.FILENAME_ARRAY) {
             dataFilePath = Paths.get(sourceDirectory, filename);
             dataFile = dataFilePath.toFile();
             if (dataFile.exists()) {

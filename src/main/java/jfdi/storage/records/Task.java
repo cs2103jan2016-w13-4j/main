@@ -356,8 +356,8 @@ public class Task {
         return isCompleted;
     }
 
-    public void setCompleted(boolean completed) {
-        this.isCompleted = completed;
+    public void setCompleted(boolean isCompleted) {
+        this.isCompleted = isCompleted;
     }
 
 

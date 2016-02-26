@@ -36,6 +36,14 @@ public class FileStorage implements IStorage {
         return instance;
     }
 
+    /**
+     * This method sets the existing instance to null. It should only be used
+     * for testing/debugging purposes only.
+     */
+    public void removeInstance() {
+        instance = null;
+    }
+
     @Override
     public void load(String storageFolderPath) throws InvalidPathException, ExistingFilesFoundException {
         FileManager.prepareDirectory(storageFolderPath);
@@ -56,14 +64,6 @@ public class FileStorage implements IStorage {
         FileManager.moveFilesToDirectory(newStorageFolderPath);
         RecordManager.setAllFilePaths(newStorageFolderPath);
         RecordManager.loadAllRecords();
-    }
-
-    /**
-     * This method sets the existing instance to null. It should only be used
-     * for testing/debugging purposes only.
-     */
-    public void removeInstance() {
-        instance = null;
     }
 
 }

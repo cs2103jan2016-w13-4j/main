@@ -9,12 +9,21 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.apache.commons.io.FileUtils;
-
 import jfdi.storage.Constants;
+
+import org.apache.commons.io.FileUtils;
 
 public class TestHelper {
 
+    /**
+     * This method ensures that two given collections have the same elements.
+     *
+     * @param collection1
+     *            the first collection to be compared
+     * @param collection2
+     *            the second collection to be compared
+     * @return boolean indicating if the two collections have the same elements
+     */
     public static <T> boolean hasSameElements(Collection<T> collection1, Collection<T> collection2) {
         HashSet<T> set1 = new HashSet<T>(collection1);
         HashSet<T> set2 = new HashSet<T>(collection2);
@@ -93,23 +102,14 @@ public class TestHelper {
      *         been copied to destinationDirectory
      */
     public static boolean hasIdenticalDataFiles(String sourceDirectory, String destinationDirectory) {
-        ArrayList<File> dataFiles = new ArrayList<File>();
-        Path dataFilePath = null;
         Path destinationFilePath = null;
-        File dataFile = null;
         File destinationFile = null;
 
         // Obtain a list of data files that exist in sourceDirectory
-        for (String filename : Constants.FILENAME_ARRAY) {
-            dataFilePath = Paths.get(sourceDirectory, filename);
-            dataFile = dataFilePath.toFile();
-            if (dataFile.exists()) {
-                dataFiles.add(dataFile);
-            }
-        }
+        ArrayList<File> sourceDataFiles = getDataFiles(sourceDirectory);
 
         // Check if an identical data file exists in destinationDirectory
-        for (File sourceFile : dataFiles) {
+        for (File sourceFile : sourceDataFiles) {
             destinationFilePath = Paths.get(destinationDirectory, sourceFile.getName());
             destinationFile = destinationFilePath.toFile();
             if (!isCopied(sourceFile, destinationFile)) {
@@ -147,5 +147,28 @@ public class TestHelper {
         }
 
         return true;
+    }
+
+    /**
+     * This method returns an ArrayList of data files that exist in the given directory.
+     *
+     * @param directory
+     *          the directory which contains data files
+     * @return an ArrayList of data files that exist in the given directory
+     */
+    private static ArrayList<File> getDataFiles(String directory) {
+        ArrayList<File> dataFiles = new ArrayList<File>();
+        Path dataFilePath = null;
+        File dataFile = null;
+
+        for (String filename : Constants.FILENAME_ARRAY) {
+            dataFilePath = Paths.get(directory, filename);
+            dataFile = dataFilePath.toFile();
+            if (dataFile.exists()) {
+                dataFiles.add(dataFile);
+            }
+        }
+
+        return dataFiles;
     }
 }

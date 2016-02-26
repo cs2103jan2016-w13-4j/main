@@ -9,11 +9,20 @@ import jfdi.storage.exceptions.FilePathPair;
 
 /**
  * This class manages operations related to all records in the Storage
- * component.
+ * component. All records (e.g. Task, Alias) are expected to implement
+ * the following static methods that will be called via reflection:
+ *
+ * + load()
+ * + getFilePath()
+ * + setFilePath(String)
  *
  * @author Thng Kai Yuan
  */
 public class RecordManager {
+
+    /*
+     * Public APIs
+     */
 
     /**
      * This method sets the filepath of each record accordingly, using
@@ -65,6 +74,11 @@ public class RecordManager {
 
         return filePaths;
     }
+
+
+    /*
+     * Private helper methods
+     */
 
     /**
      * This method executes the getFilePath method on the given record, that is,

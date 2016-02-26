@@ -11,7 +11,6 @@ import jfdi.storage.exceptions.FilePathPair;
  * This class manages operations related to all records in the Storage
  * component. All records (e.g. Task, Alias) are expected to implement
  * the following static methods that will be called via reflection:
- *
  * + load()
  * + getFilePath()
  * + setFilePath(String)

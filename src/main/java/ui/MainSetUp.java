@@ -10,7 +10,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class MainSetUp extends Application {
 
@@ -26,7 +25,7 @@ public class MainSetUp extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("JFDI");
 
-        //setStageTransparent();
+        setStageTransparent();
         loadFonts(); // if any
         initRootLayout();
         initView();
@@ -42,7 +41,7 @@ public class MainSetUp extends Application {
      ***************************/
 
     private void setStageTransparent() {
-        this.primaryStage.initStyle(StageStyle.TRANSPARENT);
+        //this.primaryStage.initStyle(StageStyle.TRANSPARENT);
     }
 
     private void loadFonts() {
@@ -78,8 +77,9 @@ public class MainSetUp extends Application {
         ((BorderPane) rootLayout).setCenter(listLayout);
 
         // Initialize Controller
-        controller = loader.<MainController>getController();
+        controller = loader.getController();
         controller.setStage(primaryStage);
+        controller.initialize();
 
         // Link Controller with UI and Main (set up MainController Class first)
         controller.setUi(userInterface);
@@ -88,6 +88,7 @@ public class MainSetUp extends Application {
         // Link UI with Controller
         userInterface.setController(controller);
         userInterface.displayWelcome();
+
     }
 
     /***************************

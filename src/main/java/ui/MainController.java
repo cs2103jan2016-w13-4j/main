@@ -1,5 +1,12 @@
 package ui;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class MainController {
@@ -10,8 +17,16 @@ public class MainController {
 
     // create a private variable commandBox
 
-    private void initialize() {
+    @FXML
+    public TextField dayDisplayer;
+    @FXML
+    private ListView<String> listBoxMain;
+    @FXML
+    private TextField txtAddItem;
 
+    public void initialize() {
+
+        initDate();
         initList();
         initCommandPane();
         initCommandField();
@@ -51,6 +66,14 @@ public class MainController {
     /***************************
      *** LEVEL 1 Abstraction ***
      ***************************/
+
+    public void initDate() {
+
+        dayDisplayer = new TextField();
+        DateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
+        Calendar cal = Calendar.getInstance();
+        dayDisplayer.setText(dateFormat.format(cal.getTime()));
+    }
 
     private void initList() {
 

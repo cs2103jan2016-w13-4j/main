@@ -1,4 +1,4 @@
-plugins {
+	plugins {
   id 'checkstyle'
   id 'com.github.kt3k.coveralls' version '2.5.0'
   id 'findbugs'
@@ -18,6 +18,7 @@ repositories {
 dependencies {
   testCompile group: 'junit', name: 'junit', version: '4.12'
   testCompile group: 'org.mockito', name: 'mockito-core', version: '1.+'
+  testCompile group: 'org.loadui', name: 'testFx', version: '3.1.2'
   compile 'com.google.code.gson:gson:2.6.1'
 }
 

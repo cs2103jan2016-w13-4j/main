@@ -10,9 +10,10 @@ public class UserInterface implements IUserInterface {
 
     private static final String UI_MESSAGE_INIT = "Initializing UI...";
     private static final String UI_MESSAGE_INITED = "Initialization Completed!";
-    private static final String UI_MESSAGE_WELCOME = "Welcome to JFDI! :) "
-            + "What would you like to do now?";
-    private static final String UI_MESSAGE_USERCMD = "Your input: %1$s";
+    private static final String UI_MESSAGE_WELCOME = "J.F.D.I.: Hello! :) What can I do for you?";
+    private static final String UI_MESSAGE_USERCMD = "You said: %1$s";
+    private static final String UI_MESSAGE_RESPONSE = "J.F.D.I.: %1$s";
+    private static final String UI_MESSAGE_WARNING = "Warning: %1$s";
     private static final String UI_MESSAGE_QUIT = "Bye Bye! See you next time! :)";
 
     LogicInterfaceDummy logic;
@@ -31,7 +32,7 @@ public class UserInterface implements IUserInterface {
         logic = new LogicDummy();
         logic.init();
 
-        // Error: if fail to get data (logic issue), query user for filename
+        // Error: if fail to get data (logic issue, cannot find storage), query user for filename
 
         showToUser(UI_MESSAGE_INITED);
     }
@@ -54,6 +55,7 @@ public class UserInterface implements IUserInterface {
 
         // Show user the command recognized in the feedback area
         controller.displayFeedback(String.format(UI_MESSAGE_USERCMD, input));
+
         // Relay user input to logic and wait for reply
         String feedback = logic.handleInput(input);
 

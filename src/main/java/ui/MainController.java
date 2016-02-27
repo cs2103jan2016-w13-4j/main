@@ -69,6 +69,7 @@ public class MainController {
 
     public void initDate() {
 
+        System.out.println("Hello!");
         dayDisplayer = new TextField();
         DateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
         Calendar cal = Calendar.getInstance();

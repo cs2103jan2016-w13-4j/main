@@ -79,7 +79,7 @@ public class MainSetUp extends Application {
         // Initialize Controller
         controller = loader.getController();
         controller.setStage(primaryStage);
-        controller.initialize();
+        //controller.initialize();
 
         // Link Controller with UI and Main (set up MainController Class first)
         controller.setUi(userInterface);

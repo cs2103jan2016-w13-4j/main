@@ -6,8 +6,7 @@ public class LogicInterfaceDummy {
 
     }
 
-    public String handleInput(String input) {
-        return "QUIT";
+    public void handleInput(String input) {
     }
 
 }

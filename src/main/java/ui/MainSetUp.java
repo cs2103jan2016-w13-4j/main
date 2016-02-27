@@ -72,14 +72,16 @@ public class MainSetUp extends Application {
         userInterface.init();
 
         // Load View
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/ui/ListLayout.fxml"));
-        listLayout = (AnchorPane) loader.load();
-        ((BorderPane) rootLayout).setCenter(listLayout);
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/resources/ui/ListLayout.fxml"));
+        listLayout = loader.load();
 
         // Initialize Controller
         controller = loader.getController();
+        controller.initialize();
+
+        ((BorderPane) rootLayout).setCenter(listLayout);
         controller.setStage(primaryStage);
-        //controller.initialize();
 
         // Link Controller with UI and Main (set up MainController Class first)
         controller.setUi(userInterface);

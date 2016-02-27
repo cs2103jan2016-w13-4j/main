@@ -50,16 +50,16 @@ public class UserInterface implements IUserInterface {
     public void processInput(String input) {
 
         // Clear controller first
-        controller.clearCommandBox();
-        controller.clearFeedback();
+        controller.clearCmdArea();
+        controller.clearFb();
 
         // Show user the command recognized in the feedback area
-        controller.displayFeedback(String.format(UI_MESSAGE_USERCMD, input));
+        controller.displayFb(String.format(UI_MESSAGE_USERCMD, input));
 
         // Relay user input to logic and wait for reply
-        String feedback = logic.handleInput(input);
+        logic.handleInput(input);
 
-        // Update UI according to reply from logic
+        /*// Update UI according to reply from logic
         switch (feedback) {
             case "QUIT":
                 doQuit();
@@ -67,7 +67,7 @@ public class UserInterface implements IUserInterface {
             default:
                 doUserCmd();
                 break;
-        }
+        }*/
     }
 
     @Override

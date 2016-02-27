@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import jfdi.logic.interfaces.AbstractCommand;
+import jfdi.parser.commandparsers.AddCommandParser;
+import jfdi.parser.commandparsers.DeleteCommandParser;
 import jfdi.parser.commandparsers.ListCommandParser;
 
 /**
@@ -43,9 +45,11 @@ public class InputParser implements IParser {
     private AbstractCommand getCommand(String userActionAsString, String input) {
         switch (userActionAsString) {
             case Constants.REGEX_ADD:
-                // return AddCommandParser.getInstance().build(input);
+                return AddCommandParser.getInstance().build(input);
             case Constants.REGEX_LIST:
                 return ListCommandParser.getInstance().build(input);
+            case Constants.REGEX_DELETE:
+                return DeleteCommandParser.getInstance().build(input);
                 /*
                  * case Constants.REGEX_EDIT: return
                  * EditCommandParser.getInstance().build(input); case
@@ -53,10 +57,9 @@ public class InputParser implements IParser {
                  * DeleteCommandParser.getInstance().build(input);
                  */
             default:
-                // return AddCommandParser.getInstance().build(input);
+                return AddCommandParser.getInstance().build(input);
         }
 
-        return null;
     }
 
     public List<String> getList(String[] array) {

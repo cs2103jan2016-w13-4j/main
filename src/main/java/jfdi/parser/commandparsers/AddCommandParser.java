@@ -13,9 +13,9 @@ import jfdi.parser.DateTimeParser;
 
 public class AddCommandParser extends CommandParser {
 
-    public static AddCommandParser instance;
+    public static CommandParser instance;
 
-    public static AddCommandParser getInstance() {
+    public static CommandParser getInstance() {
         if (instance == null) {
             return instance = new AddCommandParser();
         }
@@ -143,23 +143,6 @@ public class AddCommandParser extends CommandParser {
 
     private String removeFirstChar(String string) {
         return string.substring(1, string.length());
-    }
-
-    /**
-     * Get the substring of an input String from startindex inclusive to
-     * endindex exclusive, trimming it at the same time.
-     *
-     * @param input
-     *            a string to get substring of
-     * @param startIndex
-     *            index of the start of the substring (inclusive)
-     * @param endIndex
-     *            index of the end of the substring (exclusive)
-     * @return the trimmed substring
-     */
-    private String getTrimmedSubstringInRange(String input, int startIndex,
-            int endIndex) {
-        return input.substring(startIndex, endIndex).trim();
     }
 
     private String getFirstWord(String input) {

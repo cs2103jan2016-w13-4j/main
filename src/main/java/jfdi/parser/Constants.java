@@ -21,6 +21,8 @@ public class Constants {
     // Tags are always appended to the end of any input, hence the boundary
     // condition $
     public static final String REGEX_TAGS = "\\+\\w+$";
+    // A taskID is simply an integer
+    public static final String REGEX_TASKID = "\\d+";
 
     // Date and Time related Regex Strings
     public static final String REGEX_DAYS_NUMERIC = "(0?[1-9]|[12][\\d]|3[01])(st|th|nd|rd)?";
@@ -51,7 +53,7 @@ public class Constants {
     public static final String REGEX_RELATIVE_DATE_2 = "((next|NEXT) ("
             + REGEX_DATE_ATTRIBUTES + "|" + REGEX_DAYS_TEXTUAL + "))";
     public static final String REGEX_RELATIVE_DATE_3 = "(\\d+ "
-            + REGEX_DATE_ATTRIBUTES + " later)";
+            + REGEX_DATE_ATTRIBUTES + " (later|before|after))";
 
     public static final String REGEX_ABSOLUTE_DATE_DDMMYYYY = REGEX_DAYS_NUMERIC
             + "[-./]?" + REGEX_MONTHS_NUMERIC + "[-./]?" + REGEX_YEARS + "?";

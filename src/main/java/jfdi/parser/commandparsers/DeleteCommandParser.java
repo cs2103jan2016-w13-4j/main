@@ -12,6 +12,10 @@ public class DeleteCommandParser extends CommandParser {
 
     public static DeleteCommandParser instance;
 
+    private DeleteCommandParser() {
+
+    }
+
     public static DeleteCommandParser getInstance() {
         if (instance == null) {
             return instance = new DeleteCommandParser();

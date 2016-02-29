@@ -14,7 +14,8 @@ public class Constants {
     // Task type specific Regex Strings
     public static final String REGEX_ADD = "^(add)";
     public static final String REGEX_LIST = "^(list)";
-    public static final String REGEX_EDIT = "^(edit)";
+    public static final String REGEX_RENAME = "^(rename)";
+    public static final String REGEX_RESCHEDULE = "^(reschedule)";
     public static final String REGEX_DELETE = "^(delete)";
 
     // Task related Regex Strings

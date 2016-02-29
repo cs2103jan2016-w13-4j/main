@@ -10,6 +10,10 @@ import jfdi.parser.Constants;
 public class ListCommandParser extends CommandParser {
     private static ListCommandParser instance;
 
+    private ListCommandParser() {
+
+    }
+
     public static ListCommandParser getInstance() {
         return (instance == null) ? instance = new ListCommandParser()
                 : instance;
@@ -39,4 +43,3 @@ public class ListCommandParser extends CommandParser {
         return Arrays.asList(input.split(Constants.REGEX_WHITESPACE));
     }
 }
-

@@ -15,6 +15,10 @@ public class AddCommandParser extends CommandParser {
 
     public static CommandParser instance;
 
+    private AddCommandParser() {
+
+    }
+
     public static CommandParser getInstance() {
         if (instance == null) {
             return instance = new AddCommandParser();

@@ -12,11 +12,11 @@ public class Constants {
     public static final String REGEX_WHITESPACE = "\\s";
 
     // Task type specific Regex Strings
-    public static final String REGEX_ADD = "^(add)";
-    public static final String REGEX_LIST = "^(list)";
-    public static final String REGEX_RENAME = "^(rename)";
-    public static final String REGEX_RESCHEDULE = "^(reschedule)";
-    public static final String REGEX_DELETE = "^(delete)";
+    public static final String REGEX_ADD = "(?i)^(add)";
+    public static final String REGEX_LIST = "(?i)^(list)";
+    public static final String REGEX_RENAME = "(?i)^(rename)";
+    public static final String REGEX_RESCHEDULE = "(?i)^(reschedule)";
+    public static final String REGEX_DELETE = "(?i)^(delete)";
 
     // Task related Regex Strings
     // Tags are always appended to the end of any input, hence the boundary
@@ -26,35 +26,26 @@ public class Constants {
     public static final String REGEX_TASKID = "\\d+";
 
     // Date and Time related Regex Strings
-    public static final String REGEX_DAYS_NUMERIC = "(0?[1-9]|[12][\\d]|3[01])(st|th|nd|rd)?";
-    public static final String REGEX_DAYS_TEXTUAL = "((mon|MON)(day|DAY)?|"
-            + "(tue|TUE)(sday|sDAY)?|" + "(wed|WED)(nesday|NESDAY)?|"
-            + "(thu|THU)(rsday|RSDAY)?|" + "(fri|FRI)(day|DAY)?|"
-            + "(sat|SAT)(urday|URDAY)?|" + "(sun|SUN)(day|DAY)?)";
+    public static final String REGEX_DAYS_NUMERIC = "((?i)0?[1-9]|[12][\\d]|3[01])(st|th|nd|rd)?";
+    public static final String REGEX_DAYS_TEXTUAL = "((?i)(mon)(day)?|"
+            + "(tue)(sday)?|" + "(wed)(nesday)?|" + "(thu)(rsday)?|"
+            + "(fri)(day)?|" + "(sat)(urday)?|" + "(sun)(day)?)";
     public static final String REGEX_MONTHS_NUMERIC = "(0?[1-9]|1[0-2])";
-    public static final String REGEX_MONTHS_TEXTUAL = "((j|J)(an|AN)(uary|UARY)?|"
-            + "(f|F)(eb|EB)(ruary|RUARY)?|"
-            + "(m|M)(ar|AR)(ch|CH)?|"
-            + "(a|A)(pr|PR)(il|IL)?|"
-            + "(m|M)(ay|AY)|"
-            + "(j|J)(un|UN)(e|E)?|"
-            + "(j|J)(ul|UL)(y)?|"
-            + "(a|A)(ug|UG)(ust|UST)?|"
-            + "(s|S)(ep|EP)(tember|TEMBER)?|"
-            + "(o|O)(ct|CT)(ober|OBER)?|"
-            + "(n|N)(ov|OV)(ember|EMBER)?|" + "(d|D)(ec|EC)(ember|EMBER)?)";
+    public static final String REGEX_MONTHS_TEXTUAL = "((?i)(jan)(uary)?|"
+            + "(feb)(ruary)?|" + "(mar)(ch)?|" + "(apr)(il)?|" + "(may)|"
+            + "(jun)(e)?|" + "(jul)(y)?|" + "(aug)(ust)?|" + "(sep)(tember)?|"
+            + "(oct)(ober)?|" + "(nov)(ember)?|" + "(dec)(ember)?)";
     public static final String REGEX_YEARS = "((19|20)?\\d\\d)";
-    public static final String REGEX_DATE_ATTRIBUTES = "((day|DAY)(s|S)?|"
-            + "(week|WEEK|wk|WK)(s|S)?|" + "(month|MONTH|mth|MTH)(s|S)?|"
-            + "(year|YEAR|yr|YR))(s|S)?";
-    public static final String REGEX_TIME_MILITARY = "[0-2][0-3][ :-]?[0-5][\\d]([h|H]([r|R][s|S]?)?)?";
-    public static final String REGEX_TIME_NORMAL = "(0?[1-9]|1[0-2])[ -:]?([0-5][0-9])[ -:]?([a|A|p|P][m|M])?";
+    public static final String REGEX_DATE_ATTRIBUTES = "((?i)(day)(s)?|"
+            + "(week|wk)(s)?|" + "(month|mth)(s)?|" + "(year|yr))(s)?";
+    public static final String REGEX_TIME_MILITARY = "(?i)[0-2][0-3][ :-]?[0-5][\\d]([h]([r][s]?)?)?";
+    public static final String REGEX_TIME_NORMAL = "((?i)0?[1-9]|1[0-2])[ -:]?([0-5][0-9])[ -:]?([a|p][m])?";
 
-    public static final String REGEX_RELATIVE_DATE_1 = "(tomorrow|yesterday)";
-    public static final String REGEX_RELATIVE_DATE_2 = "((next|NEXT) ("
+    public static final String REGEX_RELATIVE_DATE_1 = "(?i)(tomorrow|yesterday)";
+    public static final String REGEX_RELATIVE_DATE_2 = "(?i)((next) ("
             + REGEX_DATE_ATTRIBUTES + "|" + REGEX_DAYS_TEXTUAL + "))";
     public static final String REGEX_RELATIVE_DATE_3 = "(\\d+ "
-            + REGEX_DATE_ATTRIBUTES + " (later|before|after))";
+            + REGEX_DATE_ATTRIBUTES + " (?i)(later|before|after))";
 
     public static final String REGEX_ABSOLUTE_DATE_DDMMYYYY = REGEX_DAYS_NUMERIC
             + "[-./]?" + REGEX_MONTHS_NUMERIC + "[-./]?" + REGEX_YEARS + "?";
@@ -73,14 +64,15 @@ public class Constants {
             + REGEX_TIME_FORMAT + "(,?[ ]" + REGEX_DATE_FORMAT + ")?))";
 
     // Regex used to detect date-time fields in the user's input String
-    public static final String REGEX_DEADLINE_IDENTIFIER = "(by|before) "
+    public static final String REGEX_DEADLINE_IDENTIFIER = "(?i)(by|before) "
             + REGEX_DATE_TIME_FORMAT;
-    public static final String REGEX_EVENT_IDENTIFIER = "(from) "
+    public static final String REGEX_EVENT_IDENTIFIER = "(?i)(from) "
             + REGEX_DATE_TIME_FORMAT + " to " + REGEX_DATE_TIME_FORMAT;
-    public static final String REGEX_POINT_TASK_IDENTIFIER = "(on|at) "
+    public static final String REGEX_POINT_TASK_IDENTIFIER = "(?i)(on|at) "
             + REGEX_DATE_TIME_FORMAT;
-    public static final String REGEX_REPEATED_TASK_IDENTIFIER = "(every) "
-            + REGEX_DATE_TIME_FORMAT + "( to " + REGEX_DATE_TIME_FORMAT + ")?";
+    public static final String REGEX_REPEATED_TASK_IDENTIFIER = "(?i)(every) "
+            + REGEX_DATE_TIME_FORMAT + "(?i)( to " + REGEX_DATE_TIME_FORMAT
+            + ")?";
     public static final String REGEX_DATE_TIME_IDENTIFIER = "("
             + REGEX_DEADLINE_IDENTIFIER + "|" + REGEX_EVENT_IDENTIFIER + "|"
             + REGEX_POINT_TASK_IDENTIFIER + "|"
@@ -95,4 +87,7 @@ public class Constants {
     // parsing dates
     public static final ZoneId ZONE_ID = ZoneId.systemDefault();
 
+    public static void main(String[] args) {
+        System.out.println("4 weeks lAter".matches(REGEX_RELATIVE_DATE_3));
+    }
 }

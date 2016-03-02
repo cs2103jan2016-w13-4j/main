@@ -13,7 +13,7 @@ import jfdi.parser.DateTimeParser;
 
 public class AddCommandParser extends CommandParser {
 
-    public static CommandParser instance;
+    private static CommandParser instance;
 
     private AddCommandParser() {
 

@@ -16,11 +16,6 @@
     <property name="format" value="\s+$"/>
     <property name="message" value="Trailing whitespace"/>
   </module>
-  <module name="RegexpMultiline">
-    <property name="format" value="\r?\n[\t ]*\r?\n[\t ]*\r?\n"/>
-    <property name="fileExtensions" value="java,xml,properties"/>
-    <property name="message" value="Unnecessary consecutive lines"/>
-  </module>
   <module name="RegexpSingleline">
     <property name="format" value="/\*\* +\p{javaLowerCase}"/>
     <property name="fileExtensions" value="java"/>
@@ -52,7 +47,9 @@
       <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://" />
     </module>
     <module name="NoLineWrap" />
-    <module name="AvoidStarImport" />
+    <module name="AvoidStarImport">
+      <property name="allowStaticMemberImports" value="true" />
+    </module>
     <module name="OneTopLevelClass" />
     <module name="DeclarationOrder" />
     <module name="OverloadMethodsDeclarationOrder" />

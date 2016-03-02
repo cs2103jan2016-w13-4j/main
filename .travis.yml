@@ -12,7 +12,7 @@ cache:
     - $HOME/.gradle/wrapper/
 
 after_success:
-  - ./gradlew jacocoTestReport coveralls
+  - ./gradlew cobertura coveralls
 
 notifications:
   email: false

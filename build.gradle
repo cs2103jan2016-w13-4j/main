@@ -1,8 +1,8 @@
-	plugins {
+plugins {
   id 'checkstyle'
-  id 'com.github.kt3k.coveralls' version '2.5.0'
+  id "net.saliman.cobertura" version "2.3.0"
+  id 'com.github.kt3k.coveralls' version '2.6.3'
   id 'findbugs'
-  id 'jacoco'
   id 'java'
   id 'pmd'
 }
@@ -16,21 +16,23 @@ repositories {
 }
 
 dependencies {
-  testCompile group: 'junit', name: 'junit', version: '4.12'
-  testCompile group: 'org.mockito', name: 'mockito-core', version: '1.+'
-  testCompile group: 'org.loadui', name: 'testFx', version: '3.1.2'
   compile 'com.google.code.gson:gson:2.6.1'
+  compile 'commons-io:commons-io:2.4'
+
+  testCompile 'junit:junit:4.12'
+  testCompile 'org.mockito:mockito-core:1.+'
+  testCompile 'org.powermock:powermock-mockito-release-full:1.+'
+
+  testRuntime "org.slf4j:slf4j-api:1.7.10"
 }
 
-jacocoTestReport {
-  reports {
-    xml.enabled true
-    html.enabled true
-  }
+cobertura {
+  coverageIgnoreMethodAnnotations = [ "jfdi.CoverageIgnore" ]
+  coverageFormats = ['html', 'xml']
 }
 
 checkstyle {
-  toolVersion '6.7'
+  toolVersion '6.15'
 }
 
 findbugs {

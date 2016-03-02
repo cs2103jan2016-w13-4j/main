@@ -18,18 +18,16 @@ public class MainController {
     public IUserInterface ui;
     public Stage mainStage;
 
-    // create a private variable commandBox
-
     @FXML
     public TextField dayDisplayer;
-    @FXML
-    private ListView<String> listBoxMain;
-    @FXML
-    private TextField txtAddItem;
     @FXML
     public TextArea fbArea;
     @FXML
     public TextArea cmdArea;
+    @FXML
+    private ListView<String> listBoxMain;
+    @FXML
+    private TextField txtAddItem;
 
     public void initialize() {
 
@@ -113,13 +111,11 @@ public class MainController {
                 keyEvent.consume();
             }
 
-            /* Not needed yet!
-            // Tab event is sent to UI whenever tab is hit
-            if (code == KeyCode.TAB) {
-                ui.passKeyEvent(code);
-                // consume the tab space left in the command area
-                keyEvent.consume();
-            }*/
+            /*
+             * Not needed yet! // Tab event is sent to UI whenever tab is hit if
+             * (code == KeyCode.TAB) { ui.passKeyEvent(code); // consume the tab
+             * space left in the command area keyEvent.consume(); }
+             */
         });
 
     }

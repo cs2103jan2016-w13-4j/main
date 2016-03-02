@@ -54,7 +54,7 @@ public class MainSetUp extends Application {
 
     private void initRootLayout() throws IOException {
 
-        rootLayout = (BorderPane) FXMLLoader.load(getClass().getResource("/resources/ui/RootLayout.fxml"));
+        rootLayout = (BorderPane) FXMLLoader.load(getClass().getResource("/ui/RootLayout.fxml"));
 
         // Display scene with root layout
         Scene scene = new Scene(rootLayout);
@@ -73,7 +73,7 @@ public class MainSetUp extends Application {
 
         // Load View
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/resources/ui/ListLayout.fxml"));
+        loader.setLocation(getClass().getResource("/ui/ListLayout.fxml"));
         listLayout = loader.load();
 
         // Initialize Controller
@@ -93,9 +93,6 @@ public class MainSetUp extends Application {
 
     }
 
-    /***************************
-     *** LEVEL 2 Abstraction ***
-     ***************************/
     /**
      * Get Methods for private variables
      */

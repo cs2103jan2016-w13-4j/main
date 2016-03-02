@@ -40,10 +40,10 @@ public class UserInterface implements IUserInterface {
     @Override
     public void displayWelcome() {
         // Create and display a default view
-        // display default list
-
-        //controller.clearFeedback();
+        //controller.clearFb();
         showToUser(UI_MESSAGE_WELCOME);
+
+        // display default list
     }
 
     @Override
@@ -53,7 +53,7 @@ public class UserInterface implements IUserInterface {
         controller.clearCmdArea();
         controller.clearFb();
 
-        // Show user the command recognized in the feedback area
+        // Show user what the command recognized in the feedback area
         controller.displayFb(String.format(UI_MESSAGE_USERCMD, input));
 
         // Relay user input to logic and wait for reply

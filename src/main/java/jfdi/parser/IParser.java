@@ -1,6 +1,6 @@
 package jfdi.parser;
 
-import jfdi.logic.interfaces.AbstractCommand;
+import jfdi.logic.interfaces.Command;
 
 /**
  * This is the interface for the Parser component. All other components should
@@ -21,6 +21,6 @@ public interface IParser {
      *            should be the input by the user.
      * @return a Command object.
      */
-    AbstractCommand parse(String userInput);
+    Command parse(String userInput);
 }
 

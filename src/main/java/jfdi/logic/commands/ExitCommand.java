@@ -1,7 +1,7 @@
 package jfdi.logic.commands;
 
 import jfdi.CoverageIgnore;
-import jfdi.logic.interfaces.AbstractCommand;
+import jfdi.logic.interfaces.Command;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 /**
  * @author Liu Xinan
  */
-public class ExitCommand extends AbstractCommand {
+public class ExitCommand extends Command {
 
     private static ArrayList<Consumer<ExitCommand>> successHooks = new ArrayList<>();
     private static ArrayList<Consumer<ExitCommand>> failureHooks = new ArrayList<>();

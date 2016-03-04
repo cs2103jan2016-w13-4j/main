@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import jfdi.logic.commands.DeleteCommandStub;
-import jfdi.logic.interfaces.AbstractCommand;
+import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
 
 public class DeleteCommandParser extends CommandParser {
@@ -30,7 +30,7 @@ public class DeleteCommandParser extends CommandParser {
      * builder.
      */
     @Override
-    public AbstractCommand build(String input) {
+    public Command build(String input) {
         DeleteCommandStub.Builder deleteCommandBuilder = new DeleteCommandStub.Builder();
         ArrayList<String> taskIds = getTaskIds(input);
         deleteCommandBuilder.addTaskIds(taskIds);

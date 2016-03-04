@@ -1,7 +1,7 @@
 package jfdi.logic;
 
 import dummy.DummyParser;
-import jfdi.logic.interfaces.AbstractCommand;
+import jfdi.logic.interfaces.Command;
 import jfdi.logic.interfaces.ILogic;
 
 /**
@@ -23,7 +23,7 @@ public class ControlCenter implements ILogic {
         // TODO: Integrate when parser is ready.
         // Right now it is using a DummyParser
         DummyParser parser = DummyParser.getInstance();
-        AbstractCommand command = parser.parse(input);
+        Command command = parser.parse(input);
         command.execute();
     }
 

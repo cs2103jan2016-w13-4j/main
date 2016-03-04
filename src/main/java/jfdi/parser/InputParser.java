@@ -3,7 +3,7 @@ package jfdi.parser;
 import java.util.Arrays;
 import java.util.List;
 
-import jfdi.logic.interfaces.AbstractCommand;
+import jfdi.logic.interfaces.Command;
 import jfdi.parser.commandparsers.AddCommandParser;
 import jfdi.parser.commandparsers.DeleteCommandParser;
 import jfdi.parser.commandparsers.ListCommandParser;
@@ -24,10 +24,10 @@ public class InputParser implements IParser {
         return parserInstance;
     }
 
-    public AbstractCommand parse(String input) {
+    public Command parse(String input) {
         List<String> userArguments = getUserArgumentsFromInput(input);
         String userActionAsString = getActionAsString(userArguments);
-        AbstractCommand userCommand = getCommand(userActionAsString, input);
+        Command userCommand = getCommand(userActionAsString, input);
         return userCommand;
     }
 
@@ -42,7 +42,7 @@ public class InputParser implements IParser {
         return userActionAsString;
     }
 
-    private AbstractCommand getCommand(String userActionAsString, String input) {
+    private Command getCommand(String userActionAsString, String input) {
         switch (userActionAsString) {
             case Constants.REGEX_ADD:
                 return AddCommandParser.getInstance().build(input);

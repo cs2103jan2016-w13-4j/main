@@ -3,7 +3,7 @@ package dummy;
 import jfdi.logic.commands.ExitCommand;
 import jfdi.logic.commands.InvalidCommand;
 import jfdi.logic.commands.ListCommand;
-import jfdi.logic.interfaces.AbstractCommand;
+import jfdi.logic.interfaces.Command;
 
 /**
  * @author Liu Xinan
@@ -19,7 +19,7 @@ public class DummyParser {
         return ourInstance;
     }
 
-    public AbstractCommand parse(String input) {
+    public Command parse(String input) {
         String[] parts = input.trim().split("\\s+");
         if (parts[0].isEmpty()) {
             return new InvalidCommand.Builder().build();

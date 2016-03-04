@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.function.Consumer;
 
-import jfdi.logic.interfaces.AbstractCommand;
+import jfdi.logic.interfaces.Command;
 import jfdi.storage.records.Task;
 
 /**
  * @author Liu Xinan
  */
-public class AddCommandStub extends AbstractCommand {
+public class AddCommandStub extends Command {
 
     public enum ErrorType {
         NON_EXISTENT_TAG, UNKNOWN

@@ -1,6 +1,6 @@
 package jfdi.logic.commands;
 
-import jfdi.logic.interfaces.AbstractCommand;
+import jfdi.logic.interfaces.Command;
 import jfdi.storage.records.Task;
 
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 /**
  * @author Liu Xinan
  */
-public class ListCommand extends AbstractCommand {
+public class ListCommand extends Command {
 
     public enum ErrorType {
         NON_EXISTENT_TAG, UNKNOWN

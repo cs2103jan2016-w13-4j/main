@@ -1,6 +1,6 @@
 package jfditests.parsertests;
 
-import jfdi.logic.interfaces.AbstractCommand;
+import jfdi.logic.interfaces.Command;
 import jfdi.parser.InputParser;
 
 import org.junit.Before;
@@ -17,7 +17,7 @@ public class ParserTest {
     @Test
     public void testUserInputList() {
         String listCommand = "List";
-        AbstractCommand command = parser.parse(listCommand);
+        Command command = parser.parse(listCommand);
     }
 }
 

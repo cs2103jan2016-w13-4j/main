@@ -3,7 +3,7 @@ package jfdi.logic.interfaces;
 /**
  * @author Liu Xinan
  */
-public abstract class AbstractCommand {
+public abstract class Command {
 
     /**
      * Executes the command.

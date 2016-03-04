@@ -1,4 +1,4 @@
-package ui;
+package jfdi.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

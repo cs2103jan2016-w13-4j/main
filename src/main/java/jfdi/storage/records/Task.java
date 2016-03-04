@@ -348,8 +348,11 @@ public class Task {
         return reminders;
     }
 
-    public void setReminders(TreeSet<Duration> reminders) {
-        this.reminders = reminders;
+    public void setReminders(Duration... reminders) {
+        this.reminders = new TreeSet<Duration>();
+        for (Duration reminder : reminders) {
+            this.addReminder(reminder);
+        }
     }
 
     public boolean isCompleted() {

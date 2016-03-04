@@ -22,9 +22,7 @@ public class SerializerTest {
         task.setStartDateTime(Constants.TEST_TASK_STARTDATETIME);
         task.setEndDateTime(Constants.TEST_TASK_ENDDATETIME);
         task.setTags(Constants.TEST_TASK_TAG_1);
-        TreeSet<Duration> reminders = new TreeSet<Duration>();
-        reminders.add(Constants.TEST_TASK_REMINDER_DURATION_1);
-        task.setReminders(reminders);
+        task.setReminders(Constants.TEST_TASK_REMINDER_DURATION_1);
         task.setCompleted(true);
 
         // Serialize it
@@ -41,6 +39,8 @@ public class SerializerTest {
         HashSet<String> tags = new HashSet<String>();
         tags.add(Constants.TEST_TASK_TAG_1);
         assertEquals(deserializedTask.getTags(), tags);
+        TreeSet<Duration> reminders = new TreeSet<Duration>();
+        reminders.add(Constants.TEST_TASK_REMINDER_DURATION_1);
         assertEquals(deserializedTask.getReminders(), reminders);
         assertEquals(deserializedTask.isCompleted(), true);
     }

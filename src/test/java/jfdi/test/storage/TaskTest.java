@@ -47,9 +47,7 @@ public class TaskTest {
         task.setStartDateTime(Constants.TEST_TASK_STARTDATETIME);
         task.setEndDateTime(Constants.TEST_TASK_ENDDATETIME);
         task.setTags(Constants.TEST_TASK_TAG_1);
-        TreeSet<Duration> reminders = new TreeSet<Duration>();
-        reminders.add(Constants.TEST_TASK_REMINDER_DURATION_1);
-        task.setReminders(reminders);
+        task.setReminders(Constants.TEST_TASK_REMINDER_DURATION_1);
         task.setCompleted(true);
 
         // Assert that the getter returns the same attributes
@@ -59,7 +57,9 @@ public class TaskTest {
         HashSet<String> tags = task.getTags();
         assertEquals(tags.size(), 1);
         assertTrue(tags.contains(Constants.TEST_TASK_TAG_1));
-        assertSame(task.getReminders(), reminders);
+        TreeSet<Duration> reminders = task.getReminders();
+        assertEquals(reminders.size(), 1);
+        assertTrue(reminders.contains(Constants.TEST_TASK_REMINDER_DURATION_1));
         assertEquals(task.isCompleted(), true);
     }
 

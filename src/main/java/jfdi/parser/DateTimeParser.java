@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.joestelmach.natty.DateGroup;
-import com.joestelmach.natty.Parser;
+import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 
 /**
  * DateTimeParser is a class used to parse a string input into one a list of
@@ -38,12 +37,11 @@ public class DateTimeParser {
      *         contains no parseable date time String.
      */
     public List<LocalDateTime> parseDateTime(String input) {
-        Parser parser = new Parser();
-        List<DateGroup> dateTimeList = parser.parse(input);
+        PrettyTimeParser parser = new PrettyTimeParser();
+        List<Date> dateTimeList = parser.parse(input);
         List<LocalDateTime> ldtList = new ArrayList<LocalDateTime>();
-        for (DateGroup g : dateTimeList) {
-            List<Date> dates = g.getDates();
-            dates.forEach((date) -> ldtList.add(getLocalDateTimeFromDate(date)));
+        for (Date d : dateTimeList) {
+            ldtList.add(getLocalDateTimeFromDate(d));
         }
 
         ldtList.forEach(System.out::println);
@@ -62,4 +60,8 @@ public class DateTimeParser {
         return LocalDateTime.ofInstant(d.toInstant(), Constants.ZONE_ID);
     }
 
+    public static void main(String[] args) {
+        DateTimeParser parser = DateTimeParser.getInstance();
+        System.out.println(parser.parseDateTime("12/23/1993"));
+    }
 }

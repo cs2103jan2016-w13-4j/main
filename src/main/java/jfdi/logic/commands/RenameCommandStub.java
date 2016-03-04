@@ -10,34 +10,42 @@ import jfdi.storage.records.Task;
 /**
  * @author Liu Xinan
  */
-public class DeleteCommandStub extends AbstractCommand {
+public class RenameCommandStub extends AbstractCommand {
 
     public enum ErrorType {
         NON_EXISTENT_TAG, UNKNOWN
     }
 
-    private static ArrayList<Consumer<DeleteCommandStub>> successHooks = new ArrayList<>();
-    private static ArrayList<Consumer<DeleteCommandStub>> failureHooks = new ArrayList<>();
+    private static ArrayList<Consumer<RenameCommandStub>> successHooks = new ArrayList<>();
+    private static ArrayList<Consumer<RenameCommandStub>> failureHooks = new ArrayList<>();
 
-    private ArrayList<String> taskIds;
+    private String taskId;
+    private String taskDescription;
     private Collection items = null;
     private ErrorType errorType = null;
 
-    private DeleteCommandStub(Builder builder) {
-        this.taskIds = builder.taskIds;
+    private RenameCommandStub(Builder builder) {
+        this.taskId = builder.taskId;
+        this.taskDescription = builder.taskDescription;
     }
 
     public static class Builder {
 
-        ArrayList<String> taskIds = null;
+        String taskId = null;
+        String taskDescription = null;
 
-        public Builder addTaskIds(ArrayList<String> taskIds) {
-            this.taskIds = taskIds;
+        public Builder addTaskId(String taskId) {
+            this.taskId = taskId;
             return this;
         }
 
-        public DeleteCommandStub build() {
-            return new DeleteCommandStub(this);
+        public Builder addTaskDescription(String taskDescription) {
+            this.taskDescription = taskDescription;
+            return this;
+        }
+
+        public RenameCommandStub build() {
+            return new RenameCommandStub(this);
         }
     }
 
@@ -65,7 +73,7 @@ public class DeleteCommandStub extends AbstractCommand {
 
     @Override
     public void execute() {
-        if (taskIds.isEmpty()) {
+        if (taskId.isEmpty()) {
             items = Task.getAll();
             onSuccess();
         } else {
@@ -77,14 +85,14 @@ public class DeleteCommandStub extends AbstractCommand {
 
     @Override
     protected void onSuccess() {
-        for (Consumer<DeleteCommandStub> hook : successHooks) {
+        for (Consumer<RenameCommandStub> hook : successHooks) {
             hook.accept(this);
         }
     }
 
     @Override
     protected void onFailure() {
-        for (Consumer<DeleteCommandStub> hook : failureHooks) {
+        for (Consumer<RenameCommandStub> hook : failureHooks) {
             hook.accept(this);
         }
     }
@@ -96,7 +104,7 @@ public class DeleteCommandStub extends AbstractCommand {
      * @param hook
      *            Command hook to be run upon success
      */
-    public static void addSuccessHook(Consumer<DeleteCommandStub> hook) {
+    public static void addSuccessHook(Consumer<RenameCommandStub> hook) {
         successHooks.add(hook);
     }
 
@@ -107,7 +115,7 @@ public class DeleteCommandStub extends AbstractCommand {
      * @param hook
      *            Command hook to be run upon failure
      */
-    public static void addFailureHook(Consumer<DeleteCommandStub> hook) {
+    public static void addFailureHook(Consumer<RenameCommandStub> hook) {
         failureHooks.add(hook);
     }
 }

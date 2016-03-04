@@ -11,6 +11,14 @@ import jfdi.logic.commands.AddCommandStub.Builder;
 import jfdi.parser.Constants;
 import jfdi.parser.DateTimeParser;
 
+/**
+ * The AddCommandParser class is used to parse a user input String that resembles an add command.
+ * All user inputs for adding tasks must adhere to the following format:
+ * {add identifier}(optional) {task description} {date time identifier}(optional) {tags}(optional)
+ *
+ * @author leona_000
+ *
+ */
 public class AddCommandParser extends CommandParser {
 
     private static CommandParser instance;
@@ -29,10 +37,8 @@ public class AddCommandParser extends CommandParser {
 
     @Override
     /**
-     * All user inputs for adding tasks adhere to the following format:
-     * "<add identifier>(optional) <task description> <date time identifier)(optional) <tags>(optional)
      * To build the add command, we traverse from the back, retrieving the tags
-     * first, then the date time identifiers if present, then the task.
+     * first, then the date time identifiers if present, then the task description.
      *
      * @param input
      *            the user input String
@@ -151,25 +157,6 @@ public class AddCommandParser extends CommandParser {
 
     private String getFirstWord(String input) {
         return input.split(Constants.REGEX_WHITESPACE)[0];
-    }
-
-    /**
-     * Removes the first word in the input string, and returns the rest of the
-     * input.
-     *
-     * @param input
-     *            the string from which the first word is to be removed
-     * @return the input string without the first word and the whitespace
-     *         separating the first word from the rest of the string. If the
-     *         string only consists of one word, return null.
-     */
-    private String removeFirstWord(String input) {
-        String[] splitInput = input.split(Constants.REGEX_WHITESPACE, 2);
-        if (splitInput.length == 1) {
-            return null;
-        } else {
-            return splitInput[1];
-        }
     }
 
 }

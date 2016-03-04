@@ -1,6 +1,8 @@
 package jfdi.parser;
 
 import java.time.ZoneId;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Constants {
 
@@ -23,7 +25,7 @@ public class Constants {
     // condition $
     public static final String REGEX_TAGS = "\\+\\w+$";
     // A taskID is simply an integer
-    public static final String REGEX_TASKID = "\\d+";
+    public static final String REGEX_TASKID = "\\b\\d+\\b";
 
     // Date and Time related Regex Strings
     public static final String REGEX_DAYS_NUMERIC = "((?i)0?[1-9]|[12][\\d]|3[01])(st|th|nd|rd)?";
@@ -88,6 +90,7 @@ public class Constants {
     public static final ZoneId ZONE_ID = ZoneId.systemDefault();
 
     public static void main(String[] args) {
-        System.out.println("4 weeks lAter".matches(REGEX_RELATIVE_DATE_3));
+        Pattern pat = Pattern.compile(REGEX_TASKID);
+        Matcher mat = pat.matcher("");
     }
 }

@@ -49,6 +49,7 @@ public class TaskTest {
 
         // Update its attributes
         TaskAttributes taskAttributes = new TaskAttributes();
+        taskAttributes.setId(1);
         taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_2);
         taskAttributes.setStartDateTime(Constants.TEST_TASK_STARTDATETIME);
         taskAttributes.setEndDateTime(Constants.TEST_TASK_ENDDATETIME);

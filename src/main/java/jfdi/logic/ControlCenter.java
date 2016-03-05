@@ -4,7 +4,9 @@ import com.google.common.eventbus.EventBus;
 import dummy.DummyParser;
 import jfdi.logic.interfaces.Command;
 import jfdi.logic.interfaces.ILogic;
+import jfdi.storage.MainStorage;
 import jfdi.storage.data.TaskDb;
+import jfdi.storage.exceptions.ExistingFilesFoundException;
 
 /**
  * @author Liu Xinan
@@ -16,8 +18,11 @@ public class ControlCenter implements ILogic {
     private static final EventBus eventBus = new EventBus();
 
     private ControlCenter() {
-        TaskDb.setFilePath("./user_data");
-        TaskDb.load();
+        try {
+            MainStorage.getInstance().load("./user_data");
+        } catch (ExistingFilesFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public static ControlCenter getInstance() {

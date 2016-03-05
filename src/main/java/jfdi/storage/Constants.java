@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import jfdi.storage.data.Alias;
+import jfdi.storage.data.AliasDb;
 import jfdi.storage.data.TaskDb;
 
 /**
@@ -70,7 +70,7 @@ public class Constants {
      * Private variables
      */
     // List of databases
-    private static final List<Class<?>> DATABASES = Arrays.asList(TaskDb.class, Alias.class);
+    private static final List<Class<?>> DATABASES = Arrays.asList(TaskDb.class, AliasDb.class);
 
 
     /**

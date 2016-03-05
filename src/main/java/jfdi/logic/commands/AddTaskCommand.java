@@ -66,6 +66,11 @@ public class AddTaskCommand extends Command {
             return this;
         }
 
+        public Builder setReminders(Collection<Duration> reminders) {
+            this.reminders = new ArrayList<>(reminders);
+            return this;
+        }
+
         public Builder addTag(String tag) {
             this.tags.add(tag);
             return this;
@@ -73,6 +78,11 @@ public class AddTaskCommand extends Command {
 
         public Builder addTags(Collection<String> tags) {
             this.tags.addAll(tags);
+            return this;
+        }
+
+        public Builder setTags(Collection<String> tags) {
+            this.tags = new ArrayList<>(tags);
             return this;
         }
 

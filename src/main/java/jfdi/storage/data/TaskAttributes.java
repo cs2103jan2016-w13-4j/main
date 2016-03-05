@@ -129,6 +129,21 @@ public class TaskAttributes {
         this.isCompleted = isCompleted;
     }
 
+    /**
+     * This method saves the attributes object into a data store object in the
+     * database. The attributes are first validated before the data store object
+     * is either created or updated.
+     *
+     * @throws InvalidTaskParametersException
+     *             if the attributes object contains an invalid attribute (e.g.
+     *             missing description)
+     * @throws NoAttributesChangedException
+     *             if the save operation does not change the data store object
+     *             in any way
+     * @throws InvalidIdException
+     *             if the ID stored in the attributes object is invalid (e.g.
+     *             null or does not exist)
+     */
     public void save() throws InvalidTaskParametersException, NoAttributesChangedException,
             InvalidIdException {
         validateAttributes();

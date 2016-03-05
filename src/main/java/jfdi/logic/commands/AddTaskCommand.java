@@ -12,6 +12,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * @author Liu Xinan
@@ -19,15 +20,15 @@ import java.util.Collection;
 public class AddTaskCommand extends Command {
 
     private String description;
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
+    private Optional<LocalDateTime> startDateTime;
+    private Optional<LocalDateTime> endDateTime;
     private Duration[] reminders;
     private String[] tags;
 
     private AddTaskCommand(Builder builder) {
         this.description = builder.description;
-        this.startDateTime = builder.startDateTime;
-        this.endDateTime = builder.endDateTime;
+        this.startDateTime = Optional.ofNullable(builder.startDateTime);
+        this.endDateTime = Optional.ofNullable(builder.endDateTime);
         this.reminders = builder.reminders.toArray(new Duration[0]);
         this.tags = builder.tags.toArray(new String[0]);
     }
@@ -85,8 +86,8 @@ public class AddTaskCommand extends Command {
     public void execute() {
         TaskAttributes task = new TaskAttributes();
         task.setDescription(description);
-        task.setStartDateTime(startDateTime);
-        task.setEndDateTime(endDateTime);
+        startDateTime.ifPresent(start -> task.setStartDateTime(start));
+        endDateTime.ifPresent(end -> task.setEndDateTime(end));
         task.setReminders(reminders);
         task.setTags(tags);
         try {

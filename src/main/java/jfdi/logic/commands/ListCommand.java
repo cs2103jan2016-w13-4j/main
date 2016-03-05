@@ -1,7 +1,8 @@
 package jfdi.logic.commands;
 
 import jfdi.logic.interfaces.Command;
-import jfdi.storage.records.Task;
+import jfdi.storage.data.TaskAttributes;
+import jfdi.storage.data.TaskDb;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,7 +21,7 @@ public class ListCommand extends Command {
     private static ArrayList<Consumer<ListCommand>> failureHooks = new ArrayList<>();
 
     private ArrayList<String> tags;
-    private ArrayList<Task> items = null;
+    private ArrayList<TaskAttributes> items = null;
     private ErrorType errorType = null;
 
     private ListCommand(Builder builder) {
@@ -51,7 +52,7 @@ public class ListCommand extends Command {
      *
      * @return A Collection of Tasks resulted from the command.
      */
-    public Collection<Task> getItems() {
+    public Collection<TaskAttributes> getItems() {
         if (items == null) {
             throw new IllegalStateException("Command not yet executed!");
         }
@@ -81,10 +82,10 @@ public class ListCommand extends Command {
     public void execute() {
         items = new ArrayList<>();
         if (tags.isEmpty()) {
-            items.addAll(Task.getAll());
+            items.addAll(TaskDb.getAll());
         } else {
             for (String tag : tags) {
-                items.addAll(Task.getByTag(tag));
+                items.addAll(TaskDb.getByTag(tag));
             }
         }
 

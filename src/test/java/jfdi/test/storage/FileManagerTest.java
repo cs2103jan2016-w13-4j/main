@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 
 import jfdi.storage.Constants;
 import jfdi.storage.FileManager;
-import jfdi.storage.FileStorage;
+import jfdi.storage.MainStorage;
 import jfdi.storage.exceptions.ExistingFilesFoundException;
 
 import org.apache.commons.io.FileUtils;
@@ -66,7 +66,7 @@ public class FileManagerTest {
 
     @Test
     public void testMoveFilesToNewDirectory() {
-        FileStorage fileStorageInstance = FileStorage.getInstance();
+        MainStorage fileStorageInstance = MainStorage.getInstance();
         try {
             fileStorageInstance.load(testDirectoryString);
             TestHelper.createValidDataFiles(testDirectoryString);
@@ -83,7 +83,7 @@ public class FileManagerTest {
 
     @Test(expected = ExistingFilesFoundException.class)
     public void testMoveFilesToDirectoryWithExistingData() throws Exception {
-        FileStorage fileStorageInstance = FileStorage.getInstance();
+        MainStorage fileStorageInstance = MainStorage.getInstance();
         fileStorageInstance.load(testDirectoryString);
         TestHelper.createValidDataFiles(testDirectoryString);
         Path subdirectory = Paths.get(testDirectoryString, Constants.TEST_SUBDIRECTORY_NAME);

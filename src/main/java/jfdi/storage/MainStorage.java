@@ -9,10 +9,10 @@ import jfdi.storage.exceptions.ExistingFilesFoundException;
  *
  * @author Thng Kai Yuan
  */
-public class FileStorage implements IStorage {
+public class MainStorage implements IStorage {
 
-    // The singleton instance of FileStorage
-    private static FileStorage instance = null;
+    // The singleton instance of MainStorage
+    private static MainStorage instance = null;
 
     // Boolean indicating if storage has been initialized
     private boolean isInitialized = false;
@@ -22,15 +22,15 @@ public class FileStorage implements IStorage {
      * components. An instance of FileStorage should be initialized using the
      * getInstance method.
      */
-    private FileStorage() {
+    private MainStorage() {
     }
 
     /**
-     * @return the singleton instance of FileStorage
+     * @return the singleton instance of MainStorage
      */
-    public static FileStorage getInstance() {
+    public static MainStorage getInstance() {
         if (instance == null) {
-            instance = new FileStorage();
+            instance = new MainStorage();
         }
 
         return instance;
@@ -47,8 +47,8 @@ public class FileStorage implements IStorage {
     @Override
     public void load(String storageFolderPath) throws InvalidPathException, ExistingFilesFoundException {
         FileManager.prepareDirectory(storageFolderPath);
-        RecordManager.setAllFilePaths(storageFolderPath);
-        RecordManager.loadAllRecords();
+        DatabaseManager.setAllFilePaths(storageFolderPath);
+        DatabaseManager.loadAllDatabases();
         isInitialized = true;
     }
 
@@ -62,8 +62,8 @@ public class FileStorage implements IStorage {
 
         FileManager.prepareDirectory(newStorageFolderPath);
         FileManager.moveFilesToDirectory(newStorageFolderPath);
-        RecordManager.setAllFilePaths(newStorageFolderPath);
-        RecordManager.loadAllRecords();
+        DatabaseManager.setAllFilePaths(newStorageFolderPath);
+        DatabaseManager.loadAllDatabases();
     }
 
 }

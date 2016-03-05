@@ -74,7 +74,7 @@ public class FileManager {
         newStorageFolder.mkdirs();
 
         // Get the paths of all data file and move them
-        ArrayList<Path> filePaths = RecordManager.getAllFilePaths();
+        ArrayList<Path> filePaths = DatabaseManager.getAllFilePaths();
         ArrayList<FilePathPair> replacedFiles = moveFilesTo(filePaths, newStorageFolderPath);
 
         // Let the caller know if files were replaced

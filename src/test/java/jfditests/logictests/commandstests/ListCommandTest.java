@@ -1,7 +1,9 @@
 package jfditests.logictests.commandstests;
 
 import jfdi.logic.commands.ListCommand;
-import jfdi.storage.records.Task;
+import jfdi.storage.data.TaskAttributes;
+import jfdi.storage.data.TaskDb;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,26 +22,26 @@ import static org.powermock.api.mockito.PowerMockito.*;
  * @author Liu Xinan
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Task.class})
+@PrepareForTest({TaskDb.class})
 public class ListCommandTest {
 
     @Mock private Consumer<ListCommand> successHook;
     @Mock private Consumer<ListCommand> failureHook;
 
-    private ArrayList<Task> allItems = new ArrayList<>();
-    private ArrayList<Task> taggedItems = new ArrayList<>();
-    private ArrayList<Task> noItems = new ArrayList<>();
+    private ArrayList<TaskAttributes> allItems = new ArrayList<>();
+    private ArrayList<TaskAttributes> taggedItems = new ArrayList<>();
+    private ArrayList<TaskAttributes> noItems = new ArrayList<>();
 
     @Before
     public void setUp() throws Exception {
-        // Mocking Task
-        mockStatic(Task.class);
-        when(Task.getAll()).thenReturn(allItems);
-        when(Task.getByTag("tag")).thenReturn(taggedItems);
-        when(Task.getByTag("non-exist")).thenReturn(noItems);
+        // Mocking TaskDb
+        mockStatic(TaskDb.class);
+        when(TaskDb.getAll()).thenReturn(allItems);
+        when(TaskDb.getByTag("tag")).thenReturn(taggedItems);
+        when(TaskDb.getByTag("non-exist")).thenReturn(noItems);
 
-        allItems.add(mock(Task.class));
-        taggedItems.add(mock(Task.class));
+        allItems.add(mock(TaskAttributes.class));
+        taggedItems.add(mock(TaskAttributes.class));
     }
 
     @Test
@@ -78,14 +80,14 @@ public class ListCommandTest {
         lsWithoutTags.execute();
 
         verifyStatic();
-        Task.getAll();
+        TaskDb.getAll();
         assertEquals(allItems, lsWithoutTags.getItems());
 
         ListCommand lsWithTags = new ListCommand.Builder().addTag("tag").build();
         lsWithTags.execute();
 
         verifyStatic();
-        Task.getByTag("tag");
+        TaskDb.getByTag("tag");
         assertEquals(taggedItems, lsWithTags.getItems());
     }
 

@@ -6,7 +6,8 @@ import java.util.Collection;
 import java.util.function.Consumer;
 
 import jfdi.logic.interfaces.Command;
-import jfdi.storage.records.Task;
+import jfdi.storage.data.TaskAttributes;
+import jfdi.storage.data.TaskDb;
 
 /**
  * @author Liu Xinan
@@ -23,7 +24,7 @@ public class AddCommandStub extends Command {
     private ArrayList<String> tags;
     private String description;
     private ArrayList<LocalDateTime> dateTimes;
-    private Collection<Task> items = null;
+    private Collection<TaskAttributes> items = null;
     private ErrorType errorType = null;
 
     private AddCommandStub(Builder builder) {
@@ -68,7 +69,7 @@ public class AddCommandStub extends Command {
      *
      * @return A Collection of Tasks resulted from the command.
      */
-    public Collection<Task> getItems() {
+    public Collection<TaskAttributes> getItems() {
         if (items == null) {
             throw new IllegalStateException("Command not yet executed!");
         }
@@ -88,7 +89,7 @@ public class AddCommandStub extends Command {
     @Override
     public void execute() {
         if (tags.isEmpty()) {
-            items = Task.getAll();
+            items = TaskDb.getAll();
             onSuccess();
         } else {
             // TODO: Add filtering when Task supports that.

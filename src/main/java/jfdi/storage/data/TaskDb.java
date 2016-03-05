@@ -180,6 +180,17 @@ public class TaskDb {
     }
 
     /**
+     * This method checks if a task (given by its ID) exists in the database.
+     *
+     * @param id
+     *            the ID of the task to be checked
+     * @return boolean indicating if the task exists in the database
+     */
+    public static boolean hasId(int id) {
+        return taskList.containsKey(id);
+    }
+
+    /**
      * This method marks a task (given by its ID) as completed.
      *
      * @param id

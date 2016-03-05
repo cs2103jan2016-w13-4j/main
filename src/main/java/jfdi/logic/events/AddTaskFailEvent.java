@@ -6,7 +6,7 @@ package jfdi.logic.events;
 public class AddTaskFailEvent {
 
     public enum Error {
-        UNKNOWN
+        EMPTY_DESCRIPTION, UNKNOWN
     }
 
     private Error error;

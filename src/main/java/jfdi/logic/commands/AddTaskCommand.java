@@ -92,15 +92,12 @@ public class AddTaskCommand extends Command {
         try {
             task.save();
             eventBus.post(new AddTaskDoneEvent(task));
-            return;
         } catch (InvalidTaskParametersException e) {
-            e.printStackTrace();
+            eventBus.post(new AddTaskFailEvent(AddTaskFailEvent.Error.EMPTY_DESCRIPTION));
         } catch (NoAttributesChangedException e) {
-            e.printStackTrace();
+            // Will not happen for creating tasks
         } catch (InvalidIdException e) {
-            e.printStackTrace();
+            // Will not happen for creating tasks
         }
-
-        eventBus.post(new AddTaskFailEvent(AddTaskFailEvent.Error.UNKNOWN));
     }
 }

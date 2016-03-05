@@ -1,5 +1,6 @@
 package dummy;
 
+import jfdi.logic.commands.AddTaskCommand;
 import jfdi.logic.commands.ExitCommand;
 import jfdi.logic.commands.InvalidCommand;
 import jfdi.logic.commands.ListCommand;
@@ -34,8 +35,10 @@ public class DummyParser {
                 return builder.build();
             case "exit":
                 return new ExitCommand.Builder().build();
+            case "add":
+                return new AddTaskCommand.Builder().setDescription(parts[1]).build();
             default:
-                return new InvalidCommand.Builder().build();
+                return new InvalidCommand.Builder().setInputString(input).build();
         }
     }
 }

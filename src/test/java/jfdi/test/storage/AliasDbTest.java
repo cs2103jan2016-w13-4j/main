@@ -72,6 +72,19 @@ public class AliasDbTest {
     }
 
     @Test
+    public void testHasAlias() throws Exception {
+        // No aliases exist yet, so any alias should be invalid
+        assertFalse(AliasDb.hasAlias(Constants.TEST_ALIAS));
+
+        // Create an alias
+        AliasAttributes aliasAttributes = new AliasAttributes(Constants.TEST_ALIAS, Constants.TEST_COMMAND);
+        aliasAttributes.save();
+
+        // Check that AliasDb has that alias
+        assertTrue(AliasDb.hasAlias(Constants.TEST_ALIAS));
+    }
+
+    @Test
     public void testDestroyAndUndestroy() throws Exception {
         // Create an alias
         AliasAttributes aliasAttributes = new AliasAttributes(Constants.TEST_ALIAS, Constants.TEST_COMMAND);

@@ -24,7 +24,7 @@ public class AddTaskCommand extends Command {
     private Duration[] reminders;
     private String[] tags;
 
-    public AddTaskCommand(Builder builder) {
+    private AddTaskCommand(Builder builder) {
         this.description = builder.description;
         this.startDateTime = builder.startDateTime;
         this.endDateTime = builder.endDateTime;
@@ -95,9 +95,11 @@ public class AddTaskCommand extends Command {
         } catch (InvalidTaskParametersException e) {
             eventBus.post(new AddTaskFailEvent(AddTaskFailEvent.Error.EMPTY_DESCRIPTION));
         } catch (NoAttributesChangedException e) {
-            // Will not happen for creating tasks
+            // Should not happen for creating tasks
+            e.printStackTrace();
         } catch (InvalidIdException e) {
-            // Will not happen for creating tasks
+            // Should not happen for creating tasks
+            e.printStackTrace();
         }
     }
 }

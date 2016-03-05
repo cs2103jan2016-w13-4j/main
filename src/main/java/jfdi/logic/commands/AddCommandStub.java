@@ -98,14 +98,12 @@ public class AddCommandStub extends Command {
         }
     }
 
-    @Override
     protected void onSuccess() {
         for (Consumer<AddCommandStub> hook : successHooks) {
             hook.accept(this);
         }
     }
 
-    @Override
     protected void onFailure() {
         for (Consumer<AddCommandStub> hook : failureHooks) {
             hook.accept(this);

@@ -48,7 +48,7 @@ public class TaskDb {
      */
     public static void createOrUpdate(TaskAttributes taskAttributes) throws NoAttributesChangedException,
             InvalidIdException {
-        assert (taskAttributes != null);
+        assert taskAttributes != null;
         Integer taskId = taskAttributes.getId();
         if (taskId != null) {
             update(taskAttributes);
@@ -65,7 +65,7 @@ public class TaskDb {
      *            the object containing the desired attributes of the task
      */
     private static void create(TaskAttributes taskAttributes) {
-        assert (taskAttributes.getId() == null);
+        assert taskAttributes.getId() == null;
         Task task = taskAttributes.toEntity();
         task.setId(nextId++);
         taskAttributes.setId(task.getId());
@@ -88,7 +88,7 @@ public class TaskDb {
     private static void update(TaskAttributes taskAttributes) throws NoAttributesChangedException,
             InvalidIdException {
         Task task = TaskDb.getTaskById(taskAttributes.getId());
-        assert (task != null);
+        assert task != null;
         validateAttributesHasChanged(taskAttributes, task);
         task.update(taskAttributes);
         persist();
@@ -168,7 +168,7 @@ public class TaskDb {
      *         contains the specified tag
      */
     public static ArrayList<TaskAttributes> getByTag(String tag) {
-        assert (tag != null);
+        assert tag != null;
 
         ArrayList<TaskAttributes> taskAttributesList = new ArrayList<TaskAttributes>();
         for (TaskAttributes taskAttributes : TaskDb.getAll()) {
@@ -221,7 +221,7 @@ public class TaskDb {
      */
     public static void destroy(Integer id) throws InvalidIdException {
         Task task = TaskDb.getTaskById(id);
-        assert (task != null);
+        assert task != null;
         softDelete(id);
         persist();
     }
@@ -246,7 +246,7 @@ public class TaskDb {
      *             if the specified ID does not exist in the deleted list
      */
     public static void undestroy(Integer id) throws InvalidIdException {
-        assert (id != null);
+        assert id != null;
         if (!deletedTaskList.containsKey(id)) {
             throw new InvalidIdException(id);
         }
@@ -279,7 +279,7 @@ public class TaskDb {
      */
     public static void addReminderById(Integer id, Duration reminder) throws InvalidIdException,
             NoAttributesChangedException {
-        assert (reminder != null);
+        assert reminder != null;
         TaskAttributes taskAttributes = TaskDb.getById(id);
         taskAttributes.addReminder(reminder);
         TaskDb.update(taskAttributes);
@@ -299,7 +299,7 @@ public class TaskDb {
      */
     public static void addTagById(Integer id, String tag) throws NoAttributesChangedException,
             InvalidIdException {
-        assert (tag != null);
+        assert tag != null;
         TaskAttributes taskAttributes = TaskDb.getById(id);
         taskAttributes.addTag(tag);
         TaskDb.update(taskAttributes);
@@ -319,7 +319,7 @@ public class TaskDb {
      */
     public static void removeTagById(Integer id, String tag) throws NoAttributesChangedException,
             InvalidIdException {
-        assert (tag != null);
+        assert tag != null;
         TaskAttributes taskAttributes = TaskDb.getById(id);
         taskAttributes.removeTag(tag);
         TaskDb.update(taskAttributes);

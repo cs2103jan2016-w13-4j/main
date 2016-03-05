@@ -64,7 +64,7 @@ public class Task {
     public void setTags(String... tags) {
         this.tags = new HashSet<String>();
         for (String tag : tags) {
-            assert(tag != null);
+            assert tag != null;
             this.tags.add(tag);
         }
     }
@@ -76,7 +76,7 @@ public class Task {
     public void setReminders(Duration... reminders) {
         this.reminders = new TreeSet<Duration>();
         for (Duration reminder : reminders) {
-            assert(reminder != null);
+            assert reminder != null;
             this.reminders.add(reminder);
         }
     }
@@ -90,7 +90,7 @@ public class Task {
     }
 
     public void update(TaskAttributes taskAttributes) {
-        assert(this.getId() == taskAttributes.getId());
+        assert this.getId() == taskAttributes.getId();
         this.description = taskAttributes.getDescription();
         this.startDateTime = taskAttributes.getStartDateTime();
         this.endDateTime = taskAttributes.getEndDateTime();

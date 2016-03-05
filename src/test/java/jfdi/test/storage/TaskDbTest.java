@@ -343,7 +343,8 @@ public class TaskDbTest {
 
         // Add a reminder to it and check that it's persisted
         TaskDb.addReminderById(taskAttributes.getId(), Constants.TEST_TASK_REMINDER_DURATION_1);
-        ArrayList<Duration> persistedReminderList = new ArrayList<Duration>(TaskDb.getById(taskAttributes.getId()).getReminders());
+        TaskAttributes taskAttributes2 = TaskDb.getById(taskAttributes.getId());
+        ArrayList<Duration> persistedReminderList = new ArrayList<Duration>(taskAttributes2.getReminders());
         assertTrue(persistedReminderList.contains(Constants.TEST_TASK_REMINDER_DURATION_1));
     }
 

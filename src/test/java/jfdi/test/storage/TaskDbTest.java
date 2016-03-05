@@ -141,6 +141,20 @@ public class TaskDbTest {
     }
 
     @Test
+    public void testHasId() throws Exception {
+        // No task yet, so any ID should be invalid
+        assertFalse(TaskDb.hasId(1));
+
+        // Create a task
+        TaskAttributes taskAttributes = new TaskAttributes();
+        taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        taskAttributes.save();
+
+        // Now taskAttribute's ID should exist
+        assertTrue(TaskDb.hasId(taskAttributes.getId()));
+    }
+
+    @Test
     public void testMarkAsCompleteAndIncomplete() throws Exception {
         // Create a task
         TaskAttributes taskAttributes = new TaskAttributes();

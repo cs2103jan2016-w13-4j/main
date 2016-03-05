@@ -77,6 +77,25 @@ public class AliasDb {
     }
 
     /**
+     * This method checks if a given alias exists in the database.
+     *
+     * @param alias
+     *            the alias to be checked
+     * @return boolean indicating if the alias exists in the database
+     */
+    public static boolean hasAlias(String alias) {
+        assert alias != null;
+        String alias2 = null;
+        for (Alias aliasRecord : aliasList) {
+            alias2 = aliasRecord.getAlias();
+            if (alias.equals(alias2)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * This method soft-deletes an existing alias.
      *
      * @param alias

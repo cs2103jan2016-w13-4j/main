@@ -9,13 +9,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import jfdi.storage.Constants;
-import jfdi.storage.RecordManager;
+import jfdi.storage.DatabaseManager;
 import jfdi.storage.exceptions.ExistingFilesFoundException;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class RecordManagerTest {
+public class DatabaseManagerTest {
 
     private static Path testDirectory = null;
     private static String testDirectoryString = null;
@@ -29,10 +29,10 @@ public class RecordManagerTest {
     @Test
     public void testSetAndGetAllFilePaths() {
         // Test setting of all file paths
-        RecordManager.setAllFilePaths(testDirectoryString);
+        DatabaseManager.setAllFilePaths(testDirectoryString);
 
         // Test getting of all file paths
-        ArrayList<Path> obtainedFilePaths = RecordManager.getAllFilePaths();
+        ArrayList<Path> obtainedFilePaths = DatabaseManager.getAllFilePaths();
         ArrayList<Path> expectedFilePaths = new ArrayList<Path>();
         Path filePath;
         for (String filename : Constants.FILENAME_ARRAY) {
@@ -44,12 +44,12 @@ public class RecordManagerTest {
     }
 
     @Test
-    public void testLoadAllRecords() {
+    public void testLoadAllDatabases() {
         // Test setting of all file paths
-        RecordManager.setAllFilePaths(testDirectoryString);
+        DatabaseManager.setAllFilePaths(testDirectoryString);
         TestHelper.createValidDataFiles(testDirectoryString);
         try {
-            RecordManager.loadAllRecords();
+            DatabaseManager.loadAllDatabases();
         } catch (ExistingFilesFoundException e) {
             fail(e.getMessage());
         }
@@ -57,9 +57,9 @@ public class RecordManagerTest {
 
     @Test(expected = ExistingFilesFoundException.class)
     public void testLoadAllRecordsWithInvalidData() throws Exception {
-        RecordManager.setAllFilePaths(testDirectoryString);
+        DatabaseManager.setAllFilePaths(testDirectoryString);
         TestHelper.createInvalidDataFiles(testDirectoryString);
-        RecordManager.loadAllRecords();
+        DatabaseManager.loadAllDatabases();
     }
 
 }

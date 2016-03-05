@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import jfdi.storage.records.Alias;
-import jfdi.storage.records.Task;
+import jfdi.storage.data.Alias;
+import jfdi.storage.data.TaskDb;
 
 /**
  * This class file contains all the constants used within the Storage component.
@@ -32,6 +32,7 @@ public class Constants {
 
     // Error messages
     public static final String MESSAGE_INVALID_PATH = "The directory %s cannot be used to store the program data.";
+    public static final String MESSAGE_MISSING_DESCRIPTION = "This task is missing a description.";
     public static final String MESSAGE_UNINITIALIZED_STORAGE = "Storage needs to be initialized first.";
 
     // Default charset
@@ -55,7 +56,8 @@ public class Constants {
     public static final String TEST_COMMAND_2 = "somecommand2";
 
     // Tasks
-    public static final String TEST_TASK_DESCRIPTION = "my favourite description";
+    public static final String TEST_TASK_DESCRIPTION_1 = "my favourite description";
+    public static final String TEST_TASK_DESCRIPTION_2 = "my favourite description too";
     public static final String TEST_TASK_TAG_1 = "tagged";
     public static final String TEST_TASK_TAG_2 = "tagged2";
     public static final LocalDateTime TEST_TASK_STARTDATETIME = LocalDateTime.MIN;
@@ -67,15 +69,15 @@ public class Constants {
     /**
      * Private variables
      */
-    // List of records
-    private static final List<Class<?>> RECORDS = Arrays.asList(Task.class, Alias.class);
+    // List of databases
+    private static final List<Class<?>> DATABASES = Arrays.asList(TaskDb.class, Alias.class);
 
 
     /**
-     * @return an immutable array of record classes
+     * @return an immutable array of database classes
      */
-    public static Class<?>[] getRecords() {
-        return RECORDS.toArray(new Class<?>[RECORDS.size()]);
+    public static Class<?>[] getDatabases() {
+        return DATABASES.toArray(new Class<?>[DATABASES.size()]);
     }
 
 }

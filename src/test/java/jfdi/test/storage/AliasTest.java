@@ -9,8 +9,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import jfdi.storage.Constants;
-import jfdi.storage.FileStorage;
-import jfdi.storage.records.Alias;
+import jfdi.storage.MainStorage;
+import jfdi.storage.data.Alias;
 
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -25,7 +25,7 @@ public class AliasTest {
     public static void setUpBeforeClass() throws Exception {
         testDirectory = Files.createTempDirectory(Constants.TEST_DIRECTORY_NAME);
         testDirectoryString = testDirectory.toString();
-        FileStorage fileStorageInstance = FileStorage.getInstance();
+        MainStorage fileStorageInstance = MainStorage.getInstance();
         fileStorageInstance.load(testDirectory.toString());
     }
 

@@ -1,4 +1,4 @@
-package jfdi.storage.records;
+package jfdi.storage.data;
 
 import java.io.File;
 import java.nio.file.Path;

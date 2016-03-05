@@ -1,31 +1,25 @@
 package jfdi.logic.commands;
 
+import jfdi.logic.events.ListDoneEvent;
+import jfdi.logic.events.ListFailEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.data.TaskAttributes;
 import jfdi.storage.data.TaskDb;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.function.Consumer;
 
 /**
  * @author Liu Xinan
  */
 public class ListCommand extends Command {
 
-    public enum ErrorType {
-        NON_EXISTENT_TAG, UNKNOWN
-    }
-
-    private static ArrayList<Consumer<ListCommand>> successHooks = new ArrayList<>();
-    private static ArrayList<Consumer<ListCommand>> failureHooks = new ArrayList<>();
-
     private ArrayList<String> tags;
-    private ArrayList<TaskAttributes> items = null;
-    private ErrorType errorType = null;
+    private ArrayList<TaskAttributes> items;
 
     private ListCommand(Builder builder) {
         this.tags = builder.tags;
+        this.items = new ArrayList<>();
     }
 
     public static class Builder {
@@ -37,7 +31,7 @@ public class ListCommand extends Command {
             return this;
         }
 
-        public Builder addTags(ArrayList<String> tags) {
+        public Builder addTags(Collection<String> tags) {
             this.tags.addAll(tags);
             return this;
         }
@@ -47,27 +41,6 @@ public class ListCommand extends Command {
         }
     }
 
-    /**
-     * Get the items to for listing.
-     *
-     * @return A Collection of Tasks resulted from the command.
-     */
-    public Collection<TaskAttributes> getItems() {
-        if (items == null) {
-            throw new IllegalStateException("Command not yet executed!");
-        }
-
-        return items;
-    }
-
-    /**
-     * Get the error type that the command encountered.
-     *
-     * @return Error type
-     */
-    public ErrorType getErrorType() {
-        return errorType;
-    }
 
     /**
      * Get the tags requested in the input.
@@ -80,7 +53,6 @@ public class ListCommand extends Command {
 
     @Override
     public void execute() {
-        items = new ArrayList<>();
         if (tags.isEmpty()) {
             items.addAll(TaskDb.getAll());
         } else {
@@ -90,44 +62,10 @@ public class ListCommand extends Command {
         }
 
         if (items.isEmpty()) {
-            errorType = ErrorType.NON_EXISTENT_TAG;
-            onFailure();
+            eventBus.post(new ListFailEvent(ListFailEvent.Error.NON_EXISTENT_TAG));
         } else {
-            onSuccess();
+            eventBus.post(new ListDoneEvent(items));
         }
     }
 
-    @Override
-    protected void onSuccess() {
-        for (Consumer<ListCommand> hook : successHooks) {
-            hook.accept(this);
-        }
-    }
-
-    @Override
-    protected void onFailure() {
-        for (Consumer<ListCommand> hook : failureHooks) {
-            hook.accept(this);
-        }
-    }
-
-    /**
-     * Add a hook to be run when the command executes successfully.
-     * The hook will be passed the command object as argument.
-     *
-     * @param hook Command hook to be run upon success
-     */
-    public static void addSuccessHook(Consumer<ListCommand> hook) {
-        successHooks.add(hook);
-    }
-
-    /**
-     * Add a hook to be run when the command encounters error.
-     * The hook will be passed the command object as argument.
-     *
-     * @param hook Command hook to be run upon failure
-     */
-    public static void addFailureHook(Consumer<ListCommand> hook) {
-        failureHooks.add(hook);
-    }
 }

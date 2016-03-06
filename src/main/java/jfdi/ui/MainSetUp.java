@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class MainSetUp extends Application {
 
@@ -41,7 +42,7 @@ public class MainSetUp extends Application {
      ***************************/
 
     private void setStageTransparent() {
-        //this.primaryStage.initStyle(StageStyle.TRANSPARENT);
+        this.primaryStage.initStyle(StageStyle.TRANSPARENT);
     }
 
     private void loadFonts() {

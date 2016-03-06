@@ -7,7 +7,7 @@ import java.util.List;
 import jfdi.logic.commands.ListCommand;
 import jfdi.parser.Constants;
 
-public class ListCommandParser extends CommandParser {
+public class ListCommandParser extends AbstractCommandParser {
     private static ListCommandParser instance;
 
     private ListCommandParser() {

@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import jfdi.logic.interfaces.AbstractCommand;
 import jfdi.parser.Constants;
 
-public abstract class CommandParser {
+public abstract class AbstractCommandParser {
     protected String userInput;
 
     public abstract AbstractCommand build(String input);

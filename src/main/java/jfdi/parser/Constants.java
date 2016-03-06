@@ -4,6 +4,14 @@ import java.time.ZoneId;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * The Constants class is a database of all relevant constants used for parsing.
+ * These constants include Regex constants that define date time formats,
+ * command formats, and other miscellaneous formats.
+ *
+ * @author Leonard Hio
+ *
+ */
 public class Constants {
 
     // ===============================
@@ -28,6 +36,7 @@ public class Constants {
     public static final String REGEX_TASKID = "\\b\\d+\\b";
 
     // Date and Time related Regex Strings
+
     public static final String REGEX_DAYS_NUMERIC = "((?i)0?[1-9]|[12][\\d]|3[01])(st|th|nd|rd)?";
     public static final String REGEX_DAYS_TEXTUAL = "((?i)(mon)(day)?|"
             + "(tue)(sday)?|" + "(wed)(nesday)?|" + "(thu)(rsday)?|"
@@ -40,11 +49,11 @@ public class Constants {
     public static final String REGEX_YEARS = "((19|20)?\\d\\d)";
     public static final String REGEX_DATE_ATTRIBUTES = "((?i)(day)(s)?|"
             + "(week|wk)(s)?|" + "(month|mth)(s)?|" + "(year|yr))(s)?";
-    public static final String REGEX_TIME_MILITARY = "(?i)[0-2][0-3][ :-]?[0-5][\\d]([h]([r][s]?)?)?";
-    public static final String REGEX_TIME_NORMAL = "((?i)0?[1-9]|1[0-2])[ -:]?([0-5][0-9])[ -:]?([a|p][m])?";
+    public static final String REGEX_TIME_MILITARY = "(?i)[0-2][0-3][ :-]?[0-5][\\d]([h]([r][s]?)?)";
+    public static final String REGEX_TIME_NORMAL = "((?i)0?[1-9]|1[0-2])[ -:]?([0-5][0-9])?[ -:]?([a|p][m])";
 
     public static final String REGEX_RELATIVE_DATE_1 = "(?i)(tomorrow|yesterday)";
-    public static final String REGEX_RELATIVE_DATE_2 = "(?i)((next) ("
+    public static final String REGEX_RELATIVE_DATE_2 = "(?i)((next |this )?("
             + REGEX_DATE_ATTRIBUTES + "|" + REGEX_DAYS_TEXTUAL + "))";
     public static final String REGEX_RELATIVE_DATE_3 = "(\\d+ "
             + REGEX_DATE_ATTRIBUTES + " (?i)(later|before|after))";
@@ -83,14 +92,63 @@ public class Constants {
     // =============================
     // Non-Regex constants
     // =============================
+
+    // A task can be any one of these task types
+    public enum TaskType {
+        floating, deadline, event, point, repeated;
+    }
+
     public static final int INDEX_ACTION = 0;
+
+    /**
+     * A class to encapsulate the fields associated with time, such as the hour,
+     * the minute, etc.
+     *
+     * @author Leonard Hio
+     *
+     */
+    public static class Time {
+        public static final int MIN_HOUR = 0;
+        public static final int MIN_MINUTES = 0;
+        public static final int MIN_SECONDS = 0;
+        public static final int MIN_NANOSECONDS = 0;
+        public static final int MAX_HOUR = 23;
+        public static final int MAX_MINUTES = 59;
+        public static final int MAX_SECONDS = 59;
+        public static final int MAX_NANOSECONDS = 999999999;
+        public static final int DEFAULT_HOUR = 12;
+        public static final int DEFAULT_MINUTES = 0;
+        public static final int DEFAULT_SECONDS = 0;
+        public static final int DEFAULT_NANOSECONDS = 0;
+
+        int hour;
+        int minutes;
+        int seconds;
+        int nanoseconds;
+
+        public Time(int hour, int minutes, int seconds, int nanoseconds) {
+            this.hour = hour;
+            this.minutes = minutes;
+            this.seconds = seconds;
+            this.nanoseconds = nanoseconds;
+        }
+    }
+
+    public static final Time TIME_BEGINNING_OF_DAY = new Time(Time.MIN_HOUR,
+            Time.MIN_MINUTES, Time.MIN_SECONDS, Time.MIN_NANOSECONDS);
+    public static final Time TIME_END_OF_DAY = new Time(Time.MAX_HOUR,
+            Time.MAX_MINUTES, Time.MAX_SECONDS, Time.MAX_NANOSECONDS);
+    public static final Time TIME_DEFAULT = new Time(Time.DEFAULT_HOUR,
+            Time.DEFAULT_MINUTES, Time.DEFAULT_SECONDS,
+            Time.DEFAULT_NANOSECONDS);
 
     // The current time zone of the system, used to find LocalDateTime when
     // parsing dates
     public static final ZoneId ZONE_ID = ZoneId.systemDefault();
 
     public static void main(String[] args) {
-        Pattern pat = Pattern.compile(REGEX_TASKID);
+        Pattern pat = Pattern.compile(REGEX_DATE_TIME_IDENTIFIER);
         Matcher mat = pat.matcher("");
+        System.out.println("9pm".matches(REGEX_TIME_FORMAT));
     }
 }

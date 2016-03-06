@@ -1,33 +1,33 @@
 package jfdi.parser.commandparsers;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import jfdi.logic.commands.AddCommandStub;
 import jfdi.logic.commands.AddCommandStub.Builder;
 import jfdi.parser.Constants;
+import jfdi.parser.DateTimeObject;
 import jfdi.parser.DateTimeParser;
 
 /**
- * The AddCommandParser class is used to parse a user input String that resembles an add command.
- * All user inputs for adding tasks must adhere to the following format:
- * {add identifier}(optional) {task description} {date time identifier}(optional) {tags}(optional)
+ * The AddCommandParser class is used to parse a user input String that
+ * resembles an add command. All user inputs for adding tasks must adhere to the
+ * following format: {add identifier}(optional) {task description} {date time
+ * identifier}(optional) {tags}(optional)
  *
- * @author leona_000
+ * @author Leonard Hio
  *
  */
-public class AddCommandParser extends CommandParser {
+public class AddCommandParser extends AbstractCommandParser {
 
-    private static CommandParser instance;
+    private static AbstractCommandParser instance;
 
     private AddCommandParser() {
 
     }
 
-    public static CommandParser getInstance() {
+    public static AbstractCommandParser getInstance() {
         if (instance == null) {
             return instance = new AddCommandParser();
         }
@@ -115,11 +115,11 @@ public class AddCommandParser extends CommandParser {
 
         if (dateTimeIdentifier != null) {
             DateTimeParser dateTimeParser = DateTimeParser.getInstance();
-            List<LocalDateTime> dateTimeList = dateTimeParser
+            DateTimeObject dateTime = dateTimeParser
                     .parseDateTime(dateTimeIdentifier);
-            ArrayList<LocalDateTime> dateTimeArrayList = new ArrayList<LocalDateTime>();
-            dateTimeArrayList.addAll(dateTimeList);
-            builder.addDateTimes(dateTimeArrayList);
+            builder.setStartDateTime(dateTime.getStartDateTime());
+            builder.setEndDateTime(dateTime.getEndDateTime());
+            builder.setIsTimeSpecified(dateTime.isTimeSpecified());
         }
 
         return input;
@@ -145,9 +145,9 @@ public class AddCommandParser extends CommandParser {
                 taskDescription = input;
             }
 
-            builder.addDescription(taskDescription);
+            builder.setDescription(taskDescription);
         } else {
-            builder.addDescription(null);
+            builder.setDescription(null);
         }
     }
 

@@ -9,19 +9,19 @@ import java.util.Optional;
 import jfdi.logic.interfaces.AbstractCommand;
 
 /**
- * @author Leonard Hio
+ * @author Liu Xinan
  */
-public class AddCommandStub extends AbstractCommand {
+public class RescheduleCommandStub extends AbstractCommand {
 
-    private String description;
+    private String taskId;
     private Optional<LocalDateTime> startDateTime;
     private Optional<LocalDateTime> endDateTime;
     private Duration[] reminders;
     private String[] tags;
     private boolean isTimeSpecified;
 
-    private AddCommandStub(Builder builder) {
-        this.description = builder.description;
+    private RescheduleCommandStub(Builder builder) {
+        this.taskId = builder.taskId;
         this.startDateTime = Optional.ofNullable(builder.startDateTime);
         this.endDateTime = Optional.ofNullable(builder.endDateTime);
         this.reminders = builder.reminders.toArray(new Duration[0]);
@@ -31,15 +31,15 @@ public class AddCommandStub extends AbstractCommand {
 
     public static class Builder {
 
-        String description;
+        String taskId;
         LocalDateTime startDateTime;
         LocalDateTime endDateTime;
         boolean isTimeSpecified;
         ArrayList<Duration> reminders = new ArrayList<>();
         ArrayList<String> tags = new ArrayList<>();
 
-        public Builder setDescription(String description) {
-            this.description = description;
+        public Builder setTaskId(String taskId) {
+            this.taskId = taskId;
             return this;
         }
 
@@ -78,8 +78,8 @@ public class AddCommandStub extends AbstractCommand {
             return this;
         }
 
-        public AddCommandStub build() {
-            return new AddCommandStub(this);
+        public RescheduleCommandStub build() {
+            return new RescheduleCommandStub(this);
         }
 
     }

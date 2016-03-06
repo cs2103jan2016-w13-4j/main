@@ -4,8 +4,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import jfdi.parser.Constants.TaskType;
+import jfdi.parser.DateTimeObject.DateTimeObjectBuilder;
 
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
+import org.ocpsoft.prettytime.nlp.parse.DateGroup;
 
 /**
  * DateTimeParser is a class used to parse a string input into one a list of
@@ -26,26 +32,158 @@ public class DateTimeParser {
     }
 
     /**
-     * This method parses the given input string into a list of LocalDateTime
-     * objects.
+     * This method parses the given input string into a DateTimeObject.
      *
      * @param input
      *            a string that should match the date-time format listed in
      *            parser.Constants.java.
-     * @return a list of localDateTime objects, parsed from the input string.
-     *         The list can be of size 0, which indicates the input string
-     *         contains no parseable date time String.
+     * @return a DateTimeObject encapsulating the details of the input date time
+     *         string.
      */
-    public List<LocalDateTime> parseDateTime(String input) {
+    public DateTimeObject parseDateTime(String input) {
+        // TODO: handle exceptions
+        assert isValidDateTime(input);
+        DateTimeObject dateTimeObject = buildDateTimeObject(input);
+
+        return dateTimeObject;
+    }
+
+    /**
+     * This method builds a DateTimeObject from a given string input.
+     *
+     * @param input
+     *            a string that contains date time fields
+     * @return a DateTimeObject.
+     */
+    private DateTimeObject buildDateTimeObject(String input) {
+        DateTimeObjectBuilder dateTimeObjectBuilder = new DateTimeObjectBuilder();
+
+        TaskType taskType = getTaskType(input);
+        System.out.println(taskType);
+        boolean isTimeSpecified = checkTimeSpecified(input);
+        System.out.println(isTimeSpecified);
+        DateGroup dateGroup = getDateGroup(input);
+        List<LocalDateTime> dateTimeList = toLocalDateTime(dateGroup.getDates());
+        LocalDateTime startDateTime = null;
+        LocalDateTime endDateTime = null;
+        switch (taskType) {
+            case event:
+                assert dateTimeList.size() == 2;
+                startDateTime = dateTimeList.get(0);
+                endDateTime = dateTimeList.get(1);
+
+                if (!isTimeSpecified) {
+                    startDateTime = setTime(startDateTime,
+                            Constants.TIME_BEGINNING_OF_DAY);
+                    endDateTime = setTime(startDateTime,
+                            Constants.TIME_END_OF_DAY);
+                }
+                break;
+            case point:
+                assert dateTimeList.size() == 1;
+                startDateTime = dateTimeList.get(0);
+                if (!isTimeSpecified) {
+                    startDateTime = setTime(startDateTime, Constants.TIME_DEFAULT);
+                    System.out.println(startDateTime.getHour());
+                }
+                break;
+            case deadline:
+                assert dateTimeList.size() == 1;
+                endDateTime = dateTimeList.get(0);
+                if (!isTimeSpecified) {
+                    endDateTime = setTime(endDateTime, Constants.TIME_DEFAULT);
+                }
+                break;
+            default:
+                break;
+        }
+
+        dateTimeObjectBuilder.setTaskType(taskType);
+        dateTimeObjectBuilder.setIsTimeSpecified(isTimeSpecified);
+        dateTimeObjectBuilder.setStartDateTime(startDateTime);
+        dateTimeObjectBuilder.setEndDateTime(endDateTime);
+
+        DateTimeObject dateTimeObject = dateTimeObjectBuilder.build();
+
+        return dateTimeObject;
+    }
+
+    /**
+     * This method parses the input string into a DateGroup object.
+     *
+     * @param input
+     *            the input string representing a date time.
+     * @return a DateGroup object, storing information about the date and time
+     *         specified in the string.
+     */
+    private DateGroup getDateGroup(String input) {
         PrettyTimeParser parser = new PrettyTimeParser();
-        List<Date> dateTimeList = parser.parse(input);
+        List<DateGroup> dateGroupList = parser.parseSyntax(input);
+        assert dateGroupList.size() == 1;
+        return dateGroupList.get(0);
+
+    }
+
+    /**
+     * This method checks to see if a particular time is specified in the date
+     * time string
+     *
+     * @param input
+     *            a date time string.
+     * @return true if time is specified; false otherwise.
+     */
+    private boolean checkTimeSpecified(String input) {
+        Pattern pattern = Pattern.compile(Constants.REGEX_TIME_FORMAT);
+        Matcher matcher = pattern.matcher(input);
+        return matcher.find();
+    }
+
+    /**
+     * This method converts a list of Dates to a list of LocalDateTimes.
+     *
+     * @param dateTimeList
+     *            the list of Date objects to be converted.
+     * @return a list of LocalDateTime objects.
+     */
+    private List<LocalDateTime> toLocalDateTime(List<Date> dateTimeList) {
         List<LocalDateTime> ldtList = new ArrayList<LocalDateTime>();
         for (Date d : dateTimeList) {
             ldtList.add(getLocalDateTimeFromDate(d));
         }
-
-        ldtList.forEach(System.out::println);
         return ldtList;
+    }
+
+    /**
+     * This method gets the type of the task depending on the format of the
+     * input.
+     *
+     * @param input
+     *            the date time string.
+     * @return a TaskType enum representing the task type of the input string.
+     */
+    private TaskType getTaskType(String input) {
+        if (input.matches(Constants.REGEX_EVENT_IDENTIFIER)) {
+            return TaskType.event;
+        } else if (input.matches(Constants.REGEX_DEADLINE_IDENTIFIER)) {
+            return TaskType.deadline;
+        } else if (input.matches(Constants.REGEX_POINT_TASK_IDENTIFIER)) {
+            return TaskType.point;
+        } else {
+            return TaskType.floating;
+        }
+    }
+
+    /**
+     * This method checks to see if the provided input matches a format out of
+     * all supported date time formats.
+     *
+     * @param input
+     *            the String to be checked.
+     * @return true if the String is in a valid date time format; false
+     *         otherwise.
+     */
+    private boolean isValidDateTime(String input) {
+        return input.matches(Constants.REGEX_DATE_TIME_IDENTIFIER);
     }
 
     /**
@@ -53,15 +191,28 @@ public class DateTimeParser {
      * zone is taken to be the one found in the system.
      *
      * @param d
-     *            a Date object
+     *          a Date object.
      * @return the LocalDateTime object formatted from the Date object.
      */
     public LocalDateTime getLocalDateTimeFromDate(Date d) {
         return LocalDateTime.ofInstant(d.toInstant(), Constants.ZONE_ID);
     }
 
-    public static void main(String[] args) {
+    /**
+     * This method sets the time of a LocalDateTime object to the time specified.
+     * @param dateTime
+     *          the LocalDateTime object which time is to be changed.
+     * @param time
+     *          the time to change to.
+     * @return a LocalDateTime object with time changed.
+     */
+    private LocalDateTime setTime(LocalDateTime dateTime, Constants.Time time) {
+        return dateTime.withHour(time.hour).withMinute(time.minutes)
+                .withSecond(time.seconds).withNano(time.nanoseconds);
+    }
+
+    public static void main(String[] args) throws Exception {
         DateTimeParser parser = DateTimeParser.getInstance();
-        System.out.println(parser.parseDateTime("12/23/1993"));
+        System.out.println(parser.parseDateTime("from 23rd jan to 25th feb"));
     }
 }

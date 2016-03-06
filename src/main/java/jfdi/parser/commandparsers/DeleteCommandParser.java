@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import jfdi.logic.commands.DeleteCommandStub;
 import jfdi.logic.interfaces.AbstractCommand;
 
-public class DeleteCommandParser extends CommandParser {
+public class DeleteCommandParser extends AbstractCommandParser {
 
     public static DeleteCommandParser instance;
 

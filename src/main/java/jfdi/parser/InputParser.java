@@ -7,11 +7,13 @@ import jfdi.logic.interfaces.AbstractCommand;
 import jfdi.parser.commandparsers.AddCommandParser;
 import jfdi.parser.commandparsers.DeleteCommandParser;
 import jfdi.parser.commandparsers.ListCommandParser;
+import jfdi.parser.commandparsers.RenameCommandParser;
+import jfdi.parser.commandparsers.RescheduleCommandParser;
 
 /**
  * The Parser class exposes the key API for the parser component.
  *
- * @author leona_000
+ * @author Leonard Hio
  *
  */
 public class InputParser implements IParser {
@@ -50,20 +52,16 @@ public class InputParser implements IParser {
                 return ListCommandParser.getInstance().build(input);
             case Constants.REGEX_DELETE:
                 return DeleteCommandParser.getInstance().build(input);
-                /*
-                 * case Constants.REGEX_EDIT: return
-                 * EditCommandParser.getInstance().build(input); case
-                 * Constants.REGEX_DELETE: return
-                 * DeleteCommandParser.getInstance().build(input);
-                 */
+            case Constants.REGEX_RENAME:
+                return RenameCommandParser.getInstance().build(input);
+            case Constants.REGEX_RESCHEDULE:
+                return RescheduleCommandParser.getInstance().build(input);
             default:
                 return AddCommandParser.getInstance().build(input);
         }
-
     }
 
     public List<String> getList(String[] array) {
         return Arrays.asList(array);
     }
 }
-

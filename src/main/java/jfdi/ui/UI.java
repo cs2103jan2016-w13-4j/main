@@ -10,10 +10,11 @@ public class UI implements IUserInterface {
     private static final String UI_MESSAGE_INITED = "Initialization Completed!";
     private static final String UI_MESSAGE_WELCOME = "J.F.D.I.: Hello! :) What can I do for you?";
     private static final String UI_MESSAGE_USERCMD = "You said: %1$s";
-//    private static final String UI_MESSAGE_RESPONSE = "J.F.D.I.: %1$s";
-//    private static final String UI_MESSAGE_WARNING = "Warning: %1$s";
+    //    private static final String UI_MESSAGE_RESPONSE = "J.F.D.I.: %1$s";
+    //    private static final String UI_MESSAGE_WARNING = "Warning: %1$s";
     private static final String UI_MESSAGE_QUIT = "Bye Bye! See you next time! :)";
 
+    private CommandHandler cmdHandler = new CommandHandler();
     private static EventBus eventBus = new EventBus();
 
     private MainController controller;
@@ -38,11 +39,7 @@ public class UI implements IUserInterface {
 
     @Override
     public void displayWelcome() {
-        // Create and display a default view
         showToUser(UI_MESSAGE_WELCOME);
-
-        // display default list
-
     }
 
     @Override
@@ -76,17 +73,20 @@ public class UI implements IUserInterface {
         System.out.println(string);
     }
 
+    private void prepareListener() {
+        eventBus.register(cmdHandler);
+    }
+
     private void doQuit() {
         showToUser(UI_MESSAGE_QUIT);
         System.exit(0);
     }
 
-    private void prepareListener() {
-        CommandHandler cmdHandler = new CommandHandler();
-        eventBus.register(cmdHandler);
-    }
-
     public static EventBus getEventBus() {
         return eventBus;
+    }
+
+    public CommandHandler getCmdHandler() {
+        return cmdHandler;
     }
 }

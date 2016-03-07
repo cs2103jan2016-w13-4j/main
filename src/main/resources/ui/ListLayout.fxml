@@ -52,9 +52,11 @@
 								<AnchorPane minHeight="0.0" minWidth="0.0"
 									prefHeight="577.0" prefWidth="451.0">
 									<children>
-										<TextField fx:id="txtAddItem" editable="false"
-											layoutX="-1.0" layoutY="-2.0" prefHeight="41.0" prefWidth="454.0"
-											text="IMPORTANT" />
+										<Label text="IMPORTANT">
+											<font>
+												<Font name="System Bold" size="12.0" />
+											</font>
+										</Label>
 										<ListView fx:id="listBoxMain" layoutX="-2.0" layoutY="38.0"
 											prefHeight="538.0" prefWidth="454.0" />
 									</children>

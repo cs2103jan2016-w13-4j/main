@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
@@ -16,7 +18,9 @@ public class MainController {
 
     public MainSetUp main;
     public IUserInterface ui;
+    public CommandHandler cmdHandler;
     public Stage mainStage;
+    public ObservableList<String> importantList;
 
     @FXML
     public TextField dayDisplayer;
@@ -25,7 +29,7 @@ public class MainController {
     @FXML
     public TextArea cmdArea;
     @FXML
-    private ListView<String> listBoxMain;
+    public ListView<String> listBoxMain;
     @FXML
     private TextField txtAddItem;
 
@@ -64,6 +68,10 @@ public class MainController {
         this.ui = ui;
     }
 
+    public void setCmdHandler(CommandHandler cmdHandler) {
+        this.cmdHandler = cmdHandler;
+    }
+
     public void setStage(Stage stage) {
         this.mainStage = stage;
     }
@@ -80,7 +88,9 @@ public class MainController {
     }
 
     private void initList() {
-
+        // need to replace "observableArrayList" with actual storage content
+        importantList = FXCollections.observableArrayList("Task 1", "Task 2", "Task 3", "Task 4");
+        listBoxMain.setItems(importantList);
     }
 
     private void initFbArea() {

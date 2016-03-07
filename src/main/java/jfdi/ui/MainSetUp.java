@@ -47,10 +47,8 @@ public class MainSetUp extends Application {
 
     private void loadFonts() {
         // Implement when team decides to specific font types that needs to be loaded
-        // Font font1 = Font.loadFont(Main.class.getResourceAsStream(
-        //                              <filepath e.g."resource/Oxygen regular.ttf">), <size>);
-        // Font font2 = Font.loadFont(Main.class.getResourceAsStream(
-        //                              <filepath e.g."resource/Oxygen regular.ttf">), <size>);
+        // Font font1 = Font.loadFont(Main.class.getResourceAsStream(<filepath>), <size>);
+        // Font font2 = Font.loadFont(Main.class.getResourceAsStream(<filepath>), <size>);
     }
 
     private void initRootLayout() throws IOException {
@@ -84,9 +82,10 @@ public class MainSetUp extends Application {
         ((BorderPane) rootLayout).setCenter(listLayout);
         controller.setStage(primaryStage);
 
-        // Link Controller with UI and Main (set up MainController Class first)
+        // Link Controller with UI, MainSetUp and CommandHandler
         controller.setUi(userInterface);
         controller.setMainApp(this);
+        controller.setCmdHandler(userInterface.getCmdHandler());
 
         // Link UI with Controller
         userInterface.setController(controller);

@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import jfdi.logic.interfaces.AbstractCommand;
+import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
 
 public abstract class AbstractCommandParser {
     protected String userInput;
 
-    public abstract AbstractCommand build(String input);
+    public abstract Command build(String input);
 
     protected List<String> getArguments(String input) {
         List<String> arguments = new ArrayList<String>();

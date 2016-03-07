@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.function.Consumer;
 
-import jfdi.logic.interfaces.AbstractCommand;
-import jfdi.storage.records.Task;
+import jfdi.logic.interfaces.Command;
+import jfdi.storage.data.TaskAttributes;
+import jfdi.storage.data.TaskDb;
 
 /**
  * @author Liu Xinan
  */
-public class DeleteCommandStub extends AbstractCommand {
+public class DeleteCommandStub extends Command {
 
     public enum ErrorType {
         NON_EXISTENT_TAG, UNKNOWN
@@ -20,7 +21,7 @@ public class DeleteCommandStub extends AbstractCommand {
     private static ArrayList<Consumer<DeleteCommandStub>> failureHooks = new ArrayList<>();
 
     private ArrayList<String> taskIds;
-    private Collection items = null;
+    private Collection<TaskAttributes> items = null;
     private ErrorType errorType = null;
 
     private DeleteCommandStub(Builder builder) {
@@ -46,7 +47,7 @@ public class DeleteCommandStub extends AbstractCommand {
      *
      * @return A Collection of Tasks resulted from the command.
      */
-    public Collection<Task> getItems() {
+    public Collection<TaskAttributes> getItems() {
         if (items == null) {
             throw new IllegalStateException("Command not yet executed!");
         }
@@ -66,7 +67,7 @@ public class DeleteCommandStub extends AbstractCommand {
     @Override
     public void execute() {
         if (taskIds.isEmpty()) {
-            items = Task.getAll();
+            items = TaskDb.getAll();
             onSuccess();
         } else {
             // TODO: Add filtering when Task supports that.

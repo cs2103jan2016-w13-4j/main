@@ -36,7 +36,6 @@ public class Constants {
     public static final String REGEX_TASKID = "\\b\\d+\\b";
 
     // Date and Time related Regex Strings
-
     public static final String REGEX_DAYS_NUMERIC = "((?i)0?[1-9]|[12][\\d]|3[01])(st|th|nd|rd)?";
     public static final String REGEX_DAYS_TEXTUAL = "((?i)(mon)(day)?|"
             + "(tue)(sday)?|" + "(wed)(nesday)?|" + "(thu)(rsday)?|"
@@ -56,7 +55,9 @@ public class Constants {
     public static final String REGEX_RELATIVE_DATE_2 = "(?i)((next |this )?("
             + REGEX_DATE_ATTRIBUTES + "|" + REGEX_DAYS_TEXTUAL + "))";
     public static final String REGEX_RELATIVE_DATE_3 = "(\\d+ "
-            + REGEX_DATE_ATTRIBUTES + " (?i)(later|before|after))";
+            + REGEX_DATE_ATTRIBUTES + " (?i)(later|before|after|from now))";
+    
+    public static final String REGEX_RELATIVE_DATE = "(" + REGEX_RELATIVE_DATE_1 + "|" + REGEX_RELATIVE_DATE_2 + "|" + REGEX_RELATIVE_DATE_3 + ")";
 
     public static final String REGEX_ABSOLUTE_DATE_DDMMYYYY = REGEX_DAYS_NUMERIC
             + "[-./]?" + REGEX_MONTHS_NUMERIC + "[-./]?" + REGEX_YEARS + "?";
@@ -149,6 +150,6 @@ public class Constants {
     public static void main(String[] args) {
         Pattern pat = Pattern.compile(REGEX_DATE_TIME_IDENTIFIER);
         Matcher mat = pat.matcher("");
-        System.out.println("9pm".matches(REGEX_TIME_FORMAT));
+        System.out.println("4 weeks from now".matches(REGEX_RELATIVE_DATE));
     }
 }

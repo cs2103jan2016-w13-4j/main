@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import jfdi.storage.Constants;
-import jfdi.storage.FileStorage;
+import jfdi.storage.MainStorage;
 import jfdi.storage.exceptions.ExistingFilesFoundException;
 
 import org.apache.commons.io.FileUtils;
@@ -21,11 +21,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class FileStorageTest {
+public class MainStorageTest {
 
     private static Path testDirectoryRoot = null;
 
-    private FileStorage fileStorageInstance = null;
+    private MainStorage mainStorageInstance = null;
     private Path testDirectoryPath = null;
     private File testDirectoryFile = null;
     private String testDirectoryString = null;
@@ -43,7 +43,7 @@ public class FileStorageTest {
 
     @Before
     public void setUp() throws Exception {
-        fileStorageInstance = FileStorage.getInstance();
+        mainStorageInstance = MainStorage.getInstance();
         testDirectoryPath = Paths.get(testDirectoryRoot.toString(), Constants.TEST_DIRECTORY_NAME);
         testDirectoryFile = testDirectoryPath.toFile();
         testDirectoryString = testDirectoryFile.getAbsolutePath();
@@ -52,7 +52,7 @@ public class FileStorageTest {
 
     @After
     public void tearDown() throws Exception {
-        fileStorageInstance.removeInstance();
+        mainStorageInstance.removeInstance();
         if (testDirectoryFile.exists()) {
             FileUtils.deleteDirectory(testDirectoryFile);
         }
@@ -60,18 +60,18 @@ public class FileStorageTest {
 
     @Test
     public void testGetInstance() {
-        // Test the ability to get an instance of FileStorage in setUp()
-        assertTrue(fileStorageInstance instanceof FileStorage);
+        // Test the ability to get an instance of MainStorage in setUp()
+        assertTrue(mainStorageInstance instanceof MainStorage);
 
         // Make sure that getInstance returns the same instance in every call
-        FileStorage fileStorageInstance2 = FileStorage.getInstance();
-        assertSame(fileStorageInstance, fileStorageInstance2);
+        MainStorage mainStorageInstance2 = MainStorage.getInstance();
+        assertSame(mainStorageInstance, mainStorageInstance2);
     }
 
     @Test
     public void testSuccessfulLoad() {
         try {
-            fileStorageInstance.load(testDirectoryString);
+            mainStorageInstance.load(testDirectoryString);
 
             // Assert test folder exists after a successful load
             assertTrue(testDirectoryFile.exists());
@@ -89,7 +89,7 @@ public class FileStorageTest {
         createValidDataFiles();
 
         try {
-            fileStorageInstance.load(testDirectoryString);
+            mainStorageInstance.load(testDirectoryString);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -98,12 +98,12 @@ public class FileStorageTest {
     @Test(expected = ExistingFilesFoundException.class)
     public void testLoadInvalidExistingFiles() throws Exception {
         createInvalidDataFiles();
-        fileStorageInstance.load(testDirectoryString);
+        mainStorageInstance.load(testDirectoryString);
     }
 
     @Test(expected = IllegalAccessException.class)
     public void testChangeDirectoryBeforeLoad() throws Exception {
-        fileStorageInstance.changeDirectory(testDirectoryString);
+        mainStorageInstance.changeDirectory(testDirectoryString);
     }
 
     @Test(expected = ExistingFilesFoundException.class)
@@ -112,7 +112,7 @@ public class FileStorageTest {
         Path subdirectoryPath = Paths.get(testDirectoryString, Constants.TEST_SUBDIRECTORY_NAME);
         String subdirectoryString = subdirectoryPath.toString();
         TestHelper.createInvalidDataFiles(subdirectoryString);
-        fileStorageInstance.changeDirectory(subdirectoryString);
+        mainStorageInstance.changeDirectory(subdirectoryString);
     }
 
     @Test
@@ -122,7 +122,7 @@ public class FileStorageTest {
         String subdirectoryString = subdirectoryPath.toString();
         TestHelper.createValidDataFiles(subdirectoryString);
         try {
-            fileStorageInstance.changeDirectory(subdirectoryString);
+            mainStorageInstance.changeDirectory(subdirectoryString);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -134,7 +134,7 @@ public class FileStorageTest {
         Path subdirectoryPath = Paths.get(testDirectoryString, Constants.TEST_SUBDIRECTORY_NAME);
         String subdirectoryString = subdirectoryPath.toString();
         try {
-            fileStorageInstance.changeDirectory(subdirectoryString);
+            mainStorageInstance.changeDirectory(subdirectoryString);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -145,7 +145,7 @@ public class FileStorageTest {
      */
     private void initializeStorage() {
         try {
-            fileStorageInstance.load(testDirectoryString);
+            mainStorageInstance.load(testDirectoryString);
         } catch (Exception e) {
             e.printStackTrace();
         }

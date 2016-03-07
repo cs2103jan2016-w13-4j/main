@@ -1,7 +1,7 @@
 package jfdi.logic.commands;
 
 import jfdi.CoverageIgnore;
-import jfdi.logic.interfaces.AbstractCommand;
+import jfdi.logic.interfaces.Command;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 /**
  * @author Liu Xinan
  */
-public class InvalidCommand extends AbstractCommand {
+public class InvalidCommand extends Command {
 
     private static ArrayList<Consumer<InvalidCommand>> successHooks = new ArrayList<>();
     private static ArrayList<Consumer<InvalidCommand>> failureHooks = new ArrayList<>();

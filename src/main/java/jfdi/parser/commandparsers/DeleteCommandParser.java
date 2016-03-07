@@ -3,7 +3,8 @@ package jfdi.parser.commandparsers;
 import java.util.ArrayList;
 
 import jfdi.logic.commands.DeleteCommandStub;
-import jfdi.logic.interfaces.AbstractCommand;
+import jfdi.logic.interfaces.Command;
+import jfdi.parser.Constants;
 
 public class DeleteCommandParser extends AbstractCommandParser {
 
@@ -28,7 +29,7 @@ public class DeleteCommandParser extends AbstractCommandParser {
      *
      */
     @Override
-    public AbstractCommand build(String input) {
+    public Command build(String input) {
         DeleteCommandStub.Builder deleteCommandBuilder = new DeleteCommandStub.Builder();
         ArrayList<String> taskIds = getTaskIds(input);
         deleteCommandBuilder.addTaskIds(taskIds);

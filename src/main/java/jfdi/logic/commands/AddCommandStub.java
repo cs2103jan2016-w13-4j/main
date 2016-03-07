@@ -6,12 +6,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
-import jfdi.logic.interfaces.AbstractCommand;
+import jfdi.logic.interfaces.Command;
+import jfdi.storage.data.TaskAttributes;
+import jfdi.storage.data.TaskDb;
 
 /**
  * @author Leonard Hio
  */
-public class AddCommandStub extends AbstractCommand {
+public class AddCommandStub extends Command {
 
     private String description;
     private Optional<LocalDateTime> startDateTime;

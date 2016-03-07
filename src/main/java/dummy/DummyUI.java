@@ -22,9 +22,8 @@ import jfdi.ui.UserInterface;
  *
  * @author Liu Xinan
  */
-//CHECKSTYLE:OFF
 public class DummyUI {
-    //CHECKSTYLE:ON
+
     private static EventBus eventBus = UserInterface.getEventBus();
 
     //=============================================================
@@ -81,16 +80,16 @@ public class DummyUI {
     @Subscribe
     public void handleDeleteTaskDoneEvent(DeleteTaskDoneEvent e) {
         String list = e.getDeletedIds().stream()
-                .map(Object::toString)
-                .collect(Collectors.joining(", "));
+            .map(Object::toString)
+            .collect(Collectors.joining(", "));
         System.out.printf("Task%s deleted: %s\n", list.length() == 1 ? "" : "s", list);
     }
 
     @Subscribe
     public void handleDeleteTaskFailEvent(DeleteTaskFailEvent e) {
         String list = e.getInvalidIds().stream()
-                .map(Object::toString)
-                .collect(Collectors.joining(", "));
+            .map(Object::toString)
+            .collect(Collectors.joining(", "));
         System.out.printf("Invalid task id%s: %s\n", list.length() == 1 ? "" : "s", list);
     }
 
@@ -101,6 +100,8 @@ public class DummyUI {
         cc.handleInput("list tag1 tag2");
         cc.handleInput("lol");
         cc.handleInput("add OMG");
+        cc.handleInput("list");
+        cc.handleInput("rename 1 LOL");
         cc.handleInput("list");
         cc.handleInput("delete 1 2 3");
         cc.handleInput("exit");

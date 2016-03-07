@@ -1,10 +1,6 @@
 package dummy;
 
-import jfdi.logic.commands.AddTaskCommand;
-import jfdi.logic.commands.DeleteTaskCommand;
-import jfdi.logic.commands.ExitCommand;
-import jfdi.logic.commands.InvalidCommand;
-import jfdi.logic.commands.ListCommand;
+import jfdi.logic.commands.*;
 import jfdi.logic.interfaces.Command;
 
 /**
@@ -44,6 +40,11 @@ public class DummyParser {
                     deleteCommandBuilder.addId(Integer.parseInt(parts[i]));
                 }
                 return deleteCommandBuilder.build();
+            case "rename":
+                return new RenameTaskCommand.Builder()
+                    .setId(Integer.parseInt(parts[1]))
+                    .setDescription(parts[2])
+                    .build();
             default:
                 return new InvalidCommand.Builder().setInputString(input).build();
         }

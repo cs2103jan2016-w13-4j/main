@@ -1,9 +1,11 @@
 package jfdi.logic;
 
+import com.google.common.eventbus.EventBus;
 import dummy.DummyParser;
 import jfdi.logic.interfaces.Command;
 import jfdi.logic.interfaces.ILogic;
-import jfdi.ui.EventBus;
+import jfdi.storage.MainStorage;
+import jfdi.storage.exceptions.ExistingFilesFoundException;
 
 /**
  * @author Liu Xinan
@@ -11,10 +13,16 @@ import jfdi.ui.EventBus;
 public class ControlCenter implements ILogic {
 
     private static ControlCenter ourInstance = new ControlCenter();
+    
+    private static EventBus eventBus = new EventBus();
 
-    private static final EventBus eventBus = new EventBus();
 
     private ControlCenter() {
+        try {
+            MainStorage.getInstance().load("./user_data");
+        } catch (ExistingFilesFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public static ControlCenter getInstance() {

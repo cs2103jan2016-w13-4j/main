@@ -79,14 +79,12 @@ public class DeleteCommandStub extends Command {
         }
     }
 
-    @Override
     protected void onSuccess() {
         for (Consumer<DeleteCommandStub> hook : successHooks) {
             hook.accept(this);
         }
     }
 
-    @Override
     protected void onFailure() {
         for (Consumer<DeleteCommandStub> hook : failureHooks) {
             hook.accept(this);

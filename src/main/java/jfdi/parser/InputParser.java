@@ -26,6 +26,7 @@ public class InputParser implements IParser {
         return parserInstance;
     }
 
+    @Override
     public Command parse(String input) {
         List<String> userArguments = getUserArgumentsFromInput(input);
         String userActionAsString = getActionAsString(userArguments);
@@ -45,19 +46,18 @@ public class InputParser implements IParser {
     }
 
     private Command getCommand(String userActionAsString, String input) {
-        switch (userActionAsString) {
-            case Constants.REGEX_ADD:
-                return AddCommandParser.getInstance().build(input);
-            case Constants.REGEX_LIST:
-                return ListCommandParser.getInstance().build(input);
-            case Constants.REGEX_DELETE:
-                return DeleteCommandParser.getInstance().build(input);
-            case Constants.REGEX_RENAME:
-                return RenameCommandParser.getInstance().build(input);
-            case Constants.REGEX_RESCHEDULE:
-                return RescheduleCommandParser.getInstance().build(input);
-            default:
-                return AddCommandParser.getInstance().build(input);
+        if (userActionAsString.matches(Constants.REGEX_ADD)) {
+            return AddCommandParser.getInstance().build(input);
+        } else if (userActionAsString.matches(Constants.REGEX_LIST)) {
+            return ListCommandParser.getInstance().build(input);
+        } else if (userActionAsString.matches(Constants.REGEX_DELETE)) {
+            return DeleteCommandParser.getInstance().build(input);
+        } else if (userActionAsString.matches(Constants.REGEX_RENAME)) {
+            return RenameCommandParser.getInstance().build(input);
+        } else if (userActionAsString.matches(Constants.REGEX_RESCHEDULE)) {
+            return RescheduleCommandParser.getInstance().build(input);
+        } else {
+            return AddCommandParser.getInstance().build(input);
         }
     }
 

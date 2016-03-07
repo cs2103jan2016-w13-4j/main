@@ -2,9 +2,8 @@ package jfdi.parser.commandparsers;
 
 import java.util.ArrayList;
 
-import jfdi.logic.commands.DeleteCommandStub;
-import jfdi.logic.interfaces.Command;
-import jfdi.parser.Constants;
+import jfdi.logic.commands.DeleteTaskCommand;
+import jfdi.logic.commands.DeleteTaskCommand.Builder;
 
 public class DeleteCommandParser extends AbstractCommandParser {
 
@@ -27,13 +26,17 @@ public class DeleteCommandParser extends AbstractCommandParser {
      * specfied for deletion by the user and passing it into the command
      * builder.
      *
+     * @param input
+     *          the user input, representing a delete command.
+     * @return a DeleteTaskCommand object.
+     *
      */
     @Override
-    public Command build(String input) {
-        DeleteCommandStub.Builder deleteCommandBuilder = new DeleteCommandStub.Builder();
-        ArrayList<String> taskIds = getTaskIds(input);
-        deleteCommandBuilder.addTaskIds(taskIds);
-        DeleteCommandStub deleteCommand = deleteCommandBuilder.build();
+    public DeleteTaskCommand build(String input) {
+        Builder deleteCommandBuilder = new Builder();
+        ArrayList<Integer> taskIds = getTaskIds(input);
+        deleteCommandBuilder.addIds(taskIds);
+        DeleteTaskCommand deleteCommand = deleteCommandBuilder.build();
         return deleteCommand;
     }
 

@@ -1,11 +1,13 @@
 package jfdi.parser.commandparsers;
 
-import jfdi.logic.commands.RenameCommandStub;
-import jfdi.logic.commands.RenameCommandStub.Builder;
-import jfdi.parser.Constants;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import jfdi.logic.commands.RenameTaskCommand;
+import jfdi.logic.commands.RenameTaskCommand.Builder;
+import jfdi.logic.interfaces.Command;
+import jfdi.parser.Constants;
+import jfdi.parser.exceptions.NoTaskIdFoundException;
 
 /**
  * The RenameCommandParser class is used to parse user input String that
@@ -37,18 +39,22 @@ public class RenameCommandParser extends AbstractEditCommandParser {
      * information into a RenameCommand object.
      */
     @Override
-    public RenameCommandStub build(String input) {
-        RenameCommandStub.Builder renameCommandBuilder = new RenameCommandStub.Builder();
+    public Command build(String input) {
+        String originalInput = input;
+        Builder renameCommandBuilder = new Builder();
         // Remove the rename command identifier.
         input = removeFirstWord(input);
-        input = setAndRemoveTaskId(input, renameCommandBuilder);
-
+        try {
+            input = setAndRemoveTaskId(input, renameCommandBuilder);
+        } catch (NoTaskIdFoundException e) {
+            return createInvalidCommand(Constants.CommandType.rename,
+                    originalInput);
+        }
         setTaskDescription(input, renameCommandBuilder);
 
-        RenameCommandStub renameCommand = renameCommandBuilder.build();
+        RenameTaskCommand renameCommand = renameCommandBuilder.build();
         return renameCommand;
     }
-
 
     /**
      * This method finds the task ID (if any) in the input, removes it from the
@@ -64,23 +70,22 @@ public class RenameCommandParser extends AbstractEditCommandParser {
      *            the rename command object builder.
      * @return the input String, without the task ID.
      */
-    protected String setAndRemoveTaskId(String input, Builder builder) {
+    protected String setAndRemoveTaskId(String input, Builder builder)
+            throws NoTaskIdFoundException {
         Pattern taskIdPattern = Pattern.compile(Constants.REGEX_TASKID);
         Matcher taskIdMatcher = taskIdPattern.matcher(input);
 
         // If the input is empty, or the matcher is unable to find a task ID,
-        // then effectively the user input
-        // does not contain a task ID
+        // then effectively the user input does not contain a task ID
         if (!taskIdMatcher.find() || input.isEmpty()) {
-            builder.addTaskId(null);
+            throw new NoTaskIdFoundException(input);
         } else {
             assert taskIdMatcher.start() == 0;
             // The task ID for all rename command inputs should be the first
-            // instance of
-            // all task ID instances found.
+            // instance of all task ID instances found.
             String taskId = getTrimmedSubstringInRange(input,
                     taskIdMatcher.start(), taskIdMatcher.end());
-            builder.addTaskId(taskId);
+            builder.setId(toInteger(taskId));
 
             // Remove the task ID from the input
             input = getTrimmedSubstringInRange(input, taskIdMatcher.end(),
@@ -100,7 +105,7 @@ public class RenameCommandParser extends AbstractEditCommandParser {
      * @return the task description. This can be an empty String.
      */
     private String setTaskDescription(String input, Builder builder) {
-        builder.addTaskDescription(input);
+        builder.setDescription(input);
         return input;
     }
 }

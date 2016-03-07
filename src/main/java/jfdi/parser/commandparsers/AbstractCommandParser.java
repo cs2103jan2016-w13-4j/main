@@ -6,8 +6,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jfdi.logic.commands.InvalidCommand;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
+import jfdi.parser.Constants.CommandType;
 
 public abstract class AbstractCommandParser {
     protected String userInput;
@@ -48,18 +50,29 @@ public abstract class AbstractCommandParser {
      * @return an ArrayList of task IDs, all Strings. If no task IDs can be
      *         found, an empty ArrayList is returned.
      */
-    protected ArrayList<String> getTaskIds(String input) {
+    protected ArrayList<Integer> getTaskIds(String input) {
         Pattern pattern = Pattern.compile(Constants.REGEX_TASKID);
         Matcher matcher = pattern.matcher(input);
-        ArrayList<String> taskIds = new ArrayList<>();
+        ArrayList<Integer> taskIds = new ArrayList<>();
 
         while (matcher.find()) {
             String taskId = getTrimmedSubstringInRange(input, matcher.start(),
                     matcher.end());
-            taskIds.add(taskId);
+            taskIds.add(toInteger(taskId));
         }
 
         return taskIds;
+    }
+
+    /**
+     * This method converts a String object to an Integer.
+     *
+     * @param toInt
+     *            a String that is to be converted to an Integer.
+     * @return an Integer representation of the String.
+     */
+    protected Integer toInteger(String toInt) {
+        return Integer.parseInt(toInt);
     }
 
     /**
@@ -79,5 +92,26 @@ public abstract class AbstractCommandParser {
         } else {
             return splitInput[1];
         }
+    }
+
+    /**
+     * This method builds an InvalidCommand object. An InvalidCommand object has
+     * to be built whenever a user inputs a String that cannot be parsed by the
+     * parser for whatever reason.
+     *
+     * @param commandType
+     *            the command type specified in the user's input.
+     * @param inputString
+     *            the actual input of the user.
+     * @return an InvalidCommand object, containing the command type of the
+     *         invalid user's input, and the user's input itself.
+     */
+    protected InvalidCommand createInvalidCommand(CommandType commandType,
+            String inputString) {
+        InvalidCommand.Builder invalidCommandBuilder = new InvalidCommand.Builder();
+        invalidCommandBuilder.setInputString(inputString);
+        invalidCommandBuilder.setCommandType(commandType);
+
+        return invalidCommandBuilder.build();
     }
 }

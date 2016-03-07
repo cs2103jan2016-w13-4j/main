@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import jfdi.logic.commands.RescheduleCommandStub;
-import jfdi.logic.commands.RescheduleCommandStub.Builder;
+import jfdi.logic.commands.RescheduleTaskCommand.Builder;
+import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
 import jfdi.parser.DateTimeObject;
 import jfdi.parser.DateTimeParser;
+import jfdi.parser.exceptions.NoTaskIdFoundException;
 
 /**
  * The RenameCommandParser class is used to parse user input String that
@@ -40,16 +41,21 @@ public class RescheduleCommandParser extends AbstractEditCommandParser {
      * information into a RenameCommand object.
      */
     @Override
-    public RescheduleCommandStub build(String input) {
-        RescheduleCommandStub.Builder rescheduleCommandBuilder = new RescheduleCommandStub.Builder();
+    public Command build(String input) {
+        String originalInput = input;
+        Builder rescheduleCommandBuilder = new Builder();
         // Remove the rename command identifier.
         input = removeFirstWord(input);
-        input = setAndRemoveTaskId(input, rescheduleCommandBuilder);
+        try {
+            input = setAndRemoveTaskId(input, rescheduleCommandBuilder);
+        } catch (NoTaskIdFoundException e) {
+            return createInvalidCommand(Constants.CommandType.reschedule,
+                    originalInput);
+        }
 
         setTaskDateTime(input, rescheduleCommandBuilder);
 
-        RescheduleCommandStub rescheduleCommand = rescheduleCommandBuilder
-                .build();
+        Command rescheduleCommand = rescheduleCommandBuilder.build();
         return rescheduleCommand;
     }
 
@@ -64,11 +70,11 @@ public class RescheduleCommandParser extends AbstractEditCommandParser {
      * @param input
      *            the user input String.
      * @param rescheduleCommandBuilder
-     *            the rename command object builder.
+     *            the reschedule command object builder.
      * @return the input String, without the task ID.
      */
     protected String setAndRemoveTaskId(String input,
-            Builder rescheduleCommandBuilder) {
+            Builder rescheduleCommandBuilder) throws NoTaskIdFoundException {
         Pattern taskIdPattern = Pattern.compile(Constants.REGEX_TASKID);
         Matcher taskIdMatcher = taskIdPattern.matcher(input);
 
@@ -76,7 +82,7 @@ public class RescheduleCommandParser extends AbstractEditCommandParser {
         // then effectively the user input
         // does not contain a task ID
         if (!taskIdMatcher.find() || input.isEmpty()) {
-            rescheduleCommandBuilder.setTaskId(null);
+            throw new NoTaskIdFoundException(input);
         } else {
             assert taskIdMatcher.start() == 0;
             // The task ID for all rename command inputs should be the first
@@ -84,7 +90,7 @@ public class RescheduleCommandParser extends AbstractEditCommandParser {
             // all task ID instances found.
             String taskId = getTrimmedSubstringInRange(input,
                     taskIdMatcher.start(), taskIdMatcher.end());
-            rescheduleCommandBuilder.setTaskId(taskId);
+            rescheduleCommandBuilder.setId(toInteger(taskId));
 
             // Remove the task ID from the input
             input = getTrimmedSubstringInRange(input, taskIdMatcher.end(),
@@ -124,7 +130,6 @@ public class RescheduleCommandParser extends AbstractEditCommandParser {
                 input);
         builder.setStartDateTime(dateTime.getStartDateTime());
         builder.setEndDateTime(dateTime.getEndDateTime());
-        builder.setIsTimeSpecified(dateTime.isTimeSpecified());
 
         return input;
     }

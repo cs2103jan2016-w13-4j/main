@@ -56,8 +56,10 @@ public class Constants {
             + REGEX_DATE_ATTRIBUTES + "|" + REGEX_DAYS_TEXTUAL + "))";
     public static final String REGEX_RELATIVE_DATE_3 = "(\\d+ "
             + REGEX_DATE_ATTRIBUTES + " (?i)(later|before|after|from now))";
-    
-    public static final String REGEX_RELATIVE_DATE = "(" + REGEX_RELATIVE_DATE_1 + "|" + REGEX_RELATIVE_DATE_2 + "|" + REGEX_RELATIVE_DATE_3 + ")";
+
+    public static final String REGEX_RELATIVE_DATE = "("
+            + REGEX_RELATIVE_DATE_1 + "|" + REGEX_RELATIVE_DATE_2 + "|"
+            + REGEX_RELATIVE_DATE_3 + ")";
 
     public static final String REGEX_ABSOLUTE_DATE_DDMMYYYY = REGEX_DAYS_NUMERIC
             + "[-./]?" + REGEX_MONTHS_NUMERIC + "[-./]?" + REGEX_YEARS + "?";
@@ -97,6 +99,11 @@ public class Constants {
     // A task can be any one of these task types
     public enum TaskType {
         floating, deadline, event, point, repeated;
+    }
+
+    // An enum containing all the commands available to the user
+    public enum CommandType {
+        add, delete, rename, reschedule, list, view, invalid;
     }
 
     public static final int INDEX_ACTION = 0;

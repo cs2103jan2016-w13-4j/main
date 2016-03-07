@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import jfdi.logic.commands.AddCommandStub;
-import jfdi.logic.commands.AddCommandStub.Builder;
+import jfdi.logic.commands.AddTaskCommand;
+import jfdi.logic.commands.AddTaskCommand.Builder;
 import jfdi.parser.Constants;
 import jfdi.parser.DateTimeObject;
 import jfdi.parser.DateTimeParser;
@@ -37,20 +37,22 @@ public class AddCommandParser extends AbstractCommandParser {
 
     @Override
     /**
-     * To build the add command, we traverse from the back, retrieving the tags
-     * first, then the date time identifiers if present, then the task description.
+     * This method parses the user input (representing an add command) and builds the
+     * AddTaskCommand object. To build the add command, we traverse from the back,
+     * retrieving the tags first, then the date time identifiers if present, then the
+     * task description.
      *
      * @param input
      *            the user input String
-     * @return the AddTaskCommand.
+     * @return the AddTaskCommand object encapsulating the details of the add command.
      */
-    public AddCommandStub build(String input) {
+    public AddTaskCommand build(String input) {
         Builder addCommandBuilder = new Builder();
         input = setAndRemoveTags(input, addCommandBuilder);
         input = setAndRemoveDateTime(input, addCommandBuilder);
         setDescription(input, addCommandBuilder);
 
-        AddCommandStub addCommand = addCommandBuilder.build();
+        AddTaskCommand addCommand = addCommandBuilder.build();
         return addCommand;
     }
 
@@ -119,7 +121,6 @@ public class AddCommandParser extends AbstractCommandParser {
                     .parseDateTime(dateTimeIdentifier);
             builder.setStartDateTime(dateTime.getStartDateTime());
             builder.setEndDateTime(dateTime.getEndDateTime());
-            builder.setIsTimeSpecified(dateTime.isTimeSpecified());
         }
 
         return input;

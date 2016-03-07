@@ -28,6 +28,8 @@ public class CommandHandler {
                 break;
             case UNKNOWN:
                 System.out.println("Unknown error occurred.");
+                break;
+            default: break;
         }
     }
 
@@ -52,6 +54,8 @@ public class CommandHandler {
         switch (e.getError()) {
             case UNKNOWN:
                 System.out.println("Some stupid error occurred.");
+                break;
+            default: break;
         }
     }
 }

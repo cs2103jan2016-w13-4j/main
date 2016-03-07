@@ -16,7 +16,7 @@ public class UI implements IUserInterface {
     private static final String UI_MESSAGE_WARNING = "Warning: %1$s";
     private static final String UI_MESSAGE_QUIT = "Bye Bye! See you next time! :)";
 
-    private static final EventBus eventBus = new EventBus();
+    private static EventBus eventBus = new EventBus();
 
     private MainController controller;
 

@@ -29,8 +29,6 @@ public class Constants {
     public static final String REGEX_DELETE = "(?i)^(delete)";
 
     // Task related Regex Strings
-    // Tags are always appended to the end of any input, hence the boundary
-    // condition $
     public static final String REGEX_TAGS = "\\+\\w+";
     // A taskID is simply an integer
     public static final String REGEX_TASKID = "\\b\\d+\\b";
@@ -70,7 +68,7 @@ public class Constants {
     // related Regex Strings)
     public static final String REGEX_DATE_FORMAT = "("
             + REGEX_ABSOLUTE_DATE_DDMMYYYY + "|"
-            + REGEX_ABSOLUTE_DATE_DDMONTHYYYY + ")";
+            + REGEX_ABSOLUTE_DATE_DDMONTHYYYY + "|" + REGEX_RELATIVE_DATE + ")";
     public static final String REGEX_TIME_FORMAT = "(" + REGEX_TIME_MILITARY
             + "|" + REGEX_TIME_NORMAL + ")";
     public static final String REGEX_DATE_TIME_FORMAT = "(("
@@ -157,6 +155,7 @@ public class Constants {
     public static void main(String[] args) {
         Pattern pat = Pattern.compile(REGEX_DATE_TIME_IDENTIFIER);
         Matcher mat = pat.matcher("");
-        System.out.println("4 weeks from now".matches(REGEX_RELATIVE_DATE));
+        System.out.println("from next week to tomorrow"
+                .matches(REGEX_DATE_TIME_IDENTIFIER));
     }
 }

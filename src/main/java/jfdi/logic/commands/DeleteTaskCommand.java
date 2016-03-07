@@ -44,8 +44,8 @@ public class DeleteTaskCommand extends Command {
     @Override
     public void execute() {
         ArrayList<Integer> invalidIds = taskIds.stream()
-            .filter(id -> !TaskDb.hasId(id))
-            .collect(Collectors.toCollection(ArrayList::new));
+                .filter(id -> !TaskDb.hasId(id))
+                .collect(Collectors.toCollection(ArrayList::new));
 
         if (invalidIds.isEmpty()) {
             taskIds.forEach(id -> {

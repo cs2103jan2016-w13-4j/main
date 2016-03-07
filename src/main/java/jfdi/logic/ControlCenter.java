@@ -5,7 +5,6 @@ import dummy.DummyParser;
 import jfdi.logic.interfaces.Command;
 import jfdi.logic.interfaces.ILogic;
 import jfdi.storage.MainStorage;
-import jfdi.storage.data.TaskDb;
 import jfdi.storage.exceptions.ExistingFilesFoundException;
 
 /**
@@ -15,7 +14,7 @@ public class ControlCenter implements ILogic {
 
     private static ControlCenter ourInstance = new ControlCenter();
 
-    private static final EventBus eventBus = new EventBus();
+    private static EventBus eventBus = new EventBus();
 
     private ControlCenter() {
         try {

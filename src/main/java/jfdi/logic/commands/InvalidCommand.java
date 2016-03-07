@@ -1,11 +1,7 @@
 package jfdi.logic.commands;
 
-import jfdi.CoverageIgnore;
 import jfdi.logic.events.InvalidCommandEvent;
 import jfdi.logic.interfaces.Command;
-
-import java.util.ArrayList;
-import java.util.function.Consumer;
 
 /**
  * @author Liu Xinan

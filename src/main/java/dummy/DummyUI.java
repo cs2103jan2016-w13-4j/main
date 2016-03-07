@@ -3,7 +3,14 @@ package dummy;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import jfdi.logic.ControlCenter;
-import jfdi.logic.events.*;
+import jfdi.logic.events.AddTaskDoneEvent;
+import jfdi.logic.events.AddTaskFailEvent;
+import jfdi.logic.events.DeleteTaskDoneEvent;
+import jfdi.logic.events.DeleteTaskFailEvent;
+import jfdi.logic.events.ExitCalledEvent;
+import jfdi.logic.events.InvalidCommandEvent;
+import jfdi.logic.events.ListDoneEvent;
+import jfdi.logic.events.ListFailEvent;
 import jfdi.storage.data.TaskAttributes;
 
 import java.util.stream.Collectors;
@@ -13,9 +20,10 @@ import java.util.stream.Collectors;
  *
  * @author Liu Xinan
  */
+//CHECKSTYLE:OFF
 public class DummyUI {
-
-    private static final EventBus eventBus = ControlCenter.getEventBus();
+//CHECKSTYLE:ON
+    private static EventBus eventBus = ControlCenter.getEventBus();
 
     //=============================================================
     // You can put all event handlers in a single class,
@@ -37,6 +45,8 @@ public class DummyUI {
                 break;
             case UNKNOWN:
                 System.out.println("Unknown error occurred.");
+                break;
+            default: break;
         }
     }
 
@@ -61,22 +71,24 @@ public class DummyUI {
         switch (e.getError()) {
             case UNKNOWN:
                 System.out.println("Some stupid error occurred.");
+                break;
+            default: break;
         }
     }
 
     @Subscribe
     public void handleDeleteTaskDoneEvent(DeleteTaskDoneEvent e) {
         String list = e.getDeletedIds().stream()
-            .map(Object::toString)
-            .collect(Collectors.joining(", "));
+                .map(Object::toString)
+                .collect(Collectors.joining(", "));
         System.out.printf("Task%s deleted: %s\n", list.length() == 1 ? "" : "s", list);
     }
 
     @Subscribe
     public void handleDeleteTaskFailEvent(DeleteTaskFailEvent e) {
         String list = e.getInvalidIds().stream()
-            .map(Object::toString)
-            .collect(Collectors.joining(", "));
+                .map(Object::toString)
+                .collect(Collectors.joining(", "));
         System.out.printf("Invalid task id%s: %s\n", list.length() == 1 ? "" : "s", list);
     }
 

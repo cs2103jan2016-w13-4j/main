@@ -6,6 +6,8 @@ import jfdi.logic.ControlCenter;
 import jfdi.logic.events.*;
 import jfdi.storage.data.TaskAttributes;
 
+import java.util.stream.Collectors;
+
 /**
  * Example of using EventBus and Commands
  *
@@ -62,6 +64,22 @@ public class DummyUI {
         }
     }
 
+    @Subscribe
+    public void handleDeleteTaskDoneEvent(DeleteTaskDoneEvent e) {
+        String list = e.getDeletedIds().stream()
+            .map(Object::toString)
+            .collect(Collectors.joining(", "));
+        System.out.printf("Task%s deleted: %s\n", list.length() == 1 ? "" : "s", list);
+    }
+
+    @Subscribe
+    public void handleDeleteTaskFailEvent(DeleteTaskFailEvent e) {
+        String list = e.getInvalidIds().stream()
+            .map(Object::toString)
+            .collect(Collectors.joining(", "));
+        System.out.printf("Invalid task id%s: %s\n", list.length() == 1 ? "" : "s", list);
+    }
+
     public static void main(String[] args) {
         DummyUI ui = new DummyUI();
         eventBus.register(ui);
@@ -70,6 +88,7 @@ public class DummyUI {
         cc.handleInput("lol");
         cc.handleInput("add OMG");
         cc.handleInput("list");
+        cc.handleInput("delete 1 2 3");
         cc.handleInput("exit");
     }
 

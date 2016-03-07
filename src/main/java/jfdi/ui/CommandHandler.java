@@ -1,6 +1,15 @@
 package jfdi.ui;
 
+import com.google.common.eventbus.Subscribe;
+
+import jfdi.logic.events.AddTaskDoneEvent;
+import jfdi.logic.events.AddTaskFailEvent;
+import jfdi.logic.events.ExitCalledEvent;
+import jfdi.logic.events.InvalidCommandEvent;
+import jfdi.logic.events.ListDoneEvent;
+import jfdi.logic.events.ListFailEvent;
 import jfdi.storage.data.TaskAttributes;
+
 
 public class CommandHandler {
 

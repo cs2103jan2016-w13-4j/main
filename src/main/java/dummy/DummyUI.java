@@ -1,7 +1,10 @@
 package dummy;
 
+import java.util.stream.Collectors;
+
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+
 import jfdi.logic.ControlCenter;
 import jfdi.logic.events.AddTaskDoneEvent;
 import jfdi.logic.events.AddTaskFailEvent;
@@ -12,8 +15,7 @@ import jfdi.logic.events.InvalidCommandEvent;
 import jfdi.logic.events.ListDoneEvent;
 import jfdi.logic.events.ListFailEvent;
 import jfdi.storage.data.TaskAttributes;
-
-import java.util.stream.Collectors;
+import jfdi.ui.UserInterface;
 
 /**
  * Example of using EventBus and Commands
@@ -22,8 +24,8 @@ import java.util.stream.Collectors;
  */
 //CHECKSTYLE:OFF
 public class DummyUI {
-//CHECKSTYLE:ON
-    private static EventBus eventBus = ControlCenter.getEventBus();
+    //CHECKSTYLE:ON
+    private static EventBus eventBus = UserInterface.getEventBus();
 
     //=============================================================
     // You can put all event handlers in a single class,

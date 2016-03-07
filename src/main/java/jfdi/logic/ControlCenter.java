@@ -1,6 +1,5 @@
 package jfdi.logic;
 
-import com.google.common.eventbus.EventBus;
 import dummy.DummyParser;
 import jfdi.logic.interfaces.Command;
 import jfdi.logic.interfaces.ILogic;
@@ -13,9 +12,6 @@ import jfdi.storage.exceptions.ExistingFilesFoundException;
 public class ControlCenter implements ILogic {
 
     private static ControlCenter ourInstance = new ControlCenter();
-    
-    private static EventBus eventBus = new EventBus();
-
 
     private ControlCenter() {
         try {
@@ -37,9 +33,4 @@ public class ControlCenter implements ILogic {
         Command command = parser.parse(input);
         command.execute();
     }
-
-    public static EventBus getEventBus() {
-        return eventBus;
-    }
-
 }

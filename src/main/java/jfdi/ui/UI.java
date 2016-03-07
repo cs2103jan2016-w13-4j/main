@@ -30,9 +30,7 @@ public class UI implements IUserInterface {
 
         // Initialize Logic
         logic = ControlCenter.getInstance();
-
-        // Error: if fail to get data (logic issue, cannot find storage), query
-        // user for filename
+        this.prepareListener();
 
         showToUser(UI_MESSAGE_INITED);
     }
@@ -40,10 +38,10 @@ public class UI implements IUserInterface {
     @Override
     public void displayWelcome() {
         // Create and display a default view
-        // controller.clearFb();
         showToUser(UI_MESSAGE_WELCOME);
 
         // display default list
+
     }
 
     @Override
@@ -83,7 +81,7 @@ public class UI implements IUserInterface {
         System.exit(0);
     }
 
-    private void doUserCmd() {
+    private void prepareListener() {
         CommandHandler cmdHandler = new CommandHandler();
         eventBus.register(cmdHandler);
     }

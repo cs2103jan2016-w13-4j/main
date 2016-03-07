@@ -75,7 +75,7 @@ public class MainSetUp extends Application {
         // Load View
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/ui/ListLayout.fxml"));
-        listLayout = loader.load();
+        listLayout = (AnchorPane) loader.load();
 
         // Initialize Controller
         controller = loader.getController();

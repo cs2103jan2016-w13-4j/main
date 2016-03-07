@@ -4,16 +4,14 @@ import com.google.common.eventbus.EventBus;
 
 import jfdi.logic.ControlCenter;
 
-
-
 public class UI implements IUserInterface {
 
     private static final String UI_MESSAGE_INIT = "Initializing UI...";
     private static final String UI_MESSAGE_INITED = "Initialization Completed!";
     private static final String UI_MESSAGE_WELCOME = "J.F.D.I.: Hello! :) What can I do for you?";
     private static final String UI_MESSAGE_USERCMD = "You said: %1$s";
-    private static final String UI_MESSAGE_RESPONSE = "J.F.D.I.: %1$s";
-    private static final String UI_MESSAGE_WARNING = "Warning: %1$s";
+//    private static final String UI_MESSAGE_RESPONSE = "J.F.D.I.: %1$s";
+//    private static final String UI_MESSAGE_WARNING = "Warning: %1$s";
     private static final String UI_MESSAGE_QUIT = "Bye Bye! See you next time! :)";
 
     private static EventBus eventBus = new EventBus();
@@ -50,6 +48,10 @@ public class UI implements IUserInterface {
     @Override
     public void processInput(String input) {
 
+        if (input.equalsIgnoreCase("QUIT")) {
+            doQuit();
+        }
+
         // Clear controller first
         controller.clearCmdArea();
         controller.clearFb();
@@ -59,16 +61,6 @@ public class UI implements IUserInterface {
 
         // Relay user input to logic and wait for reply
         logic.handleInput(input);
-
-        /*// Update UI according to reply from logic
-        switch (feedback) {
-            case "QUIT":
-                doQuit();
-                break;
-            default:
-                doUserCmd();
-                break;
-        }*/
     }
 
     @Override

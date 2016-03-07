@@ -2,7 +2,9 @@ plugins {
   id 'checkstyle'
   id "net.saliman.cobertura" version "2.3.0"
   id 'com.github.kt3k.coveralls' version '2.6.3'
+  id 'eclipse'
   id 'findbugs'
+  id 'idea'
   id 'java'
   id 'pmd'
 }
@@ -17,15 +19,14 @@ repositories {
 
 dependencies {
   compile 'com.google.code.gson:gson:2.6.1'
-  compile 'commons-io:commons-io:2.4'
+  compile 'com.google.guava:guava:19.0'
   compile 'com.joestelmach:natty:0.12'
   compile 'org.ocpsoft.prettytime:prettytime-nlp:3.2.7.Final'
-  
-  testCompile 'junit:junit:4.12'
+  compile 'commons-io:commons-io:2.4'
+
+
   testCompile 'org.mockito:mockito-core:1.+'
   testCompile 'org.powermock:powermock-mockito-release-full:1.+'
-
-  testRuntime "org.slf4j:slf4j-api:1.7.10"
 }
 
 cobertura {

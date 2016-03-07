@@ -1,12 +1,12 @@
 package jfdi.ui;
 
-import java.util.ArrayList;
+import com.google.common.eventbus.EventBus;
 
-import dummy.LogicDummy;
-import dummy.LogicInterfaceDummy;
-import dummy.TaskDummy;
+import jfdi.logic.ControlCenter;
 
-public class UserInterface implements IUserInterface {
+
+
+public class UI implements IUserInterface {
 
     private static final String UI_MESSAGE_INIT = "Initializing UI...";
     private static final String UI_MESSAGE_INITED = "Initialization Completed!";
@@ -16,10 +16,12 @@ public class UserInterface implements IUserInterface {
     private static final String UI_MESSAGE_WARNING = "Warning: %1$s";
     private static final String UI_MESSAGE_QUIT = "Bye Bye! See you next time! :)";
 
-    LogicInterfaceDummy logic;
+    private static EventBus eventBus = new EventBus();
+
+    ControlCenter logic;
     private MainController controller;
 
-    public UserInterface() {
+    public UI() {
         // what to do for constructor?
     }
 
@@ -29,8 +31,7 @@ public class UserInterface implements IUserInterface {
         showToUser(UI_MESSAGE_INIT);
 
         // Initialize Logic
-        logic = new LogicDummy();
-        logic.init();
+        logic = ControlCenter.getInstance();
 
         // Error: if fail to get data (logic issue, cannot find storage), query user for filename
 
@@ -71,12 +72,6 @@ public class UserInterface implements IUserInterface {
     }
 
     @Override
-    public ArrayList<TaskDummy> getList() {
-        // get list of tasks from storage if command is completed (ArrayList<Task>)
-        return null;
-    }
-
-    @Override
     public void setController(MainController controller) {
         this.controller = controller;
     }
@@ -95,6 +90,11 @@ public class UserInterface implements IUserInterface {
     }
 
     private void doUserCmd() {
+        CommandHandler cmdHandler = new CommandHandler();
+        eventBus.register(cmdHandler);
+    }
 
+    public static EventBus getEventBus() {
+        return eventBus;
     }
 }

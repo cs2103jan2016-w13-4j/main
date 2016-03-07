@@ -47,9 +47,6 @@
       <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://" />
     </module>
     <module name="NoLineWrap" />
-    <module name="AvoidStarImport">
-      <property name="allowStaticMemberImports" value="true" />
-    </module>
     <module name="OneTopLevelClass" />
     <module name="DeclarationOrder" />
     <module name="OverloadMethodsDeclarationOrder" />
@@ -68,9 +65,7 @@
     <module name="EmptyCatchBlock">
       <property name="commentFormat" value="Excepted" />
     </module>
-    <module name="Indentation">
-      <property name="lineWrappingIndentation" value="8" />
-    </module>
+    <module name="Indentation" />
     <module name="OneStatementPerLine" />
     <module name="OperatorWrap">
       <property name="tokens" value="BAND, BOR, BSR, BXOR, DIV, EQUAL, GE, GT, LAND, LE, LITERAL_INSTANCEOF, LOR, LT, MINUS, MOD, NOT_EQUAL, PLUS, QUESTION, SL, SR, STAR" />
@@ -171,7 +166,7 @@
     </module>
     <module name="AbbreviationAsWordInName">
       <property name="ignoreFinal" value="false" />
-      <property name="allowedAbbreviationLength" value="1" />
+      <property name="allowedAbbreviationLength" value="3" />
     </module>
     <module name="ConstantName" />
     <module name="NoFinalizer" />

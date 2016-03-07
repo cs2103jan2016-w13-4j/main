@@ -1,34 +1,36 @@
 package jfdi.logic.commands;
 
+import jfdi.logic.events.AddTaskDoneEvent;
+import jfdi.logic.events.AddTaskFailEvent;
+import jfdi.logic.interfaces.Command;
+import jfdi.storage.data.TaskAttributes;
+import jfdi.storage.exceptions.InvalidIdException;
+import jfdi.storage.exceptions.InvalidTaskParametersException;
+import jfdi.storage.exceptions.NoAttributesChangedException;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
-import jfdi.logic.interfaces.Command;
-import jfdi.storage.data.TaskAttributes;
-import jfdi.storage.data.TaskDb;
-
 /**
- * @author Leonard Hio
+ * @author Liu Xinan
  */
-public class AddCommandStub extends Command {
+public class AddTaskCommand extends Command {
 
     private String description;
     private Optional<LocalDateTime> startDateTime;
     private Optional<LocalDateTime> endDateTime;
     private Duration[] reminders;
     private String[] tags;
-    private boolean isTimeSpecified;
 
-    private AddCommandStub(Builder builder) {
+    private AddTaskCommand(Builder builder) {
         this.description = builder.description;
         this.startDateTime = Optional.ofNullable(builder.startDateTime);
         this.endDateTime = Optional.ofNullable(builder.endDateTime);
         this.reminders = builder.reminders.toArray(new Duration[0]);
         this.tags = builder.tags.toArray(new String[0]);
-        this.isTimeSpecified = builder.isTimeSpecified;
     }
 
     public static class Builder {
@@ -36,7 +38,6 @@ public class AddCommandStub extends Command {
         String description;
         LocalDateTime startDateTime;
         LocalDateTime endDateTime;
-        boolean isTimeSpecified;
         ArrayList<Duration> reminders = new ArrayList<>();
         ArrayList<String> tags = new ArrayList<>();
 
@@ -55,11 +56,6 @@ public class AddCommandStub extends Command {
             return this;
         }
 
-        public Builder setIsTimeSpecified(boolean isTimeSpecified) {
-            this.isTimeSpecified = isTimeSpecified;
-            return this;
-        }
-
         public Builder addReminder(Duration reminder) {
             this.reminders.add(reminder);
             return this;
@@ -67,6 +63,11 @@ public class AddCommandStub extends Command {
 
         public Builder addReminders(Collection<Duration> reminders) {
             this.reminders.addAll(reminders);
+            return this;
+        }
+
+        public Builder setReminders(Collection<Duration> reminders) {
+            this.reminders = new ArrayList<>(reminders);
             return this;
         }
 
@@ -80,27 +81,36 @@ public class AddCommandStub extends Command {
             return this;
         }
 
-        public AddCommandStub build() {
-            return new AddCommandStub(this);
+        public Builder setTags(Collection<String> tags) {
+            this.tags = new ArrayList<>(tags);
+            return this;
+        }
+
+        public AddTaskCommand build() {
+            return new AddTaskCommand(this);
         }
 
     }
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    protected void onSuccess() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    protected void onFailure() {
-        // TODO Auto-generated method stub
-
+        TaskAttributes task = new TaskAttributes();
+        task.setDescription(description);
+        startDateTime.ifPresent(start -> task.setStartDateTime(start));
+        endDateTime.ifPresent(end -> task.setEndDateTime(end));
+        task.setReminders(reminders);
+        task.setTags(tags);
+        try {
+            task.save();
+            eventBus.post(new AddTaskDoneEvent(task));
+        } catch (InvalidTaskParametersException e) {
+            eventBus.post(new AddTaskFailEvent(AddTaskFailEvent.Error.EMPTY_DESCRIPTION));
+        } catch (NoAttributesChangedException e) {
+            // Should not happen for creating tasks
+            e.printStackTrace();
+        } catch (InvalidIdException e) {
+            // Should not happen for creating tasks
+            e.printStackTrace();
+        }
     }
 }

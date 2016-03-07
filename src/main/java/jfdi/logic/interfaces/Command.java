@@ -1,25 +1,19 @@
 package jfdi.logic.interfaces;
 
+import com.google.common.eventbus.EventBus;
+
+import jfdi.ui.UI;
+
 /**
  * @author Liu Xinan
  */
 public abstract class Command {
 
+    protected EventBus eventBus = UI.getEventBus();
+
     /**
      * Executes the command.
      */
     public abstract void execute();
-
-    /**
-     * To be implemented by each command to run the success command hooks.
-     * Pass a reference of self to each hook.
-     */
-    protected abstract void onSuccess();
-
-    /**
-     * To be implemented by each command to run the failure command hooks.
-     * Pass a reference of self to each hook.
-     */
-    protected abstract void onFailure();
 
 }

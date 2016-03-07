@@ -1,7 +1,5 @@
 package jfdi.parser.commandparsers;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,6 +8,7 @@ import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
 import jfdi.parser.DateTimeObject;
 import jfdi.parser.DateTimeParser;
+import jfdi.parser.exceptions.BadDateTimeException;
 import jfdi.parser.exceptions.NoTaskIdFoundException;
 
 /**
@@ -44,16 +43,15 @@ public class RescheduleCommandParser extends AbstractEditCommandParser {
     public Command build(String input) {
         String originalInput = input;
         Builder rescheduleCommandBuilder = new Builder();
-        // Remove the rename command identifier.
+        // Remove the reschedule command identifier.
         input = removeFirstWord(input);
         try {
             input = setAndRemoveTaskId(input, rescheduleCommandBuilder);
-        } catch (NoTaskIdFoundException e) {
+            setTaskDateTime(input, rescheduleCommandBuilder);
+        } catch (NoTaskIdFoundException | BadDateTimeException e) {
             return createInvalidCommand(Constants.CommandType.reschedule,
                     originalInput);
         }
-
-        setTaskDateTime(input, rescheduleCommandBuilder);
 
         Command rescheduleCommand = rescheduleCommandBuilder.build();
         return rescheduleCommand;
@@ -114,7 +112,8 @@ public class RescheduleCommandParser extends AbstractEditCommandParser {
      *            the String that corresponds to the new task date time.
      * @return the input string.
      */
-    private String setTaskDateTime(String input, Builder builder) {
+    private String setTaskDateTime(String input, Builder builder)
+            throws BadDateTimeException {
         if (input.isEmpty()) {
             // No date time specified: user does not want any date/time
             // restrictions on task
@@ -122,12 +121,15 @@ public class RescheduleCommandParser extends AbstractEditCommandParser {
         }
 
         if (!isValidDateTime(input)) {
-            // TODO: exception handling here
-            System.out.println("invalid date time");
+            throw new BadDateTimeException(input);
         }
 
-        DateTimeObject dateTime = DateTimeParser.getInstance().parseDateTime(
-                input);
+        DateTimeObject dateTime = null;
+        try {
+            dateTime = DateTimeParser.getInstance().parseDateTime(input);
+        } catch (BadDateTimeException e) {
+            throw new BadDateTimeException(e.getInput());
+        }
         builder.setStartDateTime(dateTime.getStartDateTime());
         builder.setEndDateTime(dateTime.getEndDateTime());
 
@@ -137,9 +139,4 @@ public class RescheduleCommandParser extends AbstractEditCommandParser {
     private boolean isValidDateTime(String input) {
         return input.matches(Constants.REGEX_DATE_TIME_IDENTIFIER);
     }
-
-    private ArrayList<LocalDateTime> getEmptyLocalDateTimeArrayList() {
-        return new ArrayList<LocalDateTime>();
-    }
-
 }

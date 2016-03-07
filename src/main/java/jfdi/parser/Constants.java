@@ -31,7 +31,7 @@ public class Constants {
     // Task related Regex Strings
     // Tags are always appended to the end of any input, hence the boundary
     // condition $
-    public static final String REGEX_TAGS = "\\+\\w+$";
+    public static final String REGEX_TAGS = "\\+\\w+";
     // A taskID is simply an integer
     public static final String REGEX_TASKID = "\\b\\d+\\b";
 
@@ -90,7 +90,7 @@ public class Constants {
     public static final String REGEX_DATE_TIME_IDENTIFIER = "("
             + REGEX_DEADLINE_IDENTIFIER + "|" + REGEX_EVENT_IDENTIFIER + "|"
             + REGEX_POINT_TASK_IDENTIFIER + "|"
-            + REGEX_REPEATED_TASK_IDENTIFIER + ")$";
+            + REGEX_REPEATED_TASK_IDENTIFIER + ")";
 
     // =============================
     // Non-Regex constants

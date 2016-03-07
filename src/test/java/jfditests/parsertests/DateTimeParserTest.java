@@ -6,6 +6,7 @@ import java.time.Month;
 import jfdi.parser.Constants;
 import jfdi.parser.DateTimeObject;
 import jfdi.parser.DateTimeParser;
+import jfdi.parser.exceptions.BadDateTimeException;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -40,7 +41,12 @@ public class DateTimeParserTest {
     @Test
     public void testParseExplicitQueries() {
         String dateTimeInput = "on 26th February 2017 2350hrs";
-        DateTimeObject res = parser.parseDateTime(dateTimeInput);
+        DateTimeObject res = null;
+        try {
+            res = parser.parseDateTime(dateTimeInput);
+        } catch (BadDateTimeException e) {
+            Assert.fail();
+        }
         LocalDateTime testDateTime = LocalDateTime.of(year, month, dayOfMonth,
                 getCurrentHour(), getCurrentMinutes());
         Assert.assertEquals(testDateTime.toLocalDate(), res.getStartDateTime()
@@ -55,7 +61,12 @@ public class DateTimeParserTest {
     @Test
     public void testParseExplicitQueries2() {
         String dateTimeInput = "on 26th February 2017";
-        DateTimeObject res = parser.parseDateTime(dateTimeInput);
+        DateTimeObject res = null;
+        try {
+            res = parser.parseDateTime(dateTimeInput);
+        } catch (BadDateTimeException e) {
+            Assert.fail();
+        }
         LocalDateTime testDateTime = LocalDateTime.of(year, month, dayOfMonth,
                 getCurrentHour(), getCurrentMinutes());
         Assert.assertEquals(testDateTime.toLocalDate(), res.getStartDateTime()

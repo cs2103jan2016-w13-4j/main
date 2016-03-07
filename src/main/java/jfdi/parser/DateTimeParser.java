@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import jfdi.parser.Constants.TaskType;
 import jfdi.parser.DateTimeObject.DateTimeObjectBuilder;
+import jfdi.parser.exceptions.BadDateTimeException;
 
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 import org.ocpsoft.prettytime.nlp.parse.DateGroup;
@@ -27,7 +28,7 @@ public class DateTimeParser {
     private static DateTimeParser dateTimeParser;
 
     public static DateTimeParser getInstance() {
-        return (dateTimeParser == null) ? dateTimeParser = new DateTimeParser()
+        return dateTimeParser == null ? dateTimeParser = new DateTimeParser()
                 : dateTimeParser;
     }
 
@@ -40,9 +41,12 @@ public class DateTimeParser {
      * @return a DateTimeObject encapsulating the details of the input date time
      *         string.
      */
-    public DateTimeObject parseDateTime(String input) {
-        // TODO: handle exceptions
-        assert isValidDateTime(input);
+    public DateTimeObject parseDateTime(String input)
+            throws BadDateTimeException {
+        if (!isValidDateTime(input)) {
+            throw new BadDateTimeException(input);
+        }
+
         DateTimeObject dateTimeObject = buildDateTimeObject(input);
 
         return dateTimeObject;
@@ -83,7 +87,8 @@ public class DateTimeParser {
                 assert dateTimeList.size() == 1;
                 startDateTime = dateTimeList.get(0);
                 if (!isTimeSpecified) {
-                    startDateTime = setTime(startDateTime, Constants.TIME_DEFAULT);
+                    startDateTime = setTime(startDateTime,
+                            Constants.TIME_DEFAULT);
                     System.out.println(startDateTime.getHour());
                 }
                 break;
@@ -191,7 +196,7 @@ public class DateTimeParser {
      * zone is taken to be the one found in the system.
      *
      * @param d
-     *          a Date object.
+     *            a Date object.
      * @return the LocalDateTime object formatted from the Date object.
      */
     public LocalDateTime getLocalDateTimeFromDate(Date d) {
@@ -199,11 +204,13 @@ public class DateTimeParser {
     }
 
     /**
-     * This method sets the time of a LocalDateTime object to the time specified.
+     * This method sets the time of a LocalDateTime object to the time
+     * specified.
+     *
      * @param dateTime
-     *          the LocalDateTime object which time is to be changed.
+     *            the LocalDateTime object which time is to be changed.
      * @param time
-     *          the time to change to.
+     *            the time to change to.
      * @return a LocalDateTime object with time changed.
      */
     private LocalDateTime setTime(LocalDateTime dateTime, Constants.Time time) {

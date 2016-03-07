@@ -9,9 +9,12 @@ import jfdi.parser.commandparsers.DeleteCommandParser;
 import jfdi.parser.commandparsers.ListCommandParser;
 import jfdi.parser.commandparsers.RenameCommandParser;
 import jfdi.parser.commandparsers.RescheduleCommandParser;
+import jfdi.parser.exceptions.InvalidInputException;
 
 /**
- * The Parser class exposes the key API for the parser component.
+ * The InputParser class is used to parse a String input into its associated
+ * Command object. This class should be used to interface with the Logic
+ * component via the parse(String) method.
  *
  * @author Leonard Hio
  *
@@ -27,11 +30,26 @@ public class InputParser implements IParser {
     }
 
     @Override
-    public Command parse(String input) {
+    public Command parse(String input) throws InvalidInputException {
+        if (!isValidInput(input)) {
+            throw new InvalidInputException(input);
+        }
         List<String> userArguments = getUserArgumentsFromInput(input);
         String userActionAsString = getActionAsString(userArguments);
         Command userCommand = getCommand(userActionAsString, input);
         return userCommand;
+    }
+
+    /**
+     * This method checks if the given input is valid. A valid input is one that
+     * is (1) not empty, and (2) not made of whitespaces only.
+     *
+     * @param input
+     *            the input which validity is to be checked
+     * @return true if the input is valid; false otherwise
+     */
+    private boolean isValidInput(String input) {
+        return !(input.isEmpty() || input.trim().isEmpty());
     }
 
     private List<String> getUserArgumentsFromInput(String userInput) {

@@ -6,9 +6,11 @@ import java.util.regex.Pattern;
 
 import jfdi.logic.commands.AddTaskCommand;
 import jfdi.logic.commands.AddTaskCommand.Builder;
+import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
 import jfdi.parser.DateTimeObject;
 import jfdi.parser.DateTimeParser;
+import jfdi.parser.exceptions.BadDateTimeException;
 
 /**
  * The AddCommandParser class is used to parse a user input String that
@@ -46,10 +48,16 @@ public class AddCommandParser extends AbstractCommandParser {
      *            the user input String
      * @return the AddTaskCommand object encapsulating the details of the add command.
      */
-    public AddTaskCommand build(String input) {
+    public Command build(String input) {
+        String originalInput = input;
         Builder addCommandBuilder = new Builder();
         input = setAndRemoveTags(input, addCommandBuilder);
-        input = setAndRemoveDateTime(input, addCommandBuilder);
+        try {
+            input = setAndRemoveDateTime(input, addCommandBuilder);
+        } catch (BadDateTimeException e) {
+            return createInvalidCommand(Constants.CommandType.add,
+                    originalInput);
+        }
         setDescription(input, addCommandBuilder);
 
         AddTaskCommand addCommand = addCommandBuilder.build();
@@ -70,7 +78,8 @@ public class AddCommandParser extends AbstractCommandParser {
     private String setAndRemoveTags(String input, Builder builder) {
         ArrayList<String> tags = new ArrayList<String>();
 
-        Pattern tagPattern = Pattern.compile(Constants.REGEX_TAGS);
+        // Search for the last instance of all tags in the input.
+        Pattern tagPattern = Pattern.compile(Constants.REGEX_TAGS + "$");
         Matcher matcher = tagPattern.matcher(input);
 
         while (matcher.find()) {
@@ -103,9 +112,12 @@ public class AddCommandParser extends AbstractCommandParser {
      *            the builder object for AddTaskCommand
      * @return the input, trimmed and without date time identifiers.
      */
-    private String setAndRemoveDateTime(String input, Builder builder) {
+    private String setAndRemoveDateTime(String input, Builder builder)
+            throws BadDateTimeException {
+        // Date time identifier must be at the end of the input String, hence
+        // the "$" end-of-line flag
         Pattern dateTimePattern = Pattern
-                .compile(Constants.REGEX_DATE_TIME_IDENTIFIER);
+                .compile(Constants.REGEX_DATE_TIME_IDENTIFIER + "$");
         Matcher matcher = dateTimePattern.matcher(input);
         String dateTimeIdentifier = null;
 
@@ -117,8 +129,12 @@ public class AddCommandParser extends AbstractCommandParser {
 
         if (dateTimeIdentifier != null) {
             DateTimeParser dateTimeParser = DateTimeParser.getInstance();
-            DateTimeObject dateTime = dateTimeParser
-                    .parseDateTime(dateTimeIdentifier);
+            DateTimeObject dateTime = null;
+            try {
+                dateTime = dateTimeParser.parseDateTime(dateTimeIdentifier);
+            } catch (BadDateTimeException e) {
+                throw new BadDateTimeException(e.getInput());
+            }
             builder.setStartDateTime(dateTime.getStartDateTime());
             builder.setEndDateTime(dateTime.getEndDateTime());
         }

@@ -6,7 +6,7 @@ import jfdi.logic.ControlCenter;
 
 
 
-public class UserInterface implements IUserInterface {
+public class UI implements IUserInterface {
 
     private static final String UI_MESSAGE_INIT = "Initializing UI...";
     private static final String UI_MESSAGE_INITED = "Initialization Completed!";
@@ -18,10 +18,11 @@ public class UserInterface implements IUserInterface {
 
     private static final EventBus eventBus = new EventBus();
 
-    ControlCenter logic;
     private MainController controller;
 
-    public UserInterface() {
+    ControlCenter logic;
+
+    public UI() {
         // what to do for constructor?
     }
 
@@ -32,8 +33,7 @@ public class UserInterface implements IUserInterface {
 
         // Initialize Logic
         logic = ControlCenter.getInstance();
-
-        // Error: if fail to get data (logic issue, cannot find storage), query user for filename
+        this.prepareListener();
 
         showToUser(UI_MESSAGE_INITED);
     }
@@ -41,10 +41,10 @@ public class UserInterface implements IUserInterface {
     @Override
     public void displayWelcome() {
         // Create and display a default view
-        //controller.clearFb();
         showToUser(UI_MESSAGE_WELCOME);
 
         // display default list
+
     }
 
     @Override
@@ -89,7 +89,7 @@ public class UserInterface implements IUserInterface {
         System.exit(0);
     }
 
-    private void doUserCmd() {
+    private void prepareListener() {
         CommandHandler cmdHandler = new CommandHandler();
         eventBus.register(cmdHandler);
     }

@@ -15,7 +15,7 @@ import jfdi.logic.events.InvalidCommandEvent;
 import jfdi.logic.events.ListDoneEvent;
 import jfdi.logic.events.ListFailEvent;
 import jfdi.storage.data.TaskAttributes;
-import jfdi.ui.UserInterface;
+import jfdi.ui.UI;
 
 /**
  * Example of using EventBus and Commands
@@ -24,7 +24,7 @@ import jfdi.ui.UserInterface;
  */
 public class DummyUI {
 
-    private static EventBus eventBus = UserInterface.getEventBus();
+    private static EventBus eventBus = UI.getEventBus();
 
     //=============================================================
     // You can put all event handlers in a single class,

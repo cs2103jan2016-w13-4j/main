@@ -69,7 +69,7 @@ public class MainSetUp extends Application {
     private void initView() throws IOException {
 
         // Initialize UI
-        IUserInterface userInterface = new UserInterface();
+        IUserInterface userInterface = new UI();
         userInterface.init();
 
         // Load View

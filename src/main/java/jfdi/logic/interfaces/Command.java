@@ -1,14 +1,15 @@
 package jfdi.logic.interfaces;
 
 import com.google.common.eventbus.EventBus;
-import jfdi.logic.ControlCenter;
+
+import jfdi.ui.UserInterface;
 
 /**
  * @author Liu Xinan
  */
 public abstract class Command {
 
-    protected EventBus eventBus = ControlCenter.getEventBus();
+    protected EventBus eventBus = UserInterface.getEventBus();
 
     /**
      * Executes the command.

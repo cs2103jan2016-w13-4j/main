@@ -36,7 +36,7 @@ public class AddCommandParser extends CommandParser {
      *
      * @param input
      *            the user input String
-     * @return the AddCommand.
+     * @return the AddTaskCommand.
      */
     public AddCommandStub build(String input) {
         Builder addCommandBuilder = new Builder();
@@ -56,7 +56,7 @@ public class AddCommandParser extends CommandParser {
      * @param input
      *            the user input String
      * @param builder
-     *            the builder object for AddCommand
+     *            the builder object for AddTaskCommand
      * @return the input, trimmed and without tags.
      */
     private String setAndRemoveTags(String input, Builder builder) {
@@ -92,7 +92,7 @@ public class AddCommandParser extends CommandParser {
      * @param input
      *            the input string
      * @param builder
-     *            the builder object for AddCommand
+     *            the builder object for AddTaskCommand
      * @return the input, trimmed and without date time identifiers.
      */
     private String setAndRemoveDateTime(String input, Builder builder) {
@@ -127,7 +127,7 @@ public class AddCommandParser extends CommandParser {
      * @param input
      *            is the input string from which the description is extracted.
      * @param builder
-     *            the builder object for AddCommand
+     *            the builder object for AddTaskCommand
      */
     private void setDescription(String input, Builder builder) {
         if (!input.isEmpty()) {

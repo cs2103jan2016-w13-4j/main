@@ -1,5 +1,7 @@
 package dummy;
 
+import jfdi.logic.commands.AddTaskCommand;
+import jfdi.logic.commands.DeleteTaskCommand;
 import jfdi.logic.commands.ExitCommand;
 import jfdi.logic.commands.InvalidCommand;
 import jfdi.logic.commands.ListCommand;
@@ -27,15 +29,23 @@ public class DummyParser {
 
         switch (parts[0]) {
             case "list":
-                ListCommand.Builder builder = new ListCommand.Builder();
+                ListCommand.Builder listCommandBuilder = new ListCommand.Builder();
                 for (int i = 1; i < parts.length; i++) {
-                    builder.addTag(parts[i]);
+                    listCommandBuilder.addTag(parts[i]);
                 }
-                return builder.build();
+                return listCommandBuilder.build();
             case "exit":
                 return new ExitCommand.Builder().build();
+            case "add":
+                return new AddTaskCommand.Builder().setDescription(parts[1]).build();
+            case "delete":
+                DeleteTaskCommand.Builder deleteCommandBuilder =  new DeleteTaskCommand.Builder();
+                for (int i = 1; i < parts.length; i++) {
+                    deleteCommandBuilder.addId(Integer.parseInt(parts[i]));
+                }
+                return deleteCommandBuilder.build();
             default:
-                return new InvalidCommand.Builder().build();
+                return new InvalidCommand.Builder().setInputString(input).build();
         }
     }
 }

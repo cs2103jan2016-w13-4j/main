@@ -8,6 +8,8 @@ import dummy.TaskDummy;
 import jfdi.logic.ControlCenter;
 import jfdi.storage.data.TaskAttributes;
 
+
+
 public class UserInterface implements IUserInterface {
 
     private static final String UI_MESSAGE_INIT = "Initializing UI...";
@@ -19,8 +21,8 @@ public class UserInterface implements IUserInterface {
     private static final String UI_MESSAGE_QUIT = "Bye Bye! See you next time! :)";
 
     private static final EventBus eventBus = ControlCenter.getEventBus();
-    // PurchaseSubscriber purchaseSubscriber = new PurchaseSubscriber();
-    //eventBus.register(purchaseSubscriber);
+    CommandHandler cmdHandler = new CommandHandler();
+    eventBus.register(cmdHandler);
 
     LogicInterfaceDummy logic;
     private MainController controller;
@@ -102,51 +104,5 @@ public class UserInterface implements IUserInterface {
 
     private void doUserCmd() {
 
-    }
-
-    /***************************
-     *** LEVEL 2 Abstraction ***
-     ***************************/
-
-    @Subscribe
-    public void handleListDoneEvent(ListDoneEvent e) {
-        for (TaskAttributes item : e.getItems()) {
-            System.out.println(item.getDescription());
-        }
-    }
-
-    @Subscribe
-    public void handleListFailEvent(ListFailEvent e) {
-        switch (e.getError()) {
-            case NON_EXISTENT_TAG:
-                System.out.println("Supplied tags do not exist in the database!");
-                break;
-            case UNKNOWN:
-                System.out.println("Unknown error occurred.");
-        }
-    }
-
-    @Subscribe
-    public void handleExitCalledEvent(ExitCalledEvent e) {
-        System.out.printf("\nMoriturus te saluto.\n");
-    }
-
-    @Subscribe
-    public void handleInvalidCommandEvent(InvalidCommandEvent e) {
-        System.out.printf("Sorry, I do not understand what you mean by \"%s\" :(\n", e.getInputString());
-    }
-
-    @Subscribe
-    public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {
-        TaskAttributes task = e.getTask();
-        System.out.printf("Task added: #%d - %s\n", task.getId(), task.getDescription());
-    }
-
-    @Subscribe
-    public void handleAddTaskFailEvent(AddTaskFailEvent e) {
-        switch (e.getError()) {
-            case UNKNOWN:
-                System.out.println("Some stupid error occurred.");
-        }
     }
 }

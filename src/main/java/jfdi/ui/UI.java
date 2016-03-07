@@ -6,7 +6,7 @@ import jfdi.logic.ControlCenter;
 
 
 
-public class UserInterface implements IUserInterface {
+public class UI implements IUserInterface {
 
     private static final String UI_MESSAGE_INIT = "Initializing UI...";
     private static final String UI_MESSAGE_INITED = "Initialization Completed!";
@@ -16,12 +16,12 @@ public class UserInterface implements IUserInterface {
     private static final String UI_MESSAGE_WARNING = "Warning: %1$s";
     private static final String UI_MESSAGE_QUIT = "Bye Bye! See you next time! :)";
 
-    private static final EventBus eventBus = new EventBus();
+    private static EventBus eventBus = new EventBus();
 
     ControlCenter logic;
     private MainController controller;
 
-    public UserInterface() {
+    public UI() {
         // what to do for constructor?
     }
 

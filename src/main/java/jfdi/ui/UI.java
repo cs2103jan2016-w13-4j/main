@@ -1,10 +1,8 @@
 package jfdi.ui;
 
-import com.google.common.eventbus.EventBus;
-
 import jfdi.logic.ControlCenter;
 
-
+import com.google.common.eventbus.EventBus;
 
 public class UI implements IUserInterface {
 
@@ -17,9 +15,9 @@ public class UI implements IUserInterface {
     private static final String UI_MESSAGE_QUIT = "Bye Bye! See you next time! :)";
 
     private static EventBus eventBus = new EventBus();
-
-    ControlCenter logic;
     private MainController controller;
+
+    private ControlCenter logic;
 
     public UI() {
         // what to do for constructor?
@@ -33,7 +31,8 @@ public class UI implements IUserInterface {
         // Initialize Logic
         logic = ControlCenter.getInstance();
 
-        // Error: if fail to get data (logic issue, cannot find storage), query user for filename
+        // Error: if fail to get data (logic issue, cannot find storage), query
+        // user for filename
 
         showToUser(UI_MESSAGE_INITED);
     }
@@ -41,7 +40,7 @@ public class UI implements IUserInterface {
     @Override
     public void displayWelcome() {
         // Create and display a default view
-        //controller.clearFb();
+        // controller.clearFb();
         showToUser(UI_MESSAGE_WELCOME);
 
         // display default list
@@ -60,15 +59,10 @@ public class UI implements IUserInterface {
         // Relay user input to logic and wait for reply
         logic.handleInput(input);
 
-        /*// Update UI according to reply from logic
-        switch (feedback) {
-            case "QUIT":
-                doQuit();
-                break;
-            default:
-                doUserCmd();
-                break;
-        }*/
+        /*
+         * // Update UI according to reply from logic switch (feedback) { case
+         * "QUIT": doQuit(); break; default: doUserCmd(); break; }
+         */
     }
 
     @Override

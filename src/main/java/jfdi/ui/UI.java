@@ -1,6 +1,7 @@
 package jfdi.ui;
 
 import jfdi.logic.ControlCenter;
+import jfdi.ui.CommandHandler.MsgType;
 
 <<<<<<< HEAD
 import com.google.common.eventbus.EventBus;
@@ -9,12 +10,13 @@ import com.google.common.eventbus.EventBus;
 >>>>>>> master
 public class UI implements IUserInterface {
 
-    private static final String UI_MESSAGE_INIT = "Initializing UI...";
-    private static final String UI_MESSAGE_INITED = "Initialization Completed!";
-    private static final String UI_MESSAGE_WELCOME = "J.F.D.I.: Hello! :) What can I do for you?";
+    //    private static final String UI_MESSAGE_INIT = "Initializing UI...";
+    //    private static final String UI_MESSAGE_INITED = "Initialization Completed!";
+    private static final String UI_MESSAGE_WELCOME = "J.F.D.I. : Hello! :) What can I do for you?";
     private static final String UI_MESSAGE_USERCMD = "You said: %1$s";
-    //    private static final String UI_MESSAGE_RESPONSE = "J.F.D.I.: %1$s";
-    //    private static final String UI_MESSAGE_WARNING = "Warning: %1$s";
+    private static final String UI_MESSAGE_RESPONSE = "J.F.D.I.: %1$s";
+    private static final String UI_MESSAGE_WARNING = "Warning: %1$s";
+    private static final String UI_MESSAGE_ERROR = "Error: %1$s";
     private static final String UI_MESSAGE_QUIT = "Bye Bye! See you next time! :)";
 
     private static EventBus eventBus = new EventBus();
@@ -35,13 +37,13 @@ public class UI implements IUserInterface {
     @Override
     public void init() {
 
-        showToUser(UI_MESSAGE_INIT);
+        // showToUser(UI_MESSAGE_INIT);
 
         // Initialize Logic
         logic = ControlCenter.getInstance();
         this.prepareListener();
 
-        showToUser(UI_MESSAGE_INITED);
+        // showToUser(UI_MESSAGE_INITED);
     }
 
     @Override
@@ -76,6 +78,27 @@ public class UI implements IUserInterface {
     }
 
     @Override
+    public void displayFeedback(String fb, MsgType type) {
+
+        switch (type) {
+            case SUCCESS:
+                showToUser(String.format(UI_MESSAGE_RESPONSE, fb));
+                break;
+            case WARNING:
+                showToUser(String.format(UI_MESSAGE_WARNING, fb));
+                break;
+            case ERROR:
+                showToUser(String.format(UI_MESSAGE_ERROR, fb));
+                break;
+            case EXIT:
+                showToUser(UI_MESSAGE_QUIT);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
     public void setController(MainController controller) {
         this.controller = controller;
     }
@@ -85,6 +108,7 @@ public class UI implements IUserInterface {
      ***************************/
 
     private void showToUser(String string) {
+        controller.displayFb(string);
         System.out.println(string);
     }
 
@@ -101,6 +125,7 @@ public class UI implements IUserInterface {
         return eventBus;
     }
 
+    @Override
     public CommandHandler getCmdHandler() {
         return cmdHandler;
     }

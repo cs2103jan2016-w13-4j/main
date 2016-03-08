@@ -13,11 +13,24 @@ import jfdi.storage.data.TaskAttributes;
 
 public class CommandHandler {
 
+    private static final String CMD_ERROR_NONEXIST_TAG = "Supplied tags do not exist in the database!";
+    private static final String CMD_ERROR_UNKNOWN = "Unknown error occurred.";
+    private static final String CMD_ERROR_CANT_ADD = "Some stupid error occurred.";
+    private static final String CMD_WARNING_DONTKNOW = "Sorry, I do not understand what you mean by \"%s\" :(\n";
+    private static final String CMD_SUCCESS_ADDED = "Task added: #%d - %s\n";
+
+    private MainController controller;
+
+    public enum MsgType {
+        SUCCESS, WARNING, ERROR, EXIT
+    }
+
     @Subscribe
     public void handleListDoneEvent(ListDoneEvent e) {
         for (TaskAttributes item : e.getItems()) {
 
             System.out.println(item.getDescription());
+            System.out.println(item.getId());
         }
     }
 
@@ -25,10 +38,10 @@ public class CommandHandler {
     public void handleListFailEvent(ListFailEvent e) {
         switch (e.getError()) {
             case NON_EXISTENT_TAG:
-                System.out.println("Supplied tags do not exist in the database!");
+                controller.relayFb(CMD_ERROR_NONEXIST_TAG, MsgType.ERROR);
                 break;
             case UNKNOWN:
-                System.out.println("Unknown error occurred.");
+                controller.relayFb(CMD_ERROR_UNKNOWN, MsgType.ERROR);
                 break;
             default: break;
         }
@@ -41,22 +54,26 @@ public class CommandHandler {
 
     @Subscribe
     public void handleInvalidCommandEvent(InvalidCommandEvent e) {
-        System.out.printf("Sorry, I do not understand what you mean by \"%s\" :(\n", e.getInputString());
+        controller.relayFb(String.format(CMD_WARNING_DONTKNOW, e.getInputString()), MsgType.WARNING);
     }
 
     @Subscribe
     public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {
         TaskAttributes task = e.getTask();
-        System.out.printf("Task added: #%d - %s\n", task.getId(), task.getDescription());
+        controller.relayFb(String.format(CMD_SUCCESS_ADDED, task.getId(), task.getDescription()), MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleAddTaskFailEvent(AddTaskFailEvent e) {
         switch (e.getError()) {
             case UNKNOWN:
-                System.out.println("Some stupid error occurred.");
+                controller.relayFb(CMD_ERROR_CANT_ADD, MsgType.ERROR);
                 break;
             default: break;
         }
+    }
+
+    public void setController(MainController controller) {
+        this.controller = controller;
     }
 }

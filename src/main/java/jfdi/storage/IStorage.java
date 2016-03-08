@@ -26,10 +26,11 @@ public interface IStorage {
     void initialize() throws ExistingFilesFoundException;
 
     /**
-     * This method can only be executed after load has been executed. It
-     * transfers existing data in the current storage folder path into the new
-     * storage folder path. The old files are then deleted upon a successful
-     * transfer.
+     * This method can only be executed after load has been executed. It saves
+     * and transfers existing data in the current storage folder path into the
+     * new storage folder path. The old files are then deleted upon a successful
+     * transfer. This new storage path is then stored as the storage path that
+     * is to be used in the next program run.
      *
      * @param newStorageFolderPath
      *            the absolute path of the directory that data is to be

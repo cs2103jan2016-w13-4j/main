@@ -1,5 +1,6 @@
 package jfdi.test.storage;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -141,19 +142,10 @@ public class MainStorageTest {
         String subdirectoryString = subdirectoryPath.toString();
         TestHelper.createInvalidDataFiles(subdirectoryString);
         mainStorageInstance.changeDirectory(subdirectoryString);
-    }
 
-    @Test
-    public void testChangeDirectoryWithExistingValidFiles() {
-        initializeStorage();
-        Path subdirectoryPath = Paths.get(testDirectoryString, Constants.TEST_SUBDIRECTORY_NAME);
-        String subdirectoryString = subdirectoryPath.toString();
-        TestHelper.createValidDataFiles(subdirectoryString);
-        try {
-            mainStorageInstance.changeDirectory(subdirectoryString);
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        // Check that the path to the new directory is saved
+        String preferredDirectory = mainStorageInstance.getPreferredDirectory();
+        assertEquals(preferredDirectory, subdirectoryString);
     }
 
     @Test
@@ -163,6 +155,10 @@ public class MainStorageTest {
         String subdirectoryString = subdirectoryPath.toString();
         try {
             mainStorageInstance.changeDirectory(subdirectoryString);
+
+            // Check that the path to the new directory is saved
+            String preferredDirectory = mainStorageInstance.getPreferredDirectory();
+            assertEquals(preferredDirectory, subdirectoryString);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -172,8 +168,9 @@ public class MainStorageTest {
      * This method initializes fileStorage with the test directory.
      */
     private void initializeStorage() {
+        mainStorageInstance.setPreferredDirectory(testDirectoryString);
         try {
-            mainStorageInstance.load(testDirectoryString);
+            mainStorageInstance.initialize();
         } catch (Exception e) {
             e.printStackTrace();
         }

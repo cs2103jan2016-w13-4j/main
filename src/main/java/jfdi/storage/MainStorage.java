@@ -50,6 +50,7 @@ public class MainStorage implements IStorage {
     @Override
     public void initialize() throws ExistingFilesFoundException {
         load(getInitializationPath());
+        isInitialized = true;
     }
 
     @Override
@@ -60,10 +61,11 @@ public class MainStorage implements IStorage {
             throw new IllegalAccessException(Constants.MESSAGE_UNINITIALIZED_STORAGE);
         }
 
+        DatabaseManager.persistAll();
         FileManager.prepareDirectory(newStorageFolderPath);
         FileManager.moveFilesToDirectory(newStorageFolderPath);
         DatabaseManager.setAllFilePaths(newStorageFolderPath);
-        DatabaseManager.loadAllDatabases();
+        setPreferredDirectory(newStorageFolderPath);
     }
 
     /**
@@ -87,7 +89,6 @@ public class MainStorage implements IStorage {
         FileManager.prepareDirectory(storageFolderPath);
         DatabaseManager.setAllFilePaths(storageFolderPath);
         DatabaseManager.loadAllDatabases();
-        isInitialized = true;
     }
 
     /**
@@ -121,7 +122,7 @@ public class MainStorage implements IStorage {
      *
      * @return the stored preference if it is valid
      */
-    private String getPreferredDirectory() {
+    public String getPreferredDirectory() {
         if (!Files.exists(Constants.PATH_PREFERENCE_FILE)) {
             return null;
         }

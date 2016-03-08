@@ -96,10 +96,10 @@ public class CommandHandler {
             controller.importantList.remove(n);
             controller.relayFb(String.format(CMD_SUCCESS_DELETED, n), MsgType.SUCCESS);
         }
-        int i = 1;
+        int counter = 1;
         for (TaskAttributes task : controller.importantList) {
-            task.setId(i);
-            i++;
+            task.setId(counter);
+            counter++;
         }
 
     }

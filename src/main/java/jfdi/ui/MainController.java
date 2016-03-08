@@ -24,13 +24,13 @@ import jfdi.ui.CommandHandler.MsgType;
 
 public class MainController {
 
+    private static final String CTRL_CMD_SHOWLIST = "list";
+
     public MainSetUp main;
     public IUserInterface ui;
     public CommandHandler cmdHandler;
     public Stage mainStage;
     public ObservableList<TaskAttributes> importantList;
-
-    private static final String CTRL_CMD_SHOWLIST = "list";
 
     @FXML
     public TextField dayDisplayer;
@@ -39,7 +39,7 @@ public class MainController {
     @FXML
     public TextArea cmdArea;
     @FXML
-    public TableView<TaskAttributes> TableMain;
+    public TableView<TaskAttributes> tableMain;
     @FXML
     public TableColumn<TaskAttributes, Integer> idCol;
     @FXML
@@ -82,7 +82,7 @@ public class MainController {
         ui.relayToLogic(CTRL_CMD_SHOWLIST);
     }
 
-    public void clearList( ) {
+    public void clearList() {
         //importantList.removeAll(importantList);
     }
 
@@ -124,7 +124,7 @@ public class MainController {
     private void initList() {
 
         importantList = FXCollections.observableArrayList(new TaskAttributes());
-        TableMain.setItems(importantList);
+        tableMain.setItems(importantList);
 
         idCol.setCellValueFactory(new Callback<CellDataFeatures<TaskAttributes, Integer>, ObservableValue<Integer>>() {
             @Override

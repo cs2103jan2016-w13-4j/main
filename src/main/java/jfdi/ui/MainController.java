@@ -81,10 +81,6 @@ public class MainController {
         ui.relayToLogic(CTRL_CMD_SHOWLIST);
     }
 
-    public void clearList() {
-        //importantList.removeAll(importantList);
-    }
-
     public void setMainApp(MainSetUp main) {
         this.main = main;
     }

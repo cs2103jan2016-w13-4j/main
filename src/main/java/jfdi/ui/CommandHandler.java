@@ -20,8 +20,8 @@ import jfdi.storage.data.TaskAttributes;
 
 public class CommandHandler {
 
-    private static final String CMD_ERROR_NONEXIST_TAG = "Supplied tags do not exist in the database!";
-    private static final String CMD_ERROR_UNKNOWN = "Unknown error occurred.";
+    //private static final String CMD_ERROR_NONEXIST_TAG = "Supplied tags do not exist in the database!";
+    //private static final String CMD_ERROR_UNKNOWN = "Unknown error occurred.";
     private static final String CMD_ERROR_CANT_ADD = "Some stupid error occurred. Cannot add task!";
     private static final String CMD_ERROR_CANT_DELETE = "Some stupid error occurred. Cannot delete task!";
     private static final String CMD_ERROR_CANT_RENAME = "Some stupid error occurred. Cannot rename task!";
@@ -41,11 +41,15 @@ public class CommandHandler {
 
     @Subscribe
     public void handleListDoneEvent(ListDoneEvent e) {
-        /*for (TaskAttributes item : e.getItems()) {
-            if (!controller.importantList.contains(item)) {
-                controller.importantList.add(item);
-            }
-        }*/
+        controller.importantList.setAll(e.getItems());
+
+        for (TaskAttributes item : e.getItems()) {
+            System.out.println(item.getId() + item.getDescription());
+        }
+        System.out.println(" ");
+        for (TaskAttributes item : controller.importantList) {
+            System.out.println(item.getId() + item.getDescription());
+        }
     }
 
     @Subscribe
@@ -81,6 +85,7 @@ public class CommandHandler {
         for (TaskAttributes task : controller.importantList) {
             if (deletedIds.contains(task.getId())) {
                 controller.importantList.remove(task);
+                controller.relayFb(String.format(CMD_SUCCESS_DELETED, task.getId()), MsgType.SUCCESS);
             }
         }
     }

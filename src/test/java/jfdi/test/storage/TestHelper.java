@@ -65,7 +65,7 @@ public class TestHelper {
 
         Path dataPath;
         File dataFile;
-        for (String dataFilename : Constants.FILENAME_ARRAY) {
+        for (String dataFilename : Constants.FILENAME_DATA_ARRAY) {
             dataPath = Paths.get(directoryPath, dataFilename);
             dataFile = dataPath.toFile();
             writeToFile(dataFile, data);
@@ -161,7 +161,7 @@ public class TestHelper {
         Path dataFilePath = null;
         File dataFile = null;
 
-        for (String filename : Constants.FILENAME_ARRAY) {
+        for (String filename : Constants.FILENAME_DATA_ARRAY) {
             dataFilePath = Paths.get(directory, filename);
             dataFile = dataFilePath.toFile();
             if (dataFile.exists()) {

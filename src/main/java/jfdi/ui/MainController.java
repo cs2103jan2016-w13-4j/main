@@ -13,6 +13,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import jfdi.ui.CommandHandler.MsgType;
 
 public class MainController {
 
@@ -49,6 +50,10 @@ public class MainController {
     public void displayFb(String fb) {
         fbArea.appendText("\n");
         fbArea.appendText(fb);
+    }
+
+    public void relayFb(String fb, MsgType type) {
+        ui.displayFeedback(fb, type);
     }
 
     public void clearFb() {

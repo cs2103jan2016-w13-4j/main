@@ -66,9 +66,8 @@ public class MainSetUp extends Application {
 
     private void initView() throws IOException {
 
-        // Initialize UI
         IUserInterface userInterface = new UI();
-        userInterface.init();
+        CommandHandler cmdHandler = userInterface.getCmdHandler();
 
         // Load View
         FXMLLoader loader = new FXMLLoader();
@@ -79,16 +78,19 @@ public class MainSetUp extends Application {
         controller = loader.getController();
         controller.initialize();
 
+        // Link UI and CmdHandler with Controller
+        cmdHandler.setController(controller);
+        userInterface.setController(controller);
+        userInterface.init();
+
         ((BorderPane) rootLayout).setCenter(listLayout);
         controller.setStage(primaryStage);
 
         // Link Controller with UI, MainSetUp and CommandHandler
         controller.setUi(userInterface);
         controller.setMainApp(this);
-        controller.setCmdHandler(userInterface.getCmdHandler());
+        controller.setCmdHandler(cmdHandler);
 
-        // Link UI with Controller
-        userInterface.setController(controller);
         userInterface.displayWelcome();
 
     }

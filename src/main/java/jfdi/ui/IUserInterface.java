@@ -1,5 +1,7 @@
 package jfdi.ui;
 
+import jfdi.ui.CommandHandler.MsgType;
+
 public interface IUserInterface {
 
     void init();
@@ -7,6 +9,8 @@ public interface IUserInterface {
     void displayWelcome();
 
     void processInput(String input);
+
+    void displayFeedback(String fb, MsgType type);
 
     void setController(MainController controller);
 

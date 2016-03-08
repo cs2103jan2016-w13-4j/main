@@ -35,7 +35,7 @@ public class DatabaseManagerTest {
         ArrayList<Path> obtainedFilePaths = DatabaseManager.getAllFilePaths();
         ArrayList<Path> expectedFilePaths = new ArrayList<Path>();
         Path filePath;
-        for (String filename : Constants.FILENAME_ARRAY) {
+        for (String filename : Constants.FILENAME_DATA_ARRAY) {
             filePath = Paths.get(testDirectoryString, filename);
             expectedFilePaths.add(filePath);
         }

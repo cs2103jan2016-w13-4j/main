@@ -1,5 +1,7 @@
 package jfdi.storage;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -18,10 +20,15 @@ public class Constants {
     /**
      * General purpose constants
      */
-    // Filenames
+    // Database filenames
     public static final String FILENAME_TASK = "tasks.txt";
     public static final String FILENAME_ALIAS = "aliases.txt";
-    public static final String[] FILENAME_ARRAY = {Constants.FILENAME_TASK, Constants.FILENAME_ALIAS};
+    public static final String[] FILENAME_DATA_ARRAY = {Constants.FILENAME_TASK, Constants.FILENAME_ALIAS};
+
+    // Filename storing last used directory
+    public static final String FILENAME_DIRECTORY = "directory.txt";
+    public static final String PATH_DEFAULT_DIRECTORY = ".";
+    public static final Path PATH_PREFERENCE_FILE = Paths.get(PATH_DEFAULT_DIRECTORY, FILENAME_DIRECTORY);
 
     // File extensions
     public static final String EXTENSION_BACKUP = ".bak";

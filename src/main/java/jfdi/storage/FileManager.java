@@ -128,6 +128,7 @@ public class FileManager {
     public static void writeToFile(String data, Path filePath) {
         try {
             File file = filePath.toFile();
+            file.getParentFile().mkdirs();
             PrintWriter writer = new PrintWriter(file, Constants.CHARSET);
             writer.println(data);
             writer.close();

@@ -30,6 +30,7 @@ public class MainStorageTest {
     private Path testDirectoryPath = null;
     private File testDirectoryFile = null;
     private String testDirectoryString = null;
+    private String originalPreference = null;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -45,6 +46,7 @@ public class MainStorageTest {
     @Before
     public void setUp() throws Exception {
         mainStorageInstance = MainStorage.getInstance();
+        originalPreference = mainStorageInstance.getPreferredDirectory();
         testDirectoryPath = Paths.get(testDirectoryRoot.toString(), Constants.TEST_DIRECTORY_NAME);
         testDirectoryFile = testDirectoryPath.toFile();
         testDirectoryString = testDirectoryFile.getAbsolutePath();
@@ -53,6 +55,7 @@ public class MainStorageTest {
 
     @After
     public void tearDown() throws Exception {
+        revertOriginalPreference(originalPreference);
         mainStorageInstance.removeInstance();
         if (testDirectoryFile.exists()) {
             FileUtils.deleteDirectory(testDirectoryFile);
@@ -70,9 +73,8 @@ public class MainStorageTest {
     }
 
     @Test
-    public void testInitializingPreferredDirectory() throws Exception {
-        mainStorageInstance.setPreferredDirectory(testDirectoryString);
-        mainStorageInstance.initialize();
+    public void testInitialize() throws Exception {
+        initializeStorage();
 
         // Assert test folder exists after a successful initialization
         assertTrue(testDirectoryFile.exists());
@@ -80,21 +82,6 @@ public class MainStorageTest {
         // Check that the file permissions are set correctly
         assertTrue(testDirectoryFile.canExecute());
         assertTrue(testDirectoryFile.canWrite());
-    }
-
-    @Test
-    public void testInitializingInvalidDirectory() throws Exception {
-        mainStorageInstance.setPreferredDirectory(Constants.TEST_FILE_DATA);
-        mainStorageInstance.initialize();
-        File defaultDirectory = new File(Constants.PATH_DEFAULT_DIRECTORY);
-
-        // Since the preferred directory is invalid, the default directory is used
-        // Assert default folder exists after a successful initialization
-        assertTrue(defaultDirectory.exists());
-
-        // Check that the file permissions are set correctly
-        assertTrue(defaultDirectory.canExecute());
-        assertTrue(defaultDirectory.canWrite());
     }
 
     @Test
@@ -165,7 +152,8 @@ public class MainStorageTest {
     }
 
     /**
-     * This method initializes fileStorage with the test directory.
+     * This method initializes fileStorage with the test directory, then reverts
+     * the preference file back to its original form.
      */
     private void initializeStorage() {
         mainStorageInstance.setPreferredDirectory(testDirectoryString);
@@ -188,5 +176,20 @@ public class MainStorageTest {
      */
     private void createInvalidDataFiles() {
         TestHelper.createInvalidDataFiles(testDirectoryString);
+    }
+
+    /**
+     * This method reverts the preference file to its original form after using
+     * it in the tests.
+     *
+     * @param originalPreference
+     *            the original storage directory path
+     */
+    private void revertOriginalPreference(String originalPreference) {
+        if (originalPreference == null) {
+            FileUtils.deleteQuietly(Constants.PATH_PREFERENCE_FILE.toFile());
+            return;
+        }
+        mainStorageInstance.setPreferredDirectory(originalPreference);
     }
 }

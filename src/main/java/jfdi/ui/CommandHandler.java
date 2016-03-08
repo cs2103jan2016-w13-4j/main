@@ -82,12 +82,7 @@ public class CommandHandler {
     @Subscribe
     public void handleDeleteTaskDoneEvent(DeleteTaskDoneEvent e) {
         HashSet<Integer> deletedIds = new HashSet<Integer>(e.getDeletedIds());
-        for (TaskAttributes task : controller.importantList) {
-            if (deletedIds.contains(task.getId())) {
-                controller.importantList.remove(task);
-                controller.relayFb(String.format(CMD_SUCCESS_DELETED, task.getId()), MsgType.SUCCESS);
-            }
-        }
+        controller.importantList.removeIf(task -> deletedIds.contains(task.getId()));
     }
 
     @Subscribe

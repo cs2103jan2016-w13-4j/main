@@ -9,9 +9,11 @@ import java.util.ArrayList;
  */
 public class ListDoneEvent {
 
+    private ArrayList<String> tags;
     private ArrayList<TaskAttributes> items;
 
-    public ListDoneEvent(ArrayList<TaskAttributes> items) {
+    public ListDoneEvent(ArrayList<String> tags, ArrayList<TaskAttributes> items) {
+        this.tags = tags;
         this.items = items;
     }
 
@@ -19,4 +21,7 @@ public class ListDoneEvent {
         return items;
     }
 
+    public ArrayList<String> getTags() {
+        return tags;
+    }
 }

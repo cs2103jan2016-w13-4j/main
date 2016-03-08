@@ -13,7 +13,6 @@ import jfdi.logic.events.DeleteTaskFailEvent;
 import jfdi.logic.events.ExitCalledEvent;
 import jfdi.logic.events.InvalidCommandEvent;
 import jfdi.logic.events.ListDoneEvent;
-import jfdi.logic.events.ListFailEvent;
 import jfdi.storage.data.TaskAttributes;
 import jfdi.ui.UI;
 
@@ -35,19 +34,6 @@ public class DummyUI {
     public void handleListDoneEvent(ListDoneEvent e) {
         for (TaskAttributes item : e.getItems()) {
             System.out.println(item.getDescription());
-        }
-    }
-
-    @Subscribe
-    public void handleListFailEvent(ListFailEvent e) {
-        switch (e.getError()) {
-            case NON_EXISTENT_TAG:
-                System.out.println("Supplied tags do not exist in the database!");
-                break;
-            case UNKNOWN:
-                System.out.println("Unknown error occurred.");
-                break;
-            default: break;
         }
     }
 

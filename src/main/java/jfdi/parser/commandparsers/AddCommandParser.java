@@ -1,25 +1,35 @@
 package jfdi.parser.commandparsers;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import jfdi.logic.commands.AddCommandStub;
-import jfdi.logic.commands.AddCommandStub.Builder;
+import jfdi.logic.commands.AddTaskCommand;
+import jfdi.logic.commands.AddTaskCommand.Builder;
+import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
+import jfdi.parser.DateTimeObject;
 import jfdi.parser.DateTimeParser;
+import jfdi.parser.exceptions.BadDateTimeException;
 
-public class AddCommandParser extends CommandParser {
+/**
+ * The AddCommandParser class is used to parse a user input String that
+ * resembles an add command. All user inputs for adding tasks must adhere to the
+ * following format: {add identifier}(optional) {task description} {date time
+ * identifier}(optional) {tags}(optional)
+ *
+ * @author Leonard Hio
+ *
+ */
+public class AddCommandParser extends AbstractCommandParser {
 
-    private static CommandParser instance;
+    private static AbstractCommandParser instance;
 
     private AddCommandParser() {
 
     }
 
-    public static CommandParser getInstance() {
+    public static AbstractCommandParser getInstance() {
         if (instance == null) {
             return instance = new AddCommandParser();
         }
@@ -29,22 +39,28 @@ public class AddCommandParser extends CommandParser {
 
     @Override
     /**
-     * All user inputs for adding tasks adhere to the following format:
-     * "<add identifier>(optional) <task description> <date time identifier)(optional) <tags>(optional)
-     * To build the add command, we traverse from the back, retrieving the tags
-     * first, then the date time identifiers if present, then the task.
+     * This method parses the user input (representing an add command) and builds the
+     * AddTaskCommand object. To build the add command, we traverse from the back,
+     * retrieving the tags first, then the date time identifiers if present, then the
+     * task description.
      *
      * @param input
      *            the user input String
-     * @return the AddTaskCommand.
+     * @return the AddTaskCommand object encapsulating the details of the add command.
      */
-    public AddCommandStub build(String input) {
+    public Command build(String input) {
+        String originalInput = input;
         Builder addCommandBuilder = new Builder();
         input = setAndRemoveTags(input, addCommandBuilder);
-        input = setAndRemoveDateTime(input, addCommandBuilder);
+        try {
+            input = setAndRemoveDateTime(input, addCommandBuilder);
+        } catch (BadDateTimeException e) {
+            return createInvalidCommand(Constants.CommandType.add,
+                    originalInput);
+        }
         setDescription(input, addCommandBuilder);
 
-        AddCommandStub addCommand = addCommandBuilder.build();
+        AddTaskCommand addCommand = addCommandBuilder.build();
         return addCommand;
     }
 
@@ -62,7 +78,8 @@ public class AddCommandParser extends CommandParser {
     private String setAndRemoveTags(String input, Builder builder) {
         ArrayList<String> tags = new ArrayList<String>();
 
-        Pattern tagPattern = Pattern.compile(Constants.REGEX_TAGS);
+        // Search for the last instance of all tags in the input.
+        Pattern tagPattern = Pattern.compile(Constants.REGEX_TAGS + "$");
         Matcher matcher = tagPattern.matcher(input);
 
         while (matcher.find()) {
@@ -95,9 +112,12 @@ public class AddCommandParser extends CommandParser {
      *            the builder object for AddTaskCommand
      * @return the input, trimmed and without date time identifiers.
      */
-    private String setAndRemoveDateTime(String input, Builder builder) {
+    private String setAndRemoveDateTime(String input, Builder builder)
+            throws BadDateTimeException {
+        // Date time identifier must be at the end of the input String, hence
+        // the "$" end-of-line flag
         Pattern dateTimePattern = Pattern
-                .compile(Constants.REGEX_DATE_TIME_IDENTIFIER);
+                .compile(Constants.REGEX_DATE_TIME_IDENTIFIER + "$");
         Matcher matcher = dateTimePattern.matcher(input);
         String dateTimeIdentifier = null;
 
@@ -109,11 +129,14 @@ public class AddCommandParser extends CommandParser {
 
         if (dateTimeIdentifier != null) {
             DateTimeParser dateTimeParser = DateTimeParser.getInstance();
-            List<LocalDateTime> dateTimeList = dateTimeParser
-                    .parseDateTime(dateTimeIdentifier);
-            ArrayList<LocalDateTime> dateTimeArrayList = new ArrayList<LocalDateTime>();
-            dateTimeArrayList.addAll(dateTimeList);
-            builder.addDateTimes(dateTimeArrayList);
+            DateTimeObject dateTime = null;
+            try {
+                dateTime = dateTimeParser.parseDateTime(dateTimeIdentifier);
+            } catch (BadDateTimeException e) {
+                throw new BadDateTimeException(e.getInput());
+            }
+            builder.setStartDateTime(dateTime.getStartDateTime());
+            builder.setEndDateTime(dateTime.getEndDateTime());
         }
 
         return input;
@@ -139,9 +162,9 @@ public class AddCommandParser extends CommandParser {
                 taskDescription = input;
             }
 
-            builder.addDescription(taskDescription);
+            builder.setDescription(taskDescription);
         } else {
-            builder.addDescription(null);
+            builder.setDescription(null);
         }
     }
 
@@ -151,25 +174,6 @@ public class AddCommandParser extends CommandParser {
 
     private String getFirstWord(String input) {
         return input.split(Constants.REGEX_WHITESPACE)[0];
-    }
-
-    /**
-     * Removes the first word in the input string, and returns the rest of the
-     * input.
-     *
-     * @param input
-     *            the string from which the first word is to be removed
-     * @return the input string without the first word and the whitespace
-     *         separating the first word from the rest of the string. If the
-     *         string only consists of one word, return null.
-     */
-    private String removeFirstWord(String input) {
-        String[] splitInput = input.split(Constants.REGEX_WHITESPACE, 2);
-        if (splitInput.length == 1) {
-            return null;
-        } else {
-            return splitInput[1];
-        }
     }
 
 }

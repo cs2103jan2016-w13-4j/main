@@ -1,6 +1,5 @@
 package jfdi.logic.commands;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.function.Consumer;
@@ -31,12 +30,10 @@ public class DeleteCommandStub extends Command {
 
     public static class Builder {
 
-        ArrayList<String> taskIds = new ArrayList<>();
-        String description = null;
-        ArrayList<LocalDateTime> dateTimes = new ArrayList<>();
+        ArrayList<String> taskIds = null;
 
         public Builder addTaskIds(ArrayList<String> taskIds) {
-            this.taskIds.addAll(taskIds);
+            this.taskIds = taskIds;
             return this;
         }
 

@@ -3,6 +3,7 @@ package jfdi.logic.commands;
 import jfdi.logic.events.DeleteTaskDoneEvent;
 import jfdi.logic.events.DeleteTaskFailEvent;
 import jfdi.logic.interfaces.Command;
+import jfdi.storage.data.TaskAttributes;
 import jfdi.storage.data.TaskDb;
 import jfdi.storage.exceptions.InvalidIdException;
 
@@ -48,15 +49,17 @@ public class DeleteTaskCommand extends Command {
             .collect(Collectors.toCollection(ArrayList::new));
 
         if (invalidIds.isEmpty()) {
+            ArrayList<TaskAttributes> deletedTasks = new ArrayList<>();
             taskIds.forEach(id -> {
                 try {
+                    deletedTasks.add(TaskDb.getById(id));
                     TaskDb.destroy(id);
                 } catch (InvalidIdException e) {
                     // Should not happen
                     e.printStackTrace();
                 }
             });
-            eventBus.post(new DeleteTaskDoneEvent(taskIds));
+            eventBus.post(new DeleteTaskDoneEvent(taskIds, deletedTasks));
         } else {
             eventBus.post(new DeleteTaskFailEvent(invalidIds));
         }

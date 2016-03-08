@@ -19,7 +19,6 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import jfdi.storage.data.TaskAttributes;
-import jfdi.storage.data.TaskDb;
 import jfdi.ui.CommandHandler.MsgType;
 
 public class MainController {
@@ -86,14 +85,6 @@ public class MainController {
         //importantList.removeAll(importantList);
     }
 
-    public boolean isEmptyDB() {
-        return TaskDb.isEmptyStorage();
-    }
-
-    public void clearDatabase() {
-        TaskDb.resetProgramStorage();
-    }
-
     public void setMainApp(MainSetUp main) {
         this.main = main;
     }
@@ -123,7 +114,7 @@ public class MainController {
 
     private void initList() {
 
-        importantList = FXCollections.observableArrayList(new TaskAttributes());
+        importantList = FXCollections.observableArrayList();
         tableMain.setItems(importantList);
 
         idCol.setCellValueFactory(new Callback<CellDataFeatures<TaskAttributes, Integer>, ObservableValue<Integer>>() {

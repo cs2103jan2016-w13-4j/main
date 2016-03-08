@@ -1,6 +1,6 @@
 package jfdi.ui;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import com.google.common.eventbus.Subscribe;
 
@@ -42,11 +42,11 @@ public class CommandHandler {
 
     @Subscribe
     public void handleListDoneEvent(ListDoneEvent e) {
-        for (TaskAttributes item : e.getItems()) {
+        /*for (TaskAttributes item : e.getItems()) {
             if (!controller.importantList.contains(item)) {
                 controller.importantList.add(item);
             }
-        }
+        }*/
     }
 
     @Subscribe
@@ -91,17 +91,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleDeleteTaskDoneEvent(DeleteTaskDoneEvent e) {
-        ArrayList<Integer> deletedItems = e.getDeletedIds();
-        for (Integer n : deletedItems) {
-            controller.importantList.remove(n);
-            controller.relayFb(String.format(CMD_SUCCESS_DELETED, n), MsgType.SUCCESS);
-        }
-        int counter = 1;
+        HashSet<Integer> deletedIds = new HashSet<Integer>(e.getDeletedIds());
         for (TaskAttributes task : controller.importantList) {
-            task.setId(counter);
-            counter++;
+            if (deletedIds.contains(task.getId())) {
+                controller.importantList.remove(task);
+            }
         }
-
     }
 
     @Subscribe
@@ -117,7 +112,12 @@ public class CommandHandler {
     @Subscribe
     public void handleRenameTaskDoneEvent(RenameTaskDoneEvent e) {
         TaskAttributes task = e.getTask();
-        controller.importantList.set(task.getId(), task);
+        for (TaskAttributes item : controller.importantList) {
+            if (item.getId() == task.getId()) {
+                controller.importantList.remove(item);
+                controller.importantList.add(task);
+            }
+        }
         controller.relayFb(String.format(CMD_SUCCESS_RENAMED, task.getId(), task.getDescription()), MsgType.SUCCESS);
     }
 

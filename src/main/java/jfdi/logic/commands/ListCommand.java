@@ -1,13 +1,13 @@
 package jfdi.logic.commands;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import jfdi.logic.events.ListDoneEvent;
 import jfdi.logic.events.ListFailEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.data.TaskAttributes;
 import jfdi.storage.data.TaskDb;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * @author Liu Xinan

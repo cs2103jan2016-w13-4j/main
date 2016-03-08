@@ -355,14 +355,6 @@ public class TaskDb {
     }
 
     /**
-     * This method checks if the program's internal storage of tasks is empty.
-     * Used by UI to decided whether to display "Welcome" or ERROR.
-     */
-    public static boolean isEmptyStorage() {
-        return taskList.isEmpty();
-    }
-
-    /**
      * This method sets the filepath of the record using absoluteFolderPath to
      * store the record's data file.
      *

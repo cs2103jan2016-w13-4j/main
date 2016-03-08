@@ -14,5 +14,7 @@ public interface IUserInterface {
 
     void setController(MainController controller);
 
+    void relayToLogic(String ctrlCmdShowlist);
+
     CommandHandler getCmdHandler();
 }

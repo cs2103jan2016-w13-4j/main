@@ -28,10 +28,11 @@ public class CommandHandler {
     @Subscribe
     public void handleListDoneEvent(ListDoneEvent e) {
         for (TaskAttributes item : e.getItems()) {
+            controller.importantList.add(item);
 
-            System.out.println(item.getDescription());
-            System.out.println(item.getId());
         }
+        controller.clearList();
+        controller.displayList();
     }
 
     @Subscribe
@@ -60,6 +61,7 @@ public class CommandHandler {
     @Subscribe
     public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {
         TaskAttributes task = e.getTask();
+        controller.importantList.add(task);// is this needed? or might double count??
         controller.relayFb(String.format(CMD_SUCCESS_ADDED, task.getId(), task.getDescription()), MsgType.SUCCESS);
     }
 
@@ -71,6 +73,8 @@ public class CommandHandler {
                 break;
             default: break;
         }
+        controller.clearList();
+        controller.displayList();
     }
 
     public void setController(MainController controller) {

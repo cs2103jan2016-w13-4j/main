@@ -1,23 +1,20 @@
 package jfdi.logic.events;
 
+import jfdi.storage.data.TaskAttributes;
+
 /**
  * @author Liu Xinan
  */
 public class RenameTaskDoneEvent {
 
-    private int taskId;
-    private String description;
+    private TaskAttributes task;
 
-    public RenameTaskDoneEvent(int taskId, String description) {
-        this.taskId = taskId;
-        this.description = description;
+
+    public RenameTaskDoneEvent(TaskAttributes task) {
+        this.task = task;
     }
 
-    public int getTaskId() {
-        return taskId;
-    }
-
-    public String getDescription() {
-        return description;
+    public TaskAttributes getTask() {
+        return task;
     }
 }

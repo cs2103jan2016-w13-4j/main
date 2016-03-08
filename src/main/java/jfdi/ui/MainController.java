@@ -114,7 +114,7 @@ public class MainController {
 
     private void initList() {
 
-        importantList = FXCollections.observableArrayList();
+        importantList = FXCollections.observableArrayList(new TaskAttributes());
         TableMain.setItems(importantList);
 
         idCol.setCellValueFactory(new Callback<CellDataFeatures<TaskAttributes, Integer>, ObservableValue<Integer>>() {

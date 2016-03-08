@@ -103,9 +103,11 @@ public class UI implements IUserInterface {
         eventBus.register(cmdHandler);
     }
 
+    @Override
     public void relayToLogic(String input) {
         // Relay user input to logic and wait for reply
         logic.handleInput(input);
+        controller.clearList();
     }
 
     private void doQuit() {

@@ -52,7 +52,7 @@ public class RenameTaskCommand extends Command {
             TaskAttributes task = TaskDb.getById(taskId);
             task.setDescription(description);
             task.save();
-            eventBus.post(new RenameTaskDoneEvent(taskId, description));
+            eventBus.post(new RenameTaskDoneEvent(task));
         } catch (InvalidIdException e) {
             eventBus.post(new RenameTaskFailEvent(taskId, description, RenameTaskFailEvent.Error.NON_EXISTENT_ID));
         } catch (InvalidTaskParametersException e) {

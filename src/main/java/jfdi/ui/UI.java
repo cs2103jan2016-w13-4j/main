@@ -1,15 +1,14 @@
 package jfdi.ui;
 
+import com.google.common.eventbus.EventBus;
+
 import jfdi.logic.ControlCenter;
 import jfdi.ui.CommandHandler.MsgType;
-
-import com.google.common.eventbus.EventBus;
 
 public class UI implements IUserInterface {
 
     // private static final String UI_MESSAGE_INIT = "Initializing UI...";
-    // private static final String UI_MESSAGE_INITED =
-    // "Initialization Completed!";
+    // private static final String UI_MESSAGE_INITED = "Initialization Completed!";
     private static final String UI_MESSAGE_WELCOME = "J.F.D.I. : What can I do for you?";
     private static final String UI_MESSAGE_USERCMD = "You said: %1$s";
     private static final String UI_MESSAGE_RESPONSE = "J.F.D.I. : %1$s";
@@ -58,7 +57,6 @@ public class UI implements IUserInterface {
         controller.displayFb(String.format(UI_MESSAGE_USERCMD, input));
 
         // Relay user input to logic and wait for reply
-        logic.handleInput(input);
         relayToLogic(input);
     }
 

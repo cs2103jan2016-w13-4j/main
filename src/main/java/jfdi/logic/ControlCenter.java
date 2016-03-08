@@ -17,7 +17,7 @@ public class ControlCenter implements ILogic {
 
     private ControlCenter() {
         try {
-            MainStorage.getInstance().load("./.jfdi_user_data");
+            MainStorage.getInstance().initialize();
         } catch (ExistingFilesFoundException e) {
             e.printStackTrace();
         }

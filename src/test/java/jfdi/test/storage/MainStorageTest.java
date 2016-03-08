@@ -179,11 +179,14 @@ public class MainStorageTest {
     }
 
     /**
+     * This method reverts the preference file to its original form after using
+     * it in the tests.
      *
      * @param originalPreference
+     *            the original storage directory path
      */
     private void revertOriginalPreference(String originalPreference) {
-        if(originalPreference == null) {
+        if (originalPreference == null) {
             FileUtils.deleteQuietly(Constants.PATH_PREFERENCE_FILE.toFile());
             return;
         }

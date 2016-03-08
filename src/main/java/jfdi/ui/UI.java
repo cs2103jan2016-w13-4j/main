@@ -16,12 +16,11 @@ public class UI implements IUserInterface {
     private static final String UI_MESSAGE_ERROR = "Error: %1$s";
     private static final String UI_MESSAGE_QUIT = "Bye Bye! See you next time! :)";
 
-    private CommandHandler cmdHandler = new CommandHandler();
     private static EventBus eventBus = new EventBus();
+    private CommandHandler cmdHandler = new CommandHandler();
 
     private MainController controller;
-
-    ControlCenter logic;
+    private ControlCenter logic;
 
     public UI() {
         // what to do for constructor?

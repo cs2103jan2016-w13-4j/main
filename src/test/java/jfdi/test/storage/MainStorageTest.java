@@ -1,5 +1,6 @@
 package jfdi.test.storage;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -69,6 +70,34 @@ public class MainStorageTest {
     }
 
     @Test
+    public void testInitializingPreferredDirectory() throws Exception {
+        mainStorageInstance.setPreferredDirectory(testDirectoryString);
+        mainStorageInstance.initialize();
+
+        // Assert test folder exists after a successful initialization
+        assertTrue(testDirectoryFile.exists());
+
+        // Check that the file permissions are set correctly
+        assertTrue(testDirectoryFile.canExecute());
+        assertTrue(testDirectoryFile.canWrite());
+    }
+
+    @Test
+    public void testInitializingInvalidDirectory() throws Exception {
+        mainStorageInstance.setPreferredDirectory(Constants.TEST_FILE_DATA);
+        mainStorageInstance.initialize();
+        File defaultDirectory = new File(Constants.PATH_DEFAULT_DIRECTORY);
+
+        // Since the preferred directory is invalid, the default directory is used
+        // Assert default folder exists after a successful initialization
+        assertTrue(defaultDirectory.exists());
+
+        // Check that the file permissions are set correctly
+        assertTrue(defaultDirectory.canExecute());
+        assertTrue(defaultDirectory.canWrite());
+    }
+
+    @Test
     public void testSuccessfulLoad() {
         try {
             mainStorageInstance.load(testDirectoryString);
@@ -113,19 +142,10 @@ public class MainStorageTest {
         String subdirectoryString = subdirectoryPath.toString();
         TestHelper.createInvalidDataFiles(subdirectoryString);
         mainStorageInstance.changeDirectory(subdirectoryString);
-    }
 
-    @Test
-    public void testChangeDirectoryWithExistingValidFiles() {
-        initializeStorage();
-        Path subdirectoryPath = Paths.get(testDirectoryString, Constants.TEST_SUBDIRECTORY_NAME);
-        String subdirectoryString = subdirectoryPath.toString();
-        TestHelper.createValidDataFiles(subdirectoryString);
-        try {
-            mainStorageInstance.changeDirectory(subdirectoryString);
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        // Check that the path to the new directory is saved
+        String preferredDirectory = mainStorageInstance.getPreferredDirectory();
+        assertEquals(preferredDirectory, subdirectoryString);
     }
 
     @Test
@@ -135,6 +155,10 @@ public class MainStorageTest {
         String subdirectoryString = subdirectoryPath.toString();
         try {
             mainStorageInstance.changeDirectory(subdirectoryString);
+
+            // Check that the path to the new directory is saved
+            String preferredDirectory = mainStorageInstance.getPreferredDirectory();
+            assertEquals(preferredDirectory, subdirectoryString);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -144,8 +168,9 @@ public class MainStorageTest {
      * This method initializes fileStorage with the test directory.
      */
     private void initializeStorage() {
+        mainStorageInstance.setPreferredDirectory(testDirectoryString);
         try {
-            mainStorageInstance.load(testDirectoryString);
+            mainStorageInstance.initialize();
         } catch (Exception e) {
             e.printStackTrace();
         }

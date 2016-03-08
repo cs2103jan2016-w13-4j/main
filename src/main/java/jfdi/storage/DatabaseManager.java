@@ -12,6 +12,7 @@ import jfdi.storage.exceptions.FilePathPair;
  * component. All databases (e.g. TaskDb, AliasDb) are expected to implement
  * the following static methods that will be called via reflection:
  * + load()
+ * + persist()
  * + getFilePath()
  * + setFilePath(String)
  *
@@ -24,7 +25,7 @@ public class DatabaseManager {
      */
 
     /**
-     * This method sets the file path of each record accordingly, using
+     * This method sets the file path of each database accordingly, using
      * storageFolderPath as the root directory of all data.
      *
      * @param storageFolderPath
@@ -33,6 +34,15 @@ public class DatabaseManager {
     public static void setAllFilePaths(String storageFolderPath) {
         for (Class<?> database : Constants.getDatabases()) {
             setDatabaseFilePath(storageFolderPath, database);
+        }
+    }
+
+    /**
+     * This method persists all databases to disk.
+     */
+    public static void persistAll() {
+        for (Class<?> database : Constants.getDatabases()) {
+            persist(database);
         }
     }
 
@@ -80,12 +90,12 @@ public class DatabaseManager {
      */
 
     /**
-     * This method executes the getFilePath method on the given record, that is,
+     * This method executes the getFilePath method on the given database, that is,
      * it calls (something like) database.getFilePath().
      *
      * @param database
      *            the database which contains the getFilePath method
-     * @return the Path of the existing data file for the record
+     * @return the Path of the existing data file for the database
      */
     private static Path getDatabaseFilePath(Class<?> database) {
         Path filePath = null;
@@ -101,13 +111,13 @@ public class DatabaseManager {
     }
 
     /**
-     * This method executes the setFilePath method on the given record, that is,
-     * it calls (something like) record.setFilePath(storageFolderPath).
+     * This method executes the setFilePath method on the given database, that is,
+     * it calls (something like) database.setFilePath(storageFolderPath).
      *
      * @param storageFolderPath
      *            the parameter for the setFilePath method
      * @param database
-     *            the record which contains the setFilePath method
+     *            the database which contains the setFilePath method
      */
     private static void setDatabaseFilePath(String storageFolderPath, Class<?> database) {
         try {
@@ -120,7 +130,7 @@ public class DatabaseManager {
 
     /**
      * This method executes the load method on the given database, that is, it
-     * calls (something like) record.load() and returns the return value of the
+     * calls (something like) database.load() and returns the return value of the
      * method call.
      *
      * @param database
@@ -138,6 +148,22 @@ public class DatabaseManager {
         }
 
         return filePathPair;
+    }
+
+    /**
+     * This method executes the persist method on the given database, that is,
+     * it calls (something like) database.persist().
+     *
+     * @param database
+     *            the record which contains the persist method
+     */
+    private static void persist(Class<?> database) {
+        try {
+            Method method = database.getMethod("persist");
+            method.invoke(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

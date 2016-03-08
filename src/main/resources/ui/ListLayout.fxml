@@ -11,67 +11,91 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainController">
-   <children>
-      <SplitPane dividerPositions="0.29797979797979796" prefHeight="700.0" prefWidth="651.0">
-        <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="375.0" prefWidth="226.0">
-               <children>
-                  <VBox layoutX="-1.0" layoutY="-2.0" prefHeight="700.0" prefWidth="191.0">
-                     <children>
-                        <TextField fx:id="dayDisplayer" editable="false" prefHeight="54.0" prefWidth="212.0" text="">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </TextField>
-                        <TextArea editable="false" prefHeight="75.0" prefWidth="217.0" text="Completed : 3&#10;Due Today: 0" />
-                        <Separator prefHeight="0.0" prefWidth="217.0" />
-                        <Label text="Overdue" />
-                        <ListView prefHeight="247.0" prefWidth="191.0" />
-                        <Separator prefWidth="200.0" />
-                        <Label text="Upcoming" />
-                        <ListView prefHeight="265.0" prefWidth="191.0" />
-                     </children>
-                  </VBox>
-               </children>
-            </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="158.0" prefWidth="660.0">
-               <children>
-                  <SplitPane dividerPositions="0.8278335724533716" orientation="VERTICAL" prefHeight="699.0" prefWidth="453.0">
-                    <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="577.0" prefWidth="451.0">
-                           <children>
-                              <TextField fx:id="txtAddItem" editable="false" layoutX="-1.0" layoutY="-2.0" prefHeight="41.0" prefWidth="454.0" text="IMPORTANT" />
-                              <ListView fx:id="listBoxMain" layoutX="-2.0" layoutY="38.0" prefHeight="538.0" prefWidth="454.0" />
-                           </children>
-                        </AnchorPane>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="122.0" prefWidth="451.0">
-                           <children>
-                              <SplitPane dividerPositions="0.4898989898989899" orientation="VERTICAL" prefHeight="117.0" prefWidth="452.0">
-                                <items>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                                       <children>
-                                          <TextArea fx:id="fbArea" editable="false" layoutX="-2.0" layoutY="-2.0" prefHeight="60.0" prefWidth="453.0" />
-                                       </children>
-                                    </AnchorPane>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                                       <children>
-                                          <TextArea fx:id="cmdArea" layoutX="-5.0" layoutY="-4.0" onKeyPressed="#handleEnterKey" prefHeight="60.0" prefWidth="458.0" />
-                                       </children>
-                                    </AnchorPane>
-                                </items>
-                              </SplitPane>
-                           </children>
-                        </AnchorPane>
-                    </items>
-                  </SplitPane>
-               </children>
-            </AnchorPane>
-        </items>
-      </SplitPane>
-   </children>
-   <effect>
-      <DropShadow />
-   </effect>
-         
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+	minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0"
+	prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="jfdi.ui.MainController">
+	<children>
+		<SplitPane dividerPositions="0.29797979797979796"
+			prefHeight="700.0" prefWidth="651.0">
+			<items>
+				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="375.0"
+					prefWidth="226.0">
+					<children>
+						<VBox layoutX="-1.0" layoutY="-2.0" prefHeight="700.0"
+							prefWidth="191.0">
+							<children>
+								<TextField fx:id="dayDisplayer" editable="false"
+									prefHeight="54.0" prefWidth="212.0" text="">
+									<font>
+										<Font name="System Bold" size="12.0" />
+									</font>
+								</TextField>
+								<TextArea editable="false" prefHeight="75.0" prefWidth="217.0"
+									text="Completed : 3&#10;Due Today: 0" />
+								<Separator prefHeight="0.0" prefWidth="217.0" />
+								<Label text="Overdue" />
+								<ListView prefHeight="247.0" prefWidth="191.0" />
+								<Separator prefWidth="200.0" />
+								<Label text="Upcoming" />
+								<ListView prefHeight="265.0" prefWidth="191.0" />
+							</children>
+						</VBox>
+					</children>
+				</AnchorPane>
+				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="158.0"
+					prefWidth="660.0">
+					<children>
+						<SplitPane dividerPositions="0.8278335724533716"
+							orientation="VERTICAL" prefHeight="699.0" prefWidth="453.0">
+							<items>
+								<AnchorPane minHeight="0.0" minWidth="0.0"
+									prefHeight="577.0" prefWidth="451.0">
+									<children>
+										<Label text="IMPORTANT">
+											<font>
+												<Font name="System Bold" size="12.0" />
+											</font>
+										</Label>
+										<ListView fx:id="listBoxMain" layoutX="-2.0" layoutY="38.0"
+											prefHeight="538.0" prefWidth="454.0" />
+									</children>
+								</AnchorPane>
+								<AnchorPane minHeight="0.0" minWidth="0.0"
+									prefHeight="122.0" prefWidth="451.0">
+									<children>
+										<SplitPane dividerPositions="0.4898989898989899"
+											orientation="VERTICAL" prefHeight="117.0" prefWidth="452.0">
+											<items>
+												<AnchorPane minHeight="0.0" minWidth="0.0"
+													prefHeight="100.0" prefWidth="160.0">
+													<children>
+														<TextArea fx:id="fbArea" editable="false"
+															layoutX="-2.0" layoutY="-2.0" prefHeight="60.0"
+															prefWidth="453.0" />
+													</children>
+												</AnchorPane>
+												<AnchorPane minHeight="0.0" minWidth="0.0"
+													prefHeight="100.0" prefWidth="160.0">
+													<children>
+														<TextArea fx:id="cmdArea" layoutX="-5.0" layoutY="-4.0"
+															onKeyPressed="#handleEnterKey" prefHeight="60.0"
+															prefWidth="458.0" />
+													</children>
+												</AnchorPane>
+											</items>
+										</SplitPane>
+									</children>
+								</AnchorPane>
+							</items>
+						</SplitPane>
+					</children>
+				</AnchorPane>
+			</items>
+		</SplitPane>
+	</children>
+	<effect>
+		<DropShadow />
+	</effect>
+
 </AnchorPane>

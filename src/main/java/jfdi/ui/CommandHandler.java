@@ -16,6 +16,7 @@ public class CommandHandler {
     @Subscribe
     public void handleListDoneEvent(ListDoneEvent e) {
         for (TaskAttributes item : e.getItems()) {
+
             System.out.println(item.getDescription());
         }
     }

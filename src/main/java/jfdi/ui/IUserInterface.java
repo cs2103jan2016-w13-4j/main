@@ -9,4 +9,6 @@ public interface IUserInterface {
     void processInput(String input);
 
     void setController(MainController controller);
+
+    CommandHandler getCmdHandler();
 }

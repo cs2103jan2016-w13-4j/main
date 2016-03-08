@@ -121,6 +121,8 @@ gradle-app.setting
 ###################################################
 ## Project.gitignore
 ###################################################
+.jfdi_user_data/
+
 *.class
 
 # Mobile Tools for Java (J2ME)

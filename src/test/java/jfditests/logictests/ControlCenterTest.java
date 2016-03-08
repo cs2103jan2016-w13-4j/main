@@ -1,6 +1,6 @@
 package jfditests.logictests;
 
-import dummy.DummyParser;
+import dummy.InputParser;
 import jfdi.logic.ControlCenter;
 import jfdi.logic.commands.ExitCommand;
 import jfdi.logic.commands.InvalidCommand;
@@ -21,10 +21,10 @@ import static org.powermock.api.mockito.PowerMockito.*;
  * @author Liu Xinan
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({DummyParser.class})
+@PrepareForTest({InputParser.class})
 public class ControlCenterTest {
 
-    @Mock private DummyParser parser;
+    @Mock private InputParser parser;
     @Mock private ListCommand ls;
     @Mock private ExitCommand exit;
     @Mock private InvalidCommand lol;
@@ -33,8 +33,8 @@ public class ControlCenterTest {
 
     @Before
     public void setUp() throws Exception {
-        mockStatic(DummyParser.class);
-        when(DummyParser.getInstance()).thenReturn(parser);
+        mockStatic(InputParser.class);
+        when(InputParser.getInstance()).thenReturn(parser);
     }
 
     @Test

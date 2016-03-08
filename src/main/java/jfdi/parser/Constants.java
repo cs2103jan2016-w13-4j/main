@@ -1,8 +1,6 @@
 package jfdi.parser;
 
 import java.time.ZoneId;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * The Constants class is a database of all relevant constants used for parsing.
@@ -34,7 +32,7 @@ public class Constants {
     public static final String REGEX_TASKID = "\\b\\d+\\b";
 
     // Date and Time related Regex Strings
-    public static final String REGEX_DAYS_NUMERIC = "((?i)0?[1-9]|[12][\\d]|3[01])(st|th|nd|rd)?";
+    public static final String REGEX_DAYS_NUMERIC = "(((?i)0?[1-9]|[12][\\d]|3[01])(st|th|nd|rd)?)";
     public static final String REGEX_DAYS_TEXTUAL = "((?i)(mon)(day)?|"
             + "(tue)(sday)?|" + "(wed)(nesday)?|" + "(thu)(rsday)?|"
             + "(fri)(day)?|" + "(sat)(urday)?|" + "(sun)(day)?)";
@@ -46,23 +44,25 @@ public class Constants {
     public static final String REGEX_YEARS = "((19|20)?\\d\\d)";
     public static final String REGEX_DATE_ATTRIBUTES = "((?i)(day)(s)?|"
             + "(week|wk)(s)?|" + "(month|mth)(s)?|" + "(year|yr))(s)?";
-    public static final String REGEX_TIME_MILITARY = "(?i)[0-2][0-3][ :-]?[0-5][\\d]([h]([r][s]?)?)";
-    public static final String REGEX_TIME_NORMAL = "((?i)0?[1-9]|1[0-2])[ -:]?([0-5][0-9])?[ -:]?([a|p][m])";
+    public static final String REGEX_TIME_MILITARY = "(?i)[0-2][0-3][.:-]?[0-5][\\d]([h]([r][s]?)?)";
+    public static final String REGEX_TIME_NORMAL = "((?i)0?[1-9]|1[0-2])[.-:]?([0-5][0-9])?[ -:]?([a|p][m])";
 
     public static final String REGEX_RELATIVE_DATE_1 = "(?i)(tomorrow|yesterday)";
     public static final String REGEX_RELATIVE_DATE_2 = "(?i)((next |this )?("
             + REGEX_DATE_ATTRIBUTES + "|" + REGEX_DAYS_TEXTUAL + "))";
-    public static final String REGEX_RELATIVE_DATE_3 = "(\\d+ "
+    public static final String REGEX_RELATIVE_DATE_3 = "((\\d+ |the )"
             + REGEX_DATE_ATTRIBUTES + " (?i)(later|before|after|from now))";
 
     public static final String REGEX_RELATIVE_DATE = "("
             + REGEX_RELATIVE_DATE_1 + "|" + REGEX_RELATIVE_DATE_2 + "|"
             + REGEX_RELATIVE_DATE_3 + ")";
 
-    public static final String REGEX_ABSOLUTE_DATE_DDMMYYYY = REGEX_DAYS_NUMERIC
-            + "[-./]?" + REGEX_MONTHS_NUMERIC + "[-./]?" + REGEX_YEARS + "?";
-    public static final String REGEX_ABSOLUTE_DATE_DDMONTHYYYY = REGEX_DAYS_NUMERIC
-            + "[-./ ]?" + REGEX_MONTHS_TEXTUAL + "[-./ ]?" + REGEX_YEARS + "?";
+    public static final String REGEX_ABSOLUTE_DATE_DDMMYYYY = "\\b"
+            + REGEX_DAYS_NUMERIC + "[-/.]" + REGEX_MONTHS_NUMERIC + "([-/.]"
+            + REGEX_YEARS + ")?\\b";
+    public static final String REGEX_ABSOLUTE_DATE_DDMONTHYYYY = "\\b"
+            + REGEX_DAYS_NUMERIC + "[-/. ]" + REGEX_MONTHS_TEXTUAL + "([-/. ]"
+            + REGEX_YEARS + ")?\\b";
 
     // Formats for date, time, and date-time in Regex (built from date and time
     // related Regex Strings)
@@ -127,10 +127,10 @@ public class Constants {
         public static final int DEFAULT_SECONDS = 0;
         public static final int DEFAULT_NANOSECONDS = 0;
 
-        int hour;
-        int minutes;
-        int seconds;
-        int nanoseconds;
+        public final int hour;
+        public final int minutes;
+        public final int seconds;
+        public final int nanoseconds;
 
         public Time(int hour, int minutes, int seconds, int nanoseconds) {
             this.hour = hour;
@@ -153,9 +153,8 @@ public class Constants {
     public static final ZoneId ZONE_ID = ZoneId.systemDefault();
 
     public static void main(String[] args) {
-        Pattern pat = Pattern.compile(REGEX_DATE_TIME_IDENTIFIER);
-        Matcher mat = pat.matcher("");
-        System.out.println("from next week to tomorrow"
+
+        System.out.println("From 25/11/94 to 5pm"
                 .matches(REGEX_DATE_TIME_IDENTIFIER));
     }
 }

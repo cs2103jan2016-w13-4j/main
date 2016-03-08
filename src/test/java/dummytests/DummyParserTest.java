@@ -1,6 +1,6 @@
 package dummytests;
 
-import dummy.DummyParser;
+import dummy.InputParser;
 import jfdi.logic.commands.ExitCommand;
 import jfdi.logic.commands.InvalidCommand;
 import jfdi.logic.commands.ListCommand;
@@ -16,12 +16,12 @@ import static org.junit.Assert.*;
  */
 public class DummyParserTest {
 
-    private DummyParser dummyParser = DummyParser.getInstance();
+    private InputParser dummyParser = InputParser.getInstance();
 
     @Test
     public void testGetInstance() throws Exception {
-        assertSame(dummyParser, DummyParser.getInstance());
-        assertSame(DummyParser.getInstance(), DummyParser.getInstance());
+        assertSame(dummyParser, InputParser.getInstance());
+        assertSame(InputParser.getInstance(), InputParser.getInstance());
     }
 
     @Test

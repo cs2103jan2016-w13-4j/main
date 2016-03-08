@@ -12,7 +12,6 @@ import jfdi.parser.DateTimeObject.DateTimeObjectBuilder;
 import jfdi.parser.exceptions.BadDateTimeException;
 
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
-import org.ocpsoft.prettytime.nlp.parse.DateGroup;
 
 /**
  * DateTimeParser is a class used to parse a string input into one a list of
@@ -25,6 +24,8 @@ import org.ocpsoft.prettytime.nlp.parse.DateGroup;
  *
  */
 public class DateTimeParser {
+    // TODO: support for "from {date}{time} to {time}"
+    // TODO: check start date < end date
     private static DateTimeParser dateTimeParser;
 
     public static DateTimeParser getInstance() {
@@ -53,21 +54,29 @@ public class DateTimeParser {
     }
 
     /**
-     * This method builds a DateTimeObject from a given string input.
+     * This method builds a DateTimeObject from a given string input. An 'event'
+     * type task will have both start and end date time. A 'point' task will
+     * only have a start date time and NULL end date time. A 'deadline' task
+     * will only have an end date time and NULL start date time. A 'floating'
+     * task will have neither.
      *
      * @param input
      *            a string that contains date time fields
      * @return a DateTimeObject.
      */
     private DateTimeObject buildDateTimeObject(String input) {
-        DateTimeObjectBuilder dateTimeObjectBuilder = new DateTimeObjectBuilder();
+        assert isValidDateTime(input);
 
+        DateTimeObjectBuilder dateTimeObjectBuilder = new DateTimeObjectBuilder();
         TaskType taskType = getTaskType(input);
         System.out.println(taskType);
+        input = toAmericanTime(input);
+        System.out.println(input);
+        // This might not be sufficient for event tasks
+        // TODO: create methods for individual task type
         boolean isTimeSpecified = checkTimeSpecified(input);
-        System.out.println(isTimeSpecified);
-        DateGroup dateGroup = getDateGroup(input);
-        List<LocalDateTime> dateTimeList = toLocalDateTime(dateGroup.getDates());
+        List<Date> dateList = getDateList(input);
+        List<LocalDateTime> dateTimeList = toLocalDateTime(dateList);
         LocalDateTime startDateTime = null;
         LocalDateTime endDateTime = null;
         switch (taskType) {
@@ -75,11 +84,10 @@ public class DateTimeParser {
                 assert dateTimeList.size() == 2;
                 startDateTime = dateTimeList.get(0);
                 endDateTime = dateTimeList.get(1);
-
                 if (!isTimeSpecified) {
                     startDateTime = setTime(startDateTime,
                             Constants.TIME_BEGINNING_OF_DAY);
-                    endDateTime = setTime(startDateTime,
+                    endDateTime = setTime(endDateTime,
                             Constants.TIME_END_OF_DAY);
                 }
                 break;
@@ -114,19 +122,34 @@ public class DateTimeParser {
     }
 
     /**
-     * This method parses the input string into a DateGroup object.
+     * This method converts dates of the form {day}/{month}/{year} to
+     * {month}/{day}/{year}. This has to be done because the underlying parsing
+     * library, prettyTime, can only parse American dates.
+     *
+     * @param input
+     *            the date time string to be parsed.
+     * @return the same input string, except with day and month reversed, if
+     *         any.
+     */
+    private String toAmericanTime(String input) {
+        return input
+                .replaceAll(
+                        "\\b(0?[1-9]|[12][\\d]|3[01])[-/.](0?[1-9]|1[0-2])(([-/.])((19|20)?\\d\\d))?\\b",
+                        "$2/$1$4$5");
+    }
+
+    /**
+     * This method parses the input string into a list of Dates.
      *
      * @param input
      *            the input string representing a date time.
-     * @return a DateGroup object, storing information about the date and time
-     *         specified in the string.
+     * @return a list of Date objects, storing information about the date and
+     *         time specified in the string.
      */
-    private DateGroup getDateGroup(String input) {
+    private List<Date> getDateList(String input) {
         PrettyTimeParser parser = new PrettyTimeParser();
-        List<DateGroup> dateGroupList = parser.parseSyntax(input);
-        assert dateGroupList.size() == 1;
-        return dateGroupList.get(0);
-
+        List<Date> dateList = parser.parse(input);
+        return dateList;
     }
 
     /**
@@ -220,6 +243,7 @@ public class DateTimeParser {
 
     public static void main(String[] args) throws Exception {
         DateTimeParser parser = DateTimeParser.getInstance();
-        System.out.println(parser.parseDateTime("from 23rd jan to 25th feb"));
+        System.out.println(parser.parseDateTime("From 25/11/94 3pm to 5pm")
+                .getEndDateTime());
     }
 }

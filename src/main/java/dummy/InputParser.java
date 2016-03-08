@@ -6,14 +6,14 @@ import jfdi.logic.interfaces.Command;
 /**
  * @author Liu Xinan
  */
-public class DummyParser {
+public class InputParser {
 
-    private static DummyParser ourInstance = new DummyParser();
+    private static InputParser ourInstance = new InputParser();
 
-    private DummyParser() {
+    private InputParser() {
     }
 
-    public static DummyParser getInstance() {
+    public static InputParser getInstance() {
         return ourInstance;
     }
 

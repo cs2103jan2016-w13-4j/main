@@ -23,7 +23,6 @@ public class UI implements IUserInterface {
     private ControlCenter logic;
 
     public UI() {
-        // what to do for constructor?
     }
 
     @Override

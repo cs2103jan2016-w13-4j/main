@@ -47,7 +47,6 @@ public class CommandHandler {
                 controller.importantList.add(item);
             }
         }
-        controller.displayList();
     }
 
     @Subscribe
@@ -78,7 +77,6 @@ public class CommandHandler {
         TaskAttributes task = e.getTask();
         controller.importantList.add(task);
         controller.relayFb(String.format(CMD_SUCCESS_ADDED, task.getId(), task.getDescription()), MsgType.SUCCESS);
-        controller.displayList();
     }
 
     @Subscribe
@@ -98,7 +96,12 @@ public class CommandHandler {
             controller.importantList.remove(n);
             controller.relayFb(String.format(CMD_SUCCESS_DELETED, n), MsgType.SUCCESS);
         }
-        controller.displayList();
+        int i = 1;
+        for (TaskAttributes task : controller.importantList) {
+            task.setId(i);
+            i++;
+        }
+
     }
 
     @Subscribe
@@ -116,7 +119,6 @@ public class CommandHandler {
         TaskAttributes task = e.getTask();
         controller.importantList.set(task.getId(), task);
         controller.relayFb(String.format(CMD_SUCCESS_RENAMED, task.getId(), task.getDescription()), MsgType.SUCCESS);
-        controller.displayList();
     }
 
     @Subscribe

@@ -47,7 +47,7 @@ public class TaskDb {
      *             if the ID contained in the taskAttributes does not exist
      */
     public static void createOrUpdate(TaskAttributes taskAttributes) throws NoAttributesChangedException,
-            InvalidIdException {
+    InvalidIdException {
         assert taskAttributes != null;
         Integer taskId = taskAttributes.getId();
         if (taskId != null) {
@@ -86,7 +86,7 @@ public class TaskDb {
      *             if the ID in taskAttributes does not exist
      */
     private static void update(TaskAttributes taskAttributes) throws NoAttributesChangedException,
-            InvalidIdException {
+    InvalidIdException {
         Task task = TaskDb.getTaskById(taskAttributes.getId());
         assert task != null;
         validateAttributesHasChanged(taskAttributes, task);
@@ -289,7 +289,7 @@ public class TaskDb {
      *             if the given id is invalid
      */
     public static void addReminderById(Integer id, Duration reminder) throws InvalidIdException,
-            NoAttributesChangedException {
+    NoAttributesChangedException {
         assert reminder != null;
         TaskAttributes taskAttributes = TaskDb.getById(id);
         taskAttributes.addReminder(reminder);
@@ -309,7 +309,7 @@ public class TaskDb {
      *             if the given id is invalid
      */
     public static void addTagById(Integer id, String tag) throws NoAttributesChangedException,
-            InvalidIdException {
+    InvalidIdException {
         assert tag != null;
         TaskAttributes taskAttributes = TaskDb.getById(id);
         taskAttributes.addTag(tag);
@@ -329,7 +329,7 @@ public class TaskDb {
      *             if the given id is invalid
      */
     public static void removeTagById(Integer id, String tag) throws NoAttributesChangedException,
-            InvalidIdException {
+    InvalidIdException {
         assert tag != null;
         TaskAttributes taskAttributes = TaskDb.getById(id);
         taskAttributes.removeTag(tag);
@@ -352,6 +352,14 @@ public class TaskDb {
         taskList = new TreeMap<Integer, Task>();
         deletedTaskList = new TreeMap<Integer, Task>();
         nextId = 1;
+    }
+
+    /**
+     * This method checks if the program's internal storage of tasks is empty.
+     * Used by UI to decided whether to display "Welcome" or ERROR.
+     */
+    public static boolean isEmptyStorage() {
+        return taskList.isEmpty();
     }
 
     /**

@@ -92,8 +92,11 @@ public class MainSetUp extends Application {
         controller.setCmdHandler(cmdHandler);
 
         userInterface.displayWelcome();
-        //controller.displayList();
+        controller.clearDatabase();
 
+        if (!controller.isEmptyDB()) {
+            controller.displayList();
+        }
     }
 
     /**

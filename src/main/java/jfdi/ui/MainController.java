@@ -19,6 +19,7 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import jfdi.storage.data.TaskAttributes;
+import jfdi.storage.data.TaskDb;
 import jfdi.ui.CommandHandler.MsgType;
 
 public class MainController {
@@ -83,6 +84,14 @@ public class MainController {
 
     public void clearList( ) {
         //importantList.removeAll(importantList);
+    }
+
+    public boolean isEmptyDB() {
+        return TaskDb.isEmptyStorage();
+    }
+
+    public void clearDatabase() {
+        TaskDb.resetProgramStorage();
     }
 
     public void setMainApp(MainSetUp main) {

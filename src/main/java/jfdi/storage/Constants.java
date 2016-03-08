@@ -27,7 +27,7 @@ public class Constants {
 
     // Filename storing last used directory
     public static final String FILENAME_DIRECTORY = "directory.txt";
-    public static final String PATH_DEFAULT_DIRECTORY = ".";
+    public static final String PATH_DEFAULT_DIRECTORY = "./.jfdi_user_data";
     public static final Path PATH_PREFERENCE_FILE = Paths.get(PATH_DEFAULT_DIRECTORY, FILENAME_DIRECTORY);
 
     // File extensions

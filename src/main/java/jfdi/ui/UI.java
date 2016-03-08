@@ -3,35 +3,27 @@ package jfdi.ui;
 import jfdi.logic.ControlCenter;
 import jfdi.ui.CommandHandler.MsgType;
 
-<<<<<<< HEAD
 import com.google.common.eventbus.EventBus;
 
-=======
->>>>>>> master
 public class UI implements IUserInterface {
 
-    //    private static final String UI_MESSAGE_INIT = "Initializing UI...";
-    //    private static final String UI_MESSAGE_INITED = "Initialization Completed!";
-    private static final String UI_MESSAGE_WELCOME = "J.F.D.I. : Hello! :) What can I do for you?";
+    // private static final String UI_MESSAGE_INIT = "Initializing UI...";
+    // private static final String UI_MESSAGE_INITED =
+    // "Initialization Completed!";
+    private static final String UI_MESSAGE_WELCOME = "J.F.D.I. : What can I do for you?";
     private static final String UI_MESSAGE_USERCMD = "You said: %1$s";
-    private static final String UI_MESSAGE_RESPONSE = "J.F.D.I.: %1$s";
+    private static final String UI_MESSAGE_RESPONSE = "J.F.D.I. : %1$s";
     private static final String UI_MESSAGE_WARNING = "Warning: %1$s";
     private static final String UI_MESSAGE_ERROR = "Error: %1$s";
     private static final String UI_MESSAGE_QUIT = "Bye Bye! See you next time! :)";
 
     private static EventBus eventBus = new EventBus();
-<<<<<<< HEAD
-    private MainController controller;
-
-=======
     private CommandHandler cmdHandler = new CommandHandler();
 
     private MainController controller;
->>>>>>> master
     private ControlCenter logic;
 
     public UI() {
-        // what to do for constructor?
     }
 
     @Override
@@ -67,14 +59,7 @@ public class UI implements IUserInterface {
 
         // Relay user input to logic and wait for reply
         logic.handleInput(input);
-<<<<<<< HEAD
-
-        /*
-         * // Update UI according to reply from logic switch (feedback) { case
-         * "QUIT": doQuit(); break; default: doUserCmd(); break; }
-         */
-=======
->>>>>>> master
+        relayToLogic(input);
     }
 
     @Override
@@ -82,15 +67,19 @@ public class UI implements IUserInterface {
 
         switch (type) {
             case SUCCESS:
+                controller.clearFb();
                 showToUser(String.format(UI_MESSAGE_RESPONSE, fb));
                 break;
             case WARNING:
+                controller.clearFb();
                 showToUser(String.format(UI_MESSAGE_WARNING, fb));
                 break;
             case ERROR:
+                controller.clearFb();
                 showToUser(String.format(UI_MESSAGE_ERROR, fb));
                 break;
             case EXIT:
+                controller.clearFb();
                 showToUser(UI_MESSAGE_QUIT);
                 break;
             default:
@@ -114,6 +103,13 @@ public class UI implements IUserInterface {
 
     private void prepareListener() {
         eventBus.register(cmdHandler);
+    }
+
+    @Override
+    public void relayToLogic(String input) {
+        // Relay user input to logic and wait for reply
+        logic.handleInput(input);
+        controller.clearList();
     }
 
     private void doQuit() {

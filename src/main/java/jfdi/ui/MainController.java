@@ -4,24 +4,33 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+import jfdi.storage.data.TaskAttributes;
+import jfdi.storage.data.TaskDb;
 import jfdi.ui.CommandHandler.MsgType;
 
 public class MainController {
+
+    private static final String CTRL_CMD_SHOWLIST = "list";
 
     public MainSetUp main;
     public IUserInterface ui;
     public CommandHandler cmdHandler;
     public Stage mainStage;
-    public ObservableList<String> importantList;
+    public ObservableList<TaskAttributes> importantList;
 
     @FXML
     public TextField dayDisplayer;
@@ -30,7 +39,11 @@ public class MainController {
     @FXML
     public TextArea cmdArea;
     @FXML
-    public ListView<String> listBoxMain;
+    public TableView<TaskAttributes> tableMain;
+    @FXML
+    public TableColumn<TaskAttributes, Integer> idCol;
+    @FXML
+    public TableColumn<TaskAttributes, String> taskCol;
     @FXML
     private TextField txtAddItem;
 
@@ -65,6 +78,22 @@ public class MainController {
         fbArea.appendText(warning);
     }
 
+    public void displayList() {
+        ui.relayToLogic(CTRL_CMD_SHOWLIST);
+    }
+
+    public void clearList() {
+        //importantList.removeAll(importantList);
+    }
+
+    public boolean isEmptyDB() {
+        return TaskDb.isEmptyStorage();
+    }
+
+    public void clearDatabase() {
+        TaskDb.resetProgramStorage();
+    }
+
     public void setMainApp(MainSetUp main) {
         this.main = main;
     }
@@ -93,9 +122,23 @@ public class MainController {
     }
 
     private void initList() {
-        // need to replace "observableArrayList" with actual storage content
-        importantList = FXCollections.observableArrayList("Task 1", "Task 2", "Task 3", "Task 4");
-        listBoxMain.setItems(importantList);
+
+        importantList = FXCollections.observableArrayList(new TaskAttributes());
+        tableMain.setItems(importantList);
+
+        idCol.setCellValueFactory(new Callback<CellDataFeatures<TaskAttributes, Integer>, ObservableValue<Integer>>() {
+            @Override
+            public ObservableValue<Integer> call(CellDataFeatures<TaskAttributes, Integer> param) {
+                return  new ReadOnlyObjectWrapper<Integer>(param.getValue().getId());
+            }
+        });
+
+        taskCol.setCellValueFactory(new Callback<CellDataFeatures<TaskAttributes, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<TaskAttributes, String> param) {
+                return  new ReadOnlyObjectWrapper<String>(param.getValue().getDescription());
+            }
+        });
     }
 
     private void initFbArea() {

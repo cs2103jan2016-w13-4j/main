@@ -1,14 +1,11 @@
 package jfdi.parser.commandparsers;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import jfdi.logic.commands.DeleteCommandStub;
-import jfdi.logic.interfaces.Command;
-import jfdi.parser.Constants;
+import jfdi.logic.commands.DeleteTaskCommand;
+import jfdi.logic.commands.DeleteTaskCommand.Builder;
 
-public class DeleteCommandParser extends CommandParser {
+public class DeleteCommandParser extends AbstractCommandParser {
 
     public static DeleteCommandParser instance;
 
@@ -28,27 +25,19 @@ public class DeleteCommandParser extends CommandParser {
      * This method builds a DeleteCommand by extracting out the list of taskIDs
      * specfied for deletion by the user and passing it into the command
      * builder.
+     *
+     * @param input
+     *          the user input, representing a delete command.
+     * @return a DeleteTaskCommand object.
+     *
      */
     @Override
-    public Command build(String input) {
-        DeleteCommandStub.Builder deleteCommandBuilder = new DeleteCommandStub.Builder();
-        ArrayList<String> taskIds = getTaskIds(input);
-        deleteCommandBuilder.addTaskIds(taskIds);
-        DeleteCommandStub deleteCommand = deleteCommandBuilder.build();
+    public DeleteTaskCommand build(String input) {
+        Builder deleteCommandBuilder = new Builder();
+        ArrayList<Integer> taskIds = getTaskIds(input);
+        deleteCommandBuilder.addIds(taskIds);
+        DeleteTaskCommand deleteCommand = deleteCommandBuilder.build();
         return deleteCommand;
     }
 
-    private ArrayList<String> getTaskIds(String input) {
-        Pattern pattern = Pattern.compile(Constants.REGEX_TASKID);
-        Matcher matcher = pattern.matcher(input);
-        ArrayList<String> taskIds = new ArrayList<>();
-
-        while (matcher.find()) {
-            String taskId = getTrimmedSubstringInRange(input, matcher.start(),
-                    matcher.end());
-            taskIds.add(taskId);
-        }
-
-        return taskIds;
-    }
 }

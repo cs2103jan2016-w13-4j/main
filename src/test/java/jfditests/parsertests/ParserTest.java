@@ -2,7 +2,9 @@ package jfditests.parsertests;
 
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.InputParser;
+import jfdi.parser.exceptions.InvalidInputException;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +19,10 @@ public class ParserTest {
     @Test
     public void testUserInputList() {
         String listCommand = "List";
-        Command command = parser.parse(listCommand);
+        try {
+            Command command = parser.parse(listCommand);
+        } catch (InvalidInputException e) {
+            Assert.fail();
+        }
     }
 }
-

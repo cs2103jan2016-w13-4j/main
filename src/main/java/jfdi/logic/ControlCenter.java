@@ -1,8 +1,10 @@
 package jfdi.logic;
 
-import dummy.DummyParser;
+import jfdi.logic.commands.InvalidCommand;
 import jfdi.logic.interfaces.Command;
 import jfdi.logic.interfaces.ILogic;
+import jfdi.parser.InputParser;
+import jfdi.parser.exceptions.InvalidInputException;
 import jfdi.storage.MainStorage;
 import jfdi.storage.exceptions.ExistingFilesFoundException;
 
@@ -29,8 +31,13 @@ public class ControlCenter implements ILogic {
     public void handleInput(String input) {
         // TODO: Integrate when parser is ready.
         // Right now it is using a DummyParser
-        DummyParser parser = DummyParser.getInstance();
-        Command command = parser.parse(input);
+        InputParser parser = InputParser.getInstance();
+        Command command;
+        try {
+            command = parser.parse(input);
+        } catch (InvalidInputException e) {
+            command = new InvalidCommand.Builder().build();
+        }
         command.execute();
     }
 }

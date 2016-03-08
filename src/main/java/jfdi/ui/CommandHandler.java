@@ -11,7 +11,6 @@ import jfdi.logic.events.DeleteTaskFailEvent;
 import jfdi.logic.events.ExitCalledEvent;
 import jfdi.logic.events.InvalidCommandEvent;
 import jfdi.logic.events.ListDoneEvent;
-import jfdi.logic.events.ListFailEvent;
 import jfdi.logic.events.RenameTaskDoneEvent;
 import jfdi.logic.events.RenameTaskFailEvent;
 import jfdi.logic.events.RescheduleTaskDoneEvent;
@@ -47,19 +46,6 @@ public class CommandHandler {
                 controller.importantList.add(item);
             }
         }*/
-    }
-
-    @Subscribe
-    public void handleListFailEvent(ListFailEvent e) {
-        switch (e.getError()) {
-            case NON_EXISTENT_TAG:
-                controller.relayFb(CMD_ERROR_NONEXIST_TAG, MsgType.ERROR);
-                break;
-            case UNKNOWN:
-                controller.relayFb(CMD_ERROR_UNKNOWN, MsgType.ERROR);
-                break;
-            default: break;
-        }
     }
 
     @Subscribe

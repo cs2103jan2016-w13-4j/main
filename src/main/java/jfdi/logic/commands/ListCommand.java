@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import jfdi.logic.events.ListDoneEvent;
-import jfdi.logic.events.ListFailEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.data.TaskAttributes;
 import jfdi.storage.data.TaskDb;
@@ -60,12 +59,7 @@ public class ListCommand extends Command {
                 items.addAll(TaskDb.getByTag(tag));
             }
         }
-
-        if (items.isEmpty()) {
-            eventBus.post(new ListFailEvent(ListFailEvent.Error.NON_EXISTENT_TAG));
-        } else {
-            eventBus.post(new ListDoneEvent(items));
-        }
+        eventBus.post(new ListDoneEvent(tags, items));
     }
 
 }

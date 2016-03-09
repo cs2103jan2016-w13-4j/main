@@ -41,6 +41,16 @@ public class CommandHandler {
 
     @Subscribe
     public void handleListDoneEvent(ListDoneEvent e) {
+
+        for (TaskAttributes item : e.getItems()) {
+            System.out.println("logic_prior: " + item.getId() + item.getDescription());
+        }
+        System.out.println(" ");
+        for (TaskAttributes item : controller.importantList) {
+            System.out.println("ui_prior: " + item.getId() + item.getDescription());
+        }
+
+        controller.importantList.removeAll(controller.importantList);
         controller.importantList.setAll(e.getItems());
 
         for (TaskAttributes item : e.getItems()) {
@@ -83,6 +93,9 @@ public class CommandHandler {
     public void handleDeleteTaskDoneEvent(DeleteTaskDoneEvent e) {
         HashSet<Integer> deletedIds = new HashSet<Integer>(e.getDeletedIds());
         controller.importantList.removeIf(task -> deletedIds.contains(task.getId()));
+        for (Integer num : deletedIds) {
+            controller.relayFb(String.format(CMD_SUCCESS_DELETED, num), MsgType.SUCCESS);
+        }
     }
 
     @Subscribe

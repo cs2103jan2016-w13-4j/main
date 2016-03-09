@@ -11,9 +11,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import jfdi.storage.data.TaskAttributes;
-import jfdi.storage.data.TaskDb;
-import jfdi.storage.exceptions.InvalidIdException;
 
 public class MainSetUp extends Application {
 
@@ -96,15 +93,15 @@ public class MainSetUp extends Application {
 
         userInterface.displayWelcome();
 
-        for (TaskAttributes task : TaskDb.getAll()) {
+        /*for (TaskAttributes task : TaskDb.getAll()) {
             try {
                 TaskDb.destroy(task.getId());
             } catch (InvalidIdException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
 
-        controller.importantList.removeAll(controller.importantList);
+        //controller.importantList.removeAll(controller.importantList);
 
         controller.displayList();
     }

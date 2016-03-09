@@ -386,4 +386,26 @@ public class TaskDbTest {
         taskDbInstance.addReminderById(taskAttributes.getId(), Constants.TEST_TASK_REMINDER_DURATION_1);
     }
 
+    @Test
+    public void testTaskIdsResetUponLoad() throws Exception {
+        // Create task 1
+        TaskAttributes taskAttributes = new TaskAttributes();
+        taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        taskAttributes.save();
+
+        // Create task 2
+        taskAttributes.setId(null);
+        taskAttributes.save();
+
+        // Delete the first task
+        taskDbInstance.destroy(1);
+
+        // Command under test
+        taskDbInstance.load();
+
+        // There should only be one task with ID of 1
+        assertTrue(taskDbInstance.hasId(1));
+        assertFalse(taskDbInstance.hasId(2));
+    }
+
 }

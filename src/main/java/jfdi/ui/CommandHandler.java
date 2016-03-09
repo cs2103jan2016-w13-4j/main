@@ -26,12 +26,12 @@ public class CommandHandler {
     private static final String CMD_ERROR_CANT_DELETE = "Some stupid error occurred. Cannot delete task!";
     private static final String CMD_ERROR_CANT_RENAME = "Some stupid error occurred. Cannot rename task!";
     private static final String CMD_ERROR_CANT_RESCHEDULE = "Some stupid error occurred. Cannot reschedule task!";
-    private static final String CMD_WARNING_DONTKNOW = "Sorry, I do not understand what you mean by \"%s\" :(\n";
+    private static final String CMD_WARNING_DONTKNOW = "Sorry, I do not understand what you mean by \"%s\" :(";
     private static final String CMD_SUCCESS_LISTED = "Here is your requested list! :)";
-    private static final String CMD_SUCCESS_ADDED = "Task #%d - %s added! :)\n";
-    private static final String CMD_SUCCESS_DELETED = "Task #%d deleted! :)\n";
-    private static final String CMD_SUCCESS_RENAMED = "Task #%d renamed to - %s -! :)\n";
-    private static final String CMD_SUCCESS_RESCHEDULED = "Task #%d rescheduled! :)\n";
+    private static final String CMD_SUCCESS_ADDED = "Task #%d - %s added! :)";
+    private static final String CMD_SUCCESS_DELETED = "Task #%d deleted! :)";
+    private static final String CMD_SUCCESS_RENAMED = "Task #%d renamed to - %s -! :)";
+    private static final String CMD_SUCCESS_RESCHEDULED = "Task #%d rescheduled! :)";
 
     private MainController controller;
 

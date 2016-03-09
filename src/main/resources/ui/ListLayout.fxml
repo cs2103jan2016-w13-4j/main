@@ -12,11 +12,15 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TableColumn?>
+<?import java.net.URL?>
 
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
 	minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0"
 	prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="jfdi.ui.MainController">
+	<stylesheets>
+		<URL value="@jfdiLook.css" />
+	</stylesheets>
 	<children>
 		<SplitPane dividerPositions="0.29797979797979796"
 			prefHeight="700.0" prefWidth="651.0">
@@ -33,14 +37,14 @@
 										<Font name="System Bold" size="12.0" />
 									</font>
 								</TextField>
-								<TextArea editable="false" prefHeight="75.0" prefWidth="217.0"
+								<TextArea fx:id="statsDisplayer" editable="false" prefHeight="75.0" prefWidth="217.0"
 									text="Completed : 3&#10;Due Today: 0" />
 								<Separator prefHeight="0.0" prefWidth="217.0" />
 								<Label text="Overdue" />
-								<ListView prefHeight="247.0" prefWidth="191.0" />
+								<ListView fx:id="overdueList" prefHeight="247.0" prefWidth="191.0" />
 								<Separator prefWidth="200.0" />
 								<Label text="Upcoming" />
-								<ListView prefHeight="265.0" prefWidth="191.0" />
+								<ListView fx:id="upcomingList" prefHeight="265.0" prefWidth="191.0" />
 							</children>
 						</VBox>
 					</children>

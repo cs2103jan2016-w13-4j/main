@@ -66,8 +66,8 @@ public class MainSetUp extends Application {
 
     private void initView() throws IOException {
 
-        IUserInterface userInterface = new UI();
-        CommandHandler cmdHandler = userInterface.getCmdHandler();
+        IUserInterface ui = new UI();
+        CommandHandler cmdHandler = ui.getCmdHandler();
 
         // Load View
         FXMLLoader loader = new FXMLLoader();
@@ -80,19 +80,18 @@ public class MainSetUp extends Application {
 
         // Link UI and CmdHandler with Controller
         cmdHandler.setController(controller);
-        userInterface.setController(controller);
-        userInterface.init();
+        ui.setController(controller);
+        ui.init();
 
         ((BorderPane) rootLayout).setCenter(listLayout);
         controller.setStage(primaryStage);
 
         // Link Controller with UI, MainSetUp and CommandHandler
-        controller.setUi(userInterface);
+        controller.setUi(ui);
         controller.setMainApp(this);
         controller.setCmdHandler(cmdHandler);
 
-        userInterface.displayWelcome();
-
+        // This is for clearing database
         /*for (TaskAttributes task : TaskDb.getAll()) {
             try {
                 TaskDb.destroy(task.getId());
@@ -104,6 +103,7 @@ public class MainSetUp extends Application {
         //controller.importantList.removeAll(controller.importantList);
 
         controller.displayList();
+        ui.displayWelcome();
     }
 
     /**

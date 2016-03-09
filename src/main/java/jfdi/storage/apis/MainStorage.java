@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 import jfdi.storage.Constants;
 import jfdi.storage.DatabaseManager;
 import jfdi.storage.FileManager;
-import jfdi.storage.IStorage;
 import jfdi.storage.exceptions.ExistingFilesFoundException;
 
 /**

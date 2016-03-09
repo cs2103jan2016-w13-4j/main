@@ -1,4 +1,4 @@
-package jfdi.storage;
+package jfdi.storage.apis;
 
 import java.nio.file.InvalidPathException;
 

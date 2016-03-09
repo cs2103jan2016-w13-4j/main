@@ -1,7 +1,10 @@
 package jfdi.parser;
 
+import java.util.Collection;
+
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.exceptions.InvalidInputException;
+import jfdi.storage.apis.AliasAttributes;
 
 /**
  * This is the interface for the Parser component. All other components should
@@ -26,4 +29,14 @@ public interface IParser {
      *             if the userInput is determined to be invalid.
      */
     Command parse(String userInput) throws InvalidInputException;
+
+    /**
+     * This method accepts a collection of AliasAttributes. This collection is
+     * necessary for the InputParser to parse user inputs according to the alias
+     * used.
+     *
+     * @param aliases
+     *            a collection of AliasAttributes, earlier defined by the user
+     */
+    void setAliases(Collection<AliasAttributes> aliases);
 }

@@ -19,16 +19,16 @@ public class AddCommandParserTest {
 
     @Test
     public void testValidAddInput() {
-        Command c = parser.build("add poop");
-        Assert.assertNotNull(c);
-        Assert.assertTrue(c instanceof AddTaskCommand);
+        Command addCommand = parser.build("add poop");
+        Assert.assertNotNull(addCommand);
+        Assert.assertTrue(addCommand instanceof AddTaskCommand);
     }
 
     @Test
     public void testValidAddInputWithoutIdentifier() {
-        Command c = parser.build("poop ");
-        Assert.assertNotNull(c);
-        Assert.assertTrue(c instanceof AddTaskCommand);
+        Command addCommand = parser.build("poop ");
+        Assert.assertNotNull(addCommand);
+        Assert.assertTrue(addCommand instanceof AddTaskCommand);
     }
 
 }

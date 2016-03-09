@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 
 import jfdi.storage.Constants;
 import jfdi.storage.apis.MainStorage;
-import jfdi.storage.exceptions.ExistingFilesFoundException;
+import jfdi.storage.exceptions.FilesReplacedException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -111,7 +111,7 @@ public class MainStorageTest {
         }
     }
 
-    @Test(expected = ExistingFilesFoundException.class)
+    @Test(expected = FilesReplacedException.class)
     public void testLoadInvalidExistingFiles() throws Exception {
         createInvalidDataFiles();
         mainStorageInstance.load(testDirectoryString);
@@ -122,7 +122,7 @@ public class MainStorageTest {
         mainStorageInstance.changeDirectory(testDirectoryString);
     }
 
-    @Test(expected = ExistingFilesFoundException.class)
+    @Test(expected = FilesReplacedException.class)
     public void testChangeDirectoryWithExistingInvalidFiles() throws Exception {
         initializeStorage();
         Path subdirectoryPath = Paths.get(testDirectoryString, Constants.TEST_SUBDIRECTORY_NAME);

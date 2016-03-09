@@ -2,7 +2,7 @@ package jfdi.storage.apis;
 
 import java.nio.file.InvalidPathException;
 
-import jfdi.storage.exceptions.ExistingFilesFoundException;
+import jfdi.storage.exceptions.FilesReplacedException;
 
 /**
  * The Storage interface serves as the facade of the Storage component. It
@@ -19,11 +19,11 @@ public interface IStorage {
      * location, the invalid files will be renamed and kept as a backup while a
      * new file will overwrite the existing invalid file.
      *
-     * @throws ExistingFilesFoundException
+     * @throws FilesReplacedException
      *             if existing unrecognized data files are found and replaced
      *             (with backups made) in the given storageFolderPath
      */
-    void initialize() throws ExistingFilesFoundException;
+    void initialize() throws FilesReplacedException;
 
     /**
      * This method can only be executed after load has been executed. It saves
@@ -38,13 +38,13 @@ public interface IStorage {
      * @throws InvalidPathException
      *             if the program does not have sufficient permissions to carry
      *             out file operations in newStorageFolderPath
-     * @throws ExistingFilesFoundException
+     * @throws FilesReplacedException
      *             if existing files had to be replaced (with backups made) in
      *             the newStorageFolderPath
      * @throws IllegalAccessException
      *             if changeDirectory is called before Storage is initialized
      */
     void changeDirectory(String newStorageFolderPath) throws InvalidPathException,
-            ExistingFilesFoundException, IllegalAccessException;
+            FilesReplacedException, IllegalAccessException;
 
 }

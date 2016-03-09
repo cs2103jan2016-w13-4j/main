@@ -10,11 +10,11 @@ import java.util.ArrayList;
  * @author Thng Kai Yuan
  */
 @SuppressWarnings("serial")
-public class ExistingFilesFoundException extends Exception {
+public class FilesReplacedException extends Exception {
 
     private ArrayList<FilePathPair> replacedFilePairs = null;
 
-    public ExistingFilesFoundException(ArrayList<FilePathPair> replacedFilePairs) {
+    public FilesReplacedException(ArrayList<FilePathPair> replacedFilePairs) {
         this.replacedFilePairs = replacedFilePairs;
     }
 

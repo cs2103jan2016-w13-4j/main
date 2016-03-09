@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import jfdi.storage.exceptions.ExistingFilesFoundException;
+import jfdi.storage.exceptions.FilesReplacedException;
 import jfdi.storage.exceptions.FilePathPair;
 
 /**
@@ -64,11 +64,11 @@ public class FileManager {
      *
      * @param newStorageFolderPath
      *            the new storage directory
-     * @throws ExistingFilesFoundException
+     * @throws FilesReplacedException
      *             if files in the new directory were replaced (with backups
      *             made)
      */
-    public static void moveFilesToDirectory(String newStorageFolderPath) throws ExistingFilesFoundException {
+    public static void moveFilesToDirectory(String newStorageFolderPath) throws FilesReplacedException {
         // Create the new folder if it doesn't already exist
         File newStorageFolder = new File(newStorageFolderPath);
         newStorageFolder.mkdirs();
@@ -79,7 +79,7 @@ public class FileManager {
 
         // Let the caller know if files were replaced
         if (!replacedFiles.isEmpty()) {
-            throw new ExistingFilesFoundException(replacedFiles);
+            throw new FilesReplacedException(replacedFiles);
         }
     }
 

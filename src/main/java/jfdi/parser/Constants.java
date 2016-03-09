@@ -24,7 +24,7 @@ public class Constants {
     public static final String REGEX_LIST = "(?i)^(list)";
     public static final String REGEX_RENAME = "(?i)^(rename)";
     public static final String REGEX_RESCHEDULE = "(?i)^(reschedule)";
-    public static final String REGEX_DELETE = "(?i)^(delete)";
+    public static final String REGEX_DELETE = "(?i)^(delete|remove)";
 
     // Task related Regex Strings
     public static final String REGEX_TAGS = "\\+\\w+";
@@ -47,7 +47,7 @@ public class Constants {
     public static final String REGEX_TIME_MILITARY = "(?i)[0-2][0-3][.:-]?[0-5][\\d]([h]([r][s]?)?)";
     public static final String REGEX_TIME_NORMAL = "((?i)0?[1-9]|1[0-2])[.-:]?([0-5][0-9])?[ -:]?([a|p][m])";
 
-    public static final String REGEX_RELATIVE_DATE_1 = "(?i)(tomorrow|yesterday)";
+    public static final String REGEX_RELATIVE_DATE_1 = "(?i)(tomorrow|yesterday|today|now)";
     public static final String REGEX_RELATIVE_DATE_2 = "(?i)((next |this )?("
             + REGEX_DATE_ATTRIBUTES + "|" + REGEX_DAYS_TEXTUAL + "))";
     public static final String REGEX_RELATIVE_DATE_3 = "((\\d+ |the )"
@@ -79,7 +79,7 @@ public class Constants {
     public static final String REGEX_DEADLINE_IDENTIFIER = "(?i)(by|before) "
             + REGEX_DATE_TIME_FORMAT;
     public static final String REGEX_EVENT_IDENTIFIER = "(?i)(from) "
-            + REGEX_DATE_TIME_FORMAT + " to " + REGEX_DATE_TIME_FORMAT;
+            + REGEX_DATE_TIME_FORMAT + " (to|until) " + REGEX_DATE_TIME_FORMAT;
     public static final String REGEX_POINT_TASK_IDENTIFIER = "(?i)(on|at) "
             + REGEX_DATE_TIME_FORMAT;
     public static final String REGEX_REPEATED_TASK_IDENTIFIER = "(?i)(every) "
@@ -154,7 +154,7 @@ public class Constants {
 
     public static void main(String[] args) {
 
-        System.out.println("From 25/11/94 to 5pm"
+        System.out.println("From now to tomorrow"
                 .matches(REGEX_DATE_TIME_IDENTIFIER));
     }
 }

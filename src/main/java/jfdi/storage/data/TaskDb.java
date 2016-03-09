@@ -407,7 +407,8 @@ public class TaskDb {
     private static void populateTaskList(Task[] taskArray) {
         resetProgramStorage();
         for (Task task : taskArray) {
-            taskList.put(nextId++, task);
+            task.setId(nextId++);
+            taskList.put(task.getId(), task);
         }
     }
 

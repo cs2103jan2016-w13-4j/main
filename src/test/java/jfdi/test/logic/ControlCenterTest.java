@@ -1,4 +1,4 @@
-package jfditests.logictests;
+package jfdi.test.logic;
 
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.any;

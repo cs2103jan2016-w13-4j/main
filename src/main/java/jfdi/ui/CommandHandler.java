@@ -27,11 +27,11 @@ public class CommandHandler {
     private static final String CMD_ERROR_CANT_RENAME = "Some stupid error occurred. Cannot rename task!";
     private static final String CMD_ERROR_CANT_RESCHEDULE = "Some stupid error occurred. Cannot reschedule task!";
     private static final String CMD_WARNING_DONTKNOW = "Sorry, I do not understand what you mean by \"%s\" :(\n";
-    private static final String CMD_SUCCESS_ADDED = "Task #%d - %s added!\n";
-    private static final String CMD_SUCCESS_DELETED = "Task #%d deleted!\n";
-    private static final String CMD_SUCCESS_RENAMED = "Task #%d renamed to - %s! -\n";
-    private static final String CMD_SUCCESS_RESCHEDULED = "Task #%d rescheduled!\n";
-
+    private static final String CMD_SUCCESS_LISTED = "Here is your requested list! :)";
+    private static final String CMD_SUCCESS_ADDED = "Task #%d - %s added! :)\n";
+    private static final String CMD_SUCCESS_DELETED = "Task #%d deleted! :)\n";
+    private static final String CMD_SUCCESS_RENAMED = "Task #%d renamed to - %s -! :)\n";
+    private static final String CMD_SUCCESS_RESCHEDULED = "Task #%d rescheduled! :)\n";
 
     private MainController controller;
 
@@ -42,24 +42,20 @@ public class CommandHandler {
     @Subscribe
     public void handleListDoneEvent(ListDoneEvent e) {
 
-        for (TaskAttributes item : e.getItems()) {
+        /*for (TaskAttributes item : e.getItems()) {
             System.out.println("logic_prior: " + item.getId() + item.getDescription());
         }
         System.out.println(" ");
         for (TaskAttributes item : controller.importantList) {
             System.out.println("ui_prior: " + item.getId() + item.getDescription());
-        }
+        }*/
 
         controller.importantList.removeAll(controller.importantList);
         controller.importantList.setAll(e.getItems());
 
-        for (TaskAttributes item : e.getItems()) {
-            System.out.println(item.getId() + item.getDescription());
-        }
-        System.out.println(" ");
-        for (TaskAttributes item : controller.importantList) {
-            System.out.println(item.getId() + item.getDescription());
-        }
+        controller.relayFb(CMD_SUCCESS_LISTED, MsgType.SUCCESS);
+
+
     }
 
     @Subscribe
@@ -102,6 +98,9 @@ public class CommandHandler {
     public void handleDeleteTaskFailEvent(DeleteTaskFailEvent e) {
         switch (e.getError()) {
             case UNKNOWN:
+                controller.relayFb(CMD_ERROR_CANT_DELETE, MsgType.ERROR);
+                break;
+            case NON_EXISTENT_ID:
                 controller.relayFb(CMD_ERROR_CANT_DELETE, MsgType.ERROR);
                 break;
             default: break;

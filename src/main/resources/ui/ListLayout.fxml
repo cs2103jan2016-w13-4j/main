@@ -65,8 +65,8 @@
 										</Label>
 										<TableView fx:id="tableMain" layoutX="-2.0" layoutY="38.0" prefHeight="538.0" prefWidth="454.0">
 											<columns>
-												<TableColumn fx:id="idCol" editable="false" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" resizable="false" sortable="false" text="ID"/>
 												<TableColumn fx:id="taskCol" editable="false" maxWidth="400.0" minWidth="400.0" prefWidth="300.0" resizable="false" sortable="false" text="Task Name"/>
+												<TableColumn fx:id="idCol" editable="false" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" resizable="false" sortable="false" text="ID"/>
 											</columns>
 										</TableView>
 									</children>

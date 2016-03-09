@@ -24,7 +24,7 @@ import jfdi.ui.CommandHandler.MsgType;
 
 public class MainController {
 
-    private static final String CTRL_CMD_PROMPT_TEXT = "(Hey Jim! Please let me know what I can do for you!)\n";
+    private static final String CTRL_CMD_PROMPT_TEXT = "(Hey Jim! Please let me know what I can do for you!)";
     private static final String CTRL_CMD_SHOWLIST = "list";
 
     public MainSetUp main;

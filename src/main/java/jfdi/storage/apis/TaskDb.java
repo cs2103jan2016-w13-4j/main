@@ -1,4 +1,4 @@
-package jfdi.storage.data;
+package jfdi.storage.apis;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -10,29 +10,48 @@ import java.util.TreeMap;
 
 import jfdi.storage.Constants;
 import jfdi.storage.FileManager;
+import jfdi.storage.IDatabase;
+import jfdi.storage.entities.Task;
 import jfdi.storage.exceptions.FilePathPair;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
 import jfdi.storage.serializer.Serializer;
 
-public class TaskDb {
+public class TaskDb implements IDatabase {
+
+    // Singleton instance of TaskDb
+    private static TaskDb instance = null;
 
     // All persisted Tasks
-    private static TreeMap<Integer, Task> taskList = null;
+    private TreeMap<Integer, Task> taskList = null;
 
     // All deleted Tasks
-    private static TreeMap<Integer, Task> deletedTaskList = null;
+    private TreeMap<Integer, Task> deletedTaskList = null;
 
     // The ID that will be assigned to the next new task
-    private static int nextId = 1;
+    private int nextId = 1;
 
     // The file path to the data file
-    private static Path filePath = null;
+    private Path filePath = null;
 
-    static {
-        if (taskList == null) {
-            resetProgramStorage();
+    /**
+     * This private constructor prevents more instances of TaskDb from being
+     * created.
+     */
+    private TaskDb() {
+        resetProgramStorage();
+    }
+
+    /**
+     * This method returns the singleton instance of TaskDb.
+     *
+     * @return the singleton instance of TaskDb
+     */
+    public static TaskDb getInstance() {
+        if (instance == null) {
+            instance = new TaskDb();
         }
+        return instance;
     }
 
     /**
@@ -46,7 +65,7 @@ public class TaskDb {
      * @throws InvalidIdException
      *             if the ID contained in the taskAttributes does not exist
      */
-    public static void createOrUpdate(TaskAttributes taskAttributes) throws NoAttributesChangedException,
+    public void createOrUpdate(TaskAttributes taskAttributes) throws NoAttributesChangedException,
     InvalidIdException {
         assert taskAttributes != null;
         Integer taskId = taskAttributes.getId();
@@ -64,7 +83,7 @@ public class TaskDb {
      * @param taskAttributes
      *            the object containing the desired attributes of the task
      */
-    private static void create(TaskAttributes taskAttributes) {
+    private void create(TaskAttributes taskAttributes) {
         assert taskAttributes.getId() == null;
         Task task = taskAttributes.toEntity();
         task.setId(nextId++);
@@ -85,9 +104,9 @@ public class TaskDb {
      * @throws InvalidIdException
      *             if the ID in taskAttributes does not exist
      */
-    private static void update(TaskAttributes taskAttributes) throws NoAttributesChangedException,
+    private void update(TaskAttributes taskAttributes) throws NoAttributesChangedException,
     InvalidIdException {
-        Task task = TaskDb.getTaskById(taskAttributes.getId());
+        Task task = getTaskById(taskAttributes.getId());
         assert task != null;
         validateAttributesHasChanged(taskAttributes, task);
         task.update(taskAttributes);
@@ -105,7 +124,7 @@ public class TaskDb {
      * @throws NoAttributesChangedException
      *             if no attributes have been changed
      */
-    private static void validateAttributesHasChanged(TaskAttributes taskAttributes, Task task)
+    private void validateAttributesHasChanged(TaskAttributes taskAttributes, Task task)
             throws NoAttributesChangedException {
         if (taskAttributes.equalTo(task)) {
             throw new NoAttributesChangedException();
@@ -118,7 +137,7 @@ public class TaskDb {
      *
      * @return a Collection of TaskAttributes
      */
-    public static Collection<TaskAttributes> getAll() {
+    public Collection<TaskAttributes> getAll() {
         ArrayList<TaskAttributes> taskAttributes = new ArrayList<TaskAttributes>();
         for (Task task : taskList.values()) {
             taskAttributes.add(new TaskAttributes(task));
@@ -136,7 +155,7 @@ public class TaskDb {
      * @throws InvalidIdException
      *             if the given id does not exist in the database
      */
-    public static TaskAttributes getById(Integer id) throws InvalidIdException {
+    public TaskAttributes getById(Integer id) throws InvalidIdException {
         Task task = getTaskById(id);
         return new TaskAttributes(task);
     }
@@ -151,7 +170,7 @@ public class TaskDb {
      * @throws InvalidIdException
      *             if the given id does not exist in the database
      */
-    private static Task getTaskById(Integer id) throws InvalidIdException {
+    private Task getTaskById(Integer id) throws InvalidIdException {
         if (id == null || taskList.get(id) == null) {
             throw new InvalidIdException(id);
         }
@@ -167,11 +186,11 @@ public class TaskDb {
      * @return an ArrayList of TaskAttributes corresponding to Tasks that
      *         contains the specified tag
      */
-    public static ArrayList<TaskAttributes> getByTag(String tag) {
+    public ArrayList<TaskAttributes> getByTag(String tag) {
         assert tag != null;
 
         ArrayList<TaskAttributes> taskAttributesList = new ArrayList<TaskAttributes>();
-        for (TaskAttributes taskAttributes : TaskDb.getAll()) {
+        for (TaskAttributes taskAttributes : getAll()) {
             if (taskAttributes.hasTag(tag)) {
                 taskAttributesList.add(taskAttributes);
             }
@@ -186,7 +205,7 @@ public class TaskDb {
      *            the ID of the task to be checked
      * @return boolean indicating if the task exists in the database
      */
-    public static boolean hasId(int id) {
+    public boolean hasId(int id) {
         return taskList.containsKey(id);
     }
 
@@ -200,10 +219,10 @@ public class TaskDb {
      * @throws InvalidIdException
      *             if the given id is invalid
      */
-    public static void markAsComplete(Integer id) throws NoAttributesChangedException, InvalidIdException {
-        TaskAttributes taskAttributes = TaskDb.getById(id);
+    public void markAsComplete(Integer id) throws NoAttributesChangedException, InvalidIdException {
+        TaskAttributes taskAttributes = getById(id);
         taskAttributes.setCompleted(true);
-        TaskDb.update(taskAttributes);
+        update(taskAttributes);
     }
 
     /**
@@ -216,10 +235,10 @@ public class TaskDb {
      * @throws InvalidIdException
      *             if the given id is invalid
      */
-    public static void markAsIncomplete(Integer id) throws NoAttributesChangedException, InvalidIdException {
-        TaskAttributes taskAttributes = TaskDb.getById(id);
+    public void markAsIncomplete(Integer id) throws NoAttributesChangedException, InvalidIdException {
+        TaskAttributes taskAttributes = getById(id);
         taskAttributes.setCompleted(false);
-        TaskDb.update(taskAttributes);
+        update(taskAttributes);
     }
 
     /**
@@ -230,8 +249,8 @@ public class TaskDb {
      * @throws InvalidIdException
      *             if the given id does not exist in the database
      */
-    public static void destroy(Integer id) throws InvalidIdException {
-        Task task = TaskDb.getTaskById(id);
+    public void destroy(Integer id) throws InvalidIdException {
+        Task task = getTaskById(id);
         assert task != null;
         softDelete(id);
         persist();
@@ -243,7 +262,7 @@ public class TaskDb {
      * @param id
      *            the ID of the task that is to be moved
      */
-    private static void softDelete(Integer id) {
+    private void softDelete(Integer id) {
         Task task = taskList.remove(id);
         deletedTaskList.put(task.getId(), task);
     }
@@ -256,7 +275,7 @@ public class TaskDb {
      * @throws InvalidIdException
      *             if the specified ID does not exist in the deleted list
      */
-    public static void undestroy(Integer id) throws InvalidIdException {
+    public void undestroy(Integer id) throws InvalidIdException {
         assert id != null;
         if (!deletedTaskList.containsKey(id)) {
             throw new InvalidIdException(id);
@@ -271,7 +290,7 @@ public class TaskDb {
      * @param id
      *            the ID of the task that is to be moved
      */
-    private static void undelete(Integer id) {
+    private void undelete(Integer id) {
         Task task = deletedTaskList.remove(id);
         taskList.put(task.getId(), task);
     }
@@ -288,12 +307,12 @@ public class TaskDb {
      * @throws InvalidIdException
      *             if the given id is invalid
      */
-    public static void addReminderById(Integer id, Duration reminder) throws InvalidIdException,
+    public void addReminderById(Integer id, Duration reminder) throws InvalidIdException,
     NoAttributesChangedException {
         assert reminder != null;
-        TaskAttributes taskAttributes = TaskDb.getById(id);
+        TaskAttributes taskAttributes = getById(id);
         taskAttributes.addReminder(reminder);
-        TaskDb.update(taskAttributes);
+        update(taskAttributes);
     }
 
     /**
@@ -308,12 +327,12 @@ public class TaskDb {
      * @throws InvalidIdException
      *             if the given id is invalid
      */
-    public static void addTagById(Integer id, String tag) throws NoAttributesChangedException,
+    public void addTagById(Integer id, String tag) throws NoAttributesChangedException,
     InvalidIdException {
         assert tag != null;
-        TaskAttributes taskAttributes = TaskDb.getById(id);
+        TaskAttributes taskAttributes = getById(id);
         taskAttributes.addTag(tag);
-        TaskDb.update(taskAttributes);
+        update(taskAttributes);
     }
 
     /**
@@ -328,18 +347,18 @@ public class TaskDb {
      * @throws InvalidIdException
      *             if the given id is invalid
      */
-    public static void removeTagById(Integer id, String tag) throws NoAttributesChangedException,
+    public void removeTagById(Integer id, String tag) throws NoAttributesChangedException,
     InvalidIdException {
         assert tag != null;
-        TaskAttributes taskAttributes = TaskDb.getById(id);
+        TaskAttributes taskAttributes = getById(id);
         taskAttributes.removeTag(tag);
-        TaskDb.update(taskAttributes);
+        update(taskAttributes);
     }
 
     /**
      * This method persists all existing tasks to the file system.
      */
-    public static void persist() {
+    public void persist() {
         String json = Serializer.serialize(taskList.values());
         FileManager.writeToFile(json, filePath);
     }
@@ -348,7 +367,7 @@ public class TaskDb {
      * This method resets the program's internal storage of tasks. This method
      * should only be used by the public in tests.
      */
-    public static void resetProgramStorage() {
+    public void resetProgramStorage() {
         taskList = new TreeMap<Integer, Task>();
         deletedTaskList = new TreeMap<Integer, Task>();
         nextId = 1;
@@ -361,14 +380,14 @@ public class TaskDb {
      * @param absoluteFolderPath
      *            the directory that should contain the data file
      */
-    public static void setFilePath(String absoluteFolderPath) {
+    public void setFilePath(String absoluteFolderPath) {
         filePath = Paths.get(absoluteFolderPath, Constants.FILENAME_TASK);
     }
 
     /**
      * @return the path of the record as set using the setFilePath method
      */
-    public static Path getFilePath() {
+    public Path getFilePath() {
         return filePath;
     }
 
@@ -378,7 +397,7 @@ public class TaskDb {
      *
      * @return FilePathPair if a file was replaced, null otherwise
      */
-    public static FilePathPair load() {
+    public FilePathPair load() {
         File dataFile = filePath.toFile();
         if (!dataFile.exists()) {
             return null;
@@ -404,7 +423,7 @@ public class TaskDb {
      * @param taskArray
      *            the array of tasks that we want to populate the program with
      */
-    private static void populateTaskList(Task[] taskArray) {
+    private void populateTaskList(Task[] taskArray) {
         resetProgramStorage();
         for (Task task : taskArray) {
             task.setId(nextId++);

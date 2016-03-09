@@ -6,10 +6,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import jfdi.storage.Constants;
-import jfdi.storage.MainStorage;
-import jfdi.storage.data.Alias;
-import jfdi.storage.data.AliasAttributes;
-import jfdi.storage.data.AliasDb;
+import jfdi.storage.apis.AliasAttributes;
+import jfdi.storage.apis.AliasDb;
+import jfdi.storage.apis.MainStorage;
+import jfdi.storage.entities.Alias;
 import jfdi.storage.exceptions.DuplicateAliasException;
 import jfdi.storage.exceptions.InvalidAliasParametersException;
 
@@ -20,17 +20,19 @@ import org.junit.Test;
 public class AliasAttributesTest {
 
     private static Path testDirectory = null;
+    private static AliasDb aliasDbInstance = null;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         testDirectory = Files.createTempDirectory(Constants.TEST_DIRECTORY_NAME);
         MainStorage fileStorageInstance = MainStorage.getInstance();
         fileStorageInstance.load(testDirectory.toString());
+        aliasDbInstance = AliasDb.getInstance();
     }
 
     @After
     public void tearDown() throws Exception {
-        AliasDb.resetProgramStorage();
+        aliasDbInstance.resetProgramStorage();
     }
 
     @Test
@@ -73,14 +75,14 @@ public class AliasAttributesTest {
         AliasAttributes aliasAttributes = new AliasAttributes(Constants.TEST_ALIAS, Constants.TEST_COMMAND);
 
         // Make sure that the database is empty before save
-        assertTrue(AliasDb.getAll().isEmpty());
+        assertTrue(aliasDbInstance.getAll().isEmpty());
 
         // Command under test
         aliasAttributes.save();
 
         // Check that the alias has been persisted
-        assertEquals(AliasDb.getAll().size(), 1);
-        assertEquals(AliasDb.getCommandFromAlias(Constants.TEST_ALIAS), Constants.TEST_COMMAND);
+        assertEquals(aliasDbInstance.getAll().size(), 1);
+        assertEquals(aliasDbInstance.getCommandFromAlias(Constants.TEST_ALIAS), Constants.TEST_COMMAND);
     }
 
     @Test

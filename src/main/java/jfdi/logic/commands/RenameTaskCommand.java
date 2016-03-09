@@ -3,8 +3,8 @@ package jfdi.logic.commands;
 import jfdi.logic.events.RenameTaskDoneEvent;
 import jfdi.logic.events.RenameTaskFailEvent;
 import jfdi.logic.interfaces.Command;
-import jfdi.storage.data.TaskAttributes;
-import jfdi.storage.data.TaskDb;
+import jfdi.storage.apis.TaskAttributes;
+import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
@@ -49,7 +49,7 @@ public class RenameTaskCommand extends Command {
     @Override
     public void execute() {
         try {
-            TaskAttributes task = TaskDb.getById(taskId);
+            TaskAttributes task = TaskDb.getInstance().getById(taskId);
             task.setDescription(description);
             task.save();
             eventBus.post(new RenameTaskDoneEvent(task));

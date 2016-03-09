@@ -9,12 +9,13 @@ public class UI implements IUserInterface {
 
     // private static final String UI_MESSAGE_INIT = "Initializing UI...";
     // private static final String UI_MESSAGE_INITED = "Initialization Completed!";
-    private static final String UI_MESSAGE_WELCOME = "J.F.D.I. : What can I do for you?";
-    private static final String UI_MESSAGE_USERCMD = "You said: %1$s";
-    private static final String UI_MESSAGE_RESPONSE = "J.F.D.I. : %1$s";
-    private static final String UI_MESSAGE_WARNING = "Warning: %1$s";
-    private static final String UI_MESSAGE_ERROR = "Error: %1$s";
-    private static final String UI_MESSAGE_QUIT = "Bye Bye! See you next time! :)";
+    private static final String UI_MESSAGE_GREETING = "J.F.D.I. : Hello Jim! Nice to see you again! :)\n";
+    private static final String UI_MESSAGE_WELCOME = "J.F.D.I. : What can I do for you?\n";
+    private static final String UI_MESSAGE_USERCMD = "You said: %1$s\n";
+    private static final String UI_MESSAGE_RESPONSE = "J.F.D.I. : %1$s\n";
+    private static final String UI_MESSAGE_WARNING = "Warning: %1$s\n";
+    private static final String UI_MESSAGE_ERROR = "Error: %1$s\n";
+    private static final String UI_MESSAGE_QUIT = "Bye Bye! See you next time! :)\n";
 
     private static EventBus eventBus = new EventBus();
     private CommandHandler cmdHandler = new CommandHandler();
@@ -39,6 +40,8 @@ public class UI implements IUserInterface {
 
     @Override
     public void displayWelcome() {
+        controller.clearFb();
+        showToUser(UI_MESSAGE_GREETING);
         showToUser(UI_MESSAGE_WELCOME);
     }
 

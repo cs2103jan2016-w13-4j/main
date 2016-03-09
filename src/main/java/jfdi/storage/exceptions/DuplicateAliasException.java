@@ -1,6 +1,6 @@
 package jfdi.storage.exceptions;
 
-import jfdi.storage.data.AliasAttributes;
+import jfdi.storage.apis.AliasAttributes;
 
 @SuppressWarnings("serial")
 public class DuplicateAliasException extends Exception {

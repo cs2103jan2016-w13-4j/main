@@ -12,7 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import jfdi.storage.Constants;
-import jfdi.storage.MainStorage;
+import jfdi.storage.apis.MainStorage;
 import jfdi.storage.exceptions.ExistingFilesFoundException;
 
 import org.apache.commons.io.FileUtils;

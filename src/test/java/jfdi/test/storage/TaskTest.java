@@ -7,8 +7,8 @@ import java.util.HashSet;
 import java.util.TreeSet;
 
 import jfdi.storage.Constants;
-import jfdi.storage.data.Task;
-import jfdi.storage.data.TaskAttributes;
+import jfdi.storage.apis.TaskAttributes;
+import jfdi.storage.entities.Task;
 
 import org.junit.Test;
 

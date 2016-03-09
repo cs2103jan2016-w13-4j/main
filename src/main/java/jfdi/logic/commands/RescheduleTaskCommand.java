@@ -3,8 +3,8 @@ package jfdi.logic.commands;
 import jfdi.logic.events.RescheduleTaskDoneEvent;
 import jfdi.logic.events.RescheduleTaskFailEvent;
 import jfdi.logic.interfaces.Command;
-import jfdi.storage.data.TaskAttributes;
-import jfdi.storage.data.TaskDb;
+import jfdi.storage.apis.TaskAttributes;
+import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
@@ -56,7 +56,7 @@ public class RescheduleTaskCommand extends Command {
     @Override
     public void execute() {
         try {
-            TaskAttributes task = TaskDb.getById(taskId);
+            TaskAttributes task = TaskDb.getInstance().getById(taskId);
             task.setStartDateTime(startDateTime);
             task.setEndDateTime(endDateTime);
             task.save();

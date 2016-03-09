@@ -9,10 +9,10 @@ import java.util.HashSet;
 import java.util.TreeSet;
 
 import jfdi.storage.Constants;
-import jfdi.storage.MainStorage;
-import jfdi.storage.data.Task;
-import jfdi.storage.data.TaskAttributes;
-import jfdi.storage.data.TaskDb;
+import jfdi.storage.apis.MainStorage;
+import jfdi.storage.apis.TaskAttributes;
+import jfdi.storage.apis.TaskDb;
+import jfdi.storage.entities.Task;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
@@ -24,17 +24,19 @@ import org.junit.Test;
 public class TaskAttributesTest {
 
     private static Path testDirectory = null;
+    private static TaskDb taskDbInstance = null;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         testDirectory = Files.createTempDirectory(Constants.TEST_DIRECTORY_NAME);
         MainStorage fileStorageInstance = MainStorage.getInstance();
         fileStorageInstance.load(testDirectory.toString());
+        taskDbInstance = TaskDb.getInstance();
     }
 
     @After
     public void tearDown() throws Exception {
-        TaskDb.resetProgramStorage();
+        taskDbInstance.resetProgramStorage();
     }
 
     @Test
@@ -80,7 +82,7 @@ public class TaskAttributesTest {
 
     @Test(expected = InvalidTaskParametersException.class)
     public void testInvalidParametersSave() throws Exception {
-        assertTrue(TaskDb.getAll().isEmpty());
+        assertTrue(taskDbInstance.getAll().isEmpty());
         TaskAttributes taskAttributes = new TaskAttributes();
 
         // Omit all attributes and save
@@ -89,7 +91,7 @@ public class TaskAttributesTest {
 
     @Test(expected = NoAttributesChangedException.class)
     public void testNoChangesSave() throws Exception {
-        assertTrue(TaskDb.getAll().isEmpty());
+        assertTrue(taskDbInstance.getAll().isEmpty());
         TaskAttributes taskAttributes = new TaskAttributes();
         taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
         taskAttributes.save();
@@ -100,7 +102,7 @@ public class TaskAttributesTest {
 
     @Test(expected = InvalidIdException.class)
     public void testInvalidIdSave() throws Exception {
-        assertTrue(TaskDb.getAll().isEmpty());
+        assertTrue(taskDbInstance.getAll().isEmpty());
         TaskAttributes taskAttributes = new TaskAttributes();
         taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
 
@@ -113,7 +115,7 @@ public class TaskAttributesTest {
     public void testCreateOnSave() {
         try {
             // Make sure that the database starts off empty
-            assertTrue(TaskDb.getAll().isEmpty());
+            assertTrue(taskDbInstance.getAll().isEmpty());
             TaskAttributes taskAttributes = new TaskAttributes();
             taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
             taskAttributes.setStartDateTime(Constants.TEST_TASK_STARTDATETIME);
@@ -123,10 +125,10 @@ public class TaskAttributesTest {
             taskAttributes.save();
 
             // Verify that a task has been created
-            assertEquals(TaskDb.getAll().size(), 1);
+            assertEquals(taskDbInstance.getAll().size(), 1);
 
             // Check that the task has been created with the correct attributes
-            TaskAttributes taskAttributes2 = TaskDb.getById(1);
+            TaskAttributes taskAttributes2 = taskDbInstance.getById(1);
             assertEquals(taskAttributes2.getId(), new Integer(1));
             assertEquals(taskAttributes2.getDescription(), Constants.TEST_TASK_DESCRIPTION_1);
             assertEquals(taskAttributes2.getStartDateTime(), Constants.TEST_TASK_STARTDATETIME);
@@ -145,13 +147,13 @@ public class TaskAttributesTest {
     public void testUpdateOnSave() {
         try {
             // Make sure that the database starts off empty
-            assertTrue(TaskDb.getAll().isEmpty());
+            assertTrue(taskDbInstance.getAll().isEmpty());
             TaskAttributes taskAttributes = new TaskAttributes();
             taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
             taskAttributes.save();
 
             // Verify that a task has been created
-            assertEquals(TaskDb.getAll().size(), 1);
+            assertEquals(taskDbInstance.getAll().size(), 1);
 
             // Add more attributes to it
             taskAttributes.setStartDateTime(Constants.TEST_TASK_STARTDATETIME);
@@ -162,7 +164,7 @@ public class TaskAttributesTest {
             taskAttributes.save();
 
             // Verify that the attributes have been updated
-            TaskAttributes taskAttributes2 = TaskDb.getById(1);
+            TaskAttributes taskAttributes2 = taskDbInstance.getById(1);
             assertEquals(taskAttributes2.getId(), new Integer(1));
             assertEquals(taskAttributes2.getDescription(), Constants.TEST_TASK_DESCRIPTION_1);
             assertEquals(taskAttributes2.getStartDateTime(), Constants.TEST_TASK_STARTDATETIME);

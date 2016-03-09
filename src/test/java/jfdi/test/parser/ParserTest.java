@@ -1,4 +1,4 @@
-package jfditests.parsertests;
+package jfdi.test.parser;
 
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.InputParser;

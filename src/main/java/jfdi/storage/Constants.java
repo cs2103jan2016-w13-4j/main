@@ -4,11 +4,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 
-import jfdi.storage.data.AliasDb;
-import jfdi.storage.data.TaskDb;
+import jfdi.storage.apis.AliasDb;
+import jfdi.storage.apis.TaskDb;
 
 /**
  * This class file contains all the constants used within the Storage component.
@@ -45,6 +43,9 @@ public class Constants {
     // Default charset
     public static final String CHARSET = "UTF-8";
 
+    // All database instances
+    public static final IDatabase[] DATABASES = {TaskDb.getInstance(), AliasDb.getInstance()};
+
 
     /**
      * Test-specific constants
@@ -71,20 +72,5 @@ public class Constants {
     public static final LocalDateTime TEST_TASK_ENDDATETIME = LocalDateTime.MAX;
     public static final Duration TEST_TASK_REMINDER_DURATION_1 = Duration.ZERO.plusDays(1);
     public static final Duration TEST_TASK_REMINDER_DURATION_2 = Duration.ZERO.plusDays(2);
-
-
-    /**
-     * Private variables
-     */
-    // List of databases
-    private static final List<Class<?>> DATABASES = Arrays.asList(TaskDb.class, AliasDb.class);
-
-
-    /**
-     * @return an immutable array of database classes
-     */
-    public static Class<?>[] getDatabases() {
-        return DATABASES.toArray(new Class<?>[DATABASES.size()]);
-    }
 
 }

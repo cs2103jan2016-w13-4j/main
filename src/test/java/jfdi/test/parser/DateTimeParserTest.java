@@ -1,4 +1,4 @@
-package jfditests.parsertests;
+package jfdi.test.parser;
 
 import java.time.LocalDateTime;
 import java.time.Month;

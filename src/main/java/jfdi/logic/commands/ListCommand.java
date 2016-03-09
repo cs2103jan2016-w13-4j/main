@@ -5,8 +5,8 @@ import java.util.Collection;
 
 import jfdi.logic.events.ListDoneEvent;
 import jfdi.logic.interfaces.Command;
-import jfdi.storage.data.TaskAttributes;
-import jfdi.storage.data.TaskDb;
+import jfdi.storage.apis.TaskAttributes;
+import jfdi.storage.apis.TaskDb;
 
 /**
  * @author Liu Xinan
@@ -53,10 +53,10 @@ public class ListCommand extends Command {
     @Override
     public void execute() {
         if (tags.isEmpty()) {
-            items.addAll(TaskDb.getAll());
+            items.addAll(TaskDb.getInstance().getAll());
         } else {
             for (String tag : tags) {
-                items.addAll(TaskDb.getByTag(tag));
+                items.addAll(TaskDb.getInstance().getByTag(tag));
             }
         }
         eventBus.post(new ListDoneEvent(tags, items));

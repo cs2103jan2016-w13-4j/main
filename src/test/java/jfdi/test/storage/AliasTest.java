@@ -1,9 +1,8 @@
 package jfdi.test.storage;
 
 import static org.junit.Assert.assertEquals;
-
 import jfdi.storage.Constants;
-import jfdi.storage.data.Alias;
+import jfdi.storage.entities.Alias;
 
 import org.junit.Test;
 

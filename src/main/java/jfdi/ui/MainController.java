@@ -9,6 +9,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
@@ -18,11 +19,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import jfdi.storage.data.TaskAttributes;
+import jfdi.storage.apis.TaskAttributes;
 import jfdi.ui.CommandHandler.MsgType;
 
 public class MainController {
 
+    private static final String CTRL_CMD_PROMPT_TEXT = "(Hey Jim! Please let me know what I can do for you!)";
     private static final String CTRL_CMD_SHOWLIST = "list";
 
     public MainSetUp main;
@@ -34,9 +36,11 @@ public class MainController {
     @FXML
     public TextField dayDisplayer;
     @FXML
-    public TextArea fbArea;
+    public TextArea statsDisplayer;
     @FXML
-    public TextArea cmdArea;
+    public ListView<TaskAttributes> overdueList;
+    @FXML
+    public ListView<TaskAttributes> upcomingList;
     @FXML
     public TableView<TaskAttributes> tableMain;
     @FXML
@@ -44,12 +48,19 @@ public class MainController {
     @FXML
     public TableColumn<TaskAttributes, String> taskCol;
     @FXML
+    public TextArea fbArea;
+    @FXML
+    public TextArea cmdArea;
+    @FXML
     private TextField txtAddItem;
 
     public void initialize() {
 
         initDate();
-        initList();
+        initImportantList();
+        initStatsArea();
+        initOverdueList();
+        initUpcomingList();
         initFbArea();
         initCmdArea();
 
@@ -60,11 +71,11 @@ public class MainController {
     }
 
     public void displayFb(String fb) {
-        fbArea.appendText("\n");
         fbArea.appendText(fb);
     }
 
     public void relayFb(String fb, MsgType type) {
+        clearFb();
         ui.displayFeedback(fb, type);
     }
 
@@ -73,7 +84,7 @@ public class MainController {
     }
 
     public void displayWarning(String warning) {
-        fbArea.appendText("\n");
+        clearFb();
         fbArea.appendText(warning);
     }
 
@@ -103,13 +114,17 @@ public class MainController {
 
     public void initDate() {
 
+        dayDisplayer.setMouseTransparent(true);
+        dayDisplayer.setFocusTraversable(false);
         DateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
         Calendar cal = Calendar.getInstance();
         dayDisplayer.setText(dateFormat.format(cal.getTime()));
     }
 
-    private void initList() {
+    private void initImportantList() {
 
+        tableMain.setMouseTransparent(true);
+        tableMain.setFocusTraversable(false);
         importantList = FXCollections.observableArrayList();
         tableMain.setItems(importantList);
 
@@ -128,16 +143,33 @@ public class MainController {
         });
     }
 
-    private void initFbArea() {
+    private void initStatsArea() {
+        statsDisplayer.setMouseTransparent(true);
+        statsDisplayer.setFocusTraversable(false);
+    }
 
-        fbArea.setText("J.F.D.I. : Hello Jim! Nice to see you again! :)");
+    private void initOverdueList() {
+        overdueList.setMouseTransparent(true);
+        overdueList.setFocusTraversable(false);
+    }
+
+    private void initUpcomingList() {
+        upcomingList.setMouseTransparent(true);
+        upcomingList.setFocusTraversable(false);
+
+    }
+
+    private void initFbArea() {
+        fbArea.setMouseTransparent(true);
+        fbArea.setFocusTraversable(false);
+        disableScrollBarFb();
     }
 
     private void initCmdArea() {
 
-        cmdArea.setPromptText("(Hey Jim! Please let me know what I can do for you!)");
+        cmdArea.setPromptText(CTRL_CMD_PROMPT_TEXT);
         handleEnterKey();
-        disableScrollBar();
+        disableScrollBarCmd();
     }
 
     /***************************
@@ -168,8 +200,21 @@ public class MainController {
     /**
      * Disable the scroll bar when it appears (Edit if necessary)
      */
-    private void disableScrollBar() {
+    private void disableScrollBarCmd() {
         cmdArea.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (cmdArea.lookup(".scroll-bar") != null) {
+                ScrollBar scrollBarv = (ScrollBar) cmdArea.lookup(".scroll-bar");
+                scrollBarv.setDisable(false);
+                scrollBarv.setId("command-scroll-bar");
+            }
+        });
+    }
+
+    /**
+     * Disable the scroll bar when it appears (Edit if necessary)
+     */
+    private void disableScrollBarFb() {
+        fbArea.textProperty().addListener((observable, oldValue, newValue) -> {
             if (cmdArea.lookup(".scroll-bar") != null) {
                 ScrollBar scrollBarv = (ScrollBar) cmdArea.lookup(".scroll-bar");
                 scrollBarv.setDisable(false);

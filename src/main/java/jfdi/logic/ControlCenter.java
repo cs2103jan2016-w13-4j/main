@@ -5,7 +5,7 @@ import jfdi.logic.interfaces.Command;
 import jfdi.logic.interfaces.ILogic;
 import jfdi.parser.InputParser;
 import jfdi.parser.exceptions.InvalidInputException;
-import jfdi.storage.MainStorage;
+import jfdi.storage.apis.MainStorage;
 import jfdi.storage.exceptions.ExistingFilesFoundException;
 
 /**

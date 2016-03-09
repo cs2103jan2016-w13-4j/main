@@ -1,6 +1,6 @@
 package jfdi.logic.events;
 
-import jfdi.storage.data.TaskAttributes;
+import jfdi.storage.apis.TaskAttributes;
 
 /**
  * @author Liu Xinan

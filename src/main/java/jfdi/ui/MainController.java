@@ -19,7 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import jfdi.storage.data.TaskAttributes;
+import jfdi.storage.apis.TaskAttributes;
 import jfdi.ui.CommandHandler.MsgType;
 
 public class MainController {

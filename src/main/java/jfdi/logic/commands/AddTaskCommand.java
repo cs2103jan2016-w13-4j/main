@@ -3,7 +3,7 @@ package jfdi.logic.commands;
 import jfdi.logic.events.AddTaskDoneEvent;
 import jfdi.logic.events.AddTaskFailEvent;
 import jfdi.logic.interfaces.Command;
-import jfdi.storage.data.TaskAttributes;
+import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;

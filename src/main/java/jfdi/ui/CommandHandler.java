@@ -16,7 +16,7 @@ import jfdi.logic.events.RenameTaskDoneEvent;
 import jfdi.logic.events.RenameTaskFailEvent;
 import jfdi.logic.events.RescheduleTaskDoneEvent;
 import jfdi.logic.events.RescheduleTaskFailEvent;
-import jfdi.storage.data.TaskAttributes;
+import jfdi.storage.apis.TaskAttributes;
 
 
 public class CommandHandler {
@@ -29,7 +29,7 @@ public class CommandHandler {
     private static final String CMD_ERROR_CANT_RENAME_UNKNOWN = "Some stupid error occurred. Cannot rename task!";
     private static final String CMD_ERROR_CANT_RENAME_NO_ID = "Cannot rename task. The ID #%d does not exist!";
     private static final String CMD_ERROR_CANT_RENAME_NO_CHANGES = "No difference between new and old name - %s -!";
-    private static final String CMD_ERROR_CANT_RESCHEDULE_UNKNOWN = "Some stupid error occurred. Cannot reschedule task!";
+    private static final String CMD_ERROR_CANT_RESCHEDULE_UNKNOWN = "Some error occurred. Cannot reschedule task!";
     private static final String CMD_ERROR_CANT_RESCHEDULE_NO_ID = "Cannot reschedule task. The ID #%d does not exist!";
     private static final String CMD_ERROR_CANT_RESCHEDULE_NO_CHANGES = "No difference between new and old schedule - ";
 
@@ -165,7 +165,9 @@ public class CommandHandler {
                 controller.relayFb(String.format(CMD_ERROR_CANT_RESCHEDULE_NO_ID, e.getTaskId()), MsgType.ERROR);
                 break;
             case NO_CHANGES:
-                controller.relayFb(CMD_ERROR_CANT_RESCHEDULE_NO_CHANGES + e.getStartDateTime() + " - to - " + e.getEndDateTime() + " -!", MsgType.ERROR);
+                controller.relayFb(
+                        CMD_ERROR_CANT_RESCHEDULE_NO_CHANGES + e.getStartDateTime() + " - to - "
+                                + e.getEndDateTime() + " -!", MsgType.ERROR);
                 break;
             default: break;
         }

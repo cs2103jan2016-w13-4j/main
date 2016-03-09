@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.function.Consumer;
 
 import jfdi.logic.interfaces.Command;
-import jfdi.storage.data.TaskAttributes;
-import jfdi.storage.data.TaskDb;
+import jfdi.storage.apis.TaskAttributes;
+import jfdi.storage.apis.TaskDb;
 
 /**
  * @author Liu Xinan
@@ -67,7 +67,7 @@ public class DeleteCommandStub extends Command {
     @Override
     public void execute() {
         if (taskIds.isEmpty()) {
-            items = TaskDb.getAll();
+            items = TaskDb.getInstance().getAll();
             onSuccess();
         } else {
             // TODO: Add filtering when Task supports that.

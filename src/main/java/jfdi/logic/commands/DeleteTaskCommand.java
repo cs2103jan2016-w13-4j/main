@@ -3,8 +3,8 @@ package jfdi.logic.commands;
 import jfdi.logic.events.DeleteTaskDoneEvent;
 import jfdi.logic.events.DeleteTaskFailEvent;
 import jfdi.logic.interfaces.Command;
-import jfdi.storage.data.TaskAttributes;
-import jfdi.storage.data.TaskDb;
+import jfdi.storage.apis.TaskAttributes;
+import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.InvalidIdException;
 
 import java.util.ArrayList;
@@ -45,15 +45,15 @@ public class DeleteTaskCommand extends Command {
     @Override
     public void execute() {
         ArrayList<Integer> invalidIds = taskIds.stream()
-            .filter(id -> !TaskDb.hasId(id))
+            .filter(id -> !TaskDb.getInstance().hasId(id))
             .collect(Collectors.toCollection(ArrayList::new));
 
         if (invalidIds.isEmpty()) {
             ArrayList<TaskAttributes> deletedTasks = new ArrayList<>();
             taskIds.forEach(id -> {
                 try {
-                    deletedTasks.add(TaskDb.getById(id));
-                    TaskDb.destroy(id);
+                    deletedTasks.add(TaskDb.getInstance().getById(id));
+                    TaskDb.getInstance().destroy(id);
                 } catch (InvalidIdException e) {
                     // Should not happen
                     e.printStackTrace();

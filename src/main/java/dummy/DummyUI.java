@@ -13,7 +13,7 @@ import jfdi.logic.events.DeleteTaskFailEvent;
 import jfdi.logic.events.ExitCalledEvent;
 import jfdi.logic.events.InvalidCommandEvent;
 import jfdi.logic.events.ListDoneEvent;
-import jfdi.storage.data.TaskAttributes;
+import jfdi.storage.apis.TaskAttributes;
 import jfdi.ui.UI;
 
 /**

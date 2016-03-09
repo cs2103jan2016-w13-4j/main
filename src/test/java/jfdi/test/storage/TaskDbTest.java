@@ -9,9 +9,9 @@ import java.time.Duration;
 import java.util.ArrayList;
 
 import jfdi.storage.Constants;
-import jfdi.storage.MainStorage;
-import jfdi.storage.data.TaskAttributes;
-import jfdi.storage.data.TaskDb;
+import jfdi.storage.apis.MainStorage;
+import jfdi.storage.apis.TaskAttributes;
+import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
 import jfdi.storage.serializer.Serializer;
@@ -24,6 +24,7 @@ public class TaskDbTest {
 
     private static Path testDirectory = null;
     private static String testDirectoryString = null;
+    private static TaskDb taskDbInstance = null;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -31,11 +32,12 @@ public class TaskDbTest {
         testDirectoryString = testDirectory.toString();
         MainStorage fileStorageInstance = MainStorage.getInstance();
         fileStorageInstance.load(testDirectory.toString());
+        taskDbInstance = TaskDb.getInstance();
     }
 
     @After
     public void tearDown() throws Exception {
-        TaskDb.resetProgramStorage();
+        taskDbInstance.resetProgramStorage();
     }
 
     @Test
@@ -44,14 +46,14 @@ public class TaskDbTest {
         taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
 
         // The database should be empty prior to the task creation
-        assertTrue(TaskDb.getAll().isEmpty());
+        assertTrue(taskDbInstance.getAll().isEmpty());
 
         // Command under test
-        TaskDb.createOrUpdate(taskAttributes);
+        taskDbInstance.createOrUpdate(taskAttributes);
 
         // Check that the task has been created
-        assertEquals(TaskDb.getAll().size(), 1);
-        assertEquals(TaskDb.getById(taskAttributes.getId()).getDescription(),
+        assertEquals(taskDbInstance.getAll().size(), 1);
+        assertEquals(taskDbInstance.getById(taskAttributes.getId()).getDescription(),
                 Constants.TEST_TASK_DESCRIPTION_1);
     }
 
@@ -59,19 +61,19 @@ public class TaskDbTest {
     public void testUpdate() throws Exception {
         TaskAttributes taskAttributes = new TaskAttributes();
         taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
-        TaskDb.createOrUpdate(taskAttributes);
+        taskDbInstance.createOrUpdate(taskAttributes);
 
         // Check that the task has been created
-        assertEquals(TaskDb.getAll().size(), 1);
-        assertEquals(TaskDb.getById(1).getDescription(), Constants.TEST_TASK_DESCRIPTION_1);
+        assertEquals(taskDbInstance.getAll().size(), 1);
+        assertEquals(taskDbInstance.getById(1).getDescription(), Constants.TEST_TASK_DESCRIPTION_1);
 
         // Update the task's description
         taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_2);
-        TaskDb.createOrUpdate(taskAttributes);
+        taskDbInstance.createOrUpdate(taskAttributes);
 
         // Ensure that object update (and not creation) takes place
-        assertEquals(TaskDb.getAll().size(), 1);
-        assertEquals(TaskDb.getById(taskAttributes.getId()).getDescription(),
+        assertEquals(taskDbInstance.getAll().size(), 1);
+        assertEquals(taskDbInstance.getById(taskAttributes.getId()).getDescription(),
                 Constants.TEST_TASK_DESCRIPTION_2);
     }
 
@@ -79,11 +81,11 @@ public class TaskDbTest {
     public void testNoChangesUpdate() throws Exception {
         TaskAttributes taskAttributes = new TaskAttributes();
         taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
-        TaskDb.createOrUpdate(taskAttributes);
+        taskDbInstance.createOrUpdate(taskAttributes);
 
         // The second no-changes update triggers the
         // NoAttributesChangedException
-        TaskDb.createOrUpdate(taskAttributes);
+        taskDbInstance.createOrUpdate(taskAttributes);
     }
 
     @Test(expected = InvalidIdException.class)
@@ -93,7 +95,7 @@ public class TaskDbTest {
 
         // The invalid ID will trigger InvalidIdException
         taskAttributes.setId(1);
-        TaskDb.createOrUpdate(taskAttributes);
+        taskDbInstance.createOrUpdate(taskAttributes);
     }
 
     @Test
@@ -101,12 +103,12 @@ public class TaskDbTest {
         Path subdirectory = Paths.get(testDirectory.toString(), Constants.TEST_SUBDIRECTORY_NAME);
         Path expectedTaskPath = Paths.get(subdirectory.toString(), Constants.FILENAME_TASK);
 
-        TaskDb.setFilePath(subdirectory.toString());
+        taskDbInstance.setFilePath(subdirectory.toString());
 
-        assertEquals(expectedTaskPath, TaskDb.getFilePath());
+        assertEquals(expectedTaskPath, taskDbInstance.getFilePath());
 
         // Reset back to the original file path
-        TaskDb.setFilePath(testDirectoryString);
+        taskDbInstance.setFilePath(testDirectoryString);
     }
 
     @Test
@@ -122,7 +124,7 @@ public class TaskDbTest {
         taskAttributes.save();
 
         // Check that the stored tasks are as expected
-        ArrayList<TaskAttributes> taskAttributesList = new ArrayList<TaskAttributes>(TaskDb.getAll());
+        ArrayList<TaskAttributes> taskAttributesList = new ArrayList<TaskAttributes>(taskDbInstance.getAll());
         assertEquals(taskAttributesList.size(), 2);
         assertEquals(taskAttributesList.get(0).getDescription(), Constants.TEST_TASK_DESCRIPTION_1);
         assertEquals(taskAttributesList.get(1).getDescription(), Constants.TEST_TASK_DESCRIPTION_1);
@@ -136,14 +138,14 @@ public class TaskDbTest {
         taskAttributes.save();
 
         // Check that we can get the same task
-        assertEquals(TaskDb.getById(taskAttributes.getId()).getDescription(),
+        assertEquals(taskDbInstance.getById(taskAttributes.getId()).getDescription(),
                 Constants.TEST_TASK_DESCRIPTION_1);
     }
 
     @Test
     public void testHasId() throws Exception {
         // No task yet, so any ID should be invalid
-        assertFalse(TaskDb.hasId(1));
+        assertFalse(taskDbInstance.hasId(1));
 
         // Create a task
         TaskAttributes taskAttributes = new TaskAttributes();
@@ -151,7 +153,7 @@ public class TaskDbTest {
         taskAttributes.save();
 
         // Now taskAttribute's ID should exist
-        assertTrue(TaskDb.hasId(taskAttributes.getId()));
+        assertTrue(taskDbInstance.hasId(taskAttributes.getId()));
     }
 
     @Test
@@ -162,12 +164,12 @@ public class TaskDbTest {
         taskAttributes.save();
 
         // Test markAsComplete
-        TaskDb.markAsComplete(taskAttributes.getId());
-        assertTrue(TaskDb.getById(taskAttributes.getId()).isCompleted());
+        taskDbInstance.markAsComplete(taskAttributes.getId());
+        assertTrue(taskDbInstance.getById(taskAttributes.getId()).isCompleted());
 
         // Test markAsIncomplete
-        TaskDb.markAsIncomplete(1);
-        assertFalse(TaskDb.getById(taskAttributes.getId()).isCompleted());
+        taskDbInstance.markAsIncomplete(1);
+        assertFalse(taskDbInstance.getById(taskAttributes.getId()).isCompleted());
     }
 
     @Test(expected = NoAttributesChangedException.class)
@@ -182,7 +184,7 @@ public class TaskDbTest {
         taskAttributes.save();
 
         // Mark it as complete again
-        TaskDb.markAsComplete(taskAttributes.getId());
+        taskDbInstance.markAsComplete(taskAttributes.getId());
     }
 
     @Test(expected = NoAttributesChangedException.class)
@@ -193,17 +195,17 @@ public class TaskDbTest {
         taskAttributes.save();
 
         // Mark an incomplete task as incomplete
-        TaskDb.markAsIncomplete(taskAttributes.getId());
+        taskDbInstance.markAsIncomplete(taskAttributes.getId());
     }
 
     @Test(expected = InvalidIdException.class)
     public void testMarkInvalidIdAsComplete() throws Exception {
-        TaskDb.markAsComplete(1);
+        taskDbInstance.markAsComplete(1);
     }
 
     @Test(expected = InvalidIdException.class)
     public void testMarkInvalidIdAsIncomplete() throws Exception {
-        TaskDb.markAsIncomplete(1);
+        taskDbInstance.markAsIncomplete(1);
     }
 
     @Test
@@ -214,25 +216,25 @@ public class TaskDbTest {
         taskAttributes.save();
 
         // Check that it has been created
-        assertEquals(TaskDb.getAll().size(), 1);
+        assertEquals(taskDbInstance.getAll().size(), 1);
 
         // Destroy the task
-        TaskDb.destroy(taskAttributes.getId());
-        assertEquals(TaskDb.getAll().size(), 0);
+        taskDbInstance.destroy(taskAttributes.getId());
+        assertEquals(taskDbInstance.getAll().size(), 0);
 
         // Undestroy the task
-        TaskDb.undestroy(taskAttributes.getId());
-        assertEquals(TaskDb.getAll().size(), 1);
+        taskDbInstance.undestroy(taskAttributes.getId());
+        assertEquals(taskDbInstance.getAll().size(), 1);
     }
 
     @Test(expected = InvalidIdException.class)
     public void testInvalidIdDestroy() throws Exception {
-        TaskDb.destroy(1);
+        taskDbInstance.destroy(1);
     }
 
     @Test(expected = InvalidIdException.class)
     public void testInvalidIdUndestroy() throws Exception {
-        TaskDb.undestroy(1);
+        taskDbInstance.undestroy(1);
     }
 
     @Test
@@ -243,25 +245,25 @@ public class TaskDbTest {
         taskAttributes.save();
 
         // Get the JSON form of the current state
-        String json = Serializer.serialize(TaskDb.getAll());
+        String json = Serializer.serialize(taskDbInstance.getAll());
 
         // Remove the task
-        TaskDb.destroy(taskAttributes.getId());
-        assertTrue(TaskDb.getAll().isEmpty());
+        taskDbInstance.destroy(taskAttributes.getId());
+        assertTrue(taskDbInstance.getAll().isEmpty());
 
         // Create the data file and load from it
         TestHelper.createDataFilesWith(testDirectoryString, json);
-        TaskDb.load();
+        taskDbInstance.load();
 
         // Check that the original task exists
-        assertEquals(TaskDb.getAll().size(), 1);
-        TaskAttributes retrievedTaskAttributes = TaskDb.getById(taskAttributes.getId());
+        assertEquals(taskDbInstance.getAll().size(), 1);
+        TaskAttributes retrievedTaskAttributes = taskDbInstance.getById(taskAttributes.getId());
         assertEquals(retrievedTaskAttributes.getDescription(), Constants.TEST_TASK_DESCRIPTION_1);
     }
 
     @Test(expected = InvalidIdException.class)
     public void testRemoveTagFromNonExistentTask() throws Exception {
-        TaskDb.removeTagById(-1, Constants.TEST_TASK_TAG_1);
+        taskDbInstance.removeTagById(-1, Constants.TEST_TASK_TAG_1);
     }
 
     @Test(expected = NoAttributesChangedException.class)
@@ -272,7 +274,7 @@ public class TaskDbTest {
         taskAttributes.save();
 
         // Remove a non-existent tag
-        TaskDb.removeTagById(taskAttributes.getId(), Constants.TEST_TASK_TAG_1);
+        taskDbInstance.removeTagById(taskAttributes.getId(), Constants.TEST_TASK_TAG_1);
     }
 
     @Test
@@ -284,11 +286,11 @@ public class TaskDbTest {
         taskAttributes.save();
 
         // Remove a non-existent tag
-        TaskDb.removeTagById(taskAttributes.getId(), Constants.TEST_TASK_TAG_1);
+        taskDbInstance.removeTagById(taskAttributes.getId(), Constants.TEST_TASK_TAG_1);
 
         // Ensure that the correct tag has been removed
-        assertFalse(TaskDb.getById(taskAttributes.getId()).hasTag(Constants.TEST_TASK_TAG_1));
-        assertTrue(TaskDb.getById(taskAttributes.getId()).hasTag(Constants.TEST_TASK_TAG_2));
+        assertFalse(taskDbInstance.getById(taskAttributes.getId()).hasTag(Constants.TEST_TASK_TAG_1));
+        assertTrue(taskDbInstance.getById(taskAttributes.getId()).hasTag(Constants.TEST_TASK_TAG_2));
     }
 
     @Test
@@ -310,8 +312,8 @@ public class TaskDbTest {
         taskAttributes.save();
 
         // Check that we have the correct number of tasks with the respective tags
-        assertEquals(TaskDb.getByTag(Constants.TEST_TASK_TAG_1).size(), 1);
-        assertEquals(TaskDb.getByTag(Constants.TEST_TASK_TAG_2).size(), 2);
+        assertEquals(taskDbInstance.getByTag(Constants.TEST_TASK_TAG_1).size(), 1);
+        assertEquals(taskDbInstance.getByTag(Constants.TEST_TASK_TAG_2).size(), 2);
     }
 
     @Test
@@ -322,18 +324,18 @@ public class TaskDbTest {
         taskAttributes.save();
 
         // Add a tag to it and check that it's persisted
-        TaskDb.addTagById(taskAttributes.getId(), Constants.TEST_TASK_TAG_1);
-        assertTrue(TaskDb.getById(taskAttributes.getId()).hasTag(Constants.TEST_TASK_TAG_1));
+        taskDbInstance.addTagById(taskAttributes.getId(), Constants.TEST_TASK_TAG_1);
+        assertTrue(taskDbInstance.getById(taskAttributes.getId()).hasTag(Constants.TEST_TASK_TAG_1));
     }
 
     @Test(expected = InvalidIdException.class)
     public void testAddTagToNull() throws Exception {
-        TaskDb.addTagById(null, Constants.TEST_TASK_TAG_1);
+        taskDbInstance.addTagById(null, Constants.TEST_TASK_TAG_1);
     }
 
     @Test(expected = InvalidIdException.class)
     public void testAddTagToInvalidId() throws Exception {
-        TaskDb.addTagById(1, Constants.TEST_TASK_TAG_1);
+        taskDbInstance.addTagById(1, Constants.TEST_TASK_TAG_1);
     }
 
     @Test(expected = NoAttributesChangedException.class)
@@ -345,7 +347,7 @@ public class TaskDbTest {
         taskAttributes.save();
 
         // Add the same tag to it
-        TaskDb.addTagById(taskAttributes.getId(), Constants.TEST_TASK_TAG_1);
+        taskDbInstance.addTagById(taskAttributes.getId(), Constants.TEST_TASK_TAG_1);
     }
 
     @Test
@@ -356,20 +358,20 @@ public class TaskDbTest {
         taskAttributes.save();
 
         // Add a reminder to it and check that it's persisted
-        TaskDb.addReminderById(taskAttributes.getId(), Constants.TEST_TASK_REMINDER_DURATION_1);
-        TaskAttributes taskAttributes2 = TaskDb.getById(taskAttributes.getId());
+        taskDbInstance.addReminderById(taskAttributes.getId(), Constants.TEST_TASK_REMINDER_DURATION_1);
+        TaskAttributes taskAttributes2 = taskDbInstance.getById(taskAttributes.getId());
         ArrayList<Duration> persistedReminderList = new ArrayList<Duration>(taskAttributes2.getReminders());
         assertTrue(persistedReminderList.contains(Constants.TEST_TASK_REMINDER_DURATION_1));
     }
 
     @Test(expected = InvalidIdException.class)
     public void testAddReminderToNull() throws Exception {
-        TaskDb.addReminderById(null, Constants.TEST_TASK_REMINDER_DURATION_1);
+        taskDbInstance.addReminderById(null, Constants.TEST_TASK_REMINDER_DURATION_1);
     }
 
     @Test(expected = InvalidIdException.class)
     public void testAddReminderToInvalidId() throws Exception {
-        TaskDb.addReminderById(1, Constants.TEST_TASK_REMINDER_DURATION_1);
+        taskDbInstance.addReminderById(1, Constants.TEST_TASK_REMINDER_DURATION_1);
     }
 
     @Test(expected = NoAttributesChangedException.class)
@@ -381,7 +383,7 @@ public class TaskDbTest {
         taskAttributes.save();
 
         // Add the same reminder to it
-        TaskDb.addReminderById(taskAttributes.getId(), Constants.TEST_TASK_REMINDER_DURATION_1);
+        taskDbInstance.addReminderById(taskAttributes.getId(), Constants.TEST_TASK_REMINDER_DURATION_1);
     }
 
 }

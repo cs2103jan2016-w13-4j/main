@@ -1,4 +1,4 @@
-package jfdi.storage.data;
+package jfdi.storage.entities;
 
 public class Alias {
 

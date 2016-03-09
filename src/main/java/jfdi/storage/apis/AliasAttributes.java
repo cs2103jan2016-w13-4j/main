@@ -1,5 +1,6 @@
-package jfdi.storage.data;
+package jfdi.storage.apis;
 
+import jfdi.storage.entities.Alias;
 import jfdi.storage.exceptions.DuplicateAliasException;
 import jfdi.storage.exceptions.InvalidAliasParametersException;
 
@@ -37,7 +38,7 @@ public class AliasAttributes {
      */
     public void save() throws InvalidAliasParametersException, DuplicateAliasException {
         validateAttributes();
-        AliasDb.create(this);
+        AliasDb.getInstance().create(this);
     }
 
     public Alias toEntity() {

@@ -1,9 +1,11 @@
-package jfdi.storage.data;
+package jfdi.storage.entities;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.TreeSet;
+
+import jfdi.storage.apis.TaskAttributes;
 
 public class Task {
 

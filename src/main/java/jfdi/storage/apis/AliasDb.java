@@ -1,4 +1,4 @@
-package jfdi.storage.data;
+package jfdi.storage.apis;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -9,19 +9,42 @@ import java.util.Collection;
 
 import jfdi.storage.Constants;
 import jfdi.storage.FileManager;
+import jfdi.storage.IDatabase;
+import jfdi.storage.entities.Alias;
 import jfdi.storage.exceptions.DuplicateAliasException;
 import jfdi.storage.exceptions.FilePathPair;
 import jfdi.storage.exceptions.InvalidAliasException;
 import jfdi.storage.serializer.Serializer;
 
-public class AliasDb {
+public class AliasDb implements IDatabase {
+
+    // Singleton instance of AliasDb
+    private static AliasDb instance = null;
 
     // The list of existing and deleted aliases
-    private static ArrayList<Alias> aliasList = new ArrayList<Alias>();
-    private static ArrayList<Alias> deletedAliasList = new ArrayList<Alias>();
+    private ArrayList<Alias> aliasList = new ArrayList<Alias>();
+    private ArrayList<Alias> deletedAliasList = new ArrayList<Alias>();
 
     // The filepath to the data file
-    private static Path filePath = null;
+    private Path filePath = null;
+
+    /**
+     * This private constructor prevents more instances of AliasDb from being
+     * created.
+     */
+    private AliasDb() {}
+
+    /**
+     * This method returns the singleton instance of AliasDb.
+     *
+     * @return the singleton instance of AliasDb
+     */
+    public static AliasDb getInstance() {
+        if (instance == null) {
+            instance = new AliasDb();
+        }
+        return instance;
+    }
 
     /**
      * This method creates a new alias if the given aliasAttributes is not a
@@ -32,12 +55,12 @@ public class AliasDb {
      * @throws DuplicateAliasException
      *             if the given alias already exists in the database
      */
-    public static void create(AliasAttributes aliasAttributes) throws DuplicateAliasException {
+    public void create(AliasAttributes aliasAttributes) throws DuplicateAliasException {
         if (isDuplicate(aliasAttributes)) {
             throw new DuplicateAliasException(aliasAttributes);
         }
         aliasList.add(aliasAttributes.toEntity());
-        AliasDb.persist();
+        persist();
     }
 
     /**
@@ -46,7 +69,7 @@ public class AliasDb {
      *
      * @return a Collection of AliasAttributes
      */
-    public static Collection<AliasAttributes> getAll() {
+    public Collection<AliasAttributes> getAll() {
         ArrayList<AliasAttributes> aliasAttributes = new ArrayList<AliasAttributes>();
         for (Alias alias : aliasList) {
             aliasAttributes.add(new AliasAttributes(alias));
@@ -64,7 +87,7 @@ public class AliasDb {
      * @throws InvalidAliasException
      *             if the alias does not exist in the database
      */
-    public static String getCommandFromAlias(String alias) throws InvalidAliasException {
+    public String getCommandFromAlias(String alias) throws InvalidAliasException {
         String alias2 = null;
         for (Alias aliasRecord : aliasList) {
             alias2 = aliasRecord.getAlias();
@@ -83,7 +106,7 @@ public class AliasDb {
      *            the alias to be checked
      * @return boolean indicating if the alias exists in the database
      */
-    public static boolean hasAlias(String alias) {
+    public boolean hasAlias(String alias) {
         assert alias != null;
         String alias2 = null;
         for (Alias aliasRecord : aliasList) {
@@ -103,7 +126,7 @@ public class AliasDb {
      * @throws InvalidAliasException
      *             if the alias does not exist in the database
      */
-    public static void destroy(String alias) throws InvalidAliasException {
+    public void destroy(String alias) throws InvalidAliasException {
         String alias2 = null;
         for (Alias aliasRecord : aliasList) {
             alias2 = aliasRecord.getAlias();
@@ -125,7 +148,7 @@ public class AliasDb {
      * @throws InvalidAliasException
      *             if the alias does not exist in the database
      */
-    public static void undestroy(String alias) throws InvalidAliasException {
+    public void undestroy(String alias) throws InvalidAliasException {
         Alias deletedAlias = null;
 
         // Start searching from the back to undestroy the latest matching alias
@@ -149,7 +172,7 @@ public class AliasDb {
      *            the alias that we want to check
      * @return boolean indicating if the alias already exists
      */
-    private static boolean isDuplicate(AliasAttributes aliasAttributes) {
+    private boolean isDuplicate(AliasAttributes aliasAttributes) {
         String alias1 = aliasAttributes.getAlias();
         String alias2;
         for (Alias aliasRecord : aliasList) {
@@ -165,7 +188,7 @@ public class AliasDb {
     /**
      * This method persists all existing aliases to the file system.
      */
-    public static void persist() {
+    public void persist() {
         String json = Serializer.serialize(aliasList);
         FileManager.writeToFile(json, filePath);
     }
@@ -174,7 +197,7 @@ public class AliasDb {
      * This method resets the program's internal storage of aliases. This method
      * should only be used by the public in tests.
      */
-    public static void resetProgramStorage() {
+    public void resetProgramStorage() {
         aliasList = new ArrayList<Alias>();
         deletedAliasList = new ArrayList<Alias>();
     }
@@ -186,14 +209,14 @@ public class AliasDb {
      * @param absoluteFolderPath
      *            the directory that should contain the data file
      */
-    public static void setFilePath(String absoluteFolderPath) {
+    public void setFilePath(String absoluteFolderPath) {
         filePath = Paths.get(absoluteFolderPath, Constants.FILENAME_ALIAS);
     }
 
     /**
      * @return the path of the record as set using the setFilePath method
      */
-    public static Path getFilePath() {
+    public Path getFilePath() {
         return filePath;
     }
 
@@ -204,7 +227,7 @@ public class AliasDb {
      * @return a FilePathPair if the existing file cannot be read and was
      *         renamed
      */
-    public static FilePathPair load() {
+    public FilePathPair load() {
         File dataFile = filePath.toFile();
         if (!dataFile.exists()) {
             return null;

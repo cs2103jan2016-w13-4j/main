@@ -1,4 +1,4 @@
-package jfdi.storage.data;
+package jfdi.storage.apis;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.TreeSet;
 
 import jfdi.storage.Constants;
+import jfdi.storage.entities.Task;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
@@ -147,7 +148,7 @@ public class TaskAttributes {
     public void save() throws InvalidTaskParametersException, NoAttributesChangedException,
             InvalidIdException {
         validateAttributes();
-        TaskDb.createOrUpdate(this);
+        TaskDb.getInstance().createOrUpdate(this);
     }
 
     public Task toEntity() {

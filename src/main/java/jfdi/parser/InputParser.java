@@ -61,6 +61,8 @@ public class InputParser implements IParser {
      * alias for that CommandType.
      */
     private void buildAliasMap() {
+        aliasMap = new HashMap<>();
+
         for (AliasAttributes att : aliases) {
             CommandType commandType = getCommandType(att.getCommand());
             if (aliasMap.containsKey(commandType)) {

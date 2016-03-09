@@ -115,7 +115,7 @@ public class MainController {
     public void initDate() {
 
         dayDisplayer.setMouseTransparent(true);
-        dayDisplayer.setFocusTraversable( false );
+        dayDisplayer.setFocusTraversable(false);
         DateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
         Calendar cal = Calendar.getInstance();
         dayDisplayer.setText(dateFormat.format(cal.getTime()));
@@ -124,7 +124,7 @@ public class MainController {
     private void initImportantList() {
 
         tableMain.setMouseTransparent(true);
-        tableMain.setFocusTraversable( false );
+        tableMain.setFocusTraversable(false);
         importantList = FXCollections.observableArrayList();
         tableMain.setItems(importantList);
 
@@ -144,24 +144,24 @@ public class MainController {
     }
 
     private void initStatsArea() {
-        statsDisplayer.setMouseTransparent( true );
-        statsDisplayer.setFocusTraversable( false );
+        statsDisplayer.setMouseTransparent(true);
+        statsDisplayer.setFocusTraversable(false);
     }
 
     private void initOverdueList() {
-        overdueList.setMouseTransparent( true );
-        overdueList.setFocusTraversable( false );
+        overdueList.setMouseTransparent(true);
+        overdueList.setFocusTraversable(false);
     }
 
     private void initUpcomingList() {
-        upcomingList.setMouseTransparent( true );
-        upcomingList.setFocusTraversable( false );
+        upcomingList.setMouseTransparent(true);
+        upcomingList.setFocusTraversable(false);
 
     }
 
     private void initFbArea() {
         fbArea.setMouseTransparent(true);
-        fbArea.setFocusTraversable( false );
+        fbArea.setFocusTraversable(false);
         disableScrollBarFb();
     }
 

@@ -3,7 +3,7 @@ package jfdi.storage;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
-import jfdi.storage.exceptions.ExistingFilesFoundException;
+import jfdi.storage.exceptions.FilesReplacedException;
 import jfdi.storage.exceptions.FilePathPair;
 
 /**
@@ -43,10 +43,10 @@ public class DatabaseManager {
      * This method loads/refreshes all databases based on data contained within
      * the data file defined by the file path of each record.
      *
-     * @throws ExistingFilesFoundException
+     * @throws FilesReplacedException
      *             if unrecognized files were replaced (with backups made)
      */
-    public static void loadAllDatabases() throws ExistingFilesFoundException {
+    public static void loadAllDatabases() throws FilesReplacedException {
         ArrayList<FilePathPair> replacedFiles = new ArrayList<FilePathPair>();
         FilePathPair filePathPair = null;
 
@@ -58,7 +58,7 @@ public class DatabaseManager {
         }
 
         if (!replacedFiles.isEmpty()) {
-            throw new ExistingFilesFoundException(replacedFiles);
+            throw new FilesReplacedException(replacedFiles);
         }
     }
 

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import jfdi.storage.Constants;
 import jfdi.storage.DatabaseManager;
-import jfdi.storage.exceptions.ExistingFilesFoundException;
+import jfdi.storage.exceptions.FilesReplacedException;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -50,12 +50,12 @@ public class DatabaseManagerTest {
         TestHelper.createValidDataFiles(testDirectoryString);
         try {
             DatabaseManager.loadAllDatabases();
-        } catch (ExistingFilesFoundException e) {
+        } catch (FilesReplacedException e) {
             fail(e.getMessage());
         }
     }
 
-    @Test(expected = ExistingFilesFoundException.class)
+    @Test(expected = FilesReplacedException.class)
     public void testLoadAllRecordsWithInvalidData() throws Exception {
         DatabaseManager.setAllFilePaths(testDirectoryString);
         TestHelper.createInvalidDataFiles(testDirectoryString);

@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import jfdi.storage.Constants;
 import jfdi.storage.DatabaseManager;
 import jfdi.storage.FileManager;
-import jfdi.storage.exceptions.ExistingFilesFoundException;
+import jfdi.storage.exceptions.FilesReplacedException;
 
 /**
  * This class serves as the facade of the Storage component.
@@ -51,14 +51,14 @@ public class MainStorage implements IStorage {
     }
 
     @Override
-    public void initialize() throws ExistingFilesFoundException {
+    public void initialize() throws FilesReplacedException {
         load(getInitializationPath());
         isInitialized = true;
     }
 
     @Override
     public void changeDirectory(String newStorageFolderPath) throws InvalidPathException,
-            ExistingFilesFoundException, IllegalAccessException {
+            FilesReplacedException, IllegalAccessException {
 
         if (!isInitialized) {
             throw new IllegalAccessException(Constants.MESSAGE_UNINITIALIZED_STORAGE);
@@ -84,11 +84,11 @@ public class MainStorage implements IStorage {
      * @throws InvalidPathException
      *             if the program does not have sufficient permissions to carry
      *             out file operations in storageFolderPath
-     * @throws ExistingFilesFoundException
+     * @throws FilesReplacedException
      *             if existing unrecognized data files are found and replaced
      *             (with backups made) in the given storageFolderPath
      */
-    public void load(String storageFolderPath) throws InvalidPathException, ExistingFilesFoundException {
+    public void load(String storageFolderPath) throws InvalidPathException, FilesReplacedException {
         FileManager.prepareDirectory(storageFolderPath);
         DatabaseManager.setAllFilePaths(storageFolderPath);
         DatabaseManager.loadAllDatabases();

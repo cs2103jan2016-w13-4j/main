@@ -6,7 +6,7 @@ import jfdi.logic.interfaces.ILogic;
 import jfdi.parser.InputParser;
 import jfdi.parser.exceptions.InvalidInputException;
 import jfdi.storage.apis.MainStorage;
-import jfdi.storage.exceptions.ExistingFilesFoundException;
+import jfdi.storage.exceptions.FilesReplacedException;
 
 /**
  * @author Liu Xinan
@@ -18,7 +18,7 @@ public class ControlCenter implements ILogic {
     private ControlCenter() {
         try {
             MainStorage.getInstance().initialize();
-        } catch (ExistingFilesFoundException e) {
+        } catch (FilesReplacedException e) {
             e.printStackTrace();
         }
     }

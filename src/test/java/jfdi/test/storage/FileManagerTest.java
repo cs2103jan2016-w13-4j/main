@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 import jfdi.storage.Constants;
 import jfdi.storage.FileManager;
 import jfdi.storage.apis.MainStorage;
-import jfdi.storage.exceptions.ExistingFilesFoundException;
+import jfdi.storage.exceptions.FilesReplacedException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -81,7 +81,7 @@ public class FileManagerTest {
         }
     }
 
-    @Test(expected = ExistingFilesFoundException.class)
+    @Test(expected = FilesReplacedException.class)
     public void testMoveFilesToDirectoryWithExistingData() throws Exception {
         MainStorage fileStorageInstance = MainStorage.getInstance();
         fileStorageInstance.load(testDirectoryString);
@@ -92,7 +92,7 @@ public class FileManagerTest {
 
         try {
             FileManager.moveFilesToDirectory(subdirectoryString);
-        } catch (ExistingFilesFoundException e) {
+        } catch (FilesReplacedException e) {
             assertTrue(TestHelper.hasIdenticalDataFiles(testDirectoryString, subdirectoryString));
             throw e;
         }

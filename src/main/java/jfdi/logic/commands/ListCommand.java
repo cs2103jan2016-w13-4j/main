@@ -2,36 +2,35 @@ package jfdi.logic.commands;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import jfdi.logic.events.ListDoneEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
+import jfdi.storage.entities.Task;
 
 /**
  * @author Liu Xinan
  */
 public class ListCommand extends Command {
 
-    private ArrayList<String> tags;
-    private ArrayList<TaskAttributes> items;
+    public enum ListType {
+        ALL, COMPLETED, INCOMPLETE
+    }
+
+    private ListType listType;
 
     private ListCommand(Builder builder) {
-        this.tags = builder.tags;
-        this.items = new ArrayList<>();
+        this.listType = builder.listType;
     }
 
     public static class Builder {
 
-        ArrayList<String> tags = new ArrayList<>();
+        ListType listType;
 
-        public Builder addTag(String tag) {
-            this.tags.add(tag);
-            return this;
-        }
-
-        public Builder addTags(Collection<String> tags) {
-            this.tags.addAll(tags);
+        public Builder setListType(ListType listType) {
+            this.listType = listType;
             return this;
         }
 
@@ -40,26 +39,26 @@ public class ListCommand extends Command {
         }
     }
 
-
-    /**
-     * Get the tags requested in the input.
-     *
-     * @return List of tags
-     */
-    public ArrayList<String> getTags() {
-        return tags;
-    }
-
     @Override
     public void execute() {
-        if (tags.isEmpty()) {
-            items.addAll(TaskDb.getInstance().getAll());
-        } else {
-            for (String tag : tags) {
-                items.addAll(TaskDb.getInstance().getByTag(tag));
-            }
+        ArrayList<TaskAttributes> tasks = new ArrayList<>(TaskDb.getInstance().getAll());
+        switch (listType) {
+            case ALL:
+                break;
+            case COMPLETED:
+                tasks = tasks.stream()
+                    .filter(task -> task.isCompleted())
+                    .collect(Collectors.toCollection(ArrayList::new));
+                break;
+            case INCOMPLETE:
+                tasks = tasks.stream()
+                    .filter(task -> !task.isCompleted())
+                    .collect(Collectors.toCollection(ArrayList::new));
+                break;
+            default:
+                break;
         }
-        eventBus.post(new ListDoneEvent(tags, items));
+        eventBus.post(new ListDoneEvent(listType, tasks));
     }
 
 }

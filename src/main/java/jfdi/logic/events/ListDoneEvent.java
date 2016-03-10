@@ -1,6 +1,7 @@
 package jfdi.logic.events;
 
 import jfdi.storage.apis.TaskAttributes;
+import jfdi.logic.commands.ListCommand.ListType;
 
 import java.util.ArrayList;
 
@@ -9,11 +10,11 @@ import java.util.ArrayList;
  */
 public class ListDoneEvent {
 
-    private ArrayList<String> tags;
+    private ListType listType;
     private ArrayList<TaskAttributes> items;
 
-    public ListDoneEvent(ArrayList<String> tags, ArrayList<TaskAttributes> items) {
-        this.tags = tags;
+    public ListDoneEvent(ListType listType, ArrayList<TaskAttributes> items) {
+        this.listType = listType;
         this.items = items;
     }
 
@@ -21,7 +22,7 @@ public class ListDoneEvent {
         return items;
     }
 
-    public ArrayList<String> getTags() {
-        return tags;
+    public ListType getListType() {
+        return listType;
     }
 }

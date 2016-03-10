@@ -10,6 +10,7 @@ import jfdi.parser.Constants;
 import jfdi.parser.DateTimeObject;
 import jfdi.parser.DateTimeParser;
 import jfdi.parser.exceptions.BadDateTimeException;
+import jfdi.parser.exceptions.BadTaskDescriptionException;
 
 /**
  * The AddCommandParser class is used to parse a user input String that
@@ -52,11 +53,11 @@ public class AddCommandParser extends AbstractCommandParser {
         Builder addCommandBuilder = new Builder();
         try {
             input = setAndRemoveDateTime(input, addCommandBuilder);
-        } catch (BadDateTimeException e) {
+            setDescription(input, addCommandBuilder);
+        } catch (BadDateTimeException | BadTaskDescriptionException e) {
             return createInvalidCommand(Constants.CommandType.add,
                     originalInput);
         }
-        setDescription(input, addCommandBuilder);
 
         AddTaskCommand addCommand = addCommandBuilder.build();
         return addCommand;
@@ -76,6 +77,9 @@ public class AddCommandParser extends AbstractCommandParser {
      * @param builder
      *            the builder object for AddTaskCommand
      * @return the input, trimmed and without date time identifiers.
+     *
+     * @throws BadDateTimeException
+     *             if input cannot be parsed as a date time
      */
     private String setAndRemoveDateTime(String input, Builder builder)
             throws BadDateTimeException {
@@ -116,8 +120,12 @@ public class AddCommandParser extends AbstractCommandParser {
      *            is the input string from which the description is extracted.
      * @param builder
      *            the builder object for AddTaskCommand
+     * @throws BadTaskDescriptionException
+     *             if input is invalid as a task description
      */
-    private void setDescription(String input, Builder builder) {
+    private void setDescription(String input, Builder builder)
+            throws BadTaskDescriptionException {
+
         if (!input.isEmpty()) {
             String firstWord = getFirstWord(input);
             String taskDescription = null;
@@ -127,14 +135,14 @@ public class AddCommandParser extends AbstractCommandParser {
                 taskDescription = input;
             }
 
+            if (taskDescription == null || taskDescription.isEmpty()) {
+                throw new BadTaskDescriptionException(input);
+            }
+
             builder.setDescription(taskDescription);
         } else {
-            builder.setDescription(null);
+            throw new BadTaskDescriptionException(input);
         }
-    }
-
-    private String removeFirstChar(String string) {
-        return string.substring(1, string.length());
     }
 
     private String getFirstWord(String input) {

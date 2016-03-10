@@ -83,12 +83,12 @@ public abstract class AbstractCommandParser {
      *            the string from which the first word is to be removed
      * @return the input string without the first word and the whitespace
      *         separating the first word from the rest of the string. If the
-     *         string only consists of one word, return null.
+     *         string only consists of one word, return an empty string.
      */
     protected String removeFirstWord(String input) {
         String[] splitInput = input.split(Constants.REGEX_WHITESPACE, 2);
         if (splitInput.length == 1) {
-            return null;
+            return "";
         } else {
             return splitInput[1];
         }

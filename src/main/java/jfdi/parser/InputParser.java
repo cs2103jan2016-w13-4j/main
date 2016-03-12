@@ -121,6 +121,12 @@ public class InputParser implements IParser {
             return CommandType.rename;
         } else if (input.matches(Constants.REGEX_RESCHEDULE)) {
             return CommandType.reschedule;
+        } else if (input.matches(Constants.REGEX_SEARCH)) {
+            return CommandType.search;
+        } else if (input.matches(Constants.REGEX_MARK)) {
+            return CommandType.mark;
+        } else if (input.matches(Constants.REGEX_UNMARK)) {
+            return CommandType.unmark;
         } else {
             return CommandType.add;
         }

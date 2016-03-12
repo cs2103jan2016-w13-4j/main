@@ -25,6 +25,9 @@ public class Constants {
     public static final String REGEX_RENAME = "(?i)^(rename)";
     public static final String REGEX_RESCHEDULE = "(?i)^(reschedule)";
     public static final String REGEX_DELETE = "(?i)^(delete|remove)";
+    public static final String REGEX_SEARCH = "(?i)^(delete|remove)";
+    public static final String REGEX_MARK = "(?i)^(mark)";
+    public static final String REGEX_UNMARK = "(?i)^(mark)";
 
     // Task related Regex Strings
     public static final String REGEX_TAGS = "\\+\\w+";
@@ -101,7 +104,7 @@ public class Constants {
 
     // An enum containing all the commands available to the user
     public enum CommandType {
-        add, delete, rename, reschedule, list, view, invalid, search, mark;
+        add, delete, rename, reschedule, list, view, invalid, search, mark, unmark;
     }
 
     public static final int INDEX_ACTION = 0;

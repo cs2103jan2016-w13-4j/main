@@ -7,6 +7,7 @@ import jfdi.logic.commands.RenameTaskCommand;
 import jfdi.logic.commands.RenameTaskCommand.Builder;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
+import jfdi.parser.exceptions.BadTaskDescriptionException;
 import jfdi.parser.exceptions.NoTaskIdFoundException;
 
 /**
@@ -17,7 +18,7 @@ import jfdi.parser.exceptions.NoTaskIdFoundException;
  * @author leona_000
  *
  */
-public class RenameCommandParser extends AbstractEditCommandParser {
+public class RenameCommandParser extends AbstractCommandParser {
 
     public static AbstractCommandParser instance;
 
@@ -46,11 +47,11 @@ public class RenameCommandParser extends AbstractEditCommandParser {
         input = removeFirstWord(input);
         try {
             input = setAndRemoveTaskId(input, renameCommandBuilder);
-        } catch (NoTaskIdFoundException e) {
+            setTaskDescription(input, renameCommandBuilder);
+        } catch (NoTaskIdFoundException | BadTaskDescriptionException e) {
             return createInvalidCommand(Constants.CommandType.rename,
                     originalInput);
         }
-        setTaskDescription(input, renameCommandBuilder);
 
         RenameTaskCommand renameCommand = renameCommandBuilder.build();
         return renameCommand;
@@ -102,9 +103,15 @@ public class RenameCommandParser extends AbstractEditCommandParser {
      *
      * @param input
      *            the String including the task description.
-     * @return the task description. This can be an empty String.
+     * @return the task description.
+     * @throws BadTaskDescriptionException
+     *             if the input is empty.
      */
-    private String setTaskDescription(String input, Builder builder) {
+    private String setTaskDescription(String input, Builder builder)
+            throws BadTaskDescriptionException {
+        if (input.trim().isEmpty()) {
+            throw new BadTaskDescriptionException(input);
+        }
         builder.setDescription(input);
         return input;
     }

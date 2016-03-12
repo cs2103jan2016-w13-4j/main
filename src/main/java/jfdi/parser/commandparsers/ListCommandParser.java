@@ -1,17 +1,17 @@
 package jfdi.parser.commandparsers;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import jfdi.logic.commands.ListCommand;
-import jfdi.parser.Constants;
+import jfdi.logic.commands.ListCommand.ListType;
+import jfdi.logic.interfaces.Command;
+import jfdi.parser.Constants.CommandType;
+import jfdi.parser.exceptions.InvalidInputException;
 
 /**
  * The ListCommandParser class is used to parse a user input String that
  * resembles a list command. All user inputs for listing tasks must adhere to
- * the following format: {list identifier} {tags}(optional). If the {tags} field
- * is unspecified, all tasks currently in storage will be displayed.
+ * the following format: {list identifier} {completed | incomplete}. If the
+ * {completed | incomplete} field is unspecified, all tasks currently in storage
+ * will be displayed.
  *
  * @author Leonard Hio
  *
@@ -35,27 +35,40 @@ public class ListCommandParser extends AbstractCommandParser {
      *            the user input String
      * @return the ListCommand object encapsulating the details of the list command.
      */
-    public ListCommand build(String input) {
-        ArrayList<String> tags = getTags(input);
+    public Command build(String input) {
         ListCommand.Builder builder = new ListCommand.Builder();
-        builder.addTags(tags);
+        ListType listType = null;
+        try {
+            listType = getListType(input);
+        } catch (InvalidInputException e) {
+            return createInvalidCommand(CommandType.list, input);
+        }
+        builder.setListType(listType);
         return builder.build();
     }
 
-    private ArrayList<String> getTags(String input) {
-        List<String> inputAsList = getInputAsList(input);
-        return removeFirstIndex(inputAsList);
-    }
-
-    private ArrayList<String> removeFirstIndex(List<String> inputAsList) {
-        ArrayList<String> withoutFirstIndex = new ArrayList<String>();
-        for (int i = 1; i <= inputAsList.size() - 1; i++) {
-            withoutFirstIndex.add(inputAsList.get(i));
+    /**
+     * This method gets the type of the list, which corresponds to whether the
+     * user wishes to list all tasks, or just those that are
+     * completed/incomplete.
+     *
+     * @param input
+     *            the list command input
+     * @return the ListType specified in the command input
+     * @throws InvalidInputException
+     *             if no valid ListType is found
+     */
+    private ListType getListType(String input) throws InvalidInputException {
+        input = removeFirstWord(input);
+        if (input.isEmpty()) {
+            return ListType.ALL;
+        } else if (input.matches("(?i)Completed")) {
+            return ListType.COMPLETED;
+        } else if (input.matches("(?i)Incomplete")) {
+            return ListType.INCOMPLETE;
+        } else {
+            throw new InvalidInputException(input);
         }
-        return withoutFirstIndex;
     }
 
-    private List<String> getInputAsList(String input) {
-        return Arrays.asList(input.split(Constants.REGEX_WHITESPACE));
-    }
 }

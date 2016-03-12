@@ -1,5 +1,10 @@
 package jfdi.parser;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Set;
+
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants.CommandType;
 import jfdi.parser.commandparsers.AddCommandParser;
@@ -8,6 +13,7 @@ import jfdi.parser.commandparsers.ListCommandParser;
 import jfdi.parser.commandparsers.RenameCommandParser;
 import jfdi.parser.commandparsers.RescheduleCommandParser;
 import jfdi.parser.exceptions.InvalidInputException;
+import jfdi.storage.apis.AliasAttributes;
 
 /**
  * The InputParser class is used to parse a String input into its associated
@@ -19,6 +25,8 @@ import jfdi.parser.exceptions.InvalidInputException;
  */
 public class InputParser implements IParser {
     private static InputParser parserInstance;
+    private Collection<AliasAttributes> aliases = new ArrayList<AliasAttributes>();
+    private HashMap<String, String> aliasMap = new HashMap<>();
 
     public static InputParser getInstance() {
         if (parserInstance == null) {
@@ -33,11 +41,34 @@ public class InputParser implements IParser {
             throw new InvalidInputException(input);
         }
 
-        // / input is guaranteed to be at least one word long
-        String firstWord = getFirstWord(input);
+        // input is guaranteed to be at least one word long
+        String unaliasedInput = unalias(input);
+        String firstWord = getFirstWord(unaliasedInput);
         CommandType commandType = getCommandType(firstWord);
         Command userCommand = getCommand(commandType, input);
         return userCommand;
+    }
+
+    @Override
+    public void setAliases(Collection<AliasAttributes> aliases) {
+        assert aliases != null;
+        this.aliases.addAll(aliases);
+        buildAliasMap();
+    }
+
+    public Collection<AliasAttributes> getAliases() {
+        return aliases;
+    }
+
+    /**
+     * This method builds a mapping of aliases to their corresponding command
+     * types (represented as strings).
+     */
+    private void buildAliasMap() {
+        aliasMap = new HashMap<>();
+        for (AliasAttributes att : aliases) {
+            aliasMap.put(att.getAlias(), att.getCommand());
+        }
     }
 
     /**
@@ -53,6 +84,25 @@ public class InputParser implements IParser {
     }
 
     /**
+     * This method replaces an alias (if present) in the input into its
+     * corresponding command type.
+     *
+     * @param input
+     *            the string that may or may not have an alias.
+     * @return the unaliased input.
+     */
+    private String unalias(String input) {
+        Set<String> aliasSet = aliasMap.keySet();
+        for (String str : aliasSet) {
+            if (input.matches("$" + str)) {
+                input.replaceAll("$" + str, aliasMap.get(str));
+                break;
+            }
+        }
+        return input;
+    }
+
+    /**
      * This method returns the CommandType associated with the input String.
      *
      * @param input
@@ -62,17 +112,23 @@ public class InputParser implements IParser {
     private CommandType getCommandType(String input) {
         assert input.split(Constants.REGEX_WHITESPACE).length == 1;
         if (input.matches(Constants.REGEX_ADD)) {
-            return Constants.CommandType.add;
+            return CommandType.add;
         } else if (input.matches(Constants.REGEX_LIST)) {
-            return Constants.CommandType.list;
+            return CommandType.list;
         } else if (input.matches(Constants.REGEX_DELETE)) {
-            return Constants.CommandType.delete;
+            return CommandType.delete;
         } else if (input.matches(Constants.REGEX_RENAME)) {
-            return Constants.CommandType.rename;
+            return CommandType.rename;
         } else if (input.matches(Constants.REGEX_RESCHEDULE)) {
-            return Constants.CommandType.reschedule;
+            return CommandType.reschedule;
+        } else if (input.matches(Constants.REGEX_SEARCH)) {
+            return CommandType.search;
+        } else if (input.matches(Constants.REGEX_MARK)) {
+            return CommandType.mark;
+        } else if (input.matches(Constants.REGEX_UNMARK)) {
+            return CommandType.unmark;
         } else {
-            return Constants.CommandType.add;
+            return CommandType.add;
         }
 
     }

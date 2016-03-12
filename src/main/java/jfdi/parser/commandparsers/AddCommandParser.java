@@ -1,6 +1,5 @@
 package jfdi.parser.commandparsers;
 
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,12 +10,13 @@ import jfdi.parser.Constants;
 import jfdi.parser.DateTimeObject;
 import jfdi.parser.DateTimeParser;
 import jfdi.parser.exceptions.BadDateTimeException;
+import jfdi.parser.exceptions.BadTaskDescriptionException;
 
 /**
  * The AddCommandParser class is used to parse a user input String that
  * resembles an add command. All user inputs for adding tasks must adhere to the
  * following format: {add identifier}(optional) {task description} {date time
- * identifier}(optional) {tags}(optional)
+ * identifier}(optional)
  *
  * @author Leonard Hio
  *
@@ -41,7 +41,7 @@ public class AddCommandParser extends AbstractCommandParser {
     /**
      * This method parses the user input (representing an add command) and builds the
      * AddTaskCommand object. To build the add command, we traverse from the back,
-     * retrieving the tags first, then the date time identifiers if present, then the
+     * retrieving the date time identifiers if present, then the
      * task description.
      *
      * @param input
@@ -51,50 +51,16 @@ public class AddCommandParser extends AbstractCommandParser {
     public Command build(String input) {
         String originalInput = input;
         Builder addCommandBuilder = new Builder();
-        input = setAndRemoveTags(input, addCommandBuilder);
         try {
             input = setAndRemoveDateTime(input, addCommandBuilder);
-        } catch (BadDateTimeException e) {
+            setDescription(input, addCommandBuilder);
+        } catch (BadDateTimeException | BadTaskDescriptionException e) {
             return createInvalidCommand(Constants.CommandType.add,
                     originalInput);
         }
-        setDescription(input, addCommandBuilder);
 
         AddTaskCommand addCommand = addCommandBuilder.build();
         return addCommand;
-    }
-
-    /**
-     * Finds instances that match the tag Regex specified in
-     * parser.Constants.java, removes them from the input string, then adds the
-     * list of tags found into the Builder object.
-     *
-     * @param input
-     *            the user input String
-     * @param builder
-     *            the builder object for AddTaskCommand
-     * @return the input, trimmed and without tags.
-     */
-    private String setAndRemoveTags(String input, Builder builder) {
-        ArrayList<String> tags = new ArrayList<String>();
-
-        // Search for the last instance of all tags in the input.
-        Pattern tagPattern = Pattern.compile(Constants.REGEX_TAGS + "$");
-        Matcher matcher = tagPattern.matcher(input);
-
-        while (matcher.find()) {
-            // All tags are prepended with an identifier specified in
-            // parser.Constants.java. We need to remove this identifier.
-            String tag = removeFirstChar(getTrimmedSubstringInRange(input,
-                    matcher.start(), matcher.end()));
-            input = getTrimmedSubstringInRange(input, 0, matcher.start());
-            tags.add(tag);
-            matcher.reset(input);
-        }
-
-        builder.addTags(tags);
-
-        return input;
     }
 
     /**
@@ -111,6 +77,9 @@ public class AddCommandParser extends AbstractCommandParser {
      * @param builder
      *            the builder object for AddTaskCommand
      * @return the input, trimmed and without date time identifiers.
+     *
+     * @throws BadDateTimeException
+     *             if input cannot be parsed as a date time
      */
     private String setAndRemoveDateTime(String input, Builder builder)
             throws BadDateTimeException {
@@ -151,8 +120,12 @@ public class AddCommandParser extends AbstractCommandParser {
      *            is the input string from which the description is extracted.
      * @param builder
      *            the builder object for AddTaskCommand
+     * @throws BadTaskDescriptionException
+     *             if input is invalid as a task description
      */
-    private void setDescription(String input, Builder builder) {
+    private void setDescription(String input, Builder builder)
+            throws BadTaskDescriptionException {
+
         if (!input.isEmpty()) {
             String firstWord = getFirstWord(input);
             String taskDescription = null;
@@ -162,14 +135,14 @@ public class AddCommandParser extends AbstractCommandParser {
                 taskDescription = input;
             }
 
+            if (taskDescription == null || taskDescription.isEmpty()) {
+                throw new BadTaskDescriptionException(input);
+            }
+
             builder.setDescription(taskDescription);
         } else {
-            builder.setDescription(null);
+            throw new BadTaskDescriptionException(input);
         }
-    }
-
-    private String removeFirstChar(String string) {
-        return string.substring(1, string.length());
     }
 
     private String getFirstWord(String input) {

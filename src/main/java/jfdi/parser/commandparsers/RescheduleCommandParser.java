@@ -19,7 +19,7 @@ import jfdi.parser.exceptions.NoTaskIdFoundException;
  * @author Leonard Hio
  *
  */
-public class RescheduleCommandParser extends AbstractEditCommandParser {
+public class RescheduleCommandParser extends AbstractCommandParser {
     public static AbstractCommandParser instance;
 
     private RescheduleCommandParser() {

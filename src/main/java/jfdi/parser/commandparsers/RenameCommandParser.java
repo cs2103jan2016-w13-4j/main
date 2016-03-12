@@ -18,7 +18,7 @@ import jfdi.parser.exceptions.NoTaskIdFoundException;
  * @author leona_000
  *
  */
-public class RenameCommandParser extends AbstractEditCommandParser {
+public class RenameCommandParser extends AbstractCommandParser {
 
     public static AbstractCommandParser instance;
 

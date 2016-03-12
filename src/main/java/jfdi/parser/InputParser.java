@@ -3,7 +3,6 @@ package jfdi.parser;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
 import jfdi.logic.interfaces.Command;
@@ -26,8 +25,8 @@ import jfdi.storage.apis.AliasAttributes;
  */
 public class InputParser implements IParser {
     private static InputParser parserInstance;
-    private static Collection<AliasAttributes> aliases = new ArrayList<AliasAttributes>();
-    private static HashMap<CommandType, Set<String>> aliasMap = new HashMap<>();
+    private Collection<AliasAttributes> aliases = new ArrayList<AliasAttributes>();
+    private HashMap<String, String> aliasMap = new HashMap<>();
 
     public static InputParser getInstance() {
         if (parserInstance == null) {
@@ -43,7 +42,8 @@ public class InputParser implements IParser {
         }
 
         // input is guaranteed to be at least one word long
-        String firstWord = getFirstWord(input);
+        String unaliasedInput = unalias(input);
+        String firstWord = getFirstWord(unaliasedInput);
         CommandType commandType = getCommandType(firstWord);
         Command userCommand = getCommand(commandType, input);
         return userCommand;
@@ -56,28 +56,18 @@ public class InputParser implements IParser {
         buildAliasMap();
     }
 
+    public Collection<AliasAttributes> getAliases() {
+        return aliases;
+    }
+
     /**
-     * This method builds a mapping of CommandType to the corresponding list of
-     * alias for that CommandType.
+     * This method builds a mapping of aliases to their corresponding command
+     * types (represented as strings).
      */
     private void buildAliasMap() {
         aliasMap = new HashMap<>();
-
         for (AliasAttributes att : aliases) {
-            CommandType commandType = getCommandType(att.getCommand());
-            if (aliasMap.containsKey(commandType)) {
-                Set<String> aliasList = aliasMap.get(commandType);
-                if (aliasList == null) {
-                    aliasList = new HashSet<>();
-                    aliasList.add(att.getAlias());
-                } else {
-                    aliasList.add(att.getAlias());
-                }
-            } else {
-                Set<String> aliasList = new HashSet<>();
-                aliasList.add(att.getCommand());
-                aliasMap.put(commandType, aliasList);
-            }
+            aliasMap.put(att.getAlias(), att.getCommand());
         }
     }
 
@@ -94,6 +84,25 @@ public class InputParser implements IParser {
     }
 
     /**
+     * This method replaces an alias (if present) in the input into its
+     * corresponding command type.
+     *
+     * @param input
+     *            the string that may or may not have an alias.
+     * @return the unaliased input.
+     */
+    private String unalias(String input) {
+        Set<String> aliasSet = aliasMap.keySet();
+        for (String str : aliasSet) {
+            if (input.matches("$" + str)) {
+                input.replaceAll("$" + str, aliasMap.get(str));
+                break;
+            }
+        }
+        return input;
+    }
+
+    /**
      * This method returns the CommandType associated with the input String.
      *
      * @param input
@@ -102,42 +111,20 @@ public class InputParser implements IParser {
      */
     private CommandType getCommandType(String input) {
         assert input.split(Constants.REGEX_WHITESPACE).length == 1;
-        if (input.matches(Constants.REGEX_ADD)
-                || isInAliasMap(CommandType.add, input)) {
+        if (input.matches(Constants.REGEX_ADD)) {
             return CommandType.add;
-        } else if (input.matches(Constants.REGEX_LIST)
-                || isInAliasMap(CommandType.list, input)) {
+        } else if (input.matches(Constants.REGEX_LIST)) {
             return CommandType.list;
-        } else if (input.matches(Constants.REGEX_DELETE)
-                || isInAliasMap(CommandType.delete, input)) {
+        } else if (input.matches(Constants.REGEX_DELETE)) {
             return CommandType.delete;
-        } else if (input.matches(Constants.REGEX_RENAME)
-                || isInAliasMap(CommandType.rename, input)) {
+        } else if (input.matches(Constants.REGEX_RENAME)) {
             return CommandType.rename;
-        } else if (input.matches(Constants.REGEX_RESCHEDULE)
-                || isInAliasMap(CommandType.reschedule, input)) {
+        } else if (input.matches(Constants.REGEX_RESCHEDULE)) {
             return CommandType.reschedule;
         } else {
             return CommandType.add;
         }
 
-    }
-
-    /**
-     * This method checks to see if the given input string is present in the
-     * CommandType to Alias mapping under a specific CommandType.
-     *
-     * @param commandType
-     *            the CommandType under which the input might be an alias for
-     * @param input
-     *            the input string to be checked
-     * @return true if the input is an alias for commandType; false otherwise.
-     */
-    private boolean isInAliasMap(CommandType commandType, String input) {
-        if (aliasMap.containsKey(commandType)) {
-            return aliasMap.get(commandType).contains(input);
-        }
-        return false;
     }
 
     /**

@@ -1,5 +1,7 @@
 package jfdi.test.parser;
 
+import jfdi.logic.commands.AddTaskCommand;
+import jfdi.logic.commands.ListCommand;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.InputParser;
 import jfdi.parser.exceptions.InvalidInputException;
@@ -21,6 +23,18 @@ public class ParserTest {
         String listCommand = "List";
         try {
             Command command = parser.parse(listCommand);
+            Assert.assertTrue(command instanceof ListCommand);
+        } catch (InvalidInputException e) {
+            Assert.fail();
+        }
+    }
+
+    @Test
+    public void testUserInputAdd() {
+        String addCommand = "add hello";
+        try {
+            Command command = parser.parse(addCommand);
+            Assert.assertTrue(command instanceof AddTaskCommand);
         } catch (InvalidInputException e) {
             Assert.fail();
         }

@@ -153,7 +153,6 @@ public class Constants {
     public static final ZoneId ZONE_ID = ZoneId.systemDefault();
 
     public static void main(String[] args) {
-
         System.out.println("From now to tomorrow"
                 .matches(REGEX_DATE_TIME_IDENTIFIER));
     }

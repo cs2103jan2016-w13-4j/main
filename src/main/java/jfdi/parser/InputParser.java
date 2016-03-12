@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants.CommandType;
@@ -29,19 +30,26 @@ import jfdi.storage.apis.AliasAttributes;
  */
 public class InputParser implements IParser {
     private static InputParser parserInstance;
+    private static final Logger LOGGER = Logger.getLogger(InputParser.class
+            .getName());
+    private static final String SOURCECLASS = InputParser.class.getName();
     private Collection<AliasAttributes> aliases = new ArrayList<AliasAttributes>();
     private HashMap<String, String> aliasMap = new HashMap<>();
 
     public static InputParser getInstance() {
+        LOGGER.entering(SOURCECLASS, "getInstance");
         if (parserInstance == null) {
             parserInstance = new InputParser();
         }
+        LOGGER.exiting(SOURCECLASS, "getInstance");
         return parserInstance;
     }
 
     @Override
     public Command parse(String input) throws InvalidInputException {
         if (!isValidInput(input)) {
+            LOGGER.throwing(SOURCECLASS, "parse", new InvalidInputException(
+                    input));
             throw new InvalidInputException(input);
         }
 
@@ -135,6 +143,8 @@ public class InputParser implements IParser {
      * @return the unaliased input.
      */
     private String unalias(String input) {
+        assert isValidInput(input);
+
         Set<String> aliasSet = aliasMap.keySet();
         for (String str : aliasSet) {
             if (input.matches("$" + str)) {
@@ -155,6 +165,8 @@ public class InputParser implements IParser {
      * @return a Command object that was built from the user's input.
      */
     private Command getCommand(CommandType commandType, String input) {
+        assert commandType != null && isValidInput(input);
+
         switch (commandType) {
             case add:
                 return AddCommandParser.getInstance().build(input);
@@ -188,6 +200,6 @@ public class InputParser implements IParser {
      * @return true if the input is valid; false otherwise
      */
     private boolean isValidInput(String input) {
-        return !(input.isEmpty() || input.trim().isEmpty());
+        return input != null && !(input.isEmpty() || input.trim().isEmpty());
     }
 }

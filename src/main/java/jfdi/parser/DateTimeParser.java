@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,8 +26,9 @@ import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
  */
 public class DateTimeParser {
     // TODO: support for "from {date}{time} to {time}"
-    // TODO: check start date < end date
     private static DateTimeParser dateTimeParser;
+    private static final String SOURCECLASS = DateTimeParser.class.getName();
+    private static final Logger LOGGER = Logger.getLogger(SOURCECLASS);
 
     public static DateTimeParser getInstance() {
         return dateTimeParser == null ? dateTimeParser = new DateTimeParser()
@@ -41,10 +43,15 @@ public class DateTimeParser {
      *            parser.Constants.java.
      * @return a DateTimeObject encapsulating the details of the input date time
      *         string.
+     * @throws a
+     *             BadDateTimeException if the input string doesn't match a
+     *             valid date time format.
      */
     public DateTimeObject parseDateTime(String input)
             throws BadDateTimeException {
         if (!isValidDateTime(input)) {
+            LOGGER.throwing(SOURCECLASS, "parseDateTime",
+                    new BadDateTimeException(input));
             throw new BadDateTimeException(input);
         }
 
@@ -63,11 +70,15 @@ public class DateTimeParser {
      * @param input
      *            a string that contains date time fields
      * @return a DateTimeObject.
+     * @throws BadDateTimeException
+     *             if the start date parsed is later than the end date parsed.
      */
-    private DateTimeObject buildDateTimeObject(String input) {
+    private DateTimeObject buildDateTimeObject(String input)
+            throws BadDateTimeException {
         assert isValidDateTime(input);
 
         DateTimeObjectBuilder dateTimeObjectBuilder = new DateTimeObjectBuilder();
+
         TaskType taskType = getTaskType(input);
         System.out.println(taskType);
         input = toAmericanTime(input);
@@ -77,6 +88,7 @@ public class DateTimeParser {
         boolean isTimeSpecified = checkTimeSpecified(input);
         List<Date> dateList = getDateList(input);
         List<LocalDateTime> dateTimeList = toLocalDateTime(dateList);
+
         LocalDateTime startDateTime = null;
         LocalDateTime endDateTime = null;
         switch (taskType) {
@@ -89,6 +101,12 @@ public class DateTimeParser {
                             Constants.TIME_BEGINNING_OF_DAY);
                     endDateTime = setTime(endDateTime,
                             Constants.TIME_END_OF_DAY);
+                }
+
+                if (startDateTime.compareTo(endDateTime) > 0) {
+                    LOGGER.throwing(SOURCECLASS, "buildDateTimeObject",
+                            new BadDateTimeException(input));
+                    throw new BadDateTimeException(input);
                 }
                 break;
             case point:
@@ -132,6 +150,8 @@ public class DateTimeParser {
      *         any.
      */
     private String toAmericanTime(String input) {
+        assert isValidDateTime(input);
+
         return input
                 .replaceAll(
                         "\\b(0?[1-9]|[12][\\d]|3[01])[-/.](0?[1-9]|1[0-2])(([-/.])((19|20)?\\d\\d))?\\b",
@@ -147,6 +167,7 @@ public class DateTimeParser {
      *         time specified in the string.
      */
     private List<Date> getDateList(String input) {
+        assert input != null;
         PrettyTimeParser parser = new PrettyTimeParser();
         List<Date> dateList = parser.parse(input);
         return dateList;
@@ -174,6 +195,7 @@ public class DateTimeParser {
      * @return a list of LocalDateTime objects.
      */
     private List<LocalDateTime> toLocalDateTime(List<Date> dateTimeList) {
+        assert dateTimeList != null;
         List<LocalDateTime> ldtList = new ArrayList<LocalDateTime>();
         for (Date d : dateTimeList) {
             ldtList.add(getLocalDateTimeFromDate(d));
@@ -190,6 +212,7 @@ public class DateTimeParser {
      * @return a TaskType enum representing the task type of the input string.
      */
     private TaskType getTaskType(String input) {
+        assert input != null;
         if (input.matches(Constants.REGEX_EVENT_IDENTIFIER)) {
             return TaskType.event;
         } else if (input.matches(Constants.REGEX_DEADLINE_IDENTIFIER)) {
@@ -211,6 +234,7 @@ public class DateTimeParser {
      *         otherwise.
      */
     private boolean isValidDateTime(String input) {
+        assert input != null;
         return input.matches(Constants.REGEX_DATE_TIME_IDENTIFIER);
     }
 
@@ -223,6 +247,7 @@ public class DateTimeParser {
      * @return the LocalDateTime object formatted from the Date object.
      */
     public LocalDateTime getLocalDateTimeFromDate(Date d) {
+        assert d != null;
         return LocalDateTime.ofInstant(d.toInstant(), Constants.ZONE_ID);
     }
 

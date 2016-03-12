@@ -10,6 +10,7 @@ import jfdi.logic.commands.InvalidCommand;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
 import jfdi.parser.Constants.CommandType;
+import jfdi.parser.exceptions.NoTaskIdFoundException;
 
 public abstract class AbstractCommandParser {
     protected String userInput;
@@ -49,8 +50,11 @@ public abstract class AbstractCommandParser {
      *            the String from which task IDs are found and extracted.
      * @return an ArrayList of task IDs, all Strings. If no task IDs can be
      *         found, an empty ArrayList is returned.
+     * @throws NoTaskIdFoundException
+     *             if a non-integer taskId is found.
      */
-    protected ArrayList<Integer> getTaskIds(String input) {
+    protected ArrayList<Integer> getTaskIds(String input)
+            throws NoTaskIdFoundException {
         Pattern pattern = Pattern.compile(Constants.REGEX_TASKID);
         Matcher matcher = pattern.matcher(input);
         ArrayList<Integer> taskIds = new ArrayList<>();
@@ -58,7 +62,11 @@ public abstract class AbstractCommandParser {
         while (matcher.find()) {
             String taskId = getTrimmedSubstringInRange(input, matcher.start(),
                     matcher.end());
-            taskIds.add(toInteger(taskId));
+            try {
+                taskIds.add(toInteger(taskId));
+            } catch (NumberFormatException e) {
+                throw new NoTaskIdFoundException(input);
+            }
         }
 
         return taskIds;
@@ -71,7 +79,7 @@ public abstract class AbstractCommandParser {
      *            a String that is to be converted to an Integer.
      * @return an Integer representation of the String.
      */
-    protected Integer toInteger(String toInt) {
+    protected Integer toInteger(String toInt) throws NumberFormatException {
         return Integer.parseInt(toInt);
     }
 

@@ -33,10 +33,10 @@ public class SearchCommandParser extends AbstractCommandParser {
     @Override
     /**
      * This method parses the user input (representing a search command) and
-     * builds the ListCommand object.
+     * builds the SearchCommand object.
      * @param input
      *            the user input String
-     * @return the ListCommand object encapsulating the details of the list command.
+     * @return the SearchCommand object encapsulating the keywords of the search command.
      */
     public Command build(String input) {
         SearchCommandStub.Builder builder = new SearchCommandStub.Builder();

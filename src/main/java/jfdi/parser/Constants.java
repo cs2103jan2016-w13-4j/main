@@ -101,7 +101,7 @@ public class Constants {
 
     // An enum containing all the commands available to the user
     public enum CommandType {
-        add, delete, rename, reschedule, list, view, invalid;
+        add, delete, rename, reschedule, list, view, invalid, search;
     }
 
     public static final int INDEX_ACTION = 0;

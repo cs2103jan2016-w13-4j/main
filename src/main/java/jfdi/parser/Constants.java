@@ -28,6 +28,10 @@ public class Constants {
     public static final String REGEX_SEARCH = "(?i)^(delete|remove)";
     public static final String REGEX_MARK = "(?i)^(mark)";
     public static final String REGEX_UNMARK = "(?i)^(mark)";
+    public static final String REGEX_ALIAS = "(?i)^(alias)";
+    public static final String REGEX_DIRECTORY = "(?i)^(directory)";
+    public static final String REGEX_UNDO = "(?i)^(undo)";
+    public static final String REGEX_HELP = "(?i)^(help)";
 
     // Task related Regex Strings
     public static final String REGEX_TAGS = "\\+\\w+";
@@ -104,7 +108,7 @@ public class Constants {
 
     // An enum containing all the commands available to the user
     public enum CommandType {
-        add, delete, rename, reschedule, list, view, invalid, search, mark, unmark;
+        add, delete, rename, reschedule, list, view, invalid, search, mark, unmark, alias, directory, undo, help;
     }
 
     public static final int INDEX_ACTION = 0;
@@ -156,6 +160,7 @@ public class Constants {
     public static final ZoneId ZONE_ID = ZoneId.systemDefault();
 
     public static void main(String[] args) {
+        assert false;
         System.out.println("From now to tomorrow"
                 .matches(REGEX_DATE_TIME_IDENTIFIER));
     }

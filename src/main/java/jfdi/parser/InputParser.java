@@ -8,10 +8,14 @@ import java.util.Set;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants.CommandType;
 import jfdi.parser.commandparsers.AddCommandParser;
+import jfdi.parser.commandparsers.AliasCommandParser;
 import jfdi.parser.commandparsers.DeleteCommandParser;
 import jfdi.parser.commandparsers.ListCommandParser;
+import jfdi.parser.commandparsers.MarkCommandParser;
 import jfdi.parser.commandparsers.RenameCommandParser;
 import jfdi.parser.commandparsers.RescheduleCommandParser;
+import jfdi.parser.commandparsers.SearchCommandParser;
+import jfdi.parser.commandparsers.UnmarkCommandParser;
 import jfdi.parser.exceptions.InvalidInputException;
 import jfdi.storage.apis.AliasAttributes;
 
@@ -84,30 +88,11 @@ public class InputParser implements IParser {
     }
 
     /**
-     * This method replaces an alias (if present) in the input into its
-     * corresponding command type.
-     *
-     * @param input
-     *            the string that may or may not have an alias.
-     * @return the unaliased input.
-     */
-    private String unalias(String input) {
-        Set<String> aliasSet = aliasMap.keySet();
-        for (String str : aliasSet) {
-            if (input.matches("$" + str)) {
-                input.replaceAll("$" + str, aliasMap.get(str));
-                break;
-            }
-        }
-        return input;
-    }
-
-    /**
      * This method returns the CommandType associated with the input String.
      *
      * @param input
      *            a String interpretation of a CommandType.
-     * @return a CommandType enum.
+     * @return a CommandType enum. If no matches were found, return invalid.
      */
     private CommandType getCommandType(String input) {
         assert input.split(Constants.REGEX_WHITESPACE).length == 1;
@@ -127,10 +112,37 @@ public class InputParser implements IParser {
             return CommandType.mark;
         } else if (input.matches(Constants.REGEX_UNMARK)) {
             return CommandType.unmark;
+        } else if (input.matches(Constants.REGEX_ALIAS)) {
+            return CommandType.alias;
+        } else if (input.matches(Constants.REGEX_DIRECTORY)) {
+            return CommandType.directory;
+        } else if (input.matches(Constants.REGEX_UNDO)) {
+            return CommandType.undo;
+        } else if (input.matches(Constants.REGEX_HELP)) {
+            return CommandType.help;
         } else {
-            return CommandType.add;
+            return CommandType.invalid;
         }
 
+    }
+
+    /**
+     * This method replaces an alias (if present) in the input into its
+     * corresponding command type.
+     *
+     * @param input
+     *            the string that may or may not have an alias.
+     * @return the unaliased input.
+     */
+    private String unalias(String input) {
+        Set<String> aliasSet = aliasMap.keySet();
+        for (String str : aliasSet) {
+            if (input.matches("$" + str)) {
+                input.replaceAll("$" + str, aliasMap.get(str));
+                break;
+            }
+        }
+        return input;
     }
 
     /**
@@ -154,6 +166,14 @@ public class InputParser implements IParser {
                 return RenameCommandParser.getInstance().build(input);
             case reschedule:
                 return RescheduleCommandParser.getInstance().build(input);
+            case search:
+                return SearchCommandParser.getInstance().build(input);
+            case mark:
+                return MarkCommandParser.getInstance().build(input);
+            case unmark:
+                return UnmarkCommandParser.getInstance().build(input);
+            case alias:
+                return AliasCommandParser.getInstance().build(input);
             default:
                 return AddCommandParser.getInstance().build(input);
         }

@@ -103,7 +103,7 @@ public class FileManagerTest {
         Path testFilePath = Paths.get(testDirectoryString, Constants.TEST_FILE_NAME);
         File testFile = testFilePath.toFile();
         testFile.getParentFile().mkdirs();
-        TestHelper.writeToFile(testFile, Constants.TEST_FILE_DATA);
+        FileManager.writeToFile(Constants.TEST_FILE_DATA, testFilePath);
         String backupPath = FileManager.backupAndRemove(testFilePath);
         File backupFile = new File(backupPath);
         assertFalse(testFile.exists());

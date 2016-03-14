@@ -2,7 +2,6 @@ package jfdi.test.storage;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -10,6 +9,10 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import jfdi.storage.Constants;
+import jfdi.storage.FileManager;
+import jfdi.storage.apis.TaskAttributes;
+import jfdi.storage.apis.TaskDb;
+import jfdi.storage.serializer.Serializer;
 
 import org.apache.commons.io.FileUtils;
 
@@ -28,6 +31,45 @@ public class TestHelper {
         HashSet<T> set1 = new HashSet<T>(collection1);
         HashSet<T> set2 = new HashSet<T>(collection2);
         return set1.equals(set2);
+    }
+
+    /**
+     * This method creates a single valid task with the task's description set
+     * as the first test task description.
+     *
+     * @param directoryPath
+     *            the directory that holds the program data
+     */
+    public static void createValidTaskFile(String directoryPath) {
+        try {
+            // Create a task
+            TaskAttributes taskAttributes = new TaskAttributes();
+            taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+            taskAttributes.save();
+
+            // Get the JSON form of the current state
+            String json = Serializer.serialize(TaskDb.getInstance().getAll());
+
+            // Write the JSON to the task file
+            createTaskFileWith(directoryPath, json);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * This method creates a task file with the given data in the given
+     * directory path that stores the program data.
+     *
+     * @param directoryPath
+     *            the directory that stores the program data
+     * @param data
+     *            the content that is to be written inside the task file
+     */
+    private static void createTaskFileWith(String directoryPath, String data) {
+        Path dataPath = Paths.get(directoryPath, Constants.PATH_DEFAULT_DIRECTORY, Constants.FILENAME_TASK);
+        FileManager.writeToFile(data, dataPath);
     }
 
     /**
@@ -64,29 +106,9 @@ public class TestHelper {
         parentDirectory.mkdirs();
 
         Path dataPath;
-        File dataFile;
         for (String dataFilename : Constants.FILENAME_DATA_ARRAY) {
             dataPath = Paths.get(directoryPath, dataFilename);
-            dataFile = dataPath.toFile();
-            writeToFile(dataFile, data);
-        }
-    }
-
-    /**
-     * This method writes the given data to the given dataFile.
-     *
-     * @param dataFile
-     *            the file in which data is to be written into
-     * @param data
-     *            the data which we want to write into dataFile
-     */
-    public static void writeToFile(File dataFile, String data) {
-        try {
-            PrintWriter writer = new PrintWriter(dataFile, Constants.CHARSET);
-            writer.println(data);
-            writer.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+            FileManager.writeToFile(data, dataPath);
         }
     }
 

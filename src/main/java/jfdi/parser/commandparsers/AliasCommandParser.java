@@ -1,12 +1,12 @@
 package jfdi.parser.commandparsers;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import jfdi.logic.commands.AliasCommandStub.Builder;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
 import jfdi.parser.Constants.CommandType;
-import jfdi.parser.InputParser;
 import jfdi.parser.exceptions.InvalidCommandException;
 import jfdi.parser.exceptions.UsedAliasException;
 import jfdi.storage.apis.AliasAttributes;
@@ -22,16 +22,18 @@ import jfdi.storage.apis.AliasAttributes;
  */
 public class AliasCommandParser extends AbstractCommandParser {
     public static AliasCommandParser instance;
+    private static Collection<AliasAttributes> aliasAttributesList = new ArrayList<AliasAttributes>();
 
-    private AliasCommandParser() {
-
+    private AliasCommandParser(Collection<AliasAttributes> aliasAttributesList) {
+        this.aliasAttributesList = aliasAttributesList;
     }
 
-    public static AliasCommandParser getInstance() {
+    public static AliasCommandParser getInstance(
+            Collection<AliasAttributes> aliasAttributesList) {
         if (instance == null) {
-            return instance = new AliasCommandParser();
+            return instance = new AliasCommandParser(aliasAttributesList);
         }
-
+        instance.aliasAttributesList = aliasAttributesList;
         return instance;
     }
 
@@ -74,8 +76,6 @@ public class AliasCommandParser extends AbstractCommandParser {
     }
 
     private String getAlias(String input) throws UsedAliasException {
-        Collection<AliasAttributes> aliasAttributesList = InputParser
-                .getInstance().getAliases();
         String alias = getThirdWord(input);
         for (AliasAttributes att : aliasAttributesList) {
             if (alias.equals(att)) {

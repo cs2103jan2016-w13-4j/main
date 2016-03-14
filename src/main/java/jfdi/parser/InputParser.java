@@ -68,10 +68,6 @@ public class InputParser implements IParser {
         buildAliasMap();
     }
 
-    public Collection<AliasAttributes> getAliases() {
-        return aliases;
-    }
-
     /**
      * This method builds a mapping of aliases to their corresponding command
      * types (represented as strings).
@@ -185,7 +181,7 @@ public class InputParser implements IParser {
             case unmark:
                 return UnmarkCommandParser.getInstance().build(input);
             case alias:
-                return AliasCommandParser.getInstance().build(input);
+                return AliasCommandParser.getInstance(aliases).build(input);
             default:
                 return AddCommandParser.getInstance().build(input);
         }

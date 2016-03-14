@@ -1,5 +1,8 @@
 package jfdi.ui;
 
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import jfdi.storage.apis.TaskAttributes;
@@ -55,6 +58,7 @@ public class ListItem {
     @Override
     public String toString() {
         String display = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy h:mma");
 
         if (item.getStartDateTime() == null && item.getEndDateTime() == null) {
             // Floating Tasks
@@ -62,15 +66,15 @@ public class ListItem {
         } else if (item.getStartDateTime() == null && item.getEndDateTime() != null) {
             // Deadline Tasks
             display = " # " + index + " :  " + item.getDescription() + " by "
-                    + item.getEndDateTime();
+                    + formatter.format(item.getEndDateTime());
         } else if (item.getStartDateTime() != null && item.getEndDateTime() == null) {
             // Point Tasks
             display = " # " + index + " :  " + item.getDescription() + " at "
-                    + item.getStartDateTime();
+                    + formatter.format(item.getStartDateTime());
         } else if (item.getStartDateTime() != null && item.getEndDateTime() != null) {
             // Event Tasks
             display = " # " + index + " :  " + item.getDescription() + " from "
-                    + item.getStartDateTime() + " to " + item.getEndDateTime();
+                    + formatter.format(item.getStartDateTime()) + " to " + formatter.format(item.getEndDateTime());
         }
 
         return display;

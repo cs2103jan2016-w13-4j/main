@@ -1,27 +1,27 @@
 package jfdi.parser.commandparsers;
 
-import jfdi.logic.commands.MoveTaskCommandStub.Builder;
+import jfdi.logic.commands.UseTaskCommandStub.Builder;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
 import jfdi.parser.Constants.CommandType;
 
 /**
- * This class parses the 'Move' user command, which the user inputs whenever he
- * or she wishes to migrate from one directory to another.
+ * This class parses the 'Use' user command, which the user inputs whenever he
+ * or she wishes to load tasks from another directory.
  *
  * @author Leonard Hio
  *
  */
-public class MoveCommandParser extends AbstractCommandParser {
+public class UseCommandParser extends AbstractCommandParser {
     public static AbstractCommandParser instance;
 
-    private MoveCommandParser() {
+    private UseCommandParser() {
 
     }
 
     public static AbstractCommandParser getInstance() {
         if (instance == null) {
-            return instance = new MoveCommandParser();
+            return instance = new UseCommandParser();
         }
 
         return instance;

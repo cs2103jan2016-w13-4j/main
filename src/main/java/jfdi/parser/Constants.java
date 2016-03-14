@@ -55,7 +55,7 @@ public class Constants {
     public static final String REGEX_YEARS = "((19|20)?\\d\\d)";
     public static final String REGEX_DATE_ATTRIBUTES = "((?i)(day)(s)?|"
             + "(week|wk)(s)?|" + "(month|mth)(s)?|" + "(year|yr))(s)?";
-    public static final String REGEX_TIME_MILITARY = "(?i)[0-2][0-3][.:-]?[0-5][\\d]([h]([r][s]?)?)";
+    public static final String REGEX_TIME_MILITARY = "(?i)([0-1][0-9]|[2][0-4])[.:-]?[0-5][\\d]([h]([r][s]?)?)";
     public static final String REGEX_TIME_NORMAL = "((?i)0?[1-9]|1[0-2])[.-:]?([0-5][0-9])?[ -:]?([a|p][m])";
 
     public static final String REGEX_RELATIVE_DATE_1 = "(?i)(tomorrow|yesterday|today|now)";
@@ -185,7 +185,7 @@ public class Constants {
 
     public static void main(String[] args) {
         System.out.println("lol".trim().split(REGEX_WHITESPACE).length == 1);
-        System.out.println("From now to tomorrow"
+        System.out.println("From 14-02-93 2300h to tomorrow"
                 .matches(REGEX_DATE_TIME_IDENTIFIER));
     }
 }

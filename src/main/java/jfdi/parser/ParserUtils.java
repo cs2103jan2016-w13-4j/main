@@ -42,7 +42,7 @@ public class ParserUtils {
             return CommandType.unalias;
         } else if (input.matches(Constants.REGEX_DIRECTORY)) { // TODO
             return CommandType.directory;
-        } else if (input.matches(Constants.REGEX_MOVE)) { // TODO
+        } else if (input.matches(Constants.REGEX_MOVE)) {
             return CommandType.move;
         } else if (input.matches(Constants.REGEX_USE)) { // TODO
             return CommandType.use;

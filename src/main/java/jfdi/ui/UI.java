@@ -90,7 +90,7 @@ public class UI implements IUserInterface {
 
     @Override
     public int getTaskId(int onScreenId) {
-        return controller.indexMapId.get(onScreenId-1);
+        return controller.indexMapId.get(onScreenId - 1);
     }
 
     @Override

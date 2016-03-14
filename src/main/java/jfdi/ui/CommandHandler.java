@@ -110,7 +110,7 @@ public class CommandHandler {
             if (controller.indexMapId.get(count) == num) {
                 controller.importantList.remove(count);
                 controller.indexMapId.remove(count);
-                controller.relayFb(String.format(CMD_SUCCESS_DELETED, count+1), MsgType.SUCCESS);
+                controller.relayFb(String.format(CMD_SUCCESS_DELETED, count + 1), MsgType.SUCCESS);
             } else {
                 count++;
             }
@@ -121,28 +121,10 @@ public class CommandHandler {
             if (item.getIndex() == count) {
                 count++;
             } else {
-                controller.importantList.get(count-1).setIndex(count);
+                controller.importantList.get(count - 1).setIndex(count);
                 count++;
             }
         }
-
-        //controller.importantList.removeIf(listItem -> deletedIds.contains(task.getId()));
-        /*int upperBd = controller.importantList.size();
-        for (Integer num : deletedIds) {
-            int count = 0;
-            while (count < upperBd) {
-                if (controller.indexMapId.get(count) == num) {
-
-
-                    for (int i = count; i < upperBd; i++) {
-
-                    }
-                    controller.relayFb(String.format(CMD_SUCCESS_DELETED, count+1), MsgType.SUCCESS);
-                } else {
-                    count++;
-                }
-            }
-        }*/
     }
 
     @Subscribe
@@ -170,7 +152,7 @@ public class CommandHandler {
             }
             count++;
         }
-        controller.relayFb(String.format(CMD_SUCCESS_RENAMED, count+1, task.getDescription()), MsgType.SUCCESS);
+        controller.relayFb(String.format(CMD_SUCCESS_RENAMED, count + 1, task.getDescription()), MsgType.SUCCESS);
     }
 
     @Subscribe
@@ -201,7 +183,7 @@ public class CommandHandler {
             }
             count++;
         }
-        controller.relayFb(String.format(CMD_SUCCESS_RESCHEDULED, count+1), MsgType.SUCCESS);
+        controller.relayFb(String.format(CMD_SUCCESS_RESCHEDULED, count + 1), MsgType.SUCCESS);
     }
 
     @Subscribe

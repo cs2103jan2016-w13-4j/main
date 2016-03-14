@@ -141,16 +141,6 @@ public class MainController {
                 return cell;
             }
         });
-
-        /*
-         * importantList.setCellValueFactory(new
-         * Callback<CellDataFeatures<TaskAttributes, String>,
-         * ObservableValue<String>>() {
-         * @Override public ObservableValue<String>
-         * call(CellDataFeatures<TaskAttributes, String> param) { return new
-         * ReadOnlyObjectWrapper<String>(param.getValue().getDescription()); }
-         * });
-         */
     }
 
     private void initStatsArea() {

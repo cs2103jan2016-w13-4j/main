@@ -1,7 +1,6 @@
 package jfdi.ui;
 
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;

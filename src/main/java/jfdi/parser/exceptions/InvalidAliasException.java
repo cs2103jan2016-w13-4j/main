@@ -9,11 +9,11 @@ package jfdi.parser.exceptions;
  *
  */
 @SuppressWarnings("serial")
-public class UsedAliasException extends Exception {
+public class InvalidAliasException extends Exception {
 
     private String alias = null;
 
-    public UsedAliasException(String alias) {
+    public InvalidAliasException(String alias) {
         this.alias = alias;
     }
 

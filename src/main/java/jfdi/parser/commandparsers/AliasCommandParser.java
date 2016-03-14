@@ -7,8 +7,9 @@ import jfdi.logic.commands.AliasCommandStub.Builder;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
 import jfdi.parser.Constants.CommandType;
+import jfdi.parser.ParserUtils;
+import jfdi.parser.exceptions.InvalidAliasException;
 import jfdi.parser.exceptions.InvalidCommandException;
-import jfdi.parser.exceptions.UsedAliasException;
 import jfdi.storage.apis.AliasAttributes;
 
 /**
@@ -22,7 +23,7 @@ import jfdi.storage.apis.AliasAttributes;
  */
 public class AliasCommandParser extends AbstractCommandParser {
     public static AliasCommandParser instance;
-    private static Collection<AliasAttributes> aliasAttributesList = new ArrayList<AliasAttributes>();
+    private Collection<AliasAttributes> aliasAttributesList = new ArrayList<AliasAttributes>();
 
     private AliasCommandParser(Collection<AliasAttributes> aliasAttributesList) {
         this.aliasAttributesList = aliasAttributesList;
@@ -54,7 +55,7 @@ public class AliasCommandParser extends AbstractCommandParser {
 
         try {
             alias = getAlias(input);
-        } catch (UsedAliasException e) {
+        } catch (InvalidAliasException e) {
             return createInvalidCommand(Constants.CommandType.alias, input);
         }
 
@@ -70,16 +71,27 @@ public class AliasCommandParser extends AbstractCommandParser {
 
     private String getCommand(String input) throws InvalidCommandException {
         String secondWord = getSecondWord(input);
-        CommandType commandType = getCommandType(secondWord);
-
+        CommandType commandType = ParserUtils.getCommandType(secondWord);
+        if (commandType == CommandType.invalid) {
+            throw new InvalidCommandException(commandType.toString());
+        }
         return commandType.toString();
     }
 
-    private String getAlias(String input) throws UsedAliasException {
+    /**
+     * This method extracts the alias from the user input.
+     *
+     * @param input
+     *            the user input representing an alias command.
+     * @return the alias.
+     * @throws InvalidAliasException
+     *             if the alias is already in use.
+     */
+    private String getAlias(String input) throws InvalidAliasException {
         String alias = getThirdWord(input);
         for (AliasAttributes att : aliasAttributesList) {
-            if (alias.equals(att)) {
-                throw new UsedAliasException(input);
+            if (alias.equals(att.getAlias())) {
+                throw new InvalidAliasException(input);
             }
         }
         return alias;
@@ -91,46 +103,6 @@ public class AliasCommandParser extends AbstractCommandParser {
 
     private String getThirdWord(String input) {
         return input.split(Constants.REGEX_WHITESPACE)[2];
-    }
-
-    /**
-     * This method returns the CommandType associated with the input String.
-     *
-     * @param input
-     *            a String interpretation of a CommandType.
-     * @return a CommandType enum. If no matches were found, return invalid.
-     */
-    protected static CommandType getCommandType(String input)
-            throws InvalidCommandException {
-        assert input.split(Constants.REGEX_WHITESPACE).length == 1;
-        if (input.matches(Constants.REGEX_ADD)) {
-            return CommandType.add;
-        } else if (input.matches(Constants.REGEX_LIST)) {
-            return CommandType.list;
-        } else if (input.matches(Constants.REGEX_DELETE)) {
-            return CommandType.delete;
-        } else if (input.matches(Constants.REGEX_RENAME)) {
-            return CommandType.rename;
-        } else if (input.matches(Constants.REGEX_RESCHEDULE)) {
-            return CommandType.reschedule;
-        } else if (input.matches(Constants.REGEX_SEARCH)) {
-            return CommandType.search;
-        } else if (input.matches(Constants.REGEX_MARK)) {
-            return CommandType.mark;
-        } else if (input.matches(Constants.REGEX_UNMARK)) {
-            return CommandType.unmark;
-        } else if (input.matches(Constants.REGEX_ALIAS)) {
-            return CommandType.alias;
-        } else if (input.matches(Constants.REGEX_DIRECTORY)) {
-            return CommandType.directory;
-        } else if (input.matches(Constants.REGEX_UNDO)) {
-            return CommandType.undo;
-        } else if (input.matches(Constants.REGEX_HELP)) {
-            return CommandType.help;
-        } else {
-            throw new InvalidCommandException(input);
-        }
-
     }
 
 }

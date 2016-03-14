@@ -29,9 +29,13 @@ public class Constants {
     public static final String REGEX_MARK = "(?i)^(mark)";
     public static final String REGEX_UNMARK = "(?i)^(mark)";
     public static final String REGEX_ALIAS = "(?i)^(alias)";
+    public static final String REGEX_UNALIAS = "(?i)^(unalias)";
     public static final String REGEX_DIRECTORY = "(?i)^(directory)";
+    public static final String REGEX_USE = "(?i)^(use)";
+    public static final String REGEX_MOVE = "(?i)^(move)";
     public static final String REGEX_UNDO = "(?i)^(undo)";
     public static final String REGEX_HELP = "(?i)^(help)";
+    public static final String REGEX_WILDCARD = "(?i)^(surprise[!]*)";
 
     // Task related Regex Strings
     public static final String REGEX_TAGS = "\\+\\w+";
@@ -103,12 +107,32 @@ public class Constants {
 
     // A task can be any one of these task types
     public enum TaskType {
-        floating, deadline, event, point, repeated;
+        floating,
+        deadline,
+        event,
+        point,
+        repeated;
     }
 
     // An enum containing all the commands available to the user
     public enum CommandType {
-        add, delete, rename, reschedule, list, view, invalid, search, mark, unmark, alias, directory, undo, help;
+        add,
+        delete,
+        rename,
+        reschedule,
+        list,
+        search,
+        mark,
+        unmark,
+        alias,
+        unalias,
+        directory,
+        move,
+        use,
+        undo,
+        help,
+        wildcard,
+        invalid;
     }
 
     public static final int INDEX_ACTION = 0;
@@ -160,7 +184,7 @@ public class Constants {
     public static final ZoneId ZONE_ID = ZoneId.systemDefault();
 
     public static void main(String[] args) {
-        assert false;
+        System.out.println("lol".trim().split(REGEX_WHITESPACE).length == 1);
         System.out.println("From now to tomorrow"
                 .matches(REGEX_DATE_TIME_IDENTIFIER));
     }

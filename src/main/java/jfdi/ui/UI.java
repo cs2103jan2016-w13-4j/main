@@ -1,14 +1,15 @@
 package jfdi.ui;
 
-import com.google.common.eventbus.EventBus;
-
 import jfdi.logic.ControlCenter;
 import jfdi.ui.CommandHandler.MsgType;
+
+import com.google.common.eventbus.EventBus;
 
 public class UI implements IUserInterface {
 
     // private static final String UI_MESSAGE_INIT = "Initializing UI...";
-    // private static final String UI_MESSAGE_INITED = "Initialization Completed!";
+    // private static final String UI_MESSAGE_INITED =
+    // "Initialization Completed!";
     private static final String UI_MESSAGE_GREETING = "J.F.D.I. : Hello Jim! Nice to see you again! :)\n";
     private static final String UI_MESSAGE_WELCOME = "J.F.D.I. : What can I do for you?\n";
     private static final String UI_MESSAGE_USERCMD = "You said: %1$s\n";
@@ -90,7 +91,7 @@ public class UI implements IUserInterface {
 
     @Override
     public int getTaskId(int onScreenId) {
-        return controller.indexMapId.get(onScreenId-1);
+        return controller.indexMapId.get(onScreenId - 1);
     }
 
     @Override

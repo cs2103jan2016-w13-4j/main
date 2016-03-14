@@ -142,12 +142,15 @@ public class MainController {
             }
         });
 
-        /*importantList.setCellValueFactory(new Callback<CellDataFeatures<TaskAttributes, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(CellDataFeatures<TaskAttributes, String> param) {
-                return  new ReadOnlyObjectWrapper<String>(param.getValue().getDescription());
-            }
-        });*/
+        /*
+         * importantList.setCellValueFactory(new
+         * Callback<CellDataFeatures<TaskAttributes, String>,
+         * ObservableValue<String>>() {
+         * @Override public ObservableValue<String>
+         * call(CellDataFeatures<TaskAttributes, String> param) { return new
+         * ReadOnlyObjectWrapper<String>(param.getValue().getDescription()); }
+         * });
+         */
     }
 
     private void initStatsArea() {
@@ -208,26 +211,30 @@ public class MainController {
      * Disable the scroll bar when it appears (Edit if necessary)
      */
     private void disableScrollBarCmd() {
-        cmdArea.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (cmdArea.lookup(".scroll-bar") != null) {
-                ScrollBar scrollBarv = (ScrollBar) cmdArea.lookup(".scroll-bar");
-                scrollBarv.setDisable(false);
-                scrollBarv.setId("command-scroll-bar");
-            }
-        });
+        cmdArea.textProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    if (cmdArea.lookup(".scroll-bar") != null) {
+                        ScrollBar scrollBarv = (ScrollBar) cmdArea
+                                .lookup(".scroll-bar");
+                        scrollBarv.setDisable(false);
+                        scrollBarv.setId("command-scroll-bar");
+                    }
+                });
     }
 
     /**
      * Disable the scroll bar when it appears (Edit if necessary)
      */
     private void disableScrollBarFb() {
-        fbArea.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (cmdArea.lookup(".scroll-bar") != null) {
-                ScrollBar scrollBarv = (ScrollBar) cmdArea.lookup(".scroll-bar");
-                scrollBarv.setDisable(false);
-                scrollBarv.setId("command-scroll-bar");
-            }
-        });
+        fbArea.textProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    if (cmdArea.lookup(".scroll-bar") != null) {
+                        ScrollBar scrollBarv = (ScrollBar) cmdArea
+                                .lookup(".scroll-bar");
+                        scrollBarv.setDisable(false);
+                        scrollBarv.setId("command-scroll-bar");
+                    }
+                });
     }
 
     /***************************

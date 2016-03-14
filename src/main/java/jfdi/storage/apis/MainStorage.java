@@ -65,7 +65,7 @@ public class MainStorage implements IStorage {
         }
 
         DatabaseManager.persistAll();
-        load(newStorageFolderPath);
+        load(getDataDirectory(newStorageFolderPath));
         setPreferredDirectory(newStorageFolderPath);
     }
 
@@ -78,9 +78,12 @@ public class MainStorage implements IStorage {
         }
 
         DatabaseManager.persistAll();
-        FileManager.prepareDirectory(newStorageFolderPath);
-        FileManager.moveFilesToDirectory(newStorageFolderPath);
-        DatabaseManager.setAllFilePaths(newStorageFolderPath);
+
+        String newDataDirectory = getDataDirectory(newStorageFolderPath);
+        FileManager.prepareDirectory(newDataDirectory);
+        FileManager.moveFilesToDirectory(newDataDirectory);
+        DatabaseManager.setAllFilePaths(newDataDirectory);
+
         setPreferredDirectory(newStorageFolderPath);
     }
 
@@ -108,6 +111,18 @@ public class MainStorage implements IStorage {
     }
 
     /**
+     * This method returns the path to the data directory within the storage
+     * directory.
+     *
+     * @param storageDirectory
+     *            the folder which should store the user data
+     * @return the path to the data directory within the storage directory
+     */
+    public String getDataDirectory(String storageDirectory) {
+        return Paths.get(storageDirectory, Constants.FILENAME_DATA_DIRECTORY).toString();
+    }
+
+    /**
      * This method returns the storage path that should be used for the initial
      * load. If a preferred directory is found, it is used. Otherwise, we use
      * the default directory.
@@ -115,11 +130,11 @@ public class MainStorage implements IStorage {
      * @return the directory that should be used for the initial load
      */
     private String getInitializationPath() {
-        String preferredDirectory = getPreferredDirectory();
-        if (preferredDirectory != null) {
-            return preferredDirectory;
+        String initDirectory = getPreferredDirectory();
+        if (initDirectory == null) {
+            initDirectory = getDefaultDirectory();
         }
-        return getDefaultDirectory();
+        return getDataDirectory(initDirectory);
     }
 
     /**

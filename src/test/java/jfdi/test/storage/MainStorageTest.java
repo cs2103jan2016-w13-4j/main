@@ -134,7 +134,8 @@ public class MainStorageTest {
     @Test(expected = FilesReplacedException.class)
     public void testLoadInvalidExistingFiles() throws Exception {
         createInvalidDataFiles();
-        mainStorageInstance.load(testDirectoryString);
+        String dataDirectory = mainStorageInstance.getDataDirectory(testDirectoryString);
+        mainStorageInstance.load(dataDirectory);
     }
 
     @Test(expected = IllegalAccessException.class)

@@ -10,9 +10,7 @@ import java.util.HashSet;
 
 import jfdi.storage.Constants;
 import jfdi.storage.FileManager;
-import jfdi.storage.apis.TaskAttributes;
-import jfdi.storage.apis.TaskDb;
-import jfdi.storage.serializer.Serializer;
+import jfdi.storage.apis.MainStorage;
 
 import org.apache.commons.io.FileUtils;
 
@@ -34,6 +32,18 @@ public class TestHelper {
     }
 
     /**
+     * This method returns the path to the data directory within the storage
+     * directory.
+     *
+     * @param storageDirectory
+     *            the folder which should store the user data
+     * @return the path to the data directory within the storage directory
+     */
+    public static String getDataDirectory(String storageDirectory) {
+        return MainStorage.getInstance().getDataDirectory(storageDirectory);
+    }
+
+    /**
      * This method creates a single valid task with the task's description set
      * as the first test task description.
      *
@@ -41,21 +51,9 @@ public class TestHelper {
      *            the directory that holds the program data
      */
     public static void createValidTaskFile(String directoryPath) {
-        try {
-            // Create a task
-            TaskAttributes taskAttributes = new TaskAttributes();
-            taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
-            taskAttributes.save();
-
-            // Get the JSON form of the current state
-            String json = Serializer.serialize(TaskDb.getInstance().getAll());
-
-            // Write the JSON to the task file
-            createTaskFileWith(directoryPath, json);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        String taskJson = "[{\"id\": 1,\"description\": \"" + Constants.TEST_TASK_DESCRIPTION_1
+                + "\",\"tags\": [],\"reminders\": [],\"isCompleted\": false}]";
+        createTaskFileWith(directoryPath, taskJson);
     }
 
     /**
@@ -67,8 +65,9 @@ public class TestHelper {
      * @param data
      *            the content that is to be written inside the task file
      */
-    private static void createTaskFileWith(String directoryPath, String data) {
-        Path dataPath = Paths.get(directoryPath, Constants.PATH_DEFAULT_DIRECTORY, Constants.FILENAME_TASK);
+    public static void createTaskFileWith(String directoryPath, String data) {
+        String dataDirectory = TestHelper.getDataDirectory(directoryPath);
+        Path dataPath = Paths.get(dataDirectory, Constants.FILENAME_TASK);
         FileManager.writeToFile(data, dataPath);
     }
 
@@ -106,8 +105,9 @@ public class TestHelper {
         parentDirectory.mkdirs();
 
         Path dataPath;
+        String dataDirectory = TestHelper.getDataDirectory(directoryPath);
         for (String dataFilename : Constants.FILENAME_DATA_ARRAY) {
-            dataPath = Paths.get(directoryPath, dataFilename);
+            dataPath = Paths.get(dataDirectory, dataFilename);
             FileManager.writeToFile(data, dataPath);
         }
     }

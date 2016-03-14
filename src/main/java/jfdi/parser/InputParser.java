@@ -147,6 +147,9 @@ public class InputParser implements IParser {
             case unalias:
                 return UnaliasCommandParser.getInstance(aliases).build(input);
             case directory:
+                // In this case, we check to see if input is made up of just the
+                // command name. If it is not, parse it as an 'Add' command
+                // instead.
                 return isSingleWord(input) ? UnaliasCommandParser.getInstance(
                         aliases).build(input) : AddCommandParser.getInstance()
                         .build(input);

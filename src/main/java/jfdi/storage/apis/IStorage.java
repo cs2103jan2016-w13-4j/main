@@ -26,7 +26,25 @@ public interface IStorage {
     void initialize() throws FilesReplacedException;
 
     /**
-     * This method can only be executed after load has been executed. It saves
+     * This method can only be executed after storage is initialized. It
+     * attempts to load data from the given directory and if the existing data
+     * is not readable, the files are replaced with blank data files. This new
+     * storage path is then remembered and used during the next program run.
+     *
+     * @param newStorageFolderPath
+     *            the path to the directory that contains the JFDI user data
+     * @throws InvalidPathException
+     *             if the given path is invalid
+     * @throws FilesReplacedException
+     *             if invalid files were replaced in the process
+     * @throws IllegalAccessException
+     *             if the method is called before Storage is initialized
+     */
+    void use(String newStorageFolderPath) throws InvalidPathException, FilesReplacedException,
+            IllegalAccessException;
+
+    /**
+     * This method can only be executed after storage is initialized. It saves
      * and transfers existing data in the current storage folder path into the
      * new storage folder path. The old files are then deleted upon a successful
      * transfer. This new storage path is then stored as the storage path that

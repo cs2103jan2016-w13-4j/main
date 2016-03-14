@@ -57,6 +57,19 @@ public class MainStorage implements IStorage {
     }
 
     @Override
+    public void use(String newStorageFolderPath) throws InvalidPathException, FilesReplacedException,
+            IllegalAccessException {
+
+        if (!isInitialized) {
+            throw new IllegalAccessException(Constants.MESSAGE_UNINITIALIZED_STORAGE);
+        }
+
+        DatabaseManager.persistAll();
+        load(newStorageFolderPath);
+        setPreferredDirectory(newStorageFolderPath);
+    }
+
+    @Override
     public void changeDirectory(String newStorageFolderPath) throws InvalidPathException,
             FilesReplacedException, IllegalAccessException {
 

@@ -58,18 +58,18 @@ public class ListItem {
 
         if (item.getStartDateTime() == null && item.getEndDateTime() == null) {
             // Floating Tasks
-            display = " +   " + index + "   " + item.getDescription();
+            display = " # " + index + " :  " + item.getDescription();
         } else if (item.getStartDateTime() == null && item.getEndDateTime() != null) {
             // Deadline Tasks
-            display = " +   " + index + "   " + item.getDescription() + " by "
+            display = " # " + index + " :  " + item.getDescription() + " by "
                     + item.getEndDateTime();
         } else if (item.getStartDateTime() != null && item.getEndDateTime() == null) {
             // Point Tasks
-            display = " +   " + index + "   " + item.getDescription() + " at "
+            display = " # " + index + " :  " + item.getDescription() + " at "
                     + item.getStartDateTime();
         } else if (item.getStartDateTime() != null && item.getEndDateTime() != null) {
             // Event Tasks
-            display = " +   " + index + "   " + item.getDescription() + " from "
+            display = " # " + index + " :  " + item.getDescription() + " from "
                     + item.getStartDateTime() + " to " + item.getEndDateTime();
         }
 

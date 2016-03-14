@@ -10,7 +10,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class MainSetUp extends Application {
 
@@ -26,7 +25,7 @@ public class MainSetUp extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("JFDI");
 
-        setStageTransparent();
+        //setStageTransparent();
         loadFonts(); // if any
         initRootLayout();
         initView();
@@ -41,9 +40,9 @@ public class MainSetUp extends Application {
      *** LEVEL 1 Abstraction ***
      ***************************/
 
-    private void setStageTransparent() {
+    /*private void setStageTransparent() {
         this.primaryStage.initStyle(StageStyle.TRANSPARENT);
-    }
+    }*/
 
     private void loadFonts() {
         // Implement when team decides to specific font types that needs to be loaded

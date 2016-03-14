@@ -99,7 +99,7 @@ public class MainSetUp extends Application {
                 e.printStackTrace();
             }
         }*/
-        //controller.importantList.removeAll(controller.importantList);
+        controller.importantList.removeAll(controller.importantList);
 
         controller.displayList();
         ui.displayWelcome();

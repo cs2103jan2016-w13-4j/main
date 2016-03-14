@@ -17,4 +17,6 @@ public interface IUserInterface {
     void relayToLogic(String ctrlCmdShowlist);
 
     CommandHandler getCmdHandler();
+
+    int getTaskId(int onScreenId);
 }

@@ -2,18 +2,15 @@ package jfdi.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -31,7 +28,8 @@ public class MainController {
     public IUserInterface ui;
     public CommandHandler cmdHandler;
     public Stage mainStage;
-    public ObservableList<TaskAttributes> importantList;
+    public ObservableList<ListItem> importantList;
+    public ArrayList<Integer> indexMapId = new ArrayList<Integer>();
 
     @FXML
     public TextField dayDisplayer;
@@ -42,11 +40,7 @@ public class MainController {
     @FXML
     public ListView<TaskAttributes> upcomingList;
     @FXML
-    public TableView<TaskAttributes> tableMain;
-    @FXML
-    public TableColumn<TaskAttributes, Integer> idCol;
-    @FXML
-    public TableColumn<TaskAttributes, String> taskCol;
+    public ListView<ListItem> listMain;
     @FXML
     public TextArea fbArea;
     @FXML
@@ -123,24 +117,37 @@ public class MainController {
 
     private void initImportantList() {
 
-        tableMain.setMouseTransparent(true);
-        tableMain.setFocusTraversable(false);
-        importantList = FXCollections.observableArrayList();
-        tableMain.setItems(importantList);
+        listMain.setMouseTransparent(true);
+        listMain.setFocusTraversable(false);
 
-        idCol.setCellValueFactory(new Callback<CellDataFeatures<TaskAttributes, Integer>, ObservableValue<Integer>>() {
+        importantList = FXCollections.observableArrayList();
+        listMain.setItems(importantList);
+
+        listMain.setCellFactory(new Callback<ListView<ListItem>, ListCell<ListItem>>() {
+
             @Override
-            public ObservableValue<Integer> call(CellDataFeatures<TaskAttributes, Integer> param) {
-                return  new ReadOnlyObjectWrapper<Integer>(param.getValue().getId());
+            public ListCell<ListItem> call(ListView<ListItem> param) {
+
+                ListCell<ListItem> cell = new ListCell<ListItem>() {
+                    @Override
+                    protected void updateItem(ListItem item, boolean bln) {
+                        super.updateItem(item, bln);
+                        if (item != null) {
+                            setText(item.toString());
+                        }
+                    }
+                };
+
+                return cell;
             }
         });
 
-        taskCol.setCellValueFactory(new Callback<CellDataFeatures<TaskAttributes, String>, ObservableValue<String>>() {
+        /*importantList.setCellValueFactory(new Callback<CellDataFeatures<TaskAttributes, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(CellDataFeatures<TaskAttributes, String> param) {
                 return  new ReadOnlyObjectWrapper<String>(param.getValue().getDescription());
             }
-        });
+        });*/
     }
 
     private void initStatsArea() {

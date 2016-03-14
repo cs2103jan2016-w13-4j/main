@@ -1,10 +1,10 @@
 package jfdi.ui;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import com.google.common.eventbus.Subscribe;
 
+import edu.emory.mathcs.backport.java.util.Collections;
 import jfdi.logic.events.AddTaskDoneEvent;
 import jfdi.logic.events.AddTaskFailEvent;
 import jfdi.logic.events.DeleteTaskDoneEvent;
@@ -21,8 +21,6 @@ import jfdi.storage.apis.TaskAttributes;
 
 public class CommandHandler {
 
-    //private static final String CMD_ERROR_NONEXIST_TAG = "Supplied tags do not exist in the database!";
-    //private static final String CMD_ERROR_UNKNOWN = "Unknown error occurred.";
     private static final String CMD_ERROR_CANT_ADD_UNKNOWN = "Some stupid error occurred. Cannot add task!";
     private static final String CMD_ERROR_CANT_ADD_EMPTY = "Cannot add an empty task!";
     private static final String CMD_ERROR_CANT_DELETE = "Some stupid error occurred. Cannot delete task!";
@@ -54,16 +52,19 @@ public class CommandHandler {
             System.out.println("logic_prior: " + item.getId() + item.getDescription());
         }
         System.out.println(" ");
-        for (TaskAttributes item : controller.importantList) {
+        for (ListItem item : controller.importantList) {
             System.out.println("ui_prior: " + item.getId() + item.getDescription());
         }*/
 
         controller.importantList.clear();
-        controller.importantList.addAll(e.getItems());
-
+        int count = 1;
+        for (TaskAttributes item : e.getItems()) {
+            ListItem listItem = new ListItem(count, item, false);
+            controller.importantList.add(listItem);
+            controller.indexMapId.add(item.getId());
+            count++;
+        }
         controller.relayFb(CMD_SUCCESS_LISTED, MsgType.SUCCESS);
-
-
     }
 
     @Subscribe
@@ -79,8 +80,11 @@ public class CommandHandler {
     @Subscribe
     public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {
         TaskAttributes task = e.getTask();
-        controller.importantList.add(task);
-        controller.relayFb(String.format(CMD_SUCCESS_ADDED, task.getId(), task.getDescription()), MsgType.SUCCESS);
+        int index = controller.importantList.size() + 1;
+        ListItem listItem = new ListItem(index, task, false);
+        controller.importantList.add(listItem);
+        controller.indexMapId.add(task.getId());
+        controller.relayFb(String.format(CMD_SUCCESS_ADDED, index, task.getDescription()), MsgType.SUCCESS);
     }
 
     @Subscribe
@@ -98,11 +102,47 @@ public class CommandHandler {
 
     @Subscribe
     public void handleDeleteTaskDoneEvent(DeleteTaskDoneEvent e) {
-        HashSet<Integer> deletedIds = new HashSet<Integer>(e.getDeletedIds());
-        controller.importantList.removeIf(task -> deletedIds.contains(task.getId()));
+        ArrayList<Integer> deletedIds = e.getDeletedIds();
+        Collections.sort(deletedIds);
+
+        int count = 0;
         for (Integer num : deletedIds) {
-            controller.relayFb(String.format(CMD_SUCCESS_DELETED, num), MsgType.SUCCESS);
+            if (controller.indexMapId.get(count) == num) {
+                controller.importantList.remove(count);
+                controller.indexMapId.remove(count);
+                controller.relayFb(String.format(CMD_SUCCESS_DELETED, count+1), MsgType.SUCCESS);
+            } else {
+                count++;
+            }
         }
+
+        count = 1;
+        for (ListItem item : controller.importantList) {
+            if (item.getIndex() == count) {
+                count++;
+            } else {
+                controller.importantList.get(count-1).setIndex(count);
+                count++;
+            }
+        }
+
+        //controller.importantList.removeIf(listItem -> deletedIds.contains(task.getId()));
+        /*int upperBd = controller.importantList.size();
+        for (Integer num : deletedIds) {
+            int count = 0;
+            while (count < upperBd) {
+                if (controller.indexMapId.get(count) == num) {
+
+
+                    for (int i = count; i < upperBd; i++) {
+
+                    }
+                    controller.relayFb(String.format(CMD_SUCCESS_DELETED, count+1), MsgType.SUCCESS);
+                } else {
+                    count++;
+                }
+            }
+        }*/
     }
 
     @Subscribe
@@ -112,6 +152,7 @@ public class CommandHandler {
                 controller.relayFb(CMD_ERROR_CANT_DELETE, MsgType.ERROR);
                 break;
             case NON_EXISTENT_ID:
+                //NEED TO CHANGE TO INDEX SOON????
                 controller.relayFb(CMD_ERROR_CANT_DELETE, MsgType.ERROR);
                 break;
             default: break;
@@ -121,17 +162,15 @@ public class CommandHandler {
     @Subscribe
     public void handleRenameTaskDoneEvent(RenameTaskDoneEvent e) {
         TaskAttributes task = e.getTask();
-        ArrayList<TaskAttributes> tempList = new ArrayList<TaskAttributes>();
-        for (TaskAttributes item : controller.importantList) {
-            if (item.getId() == task.getId()) {
-                tempList.add(task);
-            } else {
-                tempList.add(item);
+        int count = 0;
+        for (Integer id : controller.indexMapId) {
+            if (id == task.getId()) {
+                controller.importantList.get(count).setTask(task);
+                break;
             }
+            count++;
         }
-        controller.importantList.clear();
-        controller.importantList.addAll(tempList);
-        controller.relayFb(String.format(CMD_SUCCESS_RENAMED, task.getId(), task.getDescription()), MsgType.SUCCESS);
+        controller.relayFb(String.format(CMD_SUCCESS_RENAMED, count+1, task.getDescription()), MsgType.SUCCESS);
     }
 
     @Subscribe
@@ -141,6 +180,7 @@ public class CommandHandler {
                 controller.relayFb(CMD_ERROR_CANT_RENAME_UNKNOWN, MsgType.ERROR);
                 break;
             case NON_EXISTENT_ID:
+                //NEED TO CHANGE TO INDEX SOON????
                 controller.relayFb(String.format(CMD_ERROR_CANT_RENAME_NO_ID, e.getTaskId()), MsgType.ERROR);
                 break;
             case NO_CHANGES:
@@ -152,7 +192,16 @@ public class CommandHandler {
 
     @Subscribe
     public void handleRescheduleTaskDoneEvent(RescheduleTaskDoneEvent e) {
-        controller.relayFb(String.format(CMD_SUCCESS_RESCHEDULED, e.getTaskId()), MsgType.SUCCESS);
+        int count = 0;
+        for (Integer id : controller.indexMapId) {
+            if (id == e.getTaskId()) {
+                controller.importantList.get(count).getItem().setStartDateTime(e.getStartDateTime());
+                controller.importantList.get(count).getItem().setEndDateTime(e.getEndDateTime());
+                break;
+            }
+            count++;
+        }
+        controller.relayFb(String.format(CMD_SUCCESS_RESCHEDULED, count+1), MsgType.SUCCESS);
     }
 
     @Subscribe
@@ -162,6 +211,7 @@ public class CommandHandler {
                 controller.relayFb(CMD_ERROR_CANT_RESCHEDULE_UNKNOWN, MsgType.ERROR);
                 break;
             case NON_EXISTENT_ID:
+                //NEED TO CHANGE TO INDEX SOON????
                 controller.relayFb(String.format(CMD_ERROR_CANT_RESCHEDULE_NO_ID, e.getTaskId()), MsgType.ERROR);
                 break;
             case NO_CHANGES:

@@ -4,7 +4,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,7 +17,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import jfdi.common.utilities.JfdiLogger;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.ui.Constants.MsgType;
 
@@ -49,9 +47,6 @@ public class MainController {
     public TextArea fbArea;
     @FXML
     public TextArea cmdArea;
-
-    // Logger for events
-    private Logger logger = JfdiLogger.getLogger();
 
     public void initialize() {
 
@@ -114,10 +109,10 @@ public class MainController {
 
     private void intSplitPanes() {
         leftRightSplit.lookupAll(".split-pane-divider").stream()
-        .forEach(div ->  div.setMouseTransparent(true) );
+        .forEach(div ->  div.setMouseTransparent(true));
 
         upDownSplit.lookupAll(".split-pane-divider").stream()
-        .forEach(div ->  div.setMouseTransparent(true) );
+        .forEach(div ->  div.setMouseTransparent(true));
     }
 
     public void initDate() {
@@ -137,25 +132,24 @@ public class MainController {
         importantList = FXCollections.observableArrayList();
         listMain.setItems(importantList);
 
-        listMain
-            .setCellFactory(new Callback<ListView<ListItem>, ListCell<ListItem>>() {
+        listMain.setCellFactory(
+                new Callback<ListView<ListItem>, ListCell<ListItem>>() {
+                    @Override
+                    public ListCell<ListItem> call(ListView<ListItem> param) {
 
-                @Override
-                public ListCell<ListItem> call(ListView<ListItem> param) {
-
-                    ListCell<ListItem> cell = new ListCell<ListItem>() {
-                        @Override
-                        protected void updateItem(ListItem item, boolean bln) {
-                            super.updateItem(item, bln);
-                            if (item != null) {
-                                setText(item.toString());
+                        ListCell<ListItem> cell = new ListCell<ListItem>() {
+                            @Override
+                            protected void updateItem(ListItem item, boolean bln) {
+                                super.updateItem(item, bln);
+                                if (item != null) {
+                                    setText(item.toString());
+                                }
                             }
-                        }
-                    };
+                        };
 
-                    return cell;
-                }
-            });
+                        return cell;
+                    }
+                });
     }
 
     private void initStatsArea() {
@@ -203,11 +197,11 @@ public class MainController {
                 keyEvent.consume();
             }
 
-        /*
-         * Not needed yet! // Tab event is sent to UI whenever tab is hit if
-         * (code == KeyCode.TAB) { ui.passKeyEvent(code); // consume the tab
-         * space left in the command area keyEvent.consume(); }
-         */
+            /*
+             * Not needed yet! // Tab event is sent to UI whenever tab is hit if
+             * (code == KeyCode.TAB) { ui.passKeyEvent(code); // consume the tab
+             * space left in the command area keyEvent.consume(); }
+             */
         });
 
     }
@@ -217,14 +211,14 @@ public class MainController {
      */
     private void disableScrollBarCmd() {
         cmdArea.textProperty().addListener(
-            (observable, oldValue, newValue) -> {
-                if (cmdArea.lookup(".scroll-bar") != null) {
-                    ScrollBar scrollBarv = (ScrollBar) cmdArea
-                        .lookup(".scroll-bar");
-                    scrollBarv.setDisable(false);
-                    scrollBarv.setId("command-scroll-bar");
-                }
-            });
+                (observable, oldValue, newValue) -> {
+                    if (cmdArea.lookup(".scroll-bar") != null) {
+                        ScrollBar scrollBarv = (ScrollBar) cmdArea
+                                .lookup(".scroll-bar");
+                        scrollBarv.setDisable(false);
+                        scrollBarv.setId("command-scroll-bar");
+                    }
+                });
     }
 
     /**
@@ -232,14 +226,14 @@ public class MainController {
      */
     private void disableScrollBarFb() {
         fbArea.textProperty().addListener(
-            (observable, oldValue, newValue) -> {
-                if (cmdArea.lookup(".scroll-bar") != null) {
-                    ScrollBar scrollBarv = (ScrollBar) cmdArea
-                        .lookup(".scroll-bar");
-                    scrollBarv.setDisable(false);
-                    scrollBarv.setId("command-scroll-bar");
-                }
-            });
+                (observable, oldValue, newValue) -> {
+                    if (cmdArea.lookup(".scroll-bar") != null) {
+                        ScrollBar scrollBarv = (ScrollBar) cmdArea
+                                .lookup(".scroll-bar");
+                        scrollBarv.setDisable(false);
+                        scrollBarv.setId("command-scroll-bar");
+                    }
+                });
     }
 
     /***************************

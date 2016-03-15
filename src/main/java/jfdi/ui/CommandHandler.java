@@ -132,7 +132,8 @@ public class CommandHandler {
             }
             count++;
         }
-        controller.relayFb(String.format(Constants.CMD_SUCCESS_RENAMED, count + 1, task.getDescription()), MsgType.SUCCESS);
+        controller.relayFb(String.format(
+                Constants.CMD_SUCCESS_RENAMED, count + 1, task.getDescription()), MsgType.SUCCESS);
     }
 
     @Subscribe
@@ -146,7 +147,8 @@ public class CommandHandler {
                 controller.relayFb(String.format(Constants.CMD_ERROR_CANT_RENAME_NO_ID, e.getTaskId()), MsgType.ERROR);
                 break;
             case NO_CHANGES:
-                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_RENAME_NO_CHANGES, e.getDescription()), MsgType.ERROR);
+                controller.relayFb(String.format(
+                        Constants.CMD_ERROR_CANT_RENAME_NO_CHANGES, e.getDescription()), MsgType.ERROR);
                 break;
             default:
                 break;
@@ -177,7 +179,8 @@ public class CommandHandler {
                 break;
             case NON_EXISTENT_ID:
                 //NEED TO CHANGE TO INDEX SOON????
-                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_RESCHEDULE_NO_ID, e.getTaskId()), MsgType.ERROR);
+                controller.relayFb(String.format(
+                        Constants.CMD_ERROR_CANT_RESCHEDULE_NO_ID, e.getTaskId()), MsgType.ERROR);
                 break;
             case NO_CHANGES:
                 controller.relayFb(

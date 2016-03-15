@@ -18,7 +18,7 @@ public class Constants {
     public static final String CTRL_CMD_PROMPT_TEXT = "(Hey Jim! Please let me know what I can do for you!)";
     public static final String CTRL_CMD_SHOWLIST = "list";
 
-    public static enum MsgType {
+    public enum MsgType {
         SUCCESS, WARNING, ERROR, EXIT
     }
 

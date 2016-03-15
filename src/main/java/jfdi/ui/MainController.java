@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -31,6 +32,10 @@ public class MainController {
     public ArrayList<Integer> indexMapId = new ArrayList<Integer>();
 
     @FXML
+    public SplitPane leftRightSplit;
+    @FXML
+    public SplitPane upDownSplit;
+    @FXML
     public TextField dayDisplayer;
     @FXML
     public TextArea statsDisplayer;
@@ -44,18 +49,13 @@ public class MainController {
     public TextArea fbArea;
     @FXML
     public TextArea cmdArea;
-    @FXML
-    private TextField txtAddItem;
 
     // Logger for events
-    private Logger logger = null;
-
-    private MainController() {
-        logger = JfdiLogger.getLogger();
-    }
+    private Logger logger = JfdiLogger.getLogger();
 
     public void initialize() {
 
+        intSplitPanes();
         initDate();
         initImportantList();
         initStatsArea();
@@ -111,6 +111,14 @@ public class MainController {
     /***************************
      *** LEVEL 1 Abstraction ***
      ***************************/
+
+    private void intSplitPanes() {
+        leftRightSplit.lookupAll(".split-pane-divider").stream()
+        .forEach(div ->  div.setMouseTransparent(true) );
+
+        upDownSplit.lookupAll(".split-pane-divider").stream()
+        .forEach(div ->  div.setMouseTransparent(true) );
+    }
 
     public void initDate() {
 

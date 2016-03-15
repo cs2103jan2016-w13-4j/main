@@ -4,7 +4,7 @@ public class Constants {
 
     public static final String UI_MESSAGE_INIT = "Initializing UI...";
     public static final String UI_MESSAGE_INITED = "Initialization Completed!";
-    public static final String UI_MESSAGE_GREETING = "J.F.D.I. : Hello Jim! Nice to see you again! :)\n";
+    public static final String UI_MESSAGE_GREETING = "\n\nJ.F.D.I. : Hello Jim! Nice to see you again! :)\n";
     public static final String UI_MESSAGE_WELCOME = "J.F.D.I. : What can I do for you?\n";
     public static final String UI_MESSAGE_USERCMD = "You said: %1$s\n";
     public static final String UI_MESSAGE_RESPONSE = "J.F.D.I. : %1$s\n";

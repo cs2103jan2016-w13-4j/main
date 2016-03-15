@@ -2,8 +2,8 @@ package jfdi.parser.commandparsers;
 
 import java.util.ArrayList;
 
-import jfdi.logic.commands.UnmarkTaskCommandStub;
-import jfdi.logic.commands.UnmarkTaskCommandStub.Builder;
+import jfdi.logic.commands.UnmarkTaskCommand;
+import jfdi.logic.commands.UnmarkTaskCommand.Builder;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants.CommandType;
 import jfdi.parser.exceptions.NoTaskIdFoundException;
@@ -53,9 +53,8 @@ public class UnmarkCommandParser extends AbstractCommandParser {
         } catch (NoTaskIdFoundException e) {
             return createInvalidCommand(CommandType.unmark, input);
         }
-        unmarkTaskCommandBuilder.addIds(taskIds);
-        UnmarkTaskCommandStub unmarkTaskCommand = unmarkTaskCommandBuilder
-                .build();
+        unmarkTaskCommandBuilder.addTaskIds(taskIds);
+        UnmarkTaskCommand unmarkTaskCommand = unmarkTaskCommandBuilder.build();
         return unmarkTaskCommand;
     }
 

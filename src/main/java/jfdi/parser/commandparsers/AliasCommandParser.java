@@ -3,7 +3,7 @@ package jfdi.parser.commandparsers;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import jfdi.logic.commands.AliasCommandStub.Builder;
+import jfdi.logic.commands.AliasCommand.Builder;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
 import jfdi.parser.Constants.CommandType;
@@ -30,7 +30,7 @@ public class AliasCommandParser extends AbstractCommandParser {
     }
 
     public static AliasCommandParser getInstance(
-            Collection<AliasAttributes> aliasAttributesList) {
+        Collection<AliasAttributes> aliasAttributesList) {
         if (instance == null) {
             return instance = new AliasCommandParser(aliasAttributesList);
         }

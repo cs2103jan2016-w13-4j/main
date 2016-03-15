@@ -47,7 +47,7 @@ public class UseCommandParser extends AbstractCommandParser {
 
     private boolean isValidInput(String input) {
         return input != null && !input.isEmpty()
-                && input.trim().split(Constants.REGEX_WHITESPACE).length == 2;
+            && input.trim().split(Constants.REGEX_WHITESPACE).length == 2;
     }
 
     private String getDirectoryName(String input) {

@@ -3,7 +3,7 @@ package jfdi.parser.commandparsers;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import jfdi.logic.commands.UnaliasCommandStub.Builder;
+import jfdi.logic.commands.UnaliasCommand.Builder;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
 import jfdi.parser.exceptions.InvalidAliasException;
@@ -27,7 +27,7 @@ public class UnaliasCommandParser extends AbstractCommandParser {
     }
 
     public static UnaliasCommandParser getInstance(
-            Collection<AliasAttributes> aliasAttributesList) {
+        Collection<AliasAttributes> aliasAttributesList) {
         if (instance == null) {
             return instance = new UnaliasCommandParser(aliasAttributesList);
         }
@@ -66,7 +66,7 @@ public class UnaliasCommandParser extends AbstractCommandParser {
     private boolean isValidFormat(String input) {
         String[] inputAsArray = input.split(Constants.REGEX_WHITESPACE);
         return inputAsArray.length == 2
-                && inputAsArray[0].equals(Constants.REGEX_UNALIAS);
+            && inputAsArray[0].equals(Constants.REGEX_UNALIAS);
     }
 
     /**

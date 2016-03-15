@@ -23,12 +23,16 @@ public class Constants {
     public static final String FILENAME_ALIAS = "aliases.txt";
     public static final String[] FILENAME_DATA_ARRAY = {Constants.FILENAME_TASK, Constants.FILENAME_ALIAS};
 
-    // Filename storing last used directory
+    // Last used directory filenames and paths
     public static final String FILENAME_DIRECTORY = "directory.txt";
     public static final String FILENAME_DATA_DIRECTORY = ".jfdi_user_data";
     public static final String PATH_DEFAULT_DIRECTORY = ".";
     public static final Path PATH_PREFERENCE_FILE = Paths.get(PATH_DEFAULT_DIRECTORY,
             FILENAME_DATA_DIRECTORY, FILENAME_DIRECTORY);
+
+    // Logging filename and path
+    public static final String FILENAME_LOG = "log.txt";
+    public static final Path PATH_LOG_FILE = Paths.get(PATH_DEFAULT_DIRECTORY, FILENAME_LOG);
 
     // File extensions
     public static final String EXTENSION_BACKUP = ".bak";
@@ -41,6 +45,12 @@ public class Constants {
     public static final String MESSAGE_INVALID_PATH = "The directory %s cannot be used to store the program data.";
     public static final String MESSAGE_MISSING_DESCRIPTION = "This task is missing a description.";
     public static final String MESSAGE_UNINITIALIZED_STORAGE = "Storage needs to be initialized first.";
+
+    // Logging messages
+    public static final String MESSAGE_LOG_CREATE_TASK = "A new task with ID %d was created.";
+    public static final String MESSAGE_LOG_UPDATE_TASK = "Task #%d was updated.";
+    public static final String MESSAGE_LOG_DELETE_TASK = "Task #%d was deleted.";
+    public static final String MESSAGE_LOG_RECOVER_TASK = "Task #%d was recovered.";
 
     // Default charset
     public static final String CHARSET = "UTF-8";

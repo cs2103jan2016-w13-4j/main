@@ -7,7 +7,9 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeMap;
+import java.util.logging.Logger;
 
+import jfdi.common.utilities.JfdiLogger;
 import jfdi.storage.Constants;
 import jfdi.storage.FileManager;
 import jfdi.storage.IDatabase;
@@ -34,11 +36,15 @@ public class TaskDb implements IDatabase {
     // The file path to the data file
     private Path filePath = null;
 
+    // Logger for events
+    private Logger logger = null;
+
     /**
      * This private constructor prevents more instances of TaskDb from being
      * created.
      */
     private TaskDb() {
+        logger = JfdiLogger.getLogger();
         resetProgramStorage();
     }
 
@@ -90,6 +96,8 @@ public class TaskDb implements IDatabase {
         taskAttributes.setId(task.getId());
         taskList.put(task.getId(), task);
         persist();
+
+        logger.fine(String.format(Constants.MESSAGE_LOG_CREATE_TASK, task.getId()));
     }
 
     /**
@@ -111,6 +119,8 @@ public class TaskDb implements IDatabase {
         validateAttributesHasChanged(taskAttributes, task);
         task.update(taskAttributes);
         persist();
+
+        logger.fine(String.format(Constants.MESSAGE_LOG_UPDATE_TASK, task.getId()));
     }
 
     /**
@@ -254,6 +264,8 @@ public class TaskDb implements IDatabase {
         assert task != null;
         softDelete(id);
         persist();
+
+        logger.fine(String.format(Constants.MESSAGE_LOG_DELETE_TASK, id));
     }
 
     /**
@@ -282,6 +294,8 @@ public class TaskDb implements IDatabase {
         }
         undelete(id);
         persist();
+
+        logger.fine(String.format(Constants.MESSAGE_LOG_RECOVER_TASK, id));
     }
 
     /**

@@ -7,7 +7,8 @@ import jfdi.parser.Constants.CommandType;
 
 /**
  * This class parses the 'Use' user command, which the user inputs whenever he
- * or she wishes to load tasks from another directory.
+ * or she wishes to load tasks from another directory. The user input should
+ * follow the format: {Use command} {Directory}
  *
  * @author Leonard Hio
  *
@@ -28,7 +29,7 @@ public class UseCommandParser extends AbstractCommandParser {
     }
 
     /**
-     * This method builds a MoveCommand from the given input.
+     * This method builds a UseCommand from the given input.
      */
     @Override
     public Command build(String input) {

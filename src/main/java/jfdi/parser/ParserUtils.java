@@ -44,7 +44,7 @@ public class ParserUtils {
             return CommandType.directory;
         } else if (input.matches(Constants.REGEX_MOVE)) {
             return CommandType.move;
-        } else if (input.matches(Constants.REGEX_USE)) { // TODO
+        } else if (input.matches(Constants.REGEX_USE)) {
             return CommandType.use;
         } else if (input.matches(Constants.REGEX_UNDO)) { // TODO
             return CommandType.undo;

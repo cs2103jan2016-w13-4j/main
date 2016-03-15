@@ -88,7 +88,7 @@ public class DateTimeParserTest {
         Assert.assertEquals(year, res.getEndDateTime().getYear());
         Assert.assertEquals(hour, res.getEndDateTime().getHour());
 
-        dateTimeInput = "by 1 year from now 11.00pm";
+        dateTimeInput = "by 1 year from now, 2300h";
         res = null;
         try {
             res = parser.parseDateTime(dateTimeInput);

@@ -19,7 +19,6 @@ import jfdi.logic.events.RescheduleTaskFailEvent;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.ui.Constants.MsgType;
 
-
 public class CommandHandler {
 
     private MainController controller;
@@ -27,13 +26,13 @@ public class CommandHandler {
     @Subscribe
     public void handleListDoneEvent(ListDoneEvent e) {
 
-        /*for (TaskAttributes item : e.getItems()) {
-            System.out.println("logic_prior: " + item.getId() + item.getDescription());
-        }
-        System.out.println(" ");
-        for (ListItem item : controller.importantList) {
-            System.out.println("ui_prior: " + item.getId() + item.getDescription());
-        }*/
+        /*
+         * for (TaskAttributes item : e.getItems()) {
+         * System.out.println("logic_prior: " + item.getId() +
+         * item.getDescription()); } System.out.println(" "); for (ListItem item
+         * : controller.importantList) { System.out.println("ui_prior: " +
+         * item.getId() + item.getDescription()); }
+         */
 
         controller.importantList.clear();
         int count = 1;
@@ -75,7 +74,8 @@ public class CommandHandler {
             case EMPTY_DESCRIPTION:
                 controller.relayFb(Constants.CMD_ERROR_CANT_ADD_EMPTY, MsgType.ERROR);
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 
@@ -116,7 +116,8 @@ public class CommandHandler {
                 //NEED TO CHANGE TO INDEX SOON????
                 controller.relayFb(Constants.CMD_ERROR_CANT_DELETE, MsgType.ERROR);
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 
@@ -147,7 +148,8 @@ public class CommandHandler {
             case NO_CHANGES:
                 controller.relayFb(String.format(Constants.CMD_ERROR_CANT_RENAME_NO_CHANGES, e.getDescription()), MsgType.ERROR);
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 
@@ -156,8 +158,10 @@ public class CommandHandler {
         int count = 0;
         for (Integer id : controller.indexMapId) {
             if (id == e.getTaskId()) {
-                controller.importantList.get(count).getItem().setStartDateTime(e.getStartDateTime());
-                controller.importantList.get(count).getItem().setEndDateTime(e.getEndDateTime());
+                controller.importantList.get(count).getItem()
+                .setStartDateTime(e.getStartDateTime());
+                controller.importantList.get(count).getItem()
+                .setEndDateTime(e.getEndDateTime());
                 break;
             }
             count++;
@@ -180,7 +184,8 @@ public class CommandHandler {
                         Constants.CMD_ERROR_CANT_RESCHEDULE_NO_CHANGES + e.getStartDateTime() + " - to - "
                                 + e.getEndDateTime() + " -!", MsgType.ERROR);
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 

@@ -123,6 +123,9 @@ gradle-app.setting
 ###################################################
 .jfdi_user_data/
 
+# Log file
+log.txt
+
 *.class
 
 # Mobile Tools for Java (J2ME)

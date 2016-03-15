@@ -40,8 +40,27 @@ public class Constants {
 
     public static final String CMD_WARNING_DONTKNOW = "Sorry, I do not understand what you mean by \"%s\" :(";
 
-    public static final String LOG_SET_DIRECTORY = "Storage directory has been set to '%s'.";
-    public static final String LOG_CREATE_TASK = "A new task with ID %d was created.";
-    public static final String LOG_UPDATE_TASK = "Task #%d was updated.";
-    public static final String LOG_DELETE_TASK = "Task #%d was deleted.";
+    public static final String LOG_FXML_PATH = "Loaded %s from %s'.";
+    public static final String LOG_SUCCESS_LISTED = "List requested.";
+    public static final String LOG_USER_EXIT = "Exited from JFDI.";
+    public static final String LOG_INVALID_COMMAND = "Invalid command detected.";
+    public static final String LOG_ADDED_SUCCESS = "Displayed successful add event for task #%d.";
+    public static final String LOG_ADD_FAIL_UNKNOWN = "Unknown error detected for adding.";
+    public static final String LOG_ADD_FAIL_EMPTY = "An task failed to add due to empty description.";
+    public static final String LOG_DELETED_SUCCESS = "Displayed successful delete event for task #%d.";
+    public static final String LOG_UI_LIST = "The current list of task to be displayed is : ";
+    public static final String LOG_LOGIC_LIST = "The list of task received from Logic is : ";
+    public static final String LOG_IDINDEX_LIST = "The current mapping of On-screen ID and Storage ID is : ";
+    public static final String LOG_DELETE_FAIL_UNKNOWN = "Unknown error detected for deleting.";
+    public static final String LOG_DELETE_FAIL_NOID = "An non-existent ID was queried for delete.";
+    public static final String LOG_RENAMED_SUCCESS = "Displayed successful rename event for task #%d.";
+    public static final String LOG_RENAME_FAIL_UNKNOWN = "Unknown error detected for renaming.";
+    public static final String LOG_RENAME_FAIL_NOID = "An non-existent ID was queried for rename.";
+    public static final String LOG_RENAME_FAIL_NOCHANGE = "A renaming with no change was queried.";
+    public static final String LOG_RESCHED_SUCCESS = "Displayed successful reschedule event for task #%d.";
+    public static final String LOG_RESCHE_FAIL_UNKNOWN = "Unknown error detected for reschduling.";
+    public static final String LOG_RESCHE_FAIL_NOID = "An non-existent ID was queried for reschedule.";
+    public static final String LOG_RESCHE_FAIL_NOCHANGE = "A rescheduling with no change was queried.";
+
+
 }

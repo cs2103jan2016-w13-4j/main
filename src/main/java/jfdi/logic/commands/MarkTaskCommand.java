@@ -1,5 +1,6 @@
 package jfdi.logic.commands;
 
+import jfdi.common.utilities.JfdiLogger;
 import jfdi.logic.events.MarkTaskDoneEvent;
 import jfdi.logic.events.MarkTaskFailEvent;
 import jfdi.logic.interfaces.Command;
@@ -10,12 +11,15 @@ import jfdi.storage.exceptions.NoAttributesChangedException;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
  * @author Liu Xinan
  */
 public class MarkTaskCommand extends Command {
+
+    private static final Logger logger = JfdiLogger.getLogger();
 
     private ArrayList<Integer> taskIds;
 
@@ -55,10 +59,10 @@ public class MarkTaskCommand extends Command {
             ArrayList<TaskAttributes> markedTasks = new ArrayList<>();
             taskIds.stream().forEach(id -> {
                 try {
-                    taskdb.markAsComplete(id);
                     markedTasks.add(taskdb.getById(id));
+                    taskdb.markAsComplete(id);
                 } catch (NoAttributesChangedException e) {
-                    // Ignore
+                    logger.warning("Task " + id + " is already completed.");
                 } catch (InvalidIdException e) {
                     // Should not happen!
                     e.printStackTrace();

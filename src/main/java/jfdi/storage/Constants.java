@@ -47,6 +47,7 @@ public class Constants {
     public static final String MESSAGE_UNINITIALIZED_STORAGE = "Storage needs to be initialized first.";
 
     // Logging messages
+    public static final String MESSAGE_LOG_SET_DIRECTORY = "Storage directory has been set to '%s'.";
     public static final String MESSAGE_LOG_CREATE_TASK = "A new task with ID %d was created.";
     public static final String MESSAGE_LOG_UPDATE_TASK = "Task #%d was updated.";
     public static final String MESSAGE_LOG_DELETE_TASK = "Task #%d was deleted.";

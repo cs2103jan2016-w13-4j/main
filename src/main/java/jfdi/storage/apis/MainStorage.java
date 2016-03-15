@@ -4,7 +4,9 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.logging.Logger;
 
+import jfdi.common.utilities.JfdiLogger;
 import jfdi.storage.Constants;
 import jfdi.storage.DatabaseManager;
 import jfdi.storage.FileManager;
@@ -26,12 +28,16 @@ public class MainStorage implements IStorage {
     // Path to the current storage directory
     private String currentDirectory = null;
 
+    // Logger for events
+    private Logger logger = null;
+
     /**
      * This private constructor prevents itself from being called by other
      * components. An instance of FileStorage should be initialized using the
      * getInstance method.
      */
     private MainStorage() {
+        logger = JfdiLogger.getLogger();
     }
 
     /**
@@ -107,7 +113,9 @@ public class MainStorage implements IStorage {
      * @param currentDirectory the currentDirectory to set
      */
     private void setCurrentDirectory(String currentDirectory) {
-        this.currentDirectory = currentDirectory;
+        Path absolutePath = Paths.get(currentDirectory).toAbsolutePath();
+        this.currentDirectory = absolutePath.toString();
+        logger.fine(String.format(Constants.MESSAGE_LOG_SET_DIRECTORY, absolutePath));
     }
 
     /**

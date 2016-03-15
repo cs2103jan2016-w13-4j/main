@@ -1,7 +1,7 @@
 package jfdi.logic.events;
 
-import jfdi.storage.apis.TaskAttributes;
 import jfdi.logic.commands.ListCommand.ListType;
+import jfdi.storage.apis.TaskAttributes;
 
 import java.util.ArrayList;
 

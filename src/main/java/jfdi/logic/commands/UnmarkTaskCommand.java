@@ -1,7 +1,7 @@
 package jfdi.logic.commands;
 
-import jfdi.logic.events.MarkTaskDoneEvent;
-import jfdi.logic.events.MarkTaskFailEvent;
+import jfdi.logic.events.UnmarkTaskDoneEvent;
+import jfdi.logic.events.UnmarkTaskFailEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 /**
  * @author Liu Xinan
  */
-public class MarkTaskCommand extends Command {
+public class UnmarkTaskCommand extends Command {
 
     private ArrayList<Integer> taskIds;
 
-    private MarkTaskCommand(Builder builder) {
+    private UnmarkTaskCommand(Builder builder) {
         this.taskIds = builder.taskIds;
     }
 
@@ -37,8 +37,8 @@ public class MarkTaskCommand extends Command {
             return this;
         }
 
-        public MarkTaskCommand build() {
-            return new MarkTaskCommand(this);
+        public UnmarkTaskCommand build() {
+            return new UnmarkTaskCommand(this);
         }
 
     }
@@ -52,11 +52,11 @@ public class MarkTaskCommand extends Command {
             .collect(Collectors.toCollection(ArrayList::new));
 
         if (invalidIds.isEmpty()) {
-            ArrayList<TaskAttributes> markedTasks = new ArrayList<>();
+            ArrayList<TaskAttributes> unmarkedTasks = new ArrayList<>();
             taskIds.stream().forEach(id -> {
                 try {
-                    taskdb.markAsComplete(id);
-                    markedTasks.add(taskdb.getById(id));
+                    taskdb.markAsIncomplete(id);
+                    unmarkedTasks.add(taskdb.getById(id));
                 } catch (NoAttributesChangedException e) {
                     // Ignore
                 } catch (InvalidIdException e) {
@@ -64,9 +64,9 @@ public class MarkTaskCommand extends Command {
                     e.printStackTrace();
                 }
             });
-            eventBus.post(new MarkTaskDoneEvent(taskIds, markedTasks));
+            eventBus.post(new UnmarkTaskDoneEvent(taskIds, unmarkedTasks));
         } else {
-            eventBus.post(new MarkTaskFailEvent(taskIds, invalidIds));
+            eventBus.post(new UnmarkTaskFailEvent(taskIds, invalidIds));
         }
     }
 }

@@ -122,9 +122,7 @@ gradle-app.setting
 ## Project.gitignore
 ###################################################
 .jfdi_user_data/
-
-# Log file
-log.txt*
+.jfdi_logs/
 
 *.class
 

@@ -1,22 +1,11 @@
 package jfdi.ui;
 
-import jfdi.logic.ControlCenter;
-import jfdi.ui.CommandHandler.MsgType;
-
 import com.google.common.eventbus.EventBus;
 
-public class UI implements IUserInterface {
+import jfdi.logic.ControlCenter;
+import jfdi.ui.Constants.MsgType;
 
-    // private static final String UI_MESSAGE_INIT = "Initializing UI...";
-    // private static final String UI_MESSAGE_INITED =
-    // "Initialization Completed!";
-    private static final String UI_MESSAGE_GREETING = "J.F.D.I. : Hello Jim! Nice to see you again! :)\n";
-    private static final String UI_MESSAGE_WELCOME = "J.F.D.I. : What can I do for you?\n";
-    private static final String UI_MESSAGE_USERCMD = "You said: %1$s\n";
-    private static final String UI_MESSAGE_RESPONSE = "J.F.D.I. : %1$s\n";
-    private static final String UI_MESSAGE_WARNING = "Warning: %1$s\n";
-    private static final String UI_MESSAGE_ERROR = "Error: %1$s\n";
-    private static final String UI_MESSAGE_QUIT = "Bye Bye! See you next time! :)\n";
+public class UI implements IUserInterface {
 
     private static EventBus eventBus = new EventBus();
     private CommandHandler cmdHandler = new CommandHandler();
@@ -42,8 +31,8 @@ public class UI implements IUserInterface {
     @Override
     public void displayWelcome() {
         controller.clearFb();
-        showToUser(UI_MESSAGE_GREETING);
-        showToUser(UI_MESSAGE_WELCOME);
+        showToUser(Constants.UI_MESSAGE_GREETING);
+        showToUser(Constants.UI_MESSAGE_WELCOME);
     }
 
     @Override
@@ -58,7 +47,7 @@ public class UI implements IUserInterface {
         controller.clearFb();
 
         // Show user what the command recognized in the feedback area
-        controller.displayFb(String.format(UI_MESSAGE_USERCMD, input));
+        controller.displayFb(String.format(Constants.UI_MESSAGE_USERCMD, input));
 
         // Relay user input to logic and wait for reply
         relayToLogic(input);
@@ -66,27 +55,27 @@ public class UI implements IUserInterface {
 
     @Override
     public void displayFeedback(String fb, MsgType type) {
-
         switch (type) {
             case SUCCESS:
                 controller.clearFb();
-                showToUser(String.format(UI_MESSAGE_RESPONSE, fb));
+                showToUser(String.format(Constants.UI_MESSAGE_RESPONSE, fb));
                 break;
             case WARNING:
                 controller.clearFb();
-                showToUser(String.format(UI_MESSAGE_WARNING, fb));
+                showToUser(String.format(Constants.UI_MESSAGE_WARNING, fb));
                 break;
             case ERROR:
                 controller.clearFb();
-                showToUser(String.format(UI_MESSAGE_ERROR, fb));
+                showToUser(String.format(Constants.UI_MESSAGE_ERROR, fb));
                 break;
             case EXIT:
                 controller.clearFb();
-                showToUser(UI_MESSAGE_QUIT);
+                showToUser(Constants.UI_MESSAGE_QUIT);
                 break;
             default:
                 break;
         }
+
     }
 
     @Override
@@ -119,7 +108,7 @@ public class UI implements IUserInterface {
     }
 
     private void doQuit() {
-        showToUser(UI_MESSAGE_QUIT);
+        showToUser(Constants.UI_MESSAGE_QUIT);
         System.exit(0);
     }
 

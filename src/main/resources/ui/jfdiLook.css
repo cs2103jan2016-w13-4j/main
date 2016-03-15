@@ -1,3 +1,31 @@
 .text-field {
     -fx-focus-color: transparent;
 }
+
+.split-pane:horizontal > * > .split-pane-divider {
+	-fx-border-color: transparent -fx-base transparent -fx-base;
+	-fx-background-color: transparent, derive(-fx-base,20%);
+	-fx-background-insets: 0, 0 1 0 1;
+}
+
+.split-pane:vertical > * > .split-pane-divider {
+	-fx-border-color: transparent -fx-base transparent -fx-base;
+	-fx-background-color: transparent, derive(-fx-base,20%);
+	-fx-background-insets: 0;
+}
+
+.static-split .split-pane *.horizontal-grabber {
+	-fx-background-color: transparent;
+}
+
+.static-split .split-pane *.vertical-grabber { 
+	-fx-background-color: transparent;
+}
+
+.split-pane-divider {
+   -fx-background-color: transparent;
+}
+
+.split-pane > .split-pane-divider {  
+    -fx-padding: 0 0 0 0;  
+} 

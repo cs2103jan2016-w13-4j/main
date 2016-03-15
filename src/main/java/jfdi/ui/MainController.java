@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,18 +12,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import jfdi.common.utilities.JfdiLogger;
 import jfdi.storage.apis.TaskAttributes;
-import jfdi.ui.CommandHandler.MsgType;
+import jfdi.ui.Constants.MsgType;
 
 public class MainController {
-
-    private static final String CTRL_CMD_PROMPT_TEXT = "(Hey Jim! Please let me know what I can do for you!)";
-    private static final String CTRL_CMD_SHOWLIST = "list";
 
     public MainSetUp main;
     public IUserInterface ui;
@@ -31,6 +31,10 @@ public class MainController {
     public ObservableList<ListItem> importantList;
     public ArrayList<Integer> indexMapId = new ArrayList<Integer>();
 
+    @FXML
+    public SplitPane leftRightSplit;
+    @FXML
+    public SplitPane upDownSplit;
     @FXML
     public TextField dayDisplayer;
     @FXML
@@ -45,11 +49,13 @@ public class MainController {
     public TextArea fbArea;
     @FXML
     public TextArea cmdArea;
-    @FXML
-    private TextField txtAddItem;
+
+    // Logger for events
+    private Logger logger = JfdiLogger.getLogger();
 
     public void initialize() {
 
+        intSplitPanes();
         initDate();
         initImportantList();
         initStatsArea();
@@ -83,7 +89,7 @@ public class MainController {
     }
 
     public void displayList() {
-        ui.relayToLogic(CTRL_CMD_SHOWLIST);
+        ui.relayToLogic(Constants.CTRL_CMD_SHOWLIST);
     }
 
     public void setMainApp(MainSetUp main) {
@@ -105,6 +111,14 @@ public class MainController {
     /***************************
      *** LEVEL 1 Abstraction ***
      ***************************/
+
+    private void intSplitPanes() {
+        leftRightSplit.lookupAll(".split-pane-divider").stream()
+        .forEach(div ->  div.setMouseTransparent(true) );
+
+        upDownSplit.lookupAll(".split-pane-divider").stream()
+        .forEach(div ->  div.setMouseTransparent(true) );
+    }
 
     public void initDate() {
 
@@ -168,7 +182,7 @@ public class MainController {
 
     private void initCmdArea() {
 
-        cmdArea.setPromptText(CTRL_CMD_PROMPT_TEXT);
+        cmdArea.setPromptText(Constants.CTRL_CMD_PROMPT_TEXT);
         handleEnterKey();
         disableScrollBarCmd();
     }

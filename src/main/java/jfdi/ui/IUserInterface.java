@@ -1,6 +1,6 @@
 package jfdi.ui;
 
-import jfdi.ui.CommandHandler.MsgType;
+import jfdi.ui.Constants.MsgType;
 
 public interface IUserInterface {
 
@@ -10,8 +10,6 @@ public interface IUserInterface {
 
     void processInput(String input);
 
-    void displayFeedback(String fb, MsgType type);
-
     void setController(MainController controller);
 
     void relayToLogic(String ctrlCmdShowlist);
@@ -19,4 +17,6 @@ public interface IUserInterface {
     CommandHandler getCmdHandler();
 
     int getTaskId(int onScreenId);
+
+    void displayFeedback(String fb, MsgType type);
 }

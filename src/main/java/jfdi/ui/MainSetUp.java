@@ -52,7 +52,7 @@ public class MainSetUp extends Application {
 
     private void initRootLayout() throws IOException {
 
-        rootLayout = (BorderPane) FXMLLoader.load(getClass().getResource("/ui/RootLayout.fxml"));
+        rootLayout = (BorderPane) FXMLLoader.load(getClass().getResource(Constants.MAIN_ROOT_PATH));
 
         // Display scene with root layout
         Scene scene = new Scene(rootLayout);
@@ -70,7 +70,7 @@ public class MainSetUp extends Application {
 
         // Load View
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/ui/ListLayout.fxml"));
+        loader.setLocation(getClass().getResource(Constants.MAIN_LIST_PATH));
         listLayout = (AnchorPane) loader.load();
 
         // Initialize Controller

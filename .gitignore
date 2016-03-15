@@ -124,7 +124,7 @@ gradle-app.setting
 .jfdi_user_data/
 
 # Log file
-log.txt
+log.txt*
 
 *.class
 

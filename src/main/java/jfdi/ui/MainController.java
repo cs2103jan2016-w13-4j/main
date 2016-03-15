@@ -123,24 +123,25 @@ public class MainController {
         importantList = FXCollections.observableArrayList();
         listMain.setItems(importantList);
 
-        listMain.setCellFactory(new Callback<ListView<ListItem>, ListCell<ListItem>>() {
+        listMain
+            .setCellFactory(new Callback<ListView<ListItem>, ListCell<ListItem>>() {
 
-            @Override
-            public ListCell<ListItem> call(ListView<ListItem> param) {
+                @Override
+                public ListCell<ListItem> call(ListView<ListItem> param) {
 
-                ListCell<ListItem> cell = new ListCell<ListItem>() {
-                    @Override
-                    protected void updateItem(ListItem item, boolean bln) {
-                        super.updateItem(item, bln);
-                        if (item != null) {
-                            setText(item.toString());
+                    ListCell<ListItem> cell = new ListCell<ListItem>() {
+                        @Override
+                        protected void updateItem(ListItem item, boolean bln) {
+                            super.updateItem(item, bln);
+                            if (item != null) {
+                                setText(item.toString());
+                            }
                         }
-                    }
-                };
+                    };
 
-                return cell;
-            }
-        });
+                    return cell;
+                }
+            });
     }
 
     private void initStatsArea() {
@@ -188,11 +189,11 @@ public class MainController {
                 keyEvent.consume();
             }
 
-            /*
-             * Not needed yet! // Tab event is sent to UI whenever tab is hit if
-             * (code == KeyCode.TAB) { ui.passKeyEvent(code); // consume the tab
-             * space left in the command area keyEvent.consume(); }
-             */
+        /*
+         * Not needed yet! // Tab event is sent to UI whenever tab is hit if
+         * (code == KeyCode.TAB) { ui.passKeyEvent(code); // consume the tab
+         * space left in the command area keyEvent.consume(); }
+         */
         });
 
     }
@@ -202,14 +203,14 @@ public class MainController {
      */
     private void disableScrollBarCmd() {
         cmdArea.textProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                    if (cmdArea.lookup(".scroll-bar") != null) {
-                        ScrollBar scrollBarv = (ScrollBar) cmdArea
-                                .lookup(".scroll-bar");
-                        scrollBarv.setDisable(false);
-                        scrollBarv.setId("command-scroll-bar");
-                    }
-                });
+            (observable, oldValue, newValue) -> {
+                if (cmdArea.lookup(".scroll-bar") != null) {
+                    ScrollBar scrollBarv = (ScrollBar) cmdArea
+                        .lookup(".scroll-bar");
+                    scrollBarv.setDisable(false);
+                    scrollBarv.setId("command-scroll-bar");
+                }
+            });
     }
 
     /**
@@ -217,14 +218,14 @@ public class MainController {
      */
     private void disableScrollBarFb() {
         fbArea.textProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                    if (cmdArea.lookup(".scroll-bar") != null) {
-                        ScrollBar scrollBarv = (ScrollBar) cmdArea
-                                .lookup(".scroll-bar");
-                        scrollBarv.setDisable(false);
-                        scrollBarv.setId("command-scroll-bar");
-                    }
-                });
+            (observable, oldValue, newValue) -> {
+                if (cmdArea.lookup(".scroll-bar") != null) {
+                    ScrollBar scrollBarv = (ScrollBar) cmdArea
+                        .lookup(".scroll-bar");
+                    scrollBarv.setDisable(false);
+                    scrollBarv.setId("command-scroll-bar");
+                }
+            });
     }
 
     /***************************

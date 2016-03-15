@@ -32,7 +32,8 @@ public class Constants {
 
     // Logging filename and path
     public static final String FILENAME_LOG = "log.txt";
-    public static final Path PATH_LOG_FILE = Paths.get(PATH_DEFAULT_DIRECTORY, FILENAME_LOG);
+    public static final String FILENAME_LOG_DIRECTORY = ".jfdi_logs";
+    public static final Path PATH_LOG_FILE = Paths.get(PATH_DEFAULT_DIRECTORY, FILENAME_LOG_DIRECTORY, FILENAME_LOG);
 
     // File extensions
     public static final String EXTENSION_BACKUP = ".bak";

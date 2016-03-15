@@ -1,9 +1,9 @@
 package jfdi.logic.commands;
 
+import jfdi.logic.interfaces.Command;
+
 import java.util.ArrayList;
 import java.util.Collection;
-
-import jfdi.logic.interfaces.Command;
 
 public class UnmarkTaskCommandStub extends Command {
 

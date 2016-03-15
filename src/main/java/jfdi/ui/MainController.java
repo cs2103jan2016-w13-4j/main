@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,13 +17,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import jfdi.common.utilities.JfdiLogger;
 import jfdi.storage.apis.TaskAttributes;
-import jfdi.ui.CommandHandler.MsgType;
+import jfdi.ui.Constants.MsgType;
 
 public class MainController {
-
-    private static final String CTRL_CMD_PROMPT_TEXT = "(Hey Jim! Please let me know what I can do for you!)";
-    private static final String CTRL_CMD_SHOWLIST = "list";
 
     public MainSetUp main;
     public IUserInterface ui;
@@ -47,6 +46,13 @@ public class MainController {
     public TextArea cmdArea;
     @FXML
     private TextField txtAddItem;
+
+    // Logger for events
+    private Logger logger = null;
+
+    private MainController() {
+        logger = JfdiLogger.getLogger();
+    }
 
     public void initialize() {
 
@@ -83,7 +89,7 @@ public class MainController {
     }
 
     public void displayList() {
-        ui.relayToLogic(CTRL_CMD_SHOWLIST);
+        ui.relayToLogic(Constants.CTRL_CMD_SHOWLIST);
     }
 
     public void setMainApp(MainSetUp main) {
@@ -167,7 +173,7 @@ public class MainController {
 
     private void initCmdArea() {
 
-        cmdArea.setPromptText(CTRL_CMD_PROMPT_TEXT);
+        cmdArea.setPromptText(Constants.CTRL_CMD_PROMPT_TEXT);
         handleEnterKey();
         disableScrollBarCmd();
     }

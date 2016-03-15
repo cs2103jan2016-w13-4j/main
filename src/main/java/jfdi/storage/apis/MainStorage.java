@@ -23,6 +23,9 @@ public class MainStorage implements IStorage {
     // Boolean indicating if storage has been initialized
     private boolean isInitialized = false;
 
+    // Path to the current storage directory
+    private String currentDirectory = null;
+
     /**
      * This private constructor prevents itself from being called by other
      * components. An instance of FileStorage should be initialized using the
@@ -52,8 +55,11 @@ public class MainStorage implements IStorage {
 
     @Override
     public void initialize() throws FilesReplacedException {
-        load(getInitializationPath());
+        String storageDirectory = getInitializationPath();
+        String dataDirectory = getDataDirectory(storageDirectory);
+        load(dataDirectory);
         isInitialized = true;
+        setCurrentDirectory(storageDirectory);
     }
 
     @Override
@@ -67,6 +73,7 @@ public class MainStorage implements IStorage {
         DatabaseManager.persistAll();
         load(getDataDirectory(newStorageFolderPath));
         setPreferredDirectory(newStorageFolderPath);
+        setCurrentDirectory(newStorageFolderPath);
     }
 
     @Override
@@ -85,6 +92,22 @@ public class MainStorage implements IStorage {
         DatabaseManager.setAllFilePaths(newDataDirectory);
 
         setPreferredDirectory(newStorageFolderPath);
+        setCurrentDirectory(newStorageFolderPath);
+    }
+
+    /**
+     * @return the currentDirectory
+     */
+    public String getCurrentDirectory() {
+        assert isInitialized;
+        return currentDirectory;
+    }
+
+    /**
+     * @param currentDirectory the currentDirectory to set
+     */
+    private void setCurrentDirectory(String currentDirectory) {
+        this.currentDirectory = currentDirectory;
     }
 
     /**
@@ -134,7 +157,7 @@ public class MainStorage implements IStorage {
         if (initDirectory == null) {
             initDirectory = getDefaultDirectory();
         }
-        return getDataDirectory(initDirectory);
+        return initDirectory;
     }
 
     /**

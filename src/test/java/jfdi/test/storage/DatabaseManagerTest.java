@@ -57,7 +57,8 @@ public class DatabaseManagerTest {
 
     @Test(expected = FilesReplacedException.class)
     public void testLoadAllRecordsWithInvalidData() throws Exception {
-        DatabaseManager.setAllFilePaths(testDirectoryString);
+        String dataPath = TestHelper.getDataDirectory(testDirectoryString);
+        DatabaseManager.setAllFilePaths(dataPath);
         TestHelper.createInvalidDataFiles(testDirectoryString);
         DatabaseManager.loadAllDatabases();
     }

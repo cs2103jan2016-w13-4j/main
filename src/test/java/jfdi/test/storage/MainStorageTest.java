@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 
 import jfdi.storage.Constants;
 import jfdi.storage.apis.MainStorage;
+import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.FilesReplacedException;
 
 import org.apache.commons.io.FileUtils;
@@ -85,6 +86,26 @@ public class MainStorageTest {
     }
 
     @Test
+    public void testUse() throws Exception {
+        initializeStorage();
+        Path subdirectoryPath = Paths.get(testDirectoryString, Constants.TEST_SUBDIRECTORY_NAME);
+        String subdirectoryString = subdirectoryPath.toString();
+        TestHelper.createValidTaskFile(subdirectoryString);
+
+        // There should be no tasks before we switch directory
+        TaskDb.getInstance().resetProgramStorage();
+        assertEquals(0, TaskDb.getInstance().getAll().size());
+
+        // Command under test
+        mainStorageInstance.use(subdirectoryString);
+
+        // The preferred directory should be set as the subdirectory
+        assertEquals(mainStorageInstance.getPreferredDirectory(), subdirectoryString);
+        // There should now be 1 task loaded from the subdirectory
+        assertEquals(1, TaskDb.getInstance().getAll().size());
+    }
+
+    @Test
     public void testSuccessfulLoad() {
         try {
             mainStorageInstance.load(testDirectoryString);
@@ -114,7 +135,8 @@ public class MainStorageTest {
     @Test(expected = FilesReplacedException.class)
     public void testLoadInvalidExistingFiles() throws Exception {
         createInvalidDataFiles();
-        mainStorageInstance.load(testDirectoryString);
+        String dataDirectory = mainStorageInstance.getDataDirectory(testDirectoryString);
+        mainStorageInstance.load(dataDirectory);
     }
 
     @Test(expected = IllegalAccessException.class)

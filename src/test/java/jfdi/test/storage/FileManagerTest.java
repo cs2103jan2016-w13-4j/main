@@ -84,14 +84,16 @@ public class FileManagerTest {
     @Test(expected = FilesReplacedException.class)
     public void testMoveFilesToDirectoryWithExistingData() throws Exception {
         MainStorage fileStorageInstance = MainStorage.getInstance();
-        fileStorageInstance.load(testDirectoryString);
+        fileStorageInstance.initialize();
+        fileStorageInstance.use(testDirectoryString);
         TestHelper.createValidDataFiles(testDirectoryString);
         Path subdirectory = Paths.get(testDirectoryString, Constants.TEST_SUBDIRECTORY_NAME);
         String subdirectoryString = subdirectory.toString();
         TestHelper.createInvalidDataFiles(subdirectoryString);
 
         try {
-            FileManager.moveFilesToDirectory(subdirectoryString);
+            String dataPath = TestHelper.getDataDirectory(subdirectoryString);
+            FileManager.moveFilesToDirectory(dataPath);
         } catch (FilesReplacedException e) {
             assertTrue(TestHelper.hasIdenticalDataFiles(testDirectoryString, subdirectoryString));
             throw e;
@@ -103,7 +105,7 @@ public class FileManagerTest {
         Path testFilePath = Paths.get(testDirectoryString, Constants.TEST_FILE_NAME);
         File testFile = testFilePath.toFile();
         testFile.getParentFile().mkdirs();
-        TestHelper.writeToFile(testFile, Constants.TEST_FILE_DATA);
+        FileManager.writeToFile(Constants.TEST_FILE_DATA, testFilePath);
         String backupPath = FileManager.backupAndRemove(testFilePath);
         File backupFile = new File(backupPath);
         assertFalse(testFile.exists());

@@ -4,7 +4,9 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.logging.Logger;
 
+import jfdi.common.utilities.JfdiLogger;
 import jfdi.storage.Constants;
 import jfdi.storage.DatabaseManager;
 import jfdi.storage.FileManager;
@@ -23,12 +25,19 @@ public class MainStorage implements IStorage {
     // Boolean indicating if storage has been initialized
     private boolean isInitialized = false;
 
+    // Path to the current storage directory
+    private String currentDirectory = null;
+
+    // Logger for events
+    private Logger logger = null;
+
     /**
      * This private constructor prevents itself from being called by other
      * components. An instance of FileStorage should be initialized using the
      * getInstance method.
      */
     private MainStorage() {
+        logger = JfdiLogger.getLogger();
     }
 
     /**
@@ -52,8 +61,25 @@ public class MainStorage implements IStorage {
 
     @Override
     public void initialize() throws FilesReplacedException {
-        load(getInitializationPath());
+        String storageDirectory = getInitializationPath();
+        String dataDirectory = getDataDirectory(storageDirectory);
+        load(dataDirectory);
         isInitialized = true;
+        setCurrentDirectory(storageDirectory);
+    }
+
+    @Override
+    public void use(String newStorageFolderPath) throws InvalidPathException, FilesReplacedException,
+            IllegalAccessException {
+
+        if (!isInitialized) {
+            throw new IllegalAccessException(Constants.MESSAGE_UNINITIALIZED_STORAGE);
+        }
+
+        DatabaseManager.persistAll();
+        load(getDataDirectory(newStorageFolderPath));
+        setPreferredDirectory(newStorageFolderPath);
+        setCurrentDirectory(newStorageFolderPath);
     }
 
     @Override
@@ -65,10 +91,31 @@ public class MainStorage implements IStorage {
         }
 
         DatabaseManager.persistAll();
-        FileManager.prepareDirectory(newStorageFolderPath);
-        FileManager.moveFilesToDirectory(newStorageFolderPath);
-        DatabaseManager.setAllFilePaths(newStorageFolderPath);
+
+        String newDataDirectory = getDataDirectory(newStorageFolderPath);
+        FileManager.prepareDirectory(newDataDirectory);
+        FileManager.moveFilesToDirectory(newDataDirectory);
+        DatabaseManager.setAllFilePaths(newDataDirectory);
+
         setPreferredDirectory(newStorageFolderPath);
+        setCurrentDirectory(newStorageFolderPath);
+    }
+
+    /**
+     * @return the currentDirectory
+     */
+    public String getCurrentDirectory() {
+        assert isInitialized;
+        return currentDirectory;
+    }
+
+    /**
+     * @param currentDirectory the currentDirectory to set
+     */
+    private void setCurrentDirectory(String currentDirectory) {
+        Path absolutePath = Paths.get(currentDirectory).toAbsolutePath();
+        this.currentDirectory = absolutePath.toString();
+        logger.fine(String.format(Constants.MESSAGE_LOG_SET_DIRECTORY, absolutePath));
     }
 
     /**
@@ -95,6 +142,18 @@ public class MainStorage implements IStorage {
     }
 
     /**
+     * This method returns the path to the data directory within the storage
+     * directory.
+     *
+     * @param storageDirectory
+     *            the folder which should store the user data
+     * @return the path to the data directory within the storage directory
+     */
+    public String getDataDirectory(String storageDirectory) {
+        return Paths.get(storageDirectory, Constants.FILENAME_DATA_DIRECTORY).toString();
+    }
+
+    /**
      * This method returns the storage path that should be used for the initial
      * load. If a preferred directory is found, it is used. Otherwise, we use
      * the default directory.
@@ -102,11 +161,11 @@ public class MainStorage implements IStorage {
      * @return the directory that should be used for the initial load
      */
     private String getInitializationPath() {
-        String preferredDirectory = getPreferredDirectory();
-        if (preferredDirectory != null) {
-            return preferredDirectory;
+        String initDirectory = getPreferredDirectory();
+        if (initDirectory == null) {
+            initDirectory = getDefaultDirectory();
         }
-        return getDefaultDirectory();
+        return initDirectory;
     }
 
     /**

@@ -31,7 +31,8 @@ public class TaskDbTest {
         testDirectory = Files.createTempDirectory(Constants.TEST_DIRECTORY_NAME);
         testDirectoryString = testDirectory.toString();
         MainStorage fileStorageInstance = MainStorage.getInstance();
-        fileStorageInstance.load(testDirectory.toString());
+        fileStorageInstance.initialize();
+        fileStorageInstance.use(testDirectoryString);
         taskDbInstance = TaskDb.getInstance();
     }
 
@@ -205,7 +206,7 @@ public class TaskDbTest {
 
     @Test(expected = InvalidIdException.class)
     public void testMarkInvalidIdAsIncomplete() throws Exception {
-        taskDbInstance.markAsIncomplete(1);
+        taskDbInstance.markAsIncomplete(Integer.MAX_VALUE);
     }
 
     @Test
@@ -252,7 +253,7 @@ public class TaskDbTest {
         assertTrue(taskDbInstance.getAll().isEmpty());
 
         // Create the data file and load from it
-        TestHelper.createDataFilesWith(testDirectoryString, json);
+        TestHelper.createTaskFileWith(testDirectoryString, json);
         taskDbInstance.load();
 
         // Check that the original task exists

@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jfdi.common.utilities.JfdiLogger;
 import jfdi.parser.Constants.TaskType;
 import jfdi.parser.DateTimeObject.DateTimeObjectBuilder;
 import jfdi.parser.exceptions.BadDateTimeException;
@@ -28,11 +29,11 @@ public class DateTimeParser {
     // TODO: support for "from {date}{time} to {time}"
     private static DateTimeParser dateTimeParser;
     private static final String SOURCECLASS = DateTimeParser.class.getName();
-    private static final Logger LOGGER = Logger.getLogger(SOURCECLASS);
+    private static final Logger LOGGER = JfdiLogger.getLogger();
 
     public static DateTimeParser getInstance() {
         return dateTimeParser == null ? dateTimeParser = new DateTimeParser()
-                : dateTimeParser;
+            : dateTimeParser;
     }
 
     /**
@@ -48,10 +49,10 @@ public class DateTimeParser {
      *             valid date time format.
      */
     public DateTimeObject parseDateTime(String input)
-            throws BadDateTimeException {
+        throws BadDateTimeException {
         if (!isValidDateTime(input)) {
             LOGGER.throwing(SOURCECLASS, "parseDateTime",
-                    new BadDateTimeException(input));
+                new BadDateTimeException(input));
             throw new BadDateTimeException(input);
         }
 
@@ -74,7 +75,7 @@ public class DateTimeParser {
      *             if the start date parsed is later than the end date parsed.
      */
     private DateTimeObject buildDateTimeObject(String input)
-            throws BadDateTimeException {
+        throws BadDateTimeException {
         assert isValidDateTime(input);
 
         DateTimeObjectBuilder dateTimeObjectBuilder = new DateTimeObjectBuilder();
@@ -98,14 +99,14 @@ public class DateTimeParser {
                 endDateTime = dateTimeList.get(1);
                 if (!isTimeSpecified) {
                     startDateTime = setTime(startDateTime,
-                            Constants.TIME_BEGINNING_OF_DAY);
+                        Constants.TIME_BEGINNING_OF_DAY);
                     endDateTime = setTime(endDateTime,
-                            Constants.TIME_END_OF_DAY);
+                        Constants.TIME_END_OF_DAY);
                 }
 
                 if (startDateTime.compareTo(endDateTime) > 0) {
                     LOGGER.throwing(SOURCECLASS, "buildDateTimeObject",
-                            new BadDateTimeException(input));
+                        new BadDateTimeException(input));
                     throw new BadDateTimeException(input);
                 }
                 break;
@@ -114,7 +115,7 @@ public class DateTimeParser {
                 startDateTime = dateTimeList.get(0);
                 if (!isTimeSpecified) {
                     startDateTime = setTime(startDateTime,
-                            Constants.TIME_DEFAULT);
+                        Constants.TIME_DEFAULT);
                     System.out.println(startDateTime.getHour());
                 }
                 break;
@@ -153,9 +154,9 @@ public class DateTimeParser {
         assert isValidDateTime(input);
 
         return input
-                .replaceAll(
-                        "\\b(0?[1-9]|[12][\\d]|3[01])[-/.](0?[1-9]|1[0-2])(([-/.])((19|20)?\\d\\d))?\\b",
-                        "$2/$1$4$5");
+            .replaceAll(
+                "\\b(0?[1-9]|[12][\\d]|3[01])[-/.](0?[1-9]|1[0-2])(([-/.])((19|20)?\\d\\d))?\\b",
+                "$2/$1$4$5");
     }
 
     /**
@@ -263,12 +264,12 @@ public class DateTimeParser {
      */
     private LocalDateTime setTime(LocalDateTime dateTime, Constants.Time time) {
         return dateTime.withHour(time.hour).withMinute(time.minutes)
-                .withSecond(time.seconds).withNano(time.nanoseconds);
+            .withSecond(time.seconds).withNano(time.nanoseconds);
     }
 
     public static void main(String[] args) throws Exception {
         DateTimeParser parser = DateTimeParser.getInstance();
         System.out.println(parser.parseDateTime("From 25/11/94 3pm to 5pm")
-                .getEndDateTime());
+            .getEndDateTime());
     }
 }

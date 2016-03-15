@@ -93,7 +93,8 @@ public class MainStorageTest {
         TestHelper.createValidTaskFile(subdirectoryString);
 
         // There should be no tasks before we switch directory
-        assertEquals(TaskDb.getInstance().getAll().size(), 0);
+        TaskDb.getInstance().resetProgramStorage();
+        assertEquals(0, TaskDb.getInstance().getAll().size());
 
         // Command under test
         mainStorageInstance.use(subdirectoryString);
@@ -101,7 +102,7 @@ public class MainStorageTest {
         // The preferred directory should be set as the subdirectory
         assertEquals(mainStorageInstance.getPreferredDirectory(), subdirectoryString);
         // There should now be 1 task loaded from the subdirectory
-        assertEquals(TaskDb.getInstance().getAll().size(), 1);
+        assertEquals(1, TaskDb.getInstance().getAll().size());
     }
 
     @Test

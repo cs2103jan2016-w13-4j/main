@@ -4,14 +4,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants.CommandType;
 import jfdi.parser.commandparsers.AddCommandParser;
+import jfdi.parser.commandparsers.AliasCommandParser;
 import jfdi.parser.commandparsers.DeleteCommandParser;
 import jfdi.parser.commandparsers.ListCommandParser;
+import jfdi.parser.commandparsers.MarkCommandParser;
 import jfdi.parser.commandparsers.RenameCommandParser;
 import jfdi.parser.commandparsers.RescheduleCommandParser;
+import jfdi.parser.commandparsers.SearchCommandParser;
+import jfdi.parser.commandparsers.UnaliasCommandParser;
+import jfdi.parser.commandparsers.UnmarkCommandParser;
 import jfdi.parser.exceptions.InvalidInputException;
 import jfdi.storage.apis.AliasAttributes;
 
@@ -25,26 +31,33 @@ import jfdi.storage.apis.AliasAttributes;
  */
 public class InputParser implements IParser {
     private static InputParser parserInstance;
+    private static final Logger LOGGER = Logger.getLogger(InputParser.class
+            .getName());
+    private static final String SOURCECLASS = InputParser.class.getName();
     private Collection<AliasAttributes> aliases = new ArrayList<AliasAttributes>();
     private HashMap<String, String> aliasMap = new HashMap<>();
 
     public static InputParser getInstance() {
+        LOGGER.entering(SOURCECLASS, "getInstance");
         if (parserInstance == null) {
             parserInstance = new InputParser();
         }
+        LOGGER.exiting(SOURCECLASS, "getInstance");
         return parserInstance;
     }
 
     @Override
     public Command parse(String input) throws InvalidInputException {
         if (!isValidInput(input)) {
+            LOGGER.throwing(SOURCECLASS, "parse", new InvalidInputException(
+                    input));
             throw new InvalidInputException(input);
         }
-
+        input = trimInput(input);
         // input is guaranteed to be at least one word long
         String unaliasedInput = unalias(input);
         String firstWord = getFirstWord(unaliasedInput);
-        CommandType commandType = getCommandType(firstWord);
+        CommandType commandType = ParserUtils.getCommandType(firstWord);
         Command userCommand = getCommand(commandType, input);
         return userCommand;
     }
@@ -54,10 +67,6 @@ public class InputParser implements IParser {
         assert aliases != null;
         this.aliases.addAll(aliases);
         buildAliasMap();
-    }
-
-    public Collection<AliasAttributes> getAliases() {
-        return aliases;
     }
 
     /**
@@ -92,6 +101,8 @@ public class InputParser implements IParser {
      * @return the unaliased input.
      */
     private String unalias(String input) {
+        assert isValidInput(input);
+
         Set<String> aliasSet = aliasMap.keySet();
         for (String str : aliasSet) {
             if (input.matches("$" + str)) {
@@ -100,37 +111,6 @@ public class InputParser implements IParser {
             }
         }
         return input;
-    }
-
-    /**
-     * This method returns the CommandType associated with the input String.
-     *
-     * @param input
-     *            a String interpretation of a CommandType.
-     * @return a CommandType enum.
-     */
-    private CommandType getCommandType(String input) {
-        assert input.split(Constants.REGEX_WHITESPACE).length == 1;
-        if (input.matches(Constants.REGEX_ADD)) {
-            return CommandType.add;
-        } else if (input.matches(Constants.REGEX_LIST)) {
-            return CommandType.list;
-        } else if (input.matches(Constants.REGEX_DELETE)) {
-            return CommandType.delete;
-        } else if (input.matches(Constants.REGEX_RENAME)) {
-            return CommandType.rename;
-        } else if (input.matches(Constants.REGEX_RESCHEDULE)) {
-            return CommandType.reschedule;
-        } else if (input.matches(Constants.REGEX_SEARCH)) {
-            return CommandType.search;
-        } else if (input.matches(Constants.REGEX_MARK)) {
-            return CommandType.mark;
-        } else if (input.matches(Constants.REGEX_UNMARK)) {
-            return CommandType.unmark;
-        } else {
-            return CommandType.add;
-        }
-
     }
 
     /**
@@ -143,6 +123,8 @@ public class InputParser implements IParser {
      * @return a Command object that was built from the user's input.
      */
     private Command getCommand(CommandType commandType, String input) {
+        assert commandType != null && isValidInput(input);
+
         switch (commandType) {
             case add:
                 return AddCommandParser.getInstance().build(input);
@@ -154,9 +136,46 @@ public class InputParser implements IParser {
                 return RenameCommandParser.getInstance().build(input);
             case reschedule:
                 return RescheduleCommandParser.getInstance().build(input);
+            case search:
+                return SearchCommandParser.getInstance().build(input);
+            case mark:
+                return MarkCommandParser.getInstance().build(input);
+            case unmark:
+                return UnmarkCommandParser.getInstance().build(input);
+            case alias:
+                return AliasCommandParser.getInstance(aliases).build(input);
+            case unalias:
+                return UnaliasCommandParser.getInstance(aliases).build(input);
+            case directory:
+                // In this case, we check to see if input is made up of just the
+                // command name. If it is not, parse it as an 'Add' command
+                // instead.
+                return isSingleWord(input) ? UnaliasCommandParser.getInstance(
+                        aliases).build(input) : AddCommandParser.getInstance()
+                        .build(input);
+            case move:
+                return UnaliasCommandParser.getInstance(aliases).build(input);
+            case use:
+                return UnaliasCommandParser.getInstance(aliases).build(input);
+            case undo:
+                return isSingleWord(input) ? UnaliasCommandParser.getInstance(
+                        aliases).build(input) : AddCommandParser.getInstance()
+                        .build(input);
+            case help:
+                return isSingleWord(input) ? UnaliasCommandParser.getInstance(
+                        aliases).build(input) : AddCommandParser.getInstance()
+                        .build(input);
+            case wildcard:
+                return isSingleWord(input) ? UnaliasCommandParser.getInstance(
+                        aliases).build(input) : AddCommandParser.getInstance()
+                        .build(input);
             default:
                 return AddCommandParser.getInstance().build(input);
         }
+    }
+
+    private boolean isSingleWord(String input) {
+        return input.trim().split(Constants.REGEX_WHITESPACE).length == 1;
     }
 
     /**
@@ -168,6 +187,10 @@ public class InputParser implements IParser {
      * @return true if the input is valid; false otherwise
      */
     private boolean isValidInput(String input) {
-        return !(input.isEmpty() || input.trim().isEmpty());
+        return input != null && !input.isEmpty() && !input.trim().isEmpty();
+    }
+
+    private String trimInput(String input) {
+        return input.trim();
     }
 }

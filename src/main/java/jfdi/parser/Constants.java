@@ -28,6 +28,14 @@ public class Constants {
     public static final String REGEX_SEARCH = "(?i)^(delete|remove)";
     public static final String REGEX_MARK = "(?i)^(mark)";
     public static final String REGEX_UNMARK = "(?i)^(mark)";
+    public static final String REGEX_ALIAS = "(?i)^(alias)";
+    public static final String REGEX_UNALIAS = "(?i)^(unalias)";
+    public static final String REGEX_DIRECTORY = "(?i)^(directory)";
+    public static final String REGEX_USE = "(?i)^(use)";
+    public static final String REGEX_MOVE = "(?i)^(move)";
+    public static final String REGEX_UNDO = "(?i)^(undo)";
+    public static final String REGEX_HELP = "(?i)^(help)";
+    public static final String REGEX_WILDCARD = "(?i)^(surprise[!]*)";
 
     // Task related Regex Strings
     public static final String REGEX_TAGS = "\\+\\w+";
@@ -47,7 +55,7 @@ public class Constants {
     public static final String REGEX_YEARS = "((19|20)?\\d\\d)";
     public static final String REGEX_DATE_ATTRIBUTES = "((?i)(day)(s)?|"
             + "(week|wk)(s)?|" + "(month|mth)(s)?|" + "(year|yr))(s)?";
-    public static final String REGEX_TIME_MILITARY = "(?i)[0-2][0-3][.:-]?[0-5][\\d]([h]([r][s]?)?)";
+    public static final String REGEX_TIME_MILITARY = "(?i)([0-1][0-9]|[2][0-4])[.:-]?[0-5][\\d]([h]([r][s]?)?)";
     public static final String REGEX_TIME_NORMAL = "((?i)0?[1-9]|1[0-2])[.-:]?([0-5][0-9])?[ -:]?([a|p][m])";
 
     public static final String REGEX_RELATIVE_DATE_1 = "(?i)(tomorrow|yesterday|today|now)";
@@ -99,12 +107,32 @@ public class Constants {
 
     // A task can be any one of these task types
     public enum TaskType {
-        floating, deadline, event, point, repeated;
+        floating,
+        deadline,
+        event,
+        point,
+        repeated;
     }
 
     // An enum containing all the commands available to the user
     public enum CommandType {
-        add, delete, rename, reschedule, list, view, invalid, search, mark, unmark;
+        add,
+        delete,
+        rename,
+        reschedule,
+        list,
+        search,
+        mark,
+        unmark,
+        alias,
+        unalias,
+        directory,
+        move,
+        use,
+        undo,
+        help,
+        wildcard,
+        invalid;
     }
 
     public static final int INDEX_ACTION = 0;
@@ -156,7 +184,8 @@ public class Constants {
     public static final ZoneId ZONE_ID = ZoneId.systemDefault();
 
     public static void main(String[] args) {
-        System.out.println("From now to tomorrow"
+        System.out.println("lol".trim().split(REGEX_WHITESPACE).length == 1);
+        System.out.println("From 14-02-93 2300h to tomorrow"
                 .matches(REGEX_DATE_TIME_IDENTIFIER));
     }
 }

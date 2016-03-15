@@ -2,9 +2,6 @@ package jfdi.ui;
 
 import java.util.ArrayList;
 
-import com.google.common.eventbus.Subscribe;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 import jfdi.logic.events.AddTaskDoneEvent;
 import jfdi.logic.events.AddTaskFailEvent;
 import jfdi.logic.events.DeleteTaskDoneEvent;
@@ -18,6 +15,9 @@ import jfdi.logic.events.RescheduleTaskDoneEvent;
 import jfdi.logic.events.RescheduleTaskFailEvent;
 import jfdi.storage.apis.TaskAttributes;
 
+import com.google.common.eventbus.Subscribe;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 public class CommandHandler {
 
@@ -42,19 +42,22 @@ public class CommandHandler {
     private MainController controller;
 
     public enum MsgType {
-        SUCCESS, WARNING, ERROR, EXIT
+        SUCCESS,
+        WARNING,
+        ERROR,
+        EXIT
     }
 
     @Subscribe
     public void handleListDoneEvent(ListDoneEvent e) {
 
-        /*for (TaskAttributes item : e.getItems()) {
-            System.out.println("logic_prior: " + item.getId() + item.getDescription());
-        }
-        System.out.println(" ");
-        for (ListItem item : controller.importantList) {
-            System.out.println("ui_prior: " + item.getId() + item.getDescription());
-        }*/
+        /*
+         * for (TaskAttributes item : e.getItems()) {
+         * System.out.println("logic_prior: " + item.getId() +
+         * item.getDescription()); } System.out.println(" "); for (ListItem item
+         * : controller.importantList) { System.out.println("ui_prior: " +
+         * item.getId() + item.getDescription()); }
+         */
 
         controller.importantList.clear();
         int count = 1;
@@ -74,7 +77,9 @@ public class CommandHandler {
 
     @Subscribe
     public void handleInvalidCommandEvent(InvalidCommandEvent e) {
-        controller.relayFb(String.format(CMD_WARNING_DONTKNOW, e.getInputString()), MsgType.WARNING);
+        controller.relayFb(
+                String.format(CMD_WARNING_DONTKNOW, e.getInputString()),
+                MsgType.WARNING);
     }
 
     @Subscribe
@@ -84,7 +89,9 @@ public class CommandHandler {
         ListItem listItem = new ListItem(index, task, false);
         controller.importantList.add(listItem);
         controller.indexMapId.add(task.getId());
-        controller.relayFb(String.format(CMD_SUCCESS_ADDED, index, task.getDescription()), MsgType.SUCCESS);
+        controller.relayFb(
+                String.format(CMD_SUCCESS_ADDED, index, task.getDescription()),
+                MsgType.SUCCESS);
     }
 
     @Subscribe
@@ -96,7 +103,8 @@ public class CommandHandler {
             case EMPTY_DESCRIPTION:
                 controller.relayFb(CMD_ERROR_CANT_ADD_EMPTY, MsgType.ERROR);
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 
@@ -134,10 +142,11 @@ public class CommandHandler {
                 controller.relayFb(CMD_ERROR_CANT_DELETE, MsgType.ERROR);
                 break;
             case NON_EXISTENT_ID:
-                //NEED TO CHANGE TO INDEX SOON????
+                // NEED TO CHANGE TO INDEX SOON????
                 controller.relayFb(CMD_ERROR_CANT_DELETE, MsgType.ERROR);
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 
@@ -159,16 +168,22 @@ public class CommandHandler {
     public void handleRenameTaskFailEvent(RenameTaskFailEvent e) {
         switch (e.getError()) {
             case UNKNOWN:
-                controller.relayFb(CMD_ERROR_CANT_RENAME_UNKNOWN, MsgType.ERROR);
+                controller
+                        .relayFb(CMD_ERROR_CANT_RENAME_UNKNOWN, MsgType.ERROR);
                 break;
             case NON_EXISTENT_ID:
-                //NEED TO CHANGE TO INDEX SOON????
-                controller.relayFb(String.format(CMD_ERROR_CANT_RENAME_NO_ID, e.getTaskId()), MsgType.ERROR);
+                // NEED TO CHANGE TO INDEX SOON????
+                controller.relayFb(
+                        String.format(CMD_ERROR_CANT_RENAME_NO_ID,
+                                e.getTaskId()), MsgType.ERROR);
                 break;
             case NO_CHANGES:
-                controller.relayFb(String.format(CMD_ERROR_CANT_RENAME_NO_CHANGES, e.getDescription()), MsgType.ERROR);
+                controller.relayFb(
+                        String.format(CMD_ERROR_CANT_RENAME_NO_CHANGES,
+                                e.getDescription()), MsgType.ERROR);
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 
@@ -177,8 +192,10 @@ public class CommandHandler {
         int count = 0;
         for (Integer id : controller.indexMapId) {
             if (id == e.getTaskId()) {
-                controller.importantList.get(count).getItem().setStartDateTime(e.getStartDateTime());
-                controller.importantList.get(count).getItem().setEndDateTime(e.getEndDateTime());
+                controller.importantList.get(count).getItem()
+                        .setStartDateTime(e.getStartDateTime());
+                controller.importantList.get(count).getItem()
+                        .setEndDateTime(e.getEndDateTime());
                 break;
             }
             count++;
@@ -190,18 +207,23 @@ public class CommandHandler {
     public void handleRescheduleTaskFailEvent(RescheduleTaskFailEvent e) {
         switch (e.getError()) {
             case UNKNOWN:
-                controller.relayFb(CMD_ERROR_CANT_RESCHEDULE_UNKNOWN, MsgType.ERROR);
+                controller.relayFb(CMD_ERROR_CANT_RESCHEDULE_UNKNOWN,
+                        MsgType.ERROR);
                 break;
             case NON_EXISTENT_ID:
-                //NEED TO CHANGE TO INDEX SOON????
-                controller.relayFb(String.format(CMD_ERROR_CANT_RESCHEDULE_NO_ID, e.getTaskId()), MsgType.ERROR);
+                // NEED TO CHANGE TO INDEX SOON????
+                controller.relayFb(
+                        String.format(CMD_ERROR_CANT_RESCHEDULE_NO_ID,
+                                e.getTaskId()), MsgType.ERROR);
                 break;
             case NO_CHANGES:
                 controller.relayFb(
-                        CMD_ERROR_CANT_RESCHEDULE_NO_CHANGES + e.getStartDateTime() + " - to - "
+                        CMD_ERROR_CANT_RESCHEDULE_NO_CHANGES
+                                + e.getStartDateTime() + " - to - "
                                 + e.getEndDateTime() + " -!", MsgType.ERROR);
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 

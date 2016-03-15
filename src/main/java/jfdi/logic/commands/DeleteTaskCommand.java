@@ -44,15 +44,17 @@ public class DeleteTaskCommand extends Command {
 
     @Override
     public void execute() {
+        TaskDb taskDb = TaskDb.getInstance();
+
         ArrayList<Integer> invalidIds = taskIds.stream()
-            .filter(id -> !TaskDb.getInstance().hasId(id))
+            .filter(id -> !taskDb.hasId(id))
             .collect(Collectors.toCollection(ArrayList::new));
 
         if (invalidIds.isEmpty()) {
             ArrayList<TaskAttributes> deletedTasks = new ArrayList<>();
             taskIds.forEach(id -> {
                 try {
-                    deletedTasks.add(TaskDb.getInstance().getById(id));
+                    deletedTasks.add(taskDb.getById(id));
                     TaskDb.getInstance().destroy(id);
                 } catch (InvalidIdException e) {
                     // Should not happen

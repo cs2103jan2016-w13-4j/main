@@ -1,9 +1,9 @@
 package jfdi.logic.commands;
 
+import jfdi.logic.interfaces.Command;
+
 import java.util.Collection;
 import java.util.HashSet;
-
-import jfdi.logic.interfaces.Command;
 
 public class SearchCommandStub extends Command {
 

@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import jfdi.logic.commands.UnmarkTaskCommand;
 import jfdi.logic.commands.UnmarkTaskCommand.Builder;
 import jfdi.logic.interfaces.Command;
-import jfdi.parser.Constants.CommandType;
-import jfdi.parser.exceptions.NoTaskIdFoundException;
 
 /**
  * The MarkCommandParser class is used to parse a given 'Unmark' user input. The
@@ -48,11 +46,7 @@ public class UnmarkCommandParser extends AbstractCommandParser {
     public Command build(String input) {
         Builder unmarkTaskCommandBuilder = new Builder();
         ArrayList<Integer> taskIds;
-        try {
-            taskIds = getTaskIds(input);
-        } catch (NoTaskIdFoundException e) {
-            return createInvalidCommand(CommandType.unmark, input);
-        }
+        taskIds = getTaskIds(input);
         unmarkTaskCommandBuilder.addTaskIds(taskIds);
         UnmarkTaskCommand unmarkTaskCommand = unmarkTaskCommandBuilder.build();
         return unmarkTaskCommand;

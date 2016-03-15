@@ -24,6 +24,7 @@ import jfdi.parser.commandparsers.UnaliasCommandParser;
 import jfdi.parser.commandparsers.UndoCommandParser;
 import jfdi.parser.commandparsers.UnmarkCommandParser;
 import jfdi.parser.commandparsers.UseCommandParser;
+import jfdi.parser.commandparsers.WildcardCommandParser;
 import jfdi.parser.exceptions.InvalidInputException;
 import jfdi.storage.apis.AliasAttributes;
 

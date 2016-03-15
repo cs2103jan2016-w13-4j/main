@@ -4,8 +4,8 @@ import jfdi.logic.commands.HelpCommandStub.Builder;
 import jfdi.logic.interfaces.Command;
 
 /**
- * This class parses the Undo command input by the user. The Undo command is in
- * the format {Undo identifier} i.e. a singular word.
+ * This class parses the Help command input by the user. The Help command is in
+ * the format {Help identifier} i.e. a singular word.
  *
  * @author Leonard Hio
  *

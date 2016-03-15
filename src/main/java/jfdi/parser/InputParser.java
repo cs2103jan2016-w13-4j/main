@@ -12,13 +12,16 @@ import jfdi.parser.Constants.CommandType;
 import jfdi.parser.commandparsers.AddCommandParser;
 import jfdi.parser.commandparsers.AliasCommandParser;
 import jfdi.parser.commandparsers.DeleteCommandParser;
+import jfdi.parser.commandparsers.DirectoryCommandParser;
 import jfdi.parser.commandparsers.ListCommandParser;
 import jfdi.parser.commandparsers.MarkCommandParser;
+import jfdi.parser.commandparsers.MoveCommandParser;
 import jfdi.parser.commandparsers.RenameCommandParser;
 import jfdi.parser.commandparsers.RescheduleCommandParser;
 import jfdi.parser.commandparsers.SearchCommandParser;
 import jfdi.parser.commandparsers.UnaliasCommandParser;
 import jfdi.parser.commandparsers.UnmarkCommandParser;
+import jfdi.parser.commandparsers.UseCommandParser;
 import jfdi.parser.exceptions.InvalidInputException;
 import jfdi.storage.apis.AliasAttributes;
 
@@ -143,32 +146,30 @@ public class InputParser implements IParser {
             case unmark:
                 return UnmarkCommandParser.getInstance().build(input);
             case alias:
-                return AliasCommandParser.getInstance(aliases).build(input);
+                return AliasCommandParser.getInstance().build(input);
             case unalias:
-                return UnaliasCommandParser.getInstance(aliases).build(input);
+                return UnaliasCommandParser.getInstance().build(input);
             case directory:
                 // In this case, we check to see if input is made up of just the
                 // command name. If it is not, parse it as an 'Add' command
                 // instead.
-                return isSingleWord(input) ? UnaliasCommandParser.getInstance(
-                    aliases).build(input) : AddCommandParser.getInstance()
-                    .build(input);
+                return isSingleWord(input) ? DirectoryCommandParser
+                    .getInstance().build(input) : AddCommandParser
+                    .getInstance().build(input);
             case move:
-                return UnaliasCommandParser.getInstance(aliases).build(input);
+                return MoveCommandParser.getInstance().build(input);
             case use:
-                return UnaliasCommandParser.getInstance(aliases).build(input);
+                return UseCommandParser.getInstance().build(input);
             case undo:
-                return isSingleWord(input) ? UnaliasCommandParser.getInstance(
-                    aliases).build(input) : AddCommandParser.getInstance()
-                    .build(input);
+                return isSingleWord(input) ? UndoCommandParser.getInstance()
+                    .build(input) : AddCommandParser.getInstance().build(input);
             case help:
-                return isSingleWord(input) ? UnaliasCommandParser.getInstance(
-                    aliases).build(input) : AddCommandParser.getInstance()
-                    .build(input);
+                return isSingleWord(input) ? HelpCommandParser.getInstance()
+                    .build(input) : AddCommandParser.getInstance().build(input);
             case wildcard:
-                return isSingleWord(input) ? UnaliasCommandParser.getInstance(
-                    aliases).build(input) : AddCommandParser.getInstance()
-                    .build(input);
+                return isSingleWord(input) ? WildcardCommandParser
+                    .getInstance().build(input) : AddCommandParser
+                    .getInstance().build(input);
             default:
                 return AddCommandParser.getInstance().build(input);
         }

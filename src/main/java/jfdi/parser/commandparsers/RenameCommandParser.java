@@ -50,7 +50,7 @@ public class RenameCommandParser extends AbstractCommandParser {
             setTaskDescription(input, renameCommandBuilder);
         } catch (NoTaskIdFoundException | BadTaskDescriptionException e) {
             return createInvalidCommand(Constants.CommandType.rename,
-                    originalInput);
+                originalInput);
         }
 
         RenameTaskCommand renameCommand = renameCommandBuilder.build();
@@ -72,25 +72,25 @@ public class RenameCommandParser extends AbstractCommandParser {
      * @return the input String, without the task ID.
      */
     protected String setAndRemoveTaskId(String input, Builder builder)
-            throws NoTaskIdFoundException {
+        throws NoTaskIdFoundException {
         Pattern taskIdPattern = Pattern.compile(Constants.REGEX_TASKID);
         Matcher taskIdMatcher = taskIdPattern.matcher(input);
 
         // If the input is empty, or the matcher is unable to find a task ID,
         // then effectively the user input does not contain a task ID
-        if (!taskIdMatcher.find() || input.isEmpty()) {
+        if (input.isEmpty() || !taskIdMatcher.find()) {
             throw new NoTaskIdFoundException(input);
         } else {
             assert taskIdMatcher.start() == 0;
             // The task ID for all rename command inputs should be the first
             // instance of all task ID instances found.
             String taskId = getTrimmedSubstringInRange(input,
-                    taskIdMatcher.start(), taskIdMatcher.end());
+                taskIdMatcher.start(), taskIdMatcher.end());
             builder.setId(toInteger(taskId));
 
             // Remove the task ID from the input
             input = getTrimmedSubstringInRange(input, taskIdMatcher.end(),
-                    input.length());
+                input.length());
         }
 
         return input;
@@ -108,7 +108,7 @@ public class RenameCommandParser extends AbstractCommandParser {
      *             if the input is empty.
      */
     private String setTaskDescription(String input, Builder builder)
-            throws BadTaskDescriptionException {
+        throws BadTaskDescriptionException {
         if (input.trim().isEmpty()) {
             throw new BadTaskDescriptionException(input);
         }

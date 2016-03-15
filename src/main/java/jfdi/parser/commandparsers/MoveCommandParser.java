@@ -3,7 +3,6 @@ package jfdi.parser.commandparsers;
 import jfdi.logic.commands.MoveTaskCommandStub.Builder;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
-import jfdi.parser.Constants.CommandType;
 
 /**
  * This class parses the 'Move' user command, which the user inputs whenever he
@@ -32,24 +31,27 @@ public class MoveCommandParser extends AbstractCommandParser {
      */
     @Override
     public Command build(String input) {
+        Builder builder = new Builder();
+        String directoryName = "";
+
         if (!isValidInput(input)) {
-            return createInvalidCommand(CommandType.move, input);
+            builder.setDirectory(directoryName);
+            return builder.build();
         }
 
-        String directoryName = getDirectoryName(input);
-
-        Builder builder = new Builder();
+        directoryName = getDirectoryName(input);
         builder.setDirectory(directoryName);
-
         return builder.build();
     }
 
     private boolean isValidInput(String input) {
         return input != null && !input.isEmpty()
-                && input.trim().split(Constants.REGEX_WHITESPACE).length == 2;
+            && input.trim().split(Constants.REGEX_WHITESPACE).length == 2;
     }
 
     private String getDirectoryName(String input) {
+        assert isValidInput(input);
+
         String directoryName = input.trim().split(Constants.REGEX_WHITESPACE)[1];
         return directoryName;
     }

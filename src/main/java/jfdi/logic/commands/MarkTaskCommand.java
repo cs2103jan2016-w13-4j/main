@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  */
 public class MarkTaskCommand extends Command {
 
-    private static final Logger logger = JfdiLogger.getLogger();
+    private static final Logger LOGGER = JfdiLogger.getLogger();
 
     private ArrayList<Integer> taskIds;
 
@@ -62,7 +62,7 @@ public class MarkTaskCommand extends Command {
                     markedTasks.add(taskdb.getById(id));
                     taskdb.markAsComplete(id);
                 } catch (NoAttributesChangedException e) {
-                    logger.warning("Task " + id + " is already completed.");
+                    LOGGER.warning("Task " + id + " is already completed.");
                 } catch (InvalidIdException e) {
                     // Should not happen!
                     e.printStackTrace();

@@ -2,6 +2,7 @@ package jfdi.storage.apis;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.TreeSet;
@@ -156,8 +157,18 @@ public class TaskAttributes {
     }
 
     private void validateAttributes() throws InvalidTaskParametersException {
+        ArrayList<String> errors = new ArrayList<String>();
+
         if (description == null) {
-            throw new InvalidTaskParametersException(Constants.MESSAGE_MISSING_DESCRIPTION);
+            errors.add(Constants.MESSAGE_MISSING_DESCRIPTION);
+        }
+
+        if (startDateTime != null && endDateTime != null && endDateTime.isBefore(startDateTime)) {
+            errors.add(Constants.MESSAGE_INVALID_DATETIME);
+        }
+
+        if (errors.size() > 0) {
+            throw new InvalidTaskParametersException(errors);
         }
     }
 

@@ -13,9 +13,6 @@ public class UI implements IUserInterface {
     private MainController controller;
     private ControlCenter logic;
 
-    public UI() {
-    }
-
     @Override
     public void init() {
 
@@ -47,7 +44,7 @@ public class UI implements IUserInterface {
         controller.clearFb();
 
         // Show user what the command recognized in the feedback area
-        controller.displayFb(String.format(Constants.UI_MESSAGE_USERCMD, input));
+        // controller.displayFb(String.format(Constants.UI_MESSAGE_USERCMD, input));
 
         // Relay user input to logic and wait for reply
         relayToLogic(input);
@@ -94,6 +91,7 @@ public class UI implements IUserInterface {
 
     private void showToUser(String string) {
         controller.displayFb(string);
+
         System.out.println(string);
     }
 

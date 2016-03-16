@@ -32,7 +32,8 @@ public class Constants {
 
     // Logging filename and path
     public static final String FILENAME_LOG = "log.txt";
-    public static final Path PATH_LOG_FILE = Paths.get(PATH_DEFAULT_DIRECTORY, FILENAME_LOG);
+    public static final String FILENAME_LOG_DIRECTORY = ".jfdi_logs";
+    public static final Path PATH_LOG_FILE = Paths.get(PATH_DEFAULT_DIRECTORY, FILENAME_LOG_DIRECTORY, FILENAME_LOG);
 
     // File extensions
     public static final String EXTENSION_BACKUP = ".bak";
@@ -44,6 +45,7 @@ public class Constants {
     // Error messages
     public static final String MESSAGE_INVALID_PATH = "The directory %s cannot be used to store the program data.";
     public static final String MESSAGE_MISSING_DESCRIPTION = "This task is missing a description.";
+    public static final String MESSAGE_INVALID_DATETIME = "Start date and time cannot be after end date and time.";
     public static final String MESSAGE_UNINITIALIZED_STORAGE = "Storage needs to be initialized first.";
 
     // Logging messages

@@ -64,8 +64,7 @@ public class UnmarkTaskCommand extends Command {
                 } catch (NoAttributesChangedException e) {
                     logger.warning("Task " + id + " was not completed.");
                 } catch (InvalidIdException e) {
-                    // Should not happen!
-                    e.printStackTrace();
+                    assert false;
                 }
             });
             eventBus.post(new UnmarkTaskDoneEvent(taskIds, unmarkedTasks));

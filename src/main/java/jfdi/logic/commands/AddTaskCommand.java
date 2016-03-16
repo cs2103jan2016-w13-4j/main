@@ -107,10 +107,10 @@ public class AddTaskCommand extends Command {
             eventBus.post(new AddTaskFailEvent(AddTaskFailEvent.Error.EMPTY_DESCRIPTION));
         } catch (NoAttributesChangedException e) {
             // Should not happen for creating tasks
-            e.printStackTrace();
+            assert false;
         } catch (InvalidIdException e) {
             // Should not happen for creating tasks
-            e.printStackTrace();
+            assert false;
         }
     }
 }

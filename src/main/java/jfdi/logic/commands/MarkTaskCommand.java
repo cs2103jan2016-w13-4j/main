@@ -65,7 +65,7 @@ public class MarkTaskCommand extends Command {
                     logger.warning("Task " + id + " is already completed.");
                 } catch (InvalidIdException e) {
                     // Should not happen!
-                    e.printStackTrace();
+                    assert false;
                 }
             });
             eventBus.post(new MarkTaskDoneEvent(taskIds, markedTasks));

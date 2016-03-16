@@ -57,7 +57,7 @@ public class RenameTaskCommand extends Command {
             eventBus.post(new RenameTaskFailEvent(taskId, description, RenameTaskFailEvent.Error.NON_EXISTENT_ID));
         } catch (InvalidTaskParametersException e) {
             // Should not happen
-            e.printStackTrace();
+            assert false;
         } catch (NoAttributesChangedException e) {
             eventBus.post(new RenameTaskFailEvent(taskId, description, RenameTaskFailEvent.Error.NO_CHANGES));
         }

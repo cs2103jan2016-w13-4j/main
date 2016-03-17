@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  */
 public class UnmarkTaskCommand extends Command {
 
-    private static final Logger logger = JfdiLogger.getLogger();
+    private static final Logger LOGGER = JfdiLogger.getLogger();
 
     private ArrayList<Integer> taskIds;
 
@@ -62,10 +62,9 @@ public class UnmarkTaskCommand extends Command {
                     unmarkedTasks.add(taskdb.getById(id));
                     taskdb.markAsIncomplete(id);
                 } catch (NoAttributesChangedException e) {
-                    logger.warning("Task " + id + " was not completed.");
+                    LOGGER.warning("Task " + id + " was not completed.");
                 } catch (InvalidIdException e) {
-                    // Should not happen!
-                    e.printStackTrace();
+                    assert false;
                 }
             });
             eventBus.post(new UnmarkTaskDoneEvent(taskIds, unmarkedTasks));

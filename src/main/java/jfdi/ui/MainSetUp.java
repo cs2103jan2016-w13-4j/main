@@ -1,6 +1,7 @@
 package jfdi.ui;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +11,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import jfdi.common.utilities.JfdiLogger;
 
 public class MainSetUp extends Application {
 
@@ -18,6 +20,7 @@ public class MainSetUp extends Application {
     private Parent rootLayout;
     private AnchorPane listLayout;
     private MainController controller;
+    private Logger logger;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -25,7 +28,7 @@ public class MainSetUp extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("JFDI");
 
-        //setStageTransparent();
+        setLogger();
         loadFonts(); // if any
         initRootLayout();
         initView();
@@ -40,9 +43,10 @@ public class MainSetUp extends Application {
      *** LEVEL 1 Abstraction ***
      ***************************/
 
-    /*private void setStageTransparent() {
-        this.primaryStage.initStyle(StageStyle.TRANSPARENT);
-    }*/
+    private void setLogger() {
+        logger = JfdiLogger.getLogger();
+
+    }
 
     private void loadFonts() {
         // Implement when team decides to specific font types that needs to be loaded
@@ -53,6 +57,7 @@ public class MainSetUp extends Application {
     private void initRootLayout() throws IOException {
 
         rootLayout = (BorderPane) FXMLLoader.load(getClass().getResource(Constants.MAIN_ROOT_PATH));
+        logger.fine(String.format(Constants.LOG_FXML_PATH, "RootLayout.fxml", Constants.MAIN_ROOT_PATH));
 
         // Display scene with root layout
         Scene scene = new Scene(rootLayout);
@@ -72,6 +77,7 @@ public class MainSetUp extends Application {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(Constants.MAIN_LIST_PATH));
         listLayout = (AnchorPane) loader.load();
+        logger.fine(String.format(Constants.LOG_FXML_PATH, "ListLayout.fxml", Constants.MAIN_LIST_PATH));
 
         // Initialize Controller
         controller = loader.getController();
@@ -98,7 +104,7 @@ public class MainSetUp extends Application {
                 e.printStackTrace();
             }
         }*/
-        controller.importantList.removeAll(controller.importantList);
+        //controller.importantList.removeAll(controller.importantList);
 
         controller.displayList();
         ui.displayWelcome();

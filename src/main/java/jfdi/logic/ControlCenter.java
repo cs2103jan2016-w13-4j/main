@@ -29,8 +29,6 @@ public class ControlCenter implements ILogic {
 
     @Override
     public void handleInput(String input) {
-        // TODO: Integrate when parser is ready.
-        // Right now it is using a DummyParser
         InputParser parser = InputParser.getInstance();
         Command command;
         try {

@@ -58,7 +58,7 @@ public class DeleteTaskCommand extends Command {
                     TaskDb.getInstance().destroy(id);
                 } catch (InvalidIdException e) {
                     // Should not happen
-                    e.printStackTrace();
+                    assert false;
                 }
             });
             eventBus.post(new DeleteTaskDoneEvent(taskIds, deletedTasks));

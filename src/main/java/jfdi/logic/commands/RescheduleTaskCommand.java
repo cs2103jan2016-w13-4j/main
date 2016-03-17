@@ -66,7 +66,7 @@ public class RescheduleTaskCommand extends Command {
                 RescheduleTaskFailEvent.Error.NON_EXISTENT_ID));
         } catch (InvalidTaskParametersException e) {
             // Should not happen
-            e.printStackTrace();
+            assert false;
         } catch (NoAttributesChangedException e) {
             eventBus.post(new RescheduleTaskFailEvent(taskId, startDateTime, endDateTime,
                 RescheduleTaskFailEvent.Error.NO_CHANGES));

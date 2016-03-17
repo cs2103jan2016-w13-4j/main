@@ -268,6 +268,7 @@ public class DateTimeParser {
     }
 
     public static void main(String[] args) throws Exception {
+        assert false;
         DateTimeParser parser = DateTimeParser.getInstance();
         System.out.println(parser.parseDateTime("From 25/11/94 3pm to 5pm")
             .getEndDateTime());

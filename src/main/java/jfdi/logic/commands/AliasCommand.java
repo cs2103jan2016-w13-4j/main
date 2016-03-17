@@ -16,16 +16,19 @@ public class AliasCommand extends Command {
 
     private String command;
     private String alias;
+    private boolean isValid;
 
     private AliasCommand(Builder builder) {
         this.command = builder.command;
         this.alias = builder.alias;
+        this.isValid = builder.isValid;
     }
 
     public static class Builder {
 
         String command;
         String alias;
+        boolean isValid;
 
         public Builder setCommand(String command) {
             this.command = command;
@@ -34,6 +37,11 @@ public class AliasCommand extends Command {
 
         public Builder setAlias(String alias) {
             this.alias = alias;
+            return this;
+        }
+
+        public Builder setIsValid(boolean isValid) {
+            this.isValid = isValid;
             return this;
         }
 
@@ -48,12 +56,15 @@ public class AliasCommand extends Command {
         AliasAttributes newAlias = new AliasAttributes(alias, command);
         try {
             newAlias.save();
-            InputParser.getInstance().setAliases(AliasDb.getInstance().getAll());
+            InputParser.getInstance()
+                .setAliases(AliasDb.getInstance().getAll());
             eventBus.post(new AliasDoneEvent(command, alias));
         } catch (InvalidAliasParametersException e) {
-            eventBus.post(new AliasFailEvent(command, alias, AliasFailEvent.Error.INVALID_PARAMETERS));
+            eventBus.post(new AliasFailEvent(command, alias,
+                AliasFailEvent.Error.INVALID_PARAMETERS));
         } catch (DuplicateAliasException e) {
-            eventBus.post(new AliasFailEvent(command, alias, AliasFailEvent.Error.DUPLICATED_ALIAS));
+            eventBus.post(new AliasFailEvent(command, alias,
+                AliasFailEvent.Error.DUPLICATED_ALIAS));
         }
     }
 }

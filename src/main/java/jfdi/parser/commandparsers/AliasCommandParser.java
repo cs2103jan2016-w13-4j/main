@@ -41,10 +41,18 @@ public class AliasCommandParser extends AbstractCommandParser {
 
         alias = getAlias(input);
 
+        if (isPartOfCommandKeyword(alias)) {
+            builder.setIsValid(false);
+        }
+
         builder.setCommand(command);
         builder.setAlias(alias);
 
         return builder.build();
+    }
+
+    private boolean isPartOfCommandKeyword(String alias) {
+        return ParserUtils.getCommandType(alias) != CommandType.invalid;
     }
 
     /**

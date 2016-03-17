@@ -1,16 +1,10 @@
 package jfdi.parser.commandparsers;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import jfdi.logic.commands.AliasCommandStub.Builder;
+import jfdi.logic.commands.AliasCommand.Builder;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
 import jfdi.parser.Constants.CommandType;
 import jfdi.parser.ParserUtils;
-import jfdi.parser.exceptions.InvalidAliasException;
-import jfdi.parser.exceptions.InvalidCommandException;
-import jfdi.storage.apis.AliasAttributes;
 
 /**
  * The AliasCommandParser class takes in a user input representing an "Alias"
@@ -23,18 +17,14 @@ import jfdi.storage.apis.AliasAttributes;
  */
 public class AliasCommandParser extends AbstractCommandParser {
     public static AliasCommandParser instance;
-    private Collection<AliasAttributes> aliasAttributesList = new ArrayList<AliasAttributes>();
 
-    private AliasCommandParser(Collection<AliasAttributes> aliasAttributesList) {
-        this.aliasAttributesList = aliasAttributesList;
+    private AliasCommandParser() {
     }
 
-    public static AliasCommandParser getInstance(
-            Collection<AliasAttributes> aliasAttributesList) {
+    public static AliasCommandParser getInstance() {
         if (instance == null) {
-            return instance = new AliasCommandParser(aliasAttributesList);
+            return instance = new AliasCommandParser();
         }
-        instance.aliasAttributesList = aliasAttributesList;
         return instance;
     }
 
@@ -47,16 +37,12 @@ public class AliasCommandParser extends AbstractCommandParser {
         String command = null;
         String alias = null;
 
-        try {
-            command = getCommand(input);
-        } catch (InvalidCommandException e) {
-            return createInvalidCommand(Constants.CommandType.alias, input);
-        }
+        command = getCommand(input);
 
-        try {
-            alias = getAlias(input);
-        } catch (InvalidAliasException e) {
-            return createInvalidCommand(Constants.CommandType.alias, input);
+        alias = getAlias(input);
+
+        if (isPartOfCommandKeyword(alias)) {
+            builder.setIsValid(false);
         }
 
         builder.setCommand(command);
@@ -65,15 +51,37 @@ public class AliasCommandParser extends AbstractCommandParser {
         return builder.build();
     }
 
+    private boolean isPartOfCommandKeyword(String alias) {
+        return ParserUtils.getCommandType(alias) != CommandType.invalid;
+    }
+
+    /**
+     * This method checks to see if the format of the Alias command input is
+     * valid. In this case, a user input is considered valid if it is 3 words
+     * long.
+     *
+     * @param input
+     *            the Alias input.
+     * @return True if it is valid; false otherwise.
+     */
     private boolean isValidFormat(String input) {
         return input.split(Constants.REGEX_WHITESPACE).length == 3;
     }
 
-    private String getCommand(String input) throws InvalidCommandException {
+    /**
+     * This method extracts the command from the user input.
+     *
+     * @param input
+     *            the user input representing an alias command.
+     * @return the command.
+     */
+    private String getCommand(String input) {
+        // Following the established format of alias command inputs, the command
+        // type can be located as the second word.
         String secondWord = getSecondWord(input);
         CommandType commandType = ParserUtils.getCommandType(secondWord);
         if (commandType == CommandType.invalid) {
-            throw new InvalidCommandException(commandType.toString());
+            return null;
         }
         return commandType.toString();
     }
@@ -84,16 +92,9 @@ public class AliasCommandParser extends AbstractCommandParser {
      * @param input
      *            the user input representing an alias command.
      * @return the alias.
-     * @throws InvalidAliasException
-     *             if the alias is already in use.
      */
-    private String getAlias(String input) throws InvalidAliasException {
+    private String getAlias(String input) {
         String alias = getThirdWord(input);
-        for (AliasAttributes att : aliasAttributesList) {
-            if (alias.equals(att.getAlias())) {
-                throw new InvalidAliasException(input);
-            }
-        }
         return alias;
     }
 

@@ -2,11 +2,9 @@ package jfdi.parser.commandparsers;
 
 import java.util.ArrayList;
 
-import jfdi.logic.commands.MarkTaskCommandStub;
-import jfdi.logic.commands.MarkTaskCommandStub.Builder;
+import jfdi.logic.commands.MarkTaskCommand;
+import jfdi.logic.commands.MarkTaskCommand.Builder;
 import jfdi.logic.interfaces.Command;
-import jfdi.parser.Constants.CommandType;
-import jfdi.parser.exceptions.NoTaskIdFoundException;
 
 /**
  * The MarkCommandParser class is used to parse a given 'Mark' user input. The
@@ -48,13 +46,9 @@ public class MarkCommandParser extends AbstractCommandParser {
     public Command build(String input) {
         Builder markTaskCommandBuilder = new Builder();
         ArrayList<Integer> taskIds;
-        try {
-            taskIds = getTaskIds(input);
-        } catch (NoTaskIdFoundException e) {
-            return createInvalidCommand(CommandType.mark, input);
-        }
-        markTaskCommandBuilder.addIds(taskIds);
-        MarkTaskCommandStub markTaskCommand = markTaskCommandBuilder.build();
+        taskIds = getTaskIds(input);
+        markTaskCommandBuilder.addTaskIds(taskIds);
+        MarkTaskCommand markTaskCommand = markTaskCommandBuilder.build();
         return markTaskCommand;
     }
 

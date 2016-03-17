@@ -1,13 +1,8 @@
 package jfdi.parser.commandparsers;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import jfdi.logic.commands.UnaliasCommandStub.Builder;
+import jfdi.logic.commands.UnaliasCommand.Builder;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
-import jfdi.parser.exceptions.InvalidAliasException;
-import jfdi.storage.apis.AliasAttributes;
 
 /**
  * The UnaliasCommandParser class takes in a user input representing an "Alias"
@@ -20,18 +15,14 @@ import jfdi.storage.apis.AliasAttributes;
  */
 public class UnaliasCommandParser extends AbstractCommandParser {
     public static UnaliasCommandParser instance;
-    private Collection<AliasAttributes> aliasAttributesList = new ArrayList<AliasAttributes>();
 
-    private UnaliasCommandParser(Collection<AliasAttributes> aliasAttributesList) {
-        this.aliasAttributesList = aliasAttributesList;
+    private UnaliasCommandParser() {
     }
 
-    public static UnaliasCommandParser getInstance(
-            Collection<AliasAttributes> aliasAttributesList) {
+    public static UnaliasCommandParser getInstance() {
         if (instance == null) {
-            return instance = new UnaliasCommandParser(aliasAttributesList);
+            return instance = new UnaliasCommandParser();
         }
-        instance.aliasAttributesList = aliasAttributesList;
         return instance;
     }
 
@@ -43,11 +34,7 @@ public class UnaliasCommandParser extends AbstractCommandParser {
         }
         String alias = null;
 
-        try {
-            alias = getAlias(input);
-        } catch (InvalidAliasException e) {
-            return createInvalidCommand(Constants.CommandType.alias, input);
-        }
+        alias = getAlias(input);
 
         builder.setAlias(alias);
 
@@ -66,7 +53,7 @@ public class UnaliasCommandParser extends AbstractCommandParser {
     private boolean isValidFormat(String input) {
         String[] inputAsArray = input.split(Constants.REGEX_WHITESPACE);
         return inputAsArray.length == 2
-                && inputAsArray[0].equals(Constants.REGEX_UNALIAS);
+            && inputAsArray[0].equals(Constants.REGEX_UNALIAS);
     }
 
     /**
@@ -78,17 +65,12 @@ public class UnaliasCommandParser extends AbstractCommandParser {
      *            the input string from which the alias that is to be removed is
      *            found.
      * @return the alias to be removed.
-     * @throws InvalidAliasException
-     *             if the alias found is not in the list of aliases.
      */
-    private String getAlias(String input) throws InvalidAliasException {
+    private String getAlias(String input) {
+        assert isValidFormat(input);
+
         String alias = getSecondWord(input);
-        for (AliasAttributes att : aliasAttributesList) {
-            if (alias.equals(att.getAlias())) {
-                return alias;
-            }
-        }
-        throw new InvalidAliasException(input);
+        return alias;
     }
 
     private String getSecondWord(String input) {

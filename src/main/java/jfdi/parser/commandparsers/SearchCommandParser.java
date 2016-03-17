@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import jfdi.logic.commands.SearchCommandStub;
+import jfdi.logic.commands.SearchCommand;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
 import jfdi.parser.Constants.CommandType;
@@ -27,7 +27,7 @@ public class SearchCommandParser extends AbstractCommandParser {
 
     public static SearchCommandParser getInstance() {
         return instance == null ? instance = new SearchCommandParser()
-                : instance;
+            : instance;
     }
 
     @Override
@@ -39,14 +39,14 @@ public class SearchCommandParser extends AbstractCommandParser {
      * @return the SearchCommand object encapsulating the keywords of the search command.
      */
     public Command build(String input) {
-        SearchCommandStub.Builder builder = new SearchCommandStub.Builder();
+        SearchCommand.Builder builder = new SearchCommand.Builder();
         Collection<String> keywords = new HashSet<String>();
         try {
             keywords = getKeywords(input);
         } catch (InvalidInputException e) {
             return createInvalidCommand(CommandType.search, input);
         }
-        builder.setKeywords(keywords);
+        builder.addKeywords(keywords);
         return builder.build();
     }
 
@@ -62,7 +62,7 @@ public class SearchCommandParser extends AbstractCommandParser {
      *             empty to begin with.
      */
     private Collection<String> getKeywords(String input)
-            throws InvalidInputException {
+        throws InvalidInputException {
         if (input == null || input.isEmpty()) {
             throw new InvalidInputException(input);
         }

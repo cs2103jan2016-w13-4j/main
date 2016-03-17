@@ -10,7 +10,6 @@ import jfdi.logic.commands.InvalidCommand;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
 import jfdi.parser.Constants.CommandType;
-import jfdi.parser.exceptions.NoTaskIdFoundException;
 
 public abstract class AbstractCommandParser {
     protected String userInput;
@@ -20,7 +19,7 @@ public abstract class AbstractCommandParser {
     protected List<String> getArguments(String input) {
         List<String> arguments = new ArrayList<String>();
         arguments.addAll(Arrays.asList(input.trim().split(
-                Constants.REGEX_WHITESPACE)));
+            Constants.REGEX_WHITESPACE)));
         return arguments;
     }
 
@@ -37,7 +36,7 @@ public abstract class AbstractCommandParser {
      * @return the trimmed substring
      */
     protected String getTrimmedSubstringInRange(String input, int startIndex,
-            int endIndex) {
+        int endIndex) {
         return input.substring(startIndex, endIndex).trim();
     }
 
@@ -50,23 +49,16 @@ public abstract class AbstractCommandParser {
      *            the String from which task IDs are found and extracted.
      * @return an ArrayList of task IDs, all Strings. If no task IDs can be
      *         found, an empty ArrayList is returned.
-     * @throws NoTaskIdFoundException
-     *             if a non-integer taskId is found.
      */
-    protected ArrayList<Integer> getTaskIds(String input)
-            throws NoTaskIdFoundException {
+    protected ArrayList<Integer> getTaskIds(String input) {
         Pattern pattern = Pattern.compile(Constants.REGEX_TASKID);
         Matcher matcher = pattern.matcher(input);
         ArrayList<Integer> taskIds = new ArrayList<>();
 
         while (matcher.find()) {
             String taskId = getTrimmedSubstringInRange(input, matcher.start(),
-                    matcher.end());
-            try {
-                taskIds.add(toInteger(taskId));
-            } catch (NumberFormatException e) {
-                throw new NoTaskIdFoundException(input);
-            }
+                matcher.end());
+            taskIds.add(toInteger(taskId));
         }
 
         return taskIds;
@@ -115,7 +107,7 @@ public abstract class AbstractCommandParser {
      *         invalid user's input, and the user's input itself.
      */
     protected InvalidCommand createInvalidCommand(CommandType commandType,
-            String inputString) {
+        String inputString) {
         InvalidCommand.Builder invalidCommandBuilder = new InvalidCommand.Builder();
         invalidCommandBuilder.setInputString(inputString);
         invalidCommandBuilder.setCommandType(commandType);

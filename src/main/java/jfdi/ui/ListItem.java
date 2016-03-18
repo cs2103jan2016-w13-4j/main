@@ -1,5 +1,6 @@
 package jfdi.ui;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import javafx.beans.property.BooleanProperty;
@@ -10,7 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import jfdi.storage.apis.TaskAttributes;
 
-public class ListItem extends HBox {
+public class ListItem extends HBox{
 
     @FXML
     private Label rowIndex;
@@ -50,32 +51,42 @@ public class ListItem extends HBox {
         return this.index;
     }
 
-    public final void setItem(TaskAttributes task) {
+    public void setItem(TaskAttributes task) {
         this.item = task;
-        description.setText(item.getDescription());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy h:mma");
-
-        if (item.getStartDateTime() == null && item.getEndDateTime() == null) {
-            // Floating Tasks
-            timeAndDate.setText(Constants.ITEM_NO_TIMEDATE);
-        } else if (item.getStartDateTime() == null && item.getEndDateTime() != null) {
-            // Deadline Tasks
-            timeAndDate.setText(String.format(Constants.ITEM_DEADLINE,
-                    formatter.format(item.getEndDateTime())));
-        } else if (item.getStartDateTime() != null && item.getEndDateTime() == null) {
-            // Point Tasks
-            timeAndDate.setText(String.format(Constants.ITEM_POINT_TASK,
-                    formatter.format(item.getStartDateTime())));
-        } else if (item.getStartDateTime() != null && item.getEndDateTime() != null) {
-            // Event Tasks
-            timeAndDate.setText(String.format(Constants.ITEM_EVENT_TASK,
-                    formatter.format(item.getStartDateTime()),
-                    formatter.format(item.getEndDateTime())));
-        }
+        setDescription(item.getDescription());
+        setTimeDate(task.getStartDateTime(), task.getEndDateTime());
     }
 
     public TaskAttributes getItem() {
         return this.item;
+    }
+
+    public void setDescription(String string) {
+        description.setText(string);
+    }
+
+    public void setTimeDate(LocalDateTime startTime, LocalDateTime endTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy h:mma");
+        if (startTime == null) {
+            if (endTime == null) {
+                // Floating Tasks
+                timeAndDate.setText(Constants.ITEM_NO_TIMEDATE);
+            } else {
+                // Deadline Tasks
+                String end= formatter.format(endTime);
+                timeAndDate.setText(String.format(Constants.ITEM_DEADLINE, end));
+            }
+        } else {
+            String start = formatter.format(startTime);
+            if (endTime == null) {
+                // Point Tasks
+                timeAndDate.setText(String.format(Constants.ITEM_POINT_TASK, start));
+            } else {
+                // Event Tasks
+                String end= formatter.format(endTime);
+                timeAndDate.setText(String.format(Constants.ITEM_EVENT_TASK, start, end));
+            }
+        }
     }
 
     public final BooleanProperty onProperty() {

@@ -150,7 +150,7 @@ public class MainController {
                             protected void updateItem(ListItem item, boolean bln) {
                                 super.updateItem(item, bln);
                                 if (item != null) {
-                                    setText(item.toString());
+                                    setItem(item);
                                 }
                             }
                         };

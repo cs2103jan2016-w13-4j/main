@@ -96,15 +96,7 @@ public class MainSetUp extends Application {
         controller.setMainApp(this);
         controller.setCmdHandler(cmdHandler);
 
-        // This is for clearing database
-        /*for (TaskAttributes task : TaskDb.getAll()) {
-            try {
-                TaskDb.destroy(task.getId());
-            } catch (InvalidIdException e) {
-                e.printStackTrace();
-            }
-        }*/
-        //controller.importantList.removeAll(controller.importantList);
+        controller.importantList.removeAll(controller.importantList);
 
         controller.displayList();
         ui.displayWelcome();

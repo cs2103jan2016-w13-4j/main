@@ -35,6 +35,8 @@ public class CommandHandler {
         }
 
         controller.importantList.clear();
+        controller.indexMapId.clear();
+
         int count = 1;
         for (TaskAttributes item : e.getItems()) {
             ListItem listItem = new ListItem(count, item, false);
@@ -62,6 +64,7 @@ public class CommandHandler {
     @Subscribe
     public void handleExitCalledEvent(ExitCalledEvent e) {
         System.out.printf("\nMoriturus te saluto.\n");
+        System.exit(0);
         logger.fine(Constants.LOG_USER_EXIT);
     }
 
@@ -103,35 +106,35 @@ public class CommandHandler {
         ArrayList<Integer> deletedIds = e.getDeletedIds();
         Collections.sort(deletedIds);
 
-        int count = 0;
+        int indexCount = 0;
         for (Integer num : deletedIds) {
-            if (controller.indexMapId.get(count) == num) {
-                controller.importantList.remove(count);
-                controller.indexMapId.remove(count);
-                controller.relayFb(String.format(Constants.CMD_SUCCESS_DELETED, count + 1), MsgType.SUCCESS);
+            if (controller.indexMapId.get(indexCount) == num) {
+                controller.importantList.remove(indexCount);
+                controller.indexMapId.remove(indexCount);
+                controller.relayFb(String.format(Constants.CMD_SUCCESS_DELETED, indexCount + 1), MsgType.SUCCESS);
                 logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, num));
             } else {
-                count++;
+                indexCount++;
             }
         }
 
-        count = 1;
+        /*indexCount = 1;
         logger.fine(Constants.LOG_UI_LIST);
         for (ListItem item : controller.importantList) {
-            if (item.getIndex() == count) {
-                count++;
+            if (item.getIndex() == indexCount) {
+                indexCount++;
             } else {
-                controller.importantList.get(count - 1).setIndex(count);
-                count++;
+                controller.importantList.get(indexCount - 1).setIndex(indexCount);
+                indexCount++;
             }
             logger.fine(item.toString());
-        }
+        }*/
 
-        count = 1;
+        indexCount = 1;
         logger.fine(Constants.LOG_LOGIC_LIST);
         for (Integer num : controller.indexMapId) {
-            logger.fine("Index " + count + " => ID" + num);
-            count++;
+            logger.fine("Index " + indexCount + " => ID" + num);
+            indexCount++;
         }
     }
 
@@ -158,7 +161,7 @@ public class CommandHandler {
         int count = 0;
         for (Integer id : controller.indexMapId) {
             if (id == task.getId()) {
-                controller.importantList.get(count).setItem(task);
+                controller.importantList.get(count).setDescription(task.getDescription());
                 break;
             }
             count++;
@@ -195,10 +198,7 @@ public class CommandHandler {
         int count = 0;
         for (Integer id : controller.indexMapId) {
             if (id == e.getTaskId()) {
-                controller.importantList.get(count).getItem()
-                .setStartDateTime(e.getStartDateTime());
-                controller.importantList.get(count).getItem()
-                .setEndDateTime(e.getEndDateTime());
+                controller.importantList.get(count).setTimeDate(e.getStartDateTime(), e.getEndDateTime());
                 break;
             }
             count++;

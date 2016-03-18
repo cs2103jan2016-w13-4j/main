@@ -35,10 +35,6 @@ public class UI implements IUserInterface {
     @Override
     public void processInput(String input) {
 
-        if (input.equalsIgnoreCase("QUIT")) {
-            doQuit();
-        }
-
         // Clear controller first
         controller.clearCmdArea();
         controller.clearFb();
@@ -103,11 +99,6 @@ public class UI implements IUserInterface {
     public void relayToLogic(String input) {
         // Relay user input to logic and wait for reply
         logic.handleInput(input);
-    }
-
-    private void doQuit() {
-        showToUser(Constants.UI_MESSAGE_QUIT);
-        System.exit(0);
     }
 
     public static EventBus getEventBus() {

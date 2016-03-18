@@ -158,7 +158,7 @@ public class CommandHandler {
         int count = 0;
         for (Integer id : controller.indexMapId) {
             if (id == task.getId()) {
-                controller.importantList.get(count).setTask(task);
+                controller.importantList.get(count).setItem(task);
                 break;
             }
             count++;

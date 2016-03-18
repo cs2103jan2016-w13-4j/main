@@ -58,7 +58,15 @@ public class MainController {
         initUpcomingList();
         initFbArea();
         initCmdArea();
+        initHelpList();
 
+    }
+
+    public void hideOverlays() {
+        //noTaskOverlay.toBack();
+        //helpOverlay.toBack();
+        //noTaskOverlay.setOpacity(0);
+        //helpOverlay.setOpacity(0);
     }
 
     public void clearCmdArea() {
@@ -181,6 +189,33 @@ public class MainController {
         disableScrollBarCmd();
     }
 
+    private void initHelpList() {
+        /*        helpList = FXCollections.observableArrayList();
+        helpList.add(new HelpBox(HELP_ADD_DESC, HELP_ADD_COMMAND));
+        helpList.add(new HelpBox(HELP_EDIT_DESC, HELP_EDIT_COMMAND));
+        helpList.add(new HelpBox(HELP_DELETE_DESC, HELP_DELETE_COMMAND));
+        helpList.add(new HelpBox(HELP_COMPLETE_DESC, HELP_COMPLETE_COMMAND));
+        helpList.add(new HelpBox(HELP_INCOMPLETE_DESC, HELP_INCOMPLETE_COMMAND));
+        helpList.add(new HelpBox(HELP_UNDO_DESC, HELP_UNDO_COMMAND));
+        helpList.add(new HelpBox(HELP_SET_SAVE_LOCATION_DESC,
+                                 HELP_SET_SAVE_LOCATION_COMMAND));
+        helpList.add(new HelpBox(HELP_MOVE_SAVE_LOCATION_DESC,
+                                 HELP_MOVE_SAVE_LOCATION_COMMAND));
+        helpList.add(new HelpBox(HELP_SEARCH_DESC, HELP_SEARCH_COMMAND));
+        helpList.add(new HelpBox(HELP_DISPLAY_INCOMPLETE_DESC,
+                                 HELP_DISPLAY_INCOMPLETE_COMMAND));
+        helpList.add(new HelpBox(HELP_DISPLAY_COMPLETE_DESC,
+                                 HELP_DISPLAY_COMPLETE_COMMAND));
+        helpList.add(new HelpBox(HELP_EXIT_DESC, HELP_EXIT_COMMAND));*/
+    }
+
+    private void initHelpOverlay() {
+        /*        helpOverlay.toFront();
+        helpOverlayIcon.setText(HELP_OVERLAY_ICON);
+        helpOverlayTitle.setText(HELP_OVERLAY_TITLE);
+        helpOverlayContents.setItems(helpList);*/
+    }
+
     /***************************
      *** LEVEL 2 Abstraction ***
      ***************************/
@@ -224,8 +259,8 @@ public class MainController {
      */
     private void disableScrollBarFb() {
         fbArea.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (cmdArea.lookup(".scroll-bar") != null) {
-                ScrollBar scrollBarv = (ScrollBar) cmdArea.lookup(".scroll-bar");
+            if (fbArea.lookup(".scroll-bar") != null) {
+                ScrollBar scrollBarv = (ScrollBar) fbArea.lookup(".scroll-bar");
                 scrollBarv.setDisable(false);
                 scrollBarv.setId("command-scroll-bar");
             }

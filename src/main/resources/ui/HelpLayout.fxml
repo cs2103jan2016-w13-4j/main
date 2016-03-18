@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root alignment="CENTER_LEFT" prefWidth="350.0" styleClass="helpLayout" type="HBox" 
+	xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="jfdi.ui.HelpLayout">
+   <children>
+      <Label fx:id="description" focusTraversable="false" text="Description" />
+      <HBox alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="command" alignment="CENTER_RIGHT" focusTraversable="false" nodeOrientation="LEFT_TO_RIGHT" text="Command" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+   </children>
+</fx:root>

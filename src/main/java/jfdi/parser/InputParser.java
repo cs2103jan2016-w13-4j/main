@@ -75,6 +75,11 @@ public class InputParser implements IParser {
         buildAliasMap();
     }
 
+    @Override
+    public String getAllCommandRegexes() {
+        return String.join("|", Constants.COMMAND_REGEXES);
+    }
+
     /**
      * This method builds a mapping of aliases to their corresponding command
      * types (represented as strings).

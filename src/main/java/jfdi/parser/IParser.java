@@ -39,4 +39,13 @@ public interface IParser {
      *            a collection of AliasAttributes, earlier defined by the user
      */
     void setAliases(Collection<AliasAttributes> aliases);
+
+    /**
+     * This method returns a concatenated string of all command regexes, as
+     * found in Constants.Java. All command regexes are seperated by a '|'
+     * delimiter.
+     *
+     * @return a string of all command regexes.
+     */
+    String getAllCommandRegexes();
 }

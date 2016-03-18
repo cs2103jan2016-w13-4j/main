@@ -5,6 +5,7 @@ import jfdi.logic.interfaces.Command;
 import jfdi.logic.interfaces.ILogic;
 import jfdi.parser.InputParser;
 import jfdi.parser.exceptions.InvalidInputException;
+import jfdi.storage.apis.AliasDb;
 import jfdi.storage.apis.MainStorage;
 import jfdi.storage.exceptions.FilesReplacedException;
 
@@ -16,11 +17,8 @@ public class ControlCenter implements ILogic {
     private static ControlCenter ourInstance = new ControlCenter();
 
     private ControlCenter() {
-        try {
-            MainStorage.getInstance().initialize();
-        } catch (FilesReplacedException e) {
-            e.printStackTrace();
-        }
+        initStorage();
+        initParser();
     }
 
     public static ControlCenter getInstance() {
@@ -37,5 +35,17 @@ public class ControlCenter implements ILogic {
             command = new InvalidCommand.Builder().build();
         }
         command.execute();
+    }
+
+    private void initStorage() {
+        try {
+            MainStorage.getInstance().initialize();
+        } catch (FilesReplacedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initParser() {
+        InputParser.getInstance().setAliases(AliasDb.getInstance().getAll());
     }
 }

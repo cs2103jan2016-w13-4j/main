@@ -419,6 +419,7 @@ public class TaskDb implements IDatabase {
 
         String persistedJsonData = FileManager.readFileToString(filePath);
         Task[] taskArray = Serializer.deserialize(persistedJsonData, Task[].class);
+        taskArray = validateTaskArray(taskArray);
 
         if (taskArray == null) {
             String movedTo = FileManager.backupAndRemove(filePath);
@@ -429,6 +430,29 @@ public class TaskDb implements IDatabase {
         }
 
         return null;
+    }
+
+    /**
+     * This method validates an entire array of tasks. If any of the tasks
+     * within are invalid, null is returned. Otherwise, the original array is
+     * returned.
+     *
+     * @param taskArray
+     *            the array that is to be validated
+     * @return taskArray if the entire array of tasks are valid, null otherwise
+     */
+    private Task[] validateTaskArray(Task[] taskArray) {
+        if (taskArray == null) {
+            return null;
+        }
+
+        for (Task task : taskArray) {
+            if (!(new TaskAttributes(task).isValid())) {
+                return null;
+            }
+        }
+
+        return taskArray;
     }
 
     /**

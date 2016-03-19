@@ -12,6 +12,7 @@ import jfdi.storage.Constants;
 import jfdi.storage.apis.MainStorage;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
+import jfdi.storage.exceptions.FilePathPair;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
 import jfdi.storage.serializer.Serializer;
@@ -101,6 +102,7 @@ public class TaskDbTest {
 
     @Test
     public void testSetAndGetFilePath() {
+        Path originalFilePath = taskDbInstance.getFilePath();
         Path subdirectory = Paths.get(testDirectory.toString(), Constants.TEST_SUBDIRECTORY_NAME);
         Path expectedTaskPath = Paths.get(subdirectory.toString(), Constants.FILENAME_TASK);
 
@@ -109,7 +111,7 @@ public class TaskDbTest {
         assertEquals(expectedTaskPath, taskDbInstance.getFilePath());
 
         // Reset back to the original file path
-        taskDbInstance.setFilePath(testDirectoryString);
+        taskDbInstance.setFilePath(originalFilePath.getParent().toString());
     }
 
     @Test
@@ -254,12 +256,22 @@ public class TaskDbTest {
 
         // Create the data file and load from it
         TestHelper.createTaskFileWith(testDirectoryString, json);
-        taskDbInstance.load();
+        FilePathPair filesReplaced = taskDbInstance.load();
+
+        // No files should have been replaced
+        assertNull(filesReplaced);
 
         // Check that the original task exists
         assertEquals(taskDbInstance.getAll().size(), 1);
         TaskAttributes retrievedTaskAttributes = taskDbInstance.getById(taskAttributes.getId());
         assertEquals(retrievedTaskAttributes.getDescription(), Constants.TEST_TASK_DESCRIPTION_1);
+    }
+
+    @Test
+    public void testLoadFromInvalidData() throws Exception {
+        TestHelper.createInvalidTaskFile(testDirectoryString);
+        FilePathPair filesReplaced = taskDbInstance.load();
+        assertNotNull(filesReplaced);
     }
 
     @Test(expected = InvalidIdException.class)

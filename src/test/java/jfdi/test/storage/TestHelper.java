@@ -57,6 +57,18 @@ public class TestHelper {
     }
 
     /**
+     * This method creates a single valid task with the task's description set
+     * as the first test task description.
+     *
+     * @param directoryPath
+     *            the directory that holds the program data
+     */
+    public static void createInvalidTaskFile(String directoryPath) {
+        String taskJson = "[{\"id\": 1,\"tags\": [],\"reminders\": [],\"isCompleted\": false}]";
+        createTaskFileWith(directoryPath, taskJson);
+    }
+
+    /**
      * This method creates a task file with the given data in the given
      * directory path that stores the program data.
      *

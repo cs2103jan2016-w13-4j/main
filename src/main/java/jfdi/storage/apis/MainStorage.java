@@ -76,7 +76,6 @@ public class MainStorage implements IStorage {
             throw new IllegalAccessException(Constants.MESSAGE_UNINITIALIZED_STORAGE);
         }
 
-        DatabaseManager.persistAll();
         load(getDataDirectory(newStorageFolderPath));
         setPreferredDirectory(newStorageFolderPath);
         setCurrentDirectory(newStorageFolderPath);
@@ -89,8 +88,6 @@ public class MainStorage implements IStorage {
         if (!isInitialized) {
             throw new IllegalAccessException(Constants.MESSAGE_UNINITIALIZED_STORAGE);
         }
-
-        DatabaseManager.persistAll();
 
         String newDataDirectory = getDataDirectory(newStorageFolderPath);
         FileManager.prepareDirectory(newDataDirectory);

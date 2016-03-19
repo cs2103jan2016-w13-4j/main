@@ -147,14 +147,11 @@ public class MainStorageTest {
     @Test(expected = FilesReplacedException.class)
     public void testChangeDirectoryWithExistingInvalidFiles() throws Exception {
         initializeStorage();
+        TestHelper.createValidDataFiles(testDirectoryString);
         Path subdirectoryPath = Paths.get(testDirectoryString, Constants.TEST_SUBDIRECTORY_NAME);
         String subdirectoryString = subdirectoryPath.toString();
         TestHelper.createInvalidDataFiles(subdirectoryString);
         mainStorageInstance.changeDirectory(subdirectoryString);
-
-        // Check that the path to the new directory is saved
-        String preferredDirectory = mainStorageInstance.getPreferredDirectory();
-        assertEquals(preferredDirectory, subdirectoryString);
     }
 
     @Test

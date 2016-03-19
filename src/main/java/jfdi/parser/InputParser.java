@@ -13,6 +13,7 @@ import jfdi.parser.commandparsers.AddCommandParser;
 import jfdi.parser.commandparsers.AliasCommandParser;
 import jfdi.parser.commandparsers.DeleteCommandParser;
 import jfdi.parser.commandparsers.DirectoryCommandParser;
+import jfdi.parser.commandparsers.ExitCommandParser;
 import jfdi.parser.commandparsers.HelpCommandParser;
 import jfdi.parser.commandparsers.ListCommandParser;
 import jfdi.parser.commandparsers.MarkCommandParser;
@@ -178,6 +179,9 @@ public class InputParser implements IParser {
                 return isSingleWord(input) ? WildcardCommandParser
                     .getInstance().build(input) : AddCommandParser
                     .getInstance().build(input);
+            case exit:
+                return isSingleWord(input) ? ExitCommandParser.getInstance()
+                    .build(input) : AddCommandParser.getInstance().build(input);
             default:
                 return AddCommandParser.getInstance().build(input);
         }

@@ -74,7 +74,7 @@ public class AliasAttributes {
 
     private void validateAttributes() throws InvalidAliasParametersException,
         DuplicateAliasException {
-        if (alias == null || command == null || !isValidCommand(command)) {
+        if (alias == null || command == null || isValidCommand(alias) || !isValidCommand(command)) {
             throw new InvalidAliasParametersException(this);
         }
     }

@@ -28,6 +28,7 @@ public class AliasAttributesTest {
         MainStorage fileStorageInstance = MainStorage.getInstance();
         fileStorageInstance.load(testDirectory.toString());
         aliasDbInstance = AliasDb.getInstance();
+        AliasAttributes.setCommandRegex(Constants.TEST_COMMAND_REGEX);
     }
 
     @After
@@ -50,14 +51,20 @@ public class AliasAttributesTest {
     }
 
     @Test(expected = InvalidAliasParametersException.class)
-    public void testInvalidAliasSave() throws Exception {
+    public void testNullAliasSave() throws Exception {
         AliasAttributes aliasAttributes = new AliasAttributes(null, Constants.TEST_COMMAND);
         aliasAttributes.save();
     }
 
     @Test(expected = InvalidAliasParametersException.class)
-    public void testInvalidCommandSave() throws Exception {
+    public void testNullCommandSave() throws Exception {
         AliasAttributes aliasAttributes = new AliasAttributes(Constants.TEST_ALIAS, null);
+        aliasAttributes.save();
+    }
+
+    @Test(expected = InvalidAliasParametersException.class)
+    public void testInvalidCommandSave() throws Exception {
+        AliasAttributes aliasAttributes = new AliasAttributes(Constants.TEST_ALIAS, Constants.TEST_ALIAS);
         aliasAttributes.save();
     }
 

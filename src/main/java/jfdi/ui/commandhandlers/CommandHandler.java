@@ -103,9 +103,9 @@ public class CommandHandler {
                 indexCount++;
             }
             controller.importantList.remove(indexCount);
-            controller.relayFb(String.format(Constants.CMD_SUCCESS_DELETED, indexCount + 1), MsgType.SUCCESS);
             logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, num));
         }
+        controller.relayFb(Constants.CMD_SUCCESS_DELETED, MsgType.SUCCESS);
 
         indexCount = 1;
         for (ListItem item : controller.importantList) {
@@ -178,9 +178,9 @@ public class CommandHandler {
             }
             controller.importantList.get(indexCount).setMarkT();
             controller.importantList.get(indexCount).strikeOut();
-            controller.relayFb(String.format(Constants.CMD_SUCCESS_MARKED, indexCount + 1), MsgType.SUCCESS);
             //logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, num));
         }
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_MARKED, indexCount + 1), MsgType.SUCCESS);
     }
 
     @Subscribe
@@ -336,9 +336,9 @@ public class CommandHandler {
             }
             controller.importantList.get(indexCount).setMarkF();
             controller.importantList.get(indexCount).removeStrike();
-            controller.relayFb(String.format(Constants.CMD_SUCCESS_UNMARKED, indexCount + 1), MsgType.SUCCESS);
             //logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, num));
         }
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_UNMARKED, indexCount + 1), MsgType.SUCCESS);
     }
 
     @Subscribe

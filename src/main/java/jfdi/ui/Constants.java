@@ -48,14 +48,14 @@ public class Constants {
 
     public static final String CMD_SUCCESS_ADDED = "Task #%d - %s added! :)";
     public static final String CMD_SUCCESS_ALIAS = "Alias - %s - is created for command - %s -! :)";
-    public static final String CMD_SUCCESS_DELETED = "Task #%d deleted! :)";
+    public static final String CMD_SUCCESS_DELETED = "Task(s) deleted! :)";
     public static final String CMD_SUCCESS_LISTED = "Here is your requested list! :)";
-    public static final String CMD_SUCCESS_MARKED = "Task #%d is completed! Good job! :)";
+    public static final String CMD_SUCCESS_MARKED = "Task(s) completed! Good job! :)";
     public static final String CMD_SUCCESS_RENAMED = "Task #%d renamed to - %s -! :)";
     public static final String CMD_SUCCESS_RESCHEDULED = "Task #%d rescheduled! :)";
     public static final String CMD_SUCCESS_SEARCH = "Here are your search results! :)";
     public static final String CMD_SUCCESS_UNALIAS = "Alias - %s - is removed! :)";
-    public static final String CMD_SUCCESS_UNMARKED = "Task #%d is marked as imcomplete! :)";
+    public static final String CMD_SUCCESS_UNMARKED = "Task(s) marked as imcomplete! :)";
 
     public static final String CMD_WARNING_DONTKNOW = "Sorry, I do not understand what you mean by \"%s\" :(";
 

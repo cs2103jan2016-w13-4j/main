@@ -71,7 +71,7 @@ public class MainSetUp extends Application {
 
     private void initView() throws IOException {
 
-        IUserInterface ui = new UI();
+        IUserInterface ui = UI.getInstance();
 
         // Load View
         FXMLLoader loader = new FXMLLoader();

@@ -1,7 +1,6 @@
 package jfdi.logic.interfaces;
 
 import com.google.common.eventbus.EventBus;
-
 import jfdi.ui.UI;
 
 /**

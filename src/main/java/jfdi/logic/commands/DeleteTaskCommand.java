@@ -6,9 +6,6 @@ import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.InvalidIdException;
-import jfdi.ui.ListItem;
-import jfdi.ui.MainController;
-import jfdi.ui.MainSetUp;
 import jfdi.ui.UI;
 
 import java.util.ArrayList;

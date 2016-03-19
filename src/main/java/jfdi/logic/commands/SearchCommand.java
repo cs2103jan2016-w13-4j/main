@@ -1,14 +1,14 @@
 package jfdi.logic.commands;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.stream.Collectors;
-
 import jfdi.logic.events.SearchDoneEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.stream.Collectors;
 
 /**
  * @author Liu Xinan

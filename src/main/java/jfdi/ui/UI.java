@@ -8,9 +8,9 @@ import jfdi.ui.commandhandlers.CommandHandler;
 
 public class UI implements IUserInterface {
 
+    private static EventBus eventBus = new EventBus();
     public CommandHandler cmdHandler = new CommandHandler();
 
-    private static EventBus eventBus = new EventBus();
     private MainController controller;
     private ControlCenter logic;
 

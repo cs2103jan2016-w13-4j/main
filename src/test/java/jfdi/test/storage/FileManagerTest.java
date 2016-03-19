@@ -36,8 +36,9 @@ public class FileManagerTest {
     public static void setUpBeforeClass() throws Exception {
         testDirectoryRoot = Files.createTempDirectory(Constants.TEST_DIRECTORY_PREFIX);
         mainStorageInstance = MainStorage.getInstance();
-        mainStorageInstance.initialize();
         originalPreference = mainStorageInstance.getPreferredDirectory();
+        mainStorageInstance.setPreferredDirectory(testDirectoryRoot.toString());
+        mainStorageInstance.initialize();
     }
 
     @AfterClass

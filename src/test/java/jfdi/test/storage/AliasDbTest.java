@@ -36,8 +36,9 @@ public class AliasDbTest {
         aliasDbInstance = AliasDb.getInstance();
         AliasAttributes.setCommandRegex(Constants.TEST_COMMAND_REGEX);
         mainStorageInstance = MainStorage.getInstance();
-        mainStorageInstance.initialize();
         originalPreference = mainStorageInstance.getPreferredDirectory();
+        mainStorageInstance.setPreferredDirectory(testDirectoryString);
+        mainStorageInstance.initialize();
         mainStorageInstance.use(testDirectoryString);
     }
 

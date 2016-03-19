@@ -47,7 +47,7 @@ public class SearchCommand extends Command {
         ArrayList<TaskAttributes> results = allTasks.stream()
                 .filter(task -> {
                     for (String keyword : keywords) {
-                        if (task.getDescription().matches(String.format("\\b%s\\b", keyword))) {
+                        if (!task.getDescription().matches(String.format("(?i:.*\\b%s\\b.*)", keyword))) {
                             return false;
                         }
                     }

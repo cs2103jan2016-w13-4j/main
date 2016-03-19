@@ -36,7 +36,7 @@ public class UI implements IUserInterface {
     public void processInput(String input) {
 
         if (input.equalsIgnoreCase("QUIT")) {
-            doQuit();
+            System.exit(0);
         }
 
         // Clear controller first
@@ -77,7 +77,7 @@ public class UI implements IUserInterface {
 
     @Override
     public int getTaskId(int onScreenId) {
-        return controller.indexMapId.get(onScreenId - 1);
+        return controller.getIdFromIndex(onScreenId - 1);
     }
 
     @Override
@@ -103,11 +103,6 @@ public class UI implements IUserInterface {
     public void relayToLogic(String input) {
         // Relay user input to logic and wait for reply
         logic.handleInput(input);
-    }
-
-    private void doQuit() {
-        showToUser(Constants.UI_MESSAGE_QUIT);
-        System.exit(0);
     }
 
     public static EventBus getEventBus() {

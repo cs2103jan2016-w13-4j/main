@@ -12,8 +12,10 @@ public class Constants {
     public static final String UI_MESSAGE_ERROR = "Error: %1$s\n";
     public static final String UI_MESSAGE_QUIT = "Bye Bye! See you next time! :)\n";
 
-    public static final String MAIN_ROOT_PATH = "/ui/RootLayout.fxml";
-    public static final String MAIN_LIST_PATH = "/ui/ListLayout.fxml";
+    public static final String URL_ROOT_PATH = "/ui/RootLayout.fxml";
+    public static final String URL_LIST_PATH = "/ui/ListLayout.fxml";
+    public static final String URL_HELP_PATH = "/ui/HelpLayout.fxml";
+    public static final String URL_ITEM_PATH = "/ui/ListItem.fxml";
 
     public static final String CTRL_CMD_PROMPT_TEXT = "(Hey Jim! Please let me know what I can do for you!)";
     public static final String CTRL_CMD_SHOWLIST = "list";
@@ -24,19 +26,36 @@ public class Constants {
 
     public static final String CMD_ERROR_CANT_ADD_UNKNOWN = "Some stupid error occurred. Cannot add task!";
     public static final String CMD_ERROR_CANT_ADD_EMPTY = "Cannot add an empty task!";
-    public static final String CMD_ERROR_CANT_DELETE = "Some stupid error occurred. Cannot delete task!";
+    public static final String CMD_ERROR_CANT_ALIAS_INVALID = "- %s - is an invalid alias for - %s -";
+    public static final String CMD_ERROR_CANT_ALIAS_DUPLICATED = " - %s - is an duplicated alias.";
+    public static final String CMD_ERROR_CANT_ALIAS_UNKNOWN =
+            "Some stupid error occurred. Cannot create alias for - %s -!";
+    public static final String CMD_ERROR_CANT_DELETE_NO_ID = "Some stupid error occurred. Cannot delete task(s)!";
+    public static final String CMD_ERROR_CANT_DELETE_UNKNOWN = "Cannot delete task. The ID #%d does not exist!";
+    public static final String CMD_ERROR_CANT_MARK_NO_ID = "Cannot mark task as completed. The ID #%d does not exist!!";
+    public static final String CMD_ERROR_CANT_MARK_UNKNOWN = "Some stupid error occurred. Cannot mark task(s) as done!";
     public static final String CMD_ERROR_CANT_RENAME_UNKNOWN = "Some stupid error occurred. Cannot rename task!";
     public static final String CMD_ERROR_CANT_RENAME_NO_ID = "Cannot rename task. The ID #%d does not exist!";
     public static final String CMD_ERROR_CANT_RENAME_NO_CHANGES = "No difference between new and old name - %s -!";
     public static final String CMD_ERROR_CANT_RESCHEDULE_UNKNOWN = "Some error occurred. Cannot reschedule task!";
     public static final String CMD_ERROR_CANT_RESCHEDULE_NO_ID = "Cannot reschedule task. The ID #%d does not exist!";
     public static final String CMD_ERROR_CANT_RESCHEDULE_NO_CHANGES = "No difference between new and old schedule - ";
+    public static final String CMD_ERROR_CANT_UNALIAS_UNKNOWN = "Some error occurred. Cannot remove alias - %s -!";
+    public static final String CMD_ERROR_CANT_UNALIAS_NO_ALIAS =
+            "Cannot remove alias. The alias - %s - does not exist!";
+    public static final String CMD_ERROR_CANT_UNMARK_NO_ID = "Cannot unmark task. The ID #%d does not exist!!";
+    public static final String CMD_ERROR_CANT_UNMARK_UNKNOWN = "Some stupid error occurred. Cannot unmark task(s)!";
 
-    public static final String CMD_SUCCESS_LISTED = "Here is your requested list! :)";
     public static final String CMD_SUCCESS_ADDED = "Task #%d - %s added! :)";
+    public static final String CMD_SUCCESS_ALIAS = "Alias - %s - is created for command - %s -! :)";
     public static final String CMD_SUCCESS_DELETED = "Task #%d deleted! :)";
+    public static final String CMD_SUCCESS_LISTED = "Here is your requested list! :)";
+    public static final String CMD_SUCCESS_MARKED = "Task #%d is completed! Good job! :)";
     public static final String CMD_SUCCESS_RENAMED = "Task #%d renamed to - %s -! :)";
     public static final String CMD_SUCCESS_RESCHEDULED = "Task #%d rescheduled! :)";
+    public static final String CMD_SUCCESS_SEARCH = "Here are your search results! :)";
+    public static final String CMD_SUCCESS_UNALIAS = "Alias - %s - is removed! :)";
+    public static final String CMD_SUCCESS_UNMARKED = "Task #%d is marked as imcomplete! :)";
 
     public static final String CMD_WARNING_DONTKNOW = "Sorry, I do not understand what you mean by \"%s\" :(";
 
@@ -62,5 +81,62 @@ public class Constants {
     public static final String LOG_RESCHE_FAIL_NOID = "An non-existent ID was queried for reschedule.";
     public static final String LOG_RESCHE_FAIL_NOCHANGE = "A rescheduling with no change was queried.";
 
+    public static final String HELP_OVERLAY_TITLE = "JFDI TO THE RESCUE";
+    //public static final String HELP_OVERLAY_ICON = " "; // SUB IN ACTUAL ADDRESS
+    public static final String HELP_ADD_FLOATING_DESC = "Add a task without a start/end date";
+    public static final String HELP_ADD_FLOATING_COMMAND = "add <task description>";
+    public static final String HELP_ADD_POINT_DESC = "Add a task to be done AT a particular date and time";
+    public static final String HELP_ADD_POINT_COMMAND = "add <task description> at <datetime>";
+    public static final String HELP_ADD_DEADLINE_DESC = "Add a task to be done BY a certain date and time";
+    public static final String HELP_ADD_DEADLINE_COMMAND = "add <task description> by <datetime>";
+    public static final String HELP_ADD_ONDAY_DESC = "Add a task to be done ON a certain day";
+    public static final String HELP_ADD_ONDAY_COMMAND = "add <task description> on <datetime>";
+    public static final String HELP_ADD_EVENT_DESC = "Add a task with a start and end date";
+    public static final String HELP_ADD_EVENT_COMMAND = "add <task description> from <datetime> to <datetime>";
+    public static final String HELP_LIST_INCOMPLETE_DESC = "See incompleted tasks";
+    public static final String HELP_LIST_INCOMPLETE_COMMAND = "list";
+    public static final String HELP_LIST_COMPLETE_DESC = "See completed tasks";
+    public static final String HELP_LIST_COMPLETE_COMMAND = "list completed";
+    public static final String HELP_LIST_ALL_DESC = "See all tasks";
+    public static final String HELP_LIST_ALL_COMMAND = "list all";
+    public static final String HELP_RENAME_DESC = "Rename a task";
+    public static final String HELP_RENAME_COMMAND = "rename  <task number> <new task description>";
+    public static final String HELP_RESCH_DESC = "Reschedule a task";
+    public static final String HELP_RESCH_COMMAND = "reschedule <task number> <new task date and time>";
+    public static final String HELP_REMOVE_TIME_DESC = "Remove date and time restrictions";
+    public static final String HELP_REMOVE_TIME_COMMAND = "reschedule <task number>";
+    public static final String HELP_DONE_DESC = "Mark task as completed";
+    public static final String HELP_DONE_COMMAND = "mark <task number>";
+    public static final String HELP_UNDONE_DESC = "Mark task as incomplete again";
+    public static final String HELP_UNDONE_COMMAND = "unmark <task number>";
+    public static final String HELP_DELETE_DESC = "Delete a task";
+    public static final String HELP_DELETE_COMMAND = "delete <task number(s)>";
+    public static final String HELP_SEARCH_DESC = "Search through the tasks for specific keywords";
+    public static final String HELP_SEARCH_COMMAND = "search <keyword(s)>";
+    public static final String HELP_REMINDER_DESC = "add custom reminders to task with a start date and time";
+    public static final String HELP_REMINDER_COMMAND = "remind me <duration> before <task number(s)>";
+    public static final String HELP_UNDO_DESC = "Undo previous action";
+    public static final String HELP_UNDO_COMMAND = "undo";
+    public static final String HELP_CREATE_ALIAS_DESC = "Define your own aliases";
+    public static final String HELP_CREATE_ALIAS_COMMAND = "alias <default command> as <new alias>";
+    public static final String HELP_DELETE_ALIAS_DESC = "Remove a previously defined alias";
+    public static final String HELP_DELETE_ALIAS_COMMAND = "unalias <alias>";
+    public static final String HELP_WILDCARD_DESC = "Let JFDI surprise you";
+    public static final String HELP_WILDCARD_COMMAND = "surprise me";
+    public static final String HELP_SET_DIRECTORY_DESC = "Specify directory to store tasks";
+    public static final String HELP_SET_DIRECTORY_COMMAND = "directory <new directory>";
+    public static final String HELP_SWITCH_DIRECTORY_DESC = "Use data from another directory";
+    public static final String HELP_SWITCH_DIRECTORY_COMMAND = "switch <directory>";
+    public static final String HELP_MOVE_DIRECTORY_DESC = "Move existing program data to another directory";
+    public static final String HELP_MOVE_DIRECTORY_COMMAND = "move <directory>";
+    public static final String HELP_UP_DOWN_DESC = "Scroll through your previous commands";
+    public static final String HELP_UP_DOWN_COMMAND = "↑/↓";
+    public static final String HELP_EXIT_DESC = "GET OUT OF JFDI";
+    public static final String HELP_EXIT_COMMAND = "quit";
 
+    public static final String ITEM_ROW_INDEX = " #%d  ";
+    public static final String ITEM_NO_TIMEDATE = "No specified time and date.";
+    public static final String ITEM_DEADLINE = "by %s";
+    public static final String ITEM_POINT_TASK = "at %s";
+    public static final String ITEM_EVENT_TASK = "from %s to %s";
 }

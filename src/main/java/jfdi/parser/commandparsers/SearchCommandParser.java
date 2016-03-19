@@ -27,7 +27,7 @@ public class SearchCommandParser extends AbstractCommandParser {
 
     public static SearchCommandParser getInstance() {
         return instance == null ? instance = new SearchCommandParser()
-            : instance;
+                : instance;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class SearchCommandParser extends AbstractCommandParser {
      *             empty to begin with.
      */
     private Collection<String> getKeywords(String input)
-        throws InvalidInputException {
+            throws InvalidInputException {
         if (input == null || input.isEmpty()) {
             throw new InvalidInputException(input);
         }

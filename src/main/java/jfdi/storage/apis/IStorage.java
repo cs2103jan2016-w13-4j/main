@@ -65,4 +65,11 @@ public interface IStorage {
     void changeDirectory(String newStorageFolderPath) throws InvalidPathException,
             FilesReplacedException, IllegalAccessException;
 
+    /**
+     * This method returns the path of the current storage directory.
+     *
+     * @return the path of the current storage directory.
+     */
+    String getCurrentDirectory();
+
 }

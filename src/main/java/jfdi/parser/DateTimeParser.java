@@ -82,6 +82,7 @@ public class DateTimeParser {
 
         TaskType taskType = getTaskType(input);
         System.out.println(taskType);
+        input = formatDate(input);
         input = toAmericanTime(input);
         System.out.println(input);
         // This might not be sufficient for event tasks
@@ -155,8 +156,47 @@ public class DateTimeParser {
 
         return input
             .replaceAll(
-                "\\b(0?[1-9]|[12][\\d]|3[01])[-/.](0?[1-9]|1[0-2])(([-/.])((19|20)?\\d\\d))?\\b",
-                "$2/$1$4$5");
+                "\\b(?<day>0?[1-9]|[12][\\d]|3[01])(?<delimiter1>[-/.])"
+                    + "(?<month>0?[1-9]|1[0-2])((?<delimiter2>[-/.])(?<year>(19|20)?\\d\\d))?\\b",
+                "${month}${delimiter1}${day}${delimiter2}${year}");
+    }
+
+    /**
+     * This method formats the given date-time input into something readable by
+     * the underlying date-time parser.
+     *
+     * @param input
+     *            the date-time input.
+     * @return the formatted string.
+     */
+    private String formatDate(String input) {
+
+        input = input.replaceAll(
+            Constants.REGEX_DATE_TIME_FORMAT_DATE_FIRST_WITH_NAMED_GROUPS,
+            "${time} ${date}");
+        StringBuilder inputBuilder = new StringBuilder(input);
+        Pattern dateFormatPattern = Pattern
+            .compile(Constants.REGEX_ABSOLUTE_DATE_DDMMYYYY);
+        Matcher dateFormatMatcher = dateFormatPattern.matcher(input);
+        while (dateFormatMatcher.find()) {
+            int start = dateFormatMatcher.start();
+            int end = dateFormatMatcher.end();
+            inputBuilder.replace(start, end, inputBuilder.substring(start, end)
+                .replaceAll("[.-]", "/"));
+        }
+
+        Pattern dateFormatPattern2 = Pattern
+            .compile(Constants.REGEX_ABSOLUTE_DATE_DDMONTHYYYY);
+        Matcher dateFormatMatcher2 = dateFormatPattern2.matcher(input);
+        while (dateFormatMatcher2.find()) {
+            int start = dateFormatMatcher2.start();
+            int end = dateFormatMatcher2.end();
+            inputBuilder.replace(start, end, inputBuilder.substring(start, end)
+                .replaceAll("[./-]", " "));
+            System.out.println("lol" + inputBuilder.toString());
+        }
+
+        return inputBuilder.toString();
     }
 
     /**
@@ -268,9 +308,8 @@ public class DateTimeParser {
     }
 
     public static void main(String[] args) throws Exception {
-        assert false;
         DateTimeParser parser = DateTimeParser.getInstance();
-        System.out.println(parser.parseDateTime("From 25/11/94 3pm to 5pm")
-            .getEndDateTime());
+        System.out.println(parser.parseDateTime("on 23-01-2017 23:00hrs")
+            .getStartDateTime());
     }
 }

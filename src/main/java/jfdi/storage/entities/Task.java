@@ -39,56 +39,24 @@ public class Task {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public LocalDateTime getStartDateTime() {
         return startDateTime;
-    }
-
-    public void setStartDateTime(LocalDateTime startDateTime) {
-        this.startDateTime = startDateTime;
     }
 
     public LocalDateTime getEndDateTime() {
         return endDateTime;
     }
 
-    public void setEndDateTime(LocalDateTime endDateTime) {
-        this.endDateTime = endDateTime;
-    }
-
     public HashSet<String> getTags() {
         return tags;
-    }
-
-    public void setTags(String... tags) {
-        this.tags = new HashSet<String>();
-        for (String tag : tags) {
-            assert tag != null;
-            this.tags.add(tag);
-        }
     }
 
     public TreeSet<Duration> getReminders() {
         return reminders;
     }
 
-    public void setReminders(Duration... reminders) {
-        this.reminders = new TreeSet<Duration>();
-        for (Duration reminder : reminders) {
-            assert reminder != null;
-            this.reminders.add(reminder);
-        }
-    }
-
     public boolean isCompleted() {
         return isCompleted;
-    }
-
-    public void setCompleted(boolean isCompleted) {
-        this.isCompleted = isCompleted;
     }
 
     public void update(TaskAttributes taskAttributes) {

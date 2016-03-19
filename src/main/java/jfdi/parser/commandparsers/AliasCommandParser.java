@@ -78,6 +78,8 @@ public class AliasCommandParser extends AbstractCommandParser {
     private String getCommand(String input) {
         // Following the established format of alias command inputs, the command
         // type can be located as the second word.
+
+        // TODO: let storage handle input validity checks
         String secondWord = getSecondWord(input);
         CommandType commandType = ParserUtils.getCommandType(secondWord);
         if (commandType == CommandType.invalid) {

@@ -36,6 +36,7 @@ public class Constants {
     public static final String REGEX_UNDO = "(?i)^(undo)";
     public static final String REGEX_HELP = "(?i)^(help)";
     public static final String REGEX_WILDCARD = "(?i)^(surprise[!]*)";
+    public static final String REGEX_EXIT = "(?i)^(exit|quit)";
 
     // Task related Regex Strings
     public static final String REGEX_TAGS = "\\+\\w+";
@@ -138,7 +139,8 @@ public class Constants {
         undo,
         help,
         wildcard,
-        invalid;
+        invalid,
+        exit;
     }
 
     public static final int INDEX_ACTION = 0;
@@ -192,7 +194,7 @@ public class Constants {
         REGEX_RENAME, REGEX_RENAME, REGEX_RESCHEDULE, REGEX_DELETE,
         REGEX_SEARCH, REGEX_MARK, REGEX_UNMARK, REGEX_ALIAS, REGEX_UNALIAS,
         REGEX_DIRECTORY, REGEX_USE, REGEX_MOVE, REGEX_UNDO, REGEX_HELP,
-        REGEX_WILDCARD};
+        REGEX_WILDCARD, REGEX_EXIT};
 
     public static void main(String[] args) {
 

@@ -52,6 +52,8 @@ public class ParserUtils {
             return CommandType.help;
         } else if (input.matches(Constants.REGEX_WILDCARD)) { // TODO
             return CommandType.wildcard;
+        } else if (input.matches(Constants.REGEX_EXIT)) {
+            return CommandType.exit;
         } else {
             return CommandType.invalid;
         }

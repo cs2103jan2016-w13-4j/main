@@ -235,6 +235,8 @@ public class AliasDb implements IDatabase {
 
         String persistedJsonData = FileManager.readFileToString(filePath);
         Alias[] aliasArray = Serializer.deserialize(persistedJsonData, Alias[].class);
+        aliasArray = validateAliasArray(aliasArray);
+
         if (aliasArray != null) {
             aliasList = new ArrayList<Alias>(Arrays.asList(aliasArray));
             deletedAliasList = new ArrayList<Alias>();
@@ -245,6 +247,30 @@ public class AliasDb implements IDatabase {
 
         String movedTo = FileManager.backupAndRemove(filePath);
         return new FilePathPair(filePath.toString(), movedTo);
+    }
+
+    /**
+     * This method validates an array of Aliases. If any of the Aliases are
+     * invalid, null is returned. Otherwise, the original aliasArray is
+     * returned.
+     *
+     * @param aliasArray
+     *            the array of Alias that is to be validated
+     * @return null if any of the aliases are invalid, otherwise the original
+     *         aliasArray is returned
+     */
+    private Alias[] validateAliasArray(Alias[] aliasArray) {
+        if (aliasArray == null) {
+            return null;
+        }
+
+        for (Alias alias : aliasArray) {
+            if (!(new AliasAttributes(alias).isValid())) {
+                return null;
+            }
+        }
+
+        return aliasArray;
     }
 
 }

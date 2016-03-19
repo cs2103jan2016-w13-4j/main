@@ -1,11 +1,11 @@
 package jfdi.test.storage;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import jfdi.storage.Constants;
@@ -57,6 +57,30 @@ public class TestHelper {
     }
 
     /**
+     * This method creates a single invalid task with the task's description set
+     * to null.
+     *
+     * @param directoryPath
+     *            the directory that holds the program data
+     */
+    public static void createInvalidTaskFile(String directoryPath) {
+        String taskJson = "[{\"id\": 1,\"tags\": [],\"reminders\": [],\"isCompleted\": false}]";
+        createTaskFileWith(directoryPath, taskJson);
+    }
+
+    /**
+     * This method creates a single invalid alias with the alias's command set
+     * to null
+     *
+     * @param directoryPath
+     *            the directory that holds the program data
+     */
+    public static void createInvalidAliasFile(String directoryPath) {
+        String taskJson = "[{\"alias\": \"" + Constants.TEST_ALIAS + "\"}]";
+        createAliasFileWith(directoryPath, taskJson);
+    }
+
+    /**
      * This method creates a task file with the given data in the given
      * directory path that stores the program data.
      *
@@ -68,6 +92,21 @@ public class TestHelper {
     public static void createTaskFileWith(String directoryPath, String data) {
         String dataDirectory = TestHelper.getDataDirectory(directoryPath);
         Path dataPath = Paths.get(dataDirectory, Constants.FILENAME_TASK);
+        FileManager.writeToFile(data, dataPath);
+    }
+
+    /**
+     * This method creates an alias file with the given data in the given
+     * directory path that stores the program data.
+     *
+     * @param directoryPath
+     *            the directory that stores the program data
+     * @param data
+     *            the content that is to be written inside the task file
+     */
+    public static void createAliasFileWith(String directoryPath, String data) {
+        String dataDirectory = TestHelper.getDataDirectory(directoryPath);
+        Path dataPath = Paths.get(dataDirectory, Constants.FILENAME_ALIAS);
         FileManager.writeToFile(data, dataPath);
     }
 
@@ -113,62 +152,18 @@ public class TestHelper {
     }
 
     /**
-     * This method checks if all the data files in sourceDirectory has been
-     * faithfully copied to destinationDirectory.
+     * This method reverts the preference file to its original form after using
+     * it in the tests.
      *
-     * @param sourceDirectory
-     *            the source directory which contains all the data files
-     * @param destinationDirectory
-     *            the destination directory to copy all the data files to
-     * @return boolean indicating if all the data files in sourceDirectory has
-     *         been copied to destinationDirectory
+     * @param originalPreference
+     *            the original storage directory path
      */
-    public static boolean hasIdenticalDataFiles(String sourceDirectory, String destinationDirectory) {
-        Path destinationFilePath = null;
-        File destinationFile = null;
-
-        // Obtain a list of data files that exist in sourceDirectory
-        ArrayList<File> sourceDataFiles = getDataFiles(sourceDirectory);
-
-        // Check if an identical data file exists in destinationDirectory
-        for (File sourceFile : sourceDataFiles) {
-            destinationFilePath = Paths.get(destinationDirectory, sourceFile.getName());
-            destinationFile = destinationFilePath.toFile();
-            if (!isCopied(sourceFile, destinationFile)) {
-                return false;
-            }
+    public static void revertOriginalPreference(MainStorage mainStorage, String originalPreference) {
+        if (originalPreference == null) {
+            FileUtils.deleteQuietly(Constants.PATH_PREFERENCE_FILE.toFile());
+            return;
         }
-
-        return true;
-    }
-
-    /**
-     * This method checks if sourceFile has been copied to destinationFile with
-     * the contents preserved.
-     *
-     * @param sourceFile
-     *            the original file that is copied to destinationFile
-     * @param destinationFile
-     *            the copy of sourceFile
-     * @return boolean indicating if destinationFile is a copy of sourceFile
-     */
-    public static boolean isCopied(File sourceFile, File destinationFile) {
-        if (!destinationFile.exists()) {
-            return false;
-        }
-
-        boolean hasEqualContent = false;
-        try {
-            hasEqualContent = FileUtils.contentEquals(sourceFile, destinationFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if (!hasEqualContent) {
-            return false;
-        }
-
-        return true;
+        mainStorage.setPreferredDirectory(originalPreference);
     }
 
     /**
@@ -192,5 +187,26 @@ public class TestHelper {
         }
 
         return dataFiles;
+    }
+
+    public static HashMap<String, Long> getDataFileChecksums(String storageDirectory) {
+        try {
+            HashMap<String, Long> checksums = new HashMap<String, Long>();
+            String dataDirectory = getDataDirectory(storageDirectory);
+            ArrayList<File> dataFiles = getDataFiles(dataDirectory);
+            for (File dataFile : dataFiles) {
+                checksums.put(dataFile.getName(), FileUtils.checksumCRC32(dataFile));
+            }
+            return checksums;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static boolean hasDataFileChecksums(String storageDirectory, HashMap<String, Long> checksums) {
+        HashMap<String, Long> directoryChecksums = getDataFileChecksums(storageDirectory);
+        return checksums.equals(directoryChecksums);
     }
 }

@@ -156,6 +156,20 @@ public class TaskAttributes {
         return new Task(id, description, startDateTime, endDateTime, tags, reminders);
     }
 
+    /**
+     * This method checks if the current Task is valid.
+     *
+     * @return a boolean indicating if the current task is valid
+     */
+    public boolean isValid() {
+        try {
+            validateAttributes();
+        } catch (InvalidTaskParametersException e) {
+            return false;
+        }
+        return true;
+    }
+
     private void validateAttributes() throws InvalidTaskParametersException {
         ArrayList<String> errors = new ArrayList<String>();
 

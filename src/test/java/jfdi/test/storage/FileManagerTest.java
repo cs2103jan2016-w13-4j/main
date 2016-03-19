@@ -8,6 +8,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 
 import jfdi.storage.Constants;
 import jfdi.storage.FileManager;
@@ -24,6 +25,8 @@ import org.junit.Test;
 public class FileManagerTest {
 
     private static Path testDirectoryRoot = null;
+    private static MainStorage mainStorageInstance = null;
+    private static String originalPreference = null;
 
     private Path testDirectoryPath = null;
     private File testDirectoryFile = null;
@@ -32,12 +35,16 @@ public class FileManagerTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         testDirectoryRoot = Files.createTempDirectory(Constants.TEST_DIRECTORY_PREFIX);
+        mainStorageInstance = MainStorage.getInstance();
+        mainStorageInstance.initialize();
+        originalPreference = mainStorageInstance.getPreferredDirectory();
     }
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
         File testDirectoryRootFile = testDirectoryRoot.toFile();
         FileUtils.deleteDirectory(testDirectoryRootFile);
+        TestHelper.revertOriginalPreference(mainStorageInstance, originalPreference);
     }
 
     @Before
@@ -66,16 +73,17 @@ public class FileManagerTest {
 
     @Test
     public void testMoveFilesToNewDirectory() {
-        MainStorage fileStorageInstance = MainStorage.getInstance();
         try {
-            fileStorageInstance.load(testDirectoryString);
+            mainStorageInstance.use(testDirectoryString);
             TestHelper.createValidDataFiles(testDirectoryString);
+            HashMap<String, Long> checksums = TestHelper.getDataFileChecksums(testDirectoryString);
             Path subdirectory = Paths.get(testDirectoryString, Constants.TEST_SUBDIRECTORY_NAME);
             String subdirectoryString = subdirectory.toString();
 
-            FileManager.moveFilesToDirectory(subdirectoryString);
+            String dataPath = TestHelper.getDataDirectory(subdirectoryString);
+            FileManager.moveFilesToDirectory(dataPath);
 
-            assertTrue(TestHelper.hasIdenticalDataFiles(testDirectoryString, subdirectoryString));
+            assertTrue(TestHelper.hasDataFileChecksums(subdirectoryString, checksums));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -83,10 +91,9 @@ public class FileManagerTest {
 
     @Test(expected = FilesReplacedException.class)
     public void testMoveFilesToDirectoryWithExistingData() throws Exception {
-        MainStorage fileStorageInstance = MainStorage.getInstance();
-        fileStorageInstance.initialize();
-        fileStorageInstance.use(testDirectoryString);
+        mainStorageInstance.use(testDirectoryString);
         TestHelper.createValidDataFiles(testDirectoryString);
+        HashMap<String, Long> checksums = TestHelper.getDataFileChecksums(testDirectoryString);
         Path subdirectory = Paths.get(testDirectoryString, Constants.TEST_SUBDIRECTORY_NAME);
         String subdirectoryString = subdirectory.toString();
         TestHelper.createInvalidDataFiles(subdirectoryString);
@@ -95,7 +102,7 @@ public class FileManagerTest {
             String dataPath = TestHelper.getDataDirectory(subdirectoryString);
             FileManager.moveFilesToDirectory(dataPath);
         } catch (FilesReplacedException e) {
-            assertTrue(TestHelper.hasIdenticalDataFiles(testDirectoryString, subdirectoryString));
+            assertTrue(TestHelper.hasDataFileChecksums(subdirectoryString, checksums));
             throw e;
         }
     }

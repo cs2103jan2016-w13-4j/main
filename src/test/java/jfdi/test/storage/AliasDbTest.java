@@ -12,10 +12,12 @@ import jfdi.storage.apis.AliasAttributes;
 import jfdi.storage.apis.AliasDb;
 import jfdi.storage.apis.MainStorage;
 import jfdi.storage.exceptions.DuplicateAliasException;
+import jfdi.storage.exceptions.FilePathPair;
 import jfdi.storage.exceptions.InvalidAliasException;
 import jfdi.storage.serializer.Serializer;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -24,15 +26,24 @@ public class AliasDbTest {
     private static Path testDirectory = null;
     private static String testDirectoryString = null;
     private static AliasDb aliasDbInstance = null;
+    private static MainStorage mainStorageInstance = null;
+    private static String originalPreference = null;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         testDirectory = Files.createTempDirectory(Constants.TEST_DIRECTORY_NAME);
         testDirectoryString = testDirectory.toString();
-        MainStorage fileStorageInstance = MainStorage.getInstance();
-        fileStorageInstance.load(testDirectory.toString());
         aliasDbInstance = AliasDb.getInstance();
         AliasAttributes.setCommandRegex(Constants.TEST_COMMAND_REGEX);
+        mainStorageInstance = MainStorage.getInstance();
+        mainStorageInstance.initialize();
+        originalPreference = mainStorageInstance.getPreferredDirectory();
+        mainStorageInstance.use(testDirectoryString);
+    }
+
+    @AfterClass
+    public static void tearDownAfterClass() {
+        TestHelper.revertOriginalPreference(mainStorageInstance, originalPreference);
     }
 
     @After
@@ -130,7 +141,10 @@ public class AliasDbTest {
 
         // Create the data file and load from it
         TestHelper.createDataFilesWith(testDirectoryString, json);
-        aliasDbInstance.load();
+        FilePathPair replacedFiles = aliasDbInstance.load();
+
+        // Ensure that no files were replaced
+        assertNull(replacedFiles);
 
         // Check that the original alias exists
         assertEquals(aliasDbInstance.getAll().size(), 1);
@@ -138,14 +152,22 @@ public class AliasDbTest {
     }
 
     @Test
+    public void testInvalidLoad() throws Exception {
+        TestHelper.createInvalidAliasFile(testDirectoryString);
+        FilePathPair replacedFiles = aliasDbInstance.load();
+        assertNotNull(replacedFiles);
+    }
+
+    @Test
     public void testSetAndGetFilePath() {
+        Path originalFilePath = aliasDbInstance.getFilePath();
         Path subdirectory = Paths.get(testDirectory.toString(), Constants.TEST_SUBDIRECTORY_NAME);
         Path expectedAliasPath = Paths.get(subdirectory.toString(), Constants.FILENAME_ALIAS);
         aliasDbInstance.setFilePath(subdirectory.toString());
         assertEquals(expectedAliasPath, aliasDbInstance.getFilePath());
 
         // Reset back to the original file path
-        aliasDbInstance.setFilePath(testDirectoryString);
+        aliasDbInstance.setFilePath(originalFilePath.getParent().toString());
     }
 
     private boolean contains(ArrayList<AliasAttributes> aliasAttributesList, AliasAttributes aliasAttributes) {

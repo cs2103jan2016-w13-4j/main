@@ -66,6 +66,8 @@ public class ListCommandParser extends AbstractCommandParser {
             return ListType.COMPLETED;
         } else if (input.matches("(?i)All")) {
             return ListType.ALL;
+        } else if (input.matches("(?i)Alias(es)?")) {
+            return ListType.ALIASES;
         } else {
             throw new InvalidInputException(input);
         }

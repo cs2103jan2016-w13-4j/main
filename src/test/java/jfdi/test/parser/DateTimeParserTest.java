@@ -194,6 +194,16 @@ public class DateTimeParserTest {
         // Check end date time is corrently parsed
         checkMatchingDateTime(res.getEndDateTime(), 1997, MONTH[12], 23,
             END_HOUR, END_MINUTES);
+
+        res = parseDateTime("From 3pm to 8pm");
+
+        // Check start date time is corrently parsed
+        checkMatchingDateTime(res.getStartDateTime(), getCurrentYear(),
+            getCurrentMonth(), getCurrentDay(), 15, 00);
+
+        // Check end date time is corrently parsed
+        checkMatchingDateTime(res.getEndDateTime(), getCurrentYear(),
+            getCurrentMonth(), getCurrentDay(), 20, 00);
     }
 
     // Explicit date time queries
@@ -221,14 +231,35 @@ public class DateTimeParserTest {
             12, 34);
     }
 
+    @Test(expected = BadDateTimeException.class)
+    public void testParseInvalid1() throws BadDateTimeException {
+        parser.parseDateTime("no date time format");
+    }
+
+    @Test(expected = BadDateTimeException.class)
+    public void testParseInvalid2() throws BadDateTimeException {
+        parser.parseDateTime("by 42/01/99");
+    }
+
+    @Test(expected = BadDateTimeException.class)
+    public void testParseInvalid3() throws BadDateTimeException {
+        parser.parseDateTime("by Wednesday Thursday");
+    }
+
+    @Test(expected = BadDateTimeException.class)
+    public void testParseInvalid4() throws BadDateTimeException {
+        parser.parseDateTime("from 3pm and 9pm");
+    }
+
     private DateTimeObject parseDateTime(String input) {
+        DateTimeObject res = null;
         try {
-            return parser.parseDateTime(input);
+            res = parser.parseDateTime(input);
         } catch (BadDateTimeException e) {
-            Assert.fail();
+            Assert.assertTrue(true);
         }
 
-        return null;
+        return res;
     }
 
     private void checkMatchingDateTime(LocalDateTime res, int year,

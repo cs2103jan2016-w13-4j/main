@@ -1,3 +1,47 @@
+@font-face {
+	font-family: Hammersmith;
+	font-weight: normal;
+	font-style: normal;
+	src: url("/ui/fonts/Roboto-Regular.ttf");
+}
+
+@font-face {
+	font-family: Raleway;
+	font-weight: normal;
+	font-style: normal;
+	src: url("/ui/fonts/Roboto-Italic.ttf");
+}
+
+.ListLayout #backDrop {
+	-fx-background-color: #f7c873;
+}
+
+.ListLayout #dayDisplayer {
+	-fx-font: 14px Hammersmith;
+	-fx-text-fill: #eeeeee;
+	-fx-background-color: red;
+}
+
+.ListLayout #statsDisplayer {
+	-fx-font: 14px Hammersmith;
+	-fx-text-fill: #eeeeee;
+	-fx-background-color: #434343;
+}
+
+.ListLayout #overdueLabel {
+	-fx-font: 18px Hammersmith;
+	-fx-text-fill: #eeeeee;
+	-fx-background-color: #434343;
+	-fx-background-radius: 20;
+	-fx-padding: 10;
+}
+
+.ListLayout .list-view {
+	-fx-padding: 8 15 8 15;
+	-fx-background-color: #434343;
+}
+
+
 .text-field {
     -fx-focus-color: transparent;
 }

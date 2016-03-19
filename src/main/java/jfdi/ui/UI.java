@@ -4,12 +4,13 @@ import com.google.common.eventbus.EventBus;
 
 import jfdi.logic.ControlCenter;
 import jfdi.ui.Constants.MsgType;
+import jfdi.ui.commandhandlers.CommandHandler;
 
 public class UI implements IUserInterface {
 
-    private static EventBus eventBus = new EventBus();
-    private CommandHandler cmdHandler = new CommandHandler();
+    public CommandHandler cmdHandler = new CommandHandler();
 
+    private static EventBus eventBus = new EventBus();
     private MainController controller;
     private ControlCenter logic;
 
@@ -96,6 +97,7 @@ public class UI implements IUserInterface {
     }
 
     private void prepareListener() {
+        cmdHandler.setController(controller);
         eventBus.register(cmdHandler);
     }
 
@@ -107,10 +109,5 @@ public class UI implements IUserInterface {
 
     public static EventBus getEventBus() {
         return eventBus;
-    }
-
-    @Override
-    public CommandHandler getCmdHandler() {
-        return cmdHandler;
     }
 }

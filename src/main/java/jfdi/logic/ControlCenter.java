@@ -5,6 +5,7 @@ import jfdi.logic.interfaces.Command;
 import jfdi.logic.interfaces.ILogic;
 import jfdi.parser.InputParser;
 import jfdi.parser.exceptions.InvalidInputException;
+import jfdi.storage.apis.AliasAttributes;
 import jfdi.storage.apis.AliasDb;
 import jfdi.storage.apis.MainStorage;
 import jfdi.storage.exceptions.FilesReplacedException;
@@ -38,6 +39,8 @@ public class ControlCenter implements ILogic {
     }
 
     private void initStorage() {
+        // Set a list of permitted commands that can be aliased
+        AliasAttributes.setCommandRegex(InputParser.getInstance().getAllCommandRegexes());
         try {
             MainStorage.getInstance().initialize();
         } catch (FilesReplacedException e) {

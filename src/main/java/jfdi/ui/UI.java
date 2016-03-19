@@ -35,6 +35,10 @@ public class UI implements IUserInterface {
     @Override
     public void processInput(String input) {
 
+        if (input.equalsIgnoreCase("QUIT")) {
+            System.exit(0);
+        }
+
         // Clear controller first
         controller.clearCmdArea();
         controller.clearFb();
@@ -73,7 +77,7 @@ public class UI implements IUserInterface {
 
     @Override
     public int getTaskId(int onScreenId) {
-        return controller.indexMapId.get(onScreenId - 1);
+        return controller.getIdFromIndex(onScreenId - 1);
     }
 
     @Override

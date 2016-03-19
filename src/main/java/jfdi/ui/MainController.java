@@ -2,13 +2,12 @@ package jfdi.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.SplitPane;
@@ -16,7 +15,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.ui.Constants.MsgType;
 
@@ -27,7 +25,6 @@ public class MainController {
     public CommandHandler cmdHandler;
     public Stage mainStage;
     public ObservableList<ListItem> importantList;
-    public ArrayList<Integer> indexMapId = new ArrayList<Integer>();
 
     @FXML
     public SplitPane leftRightSplit;
@@ -95,6 +92,10 @@ public class MainController {
         ui.relayToLogic(Constants.CTRL_CMD_SHOWLIST);
     }
 
+    public void setHighlights(HashSet<String> keywords) {
+        // TODO Auto-generated method stub
+    }
+
     public void setMainApp(MainSetUp main) {
         this.main = main;
     }
@@ -109,6 +110,10 @@ public class MainController {
 
     public void setStage(Stage stage) {
         this.mainStage = stage;
+    }
+
+    public int getIdFromIndex(int index) {
+        return importantList.get(index).getItem().getId();
     }
 
     /***************************
@@ -140,7 +145,7 @@ public class MainController {
         importantList = FXCollections.observableArrayList();
         listMain.setItems(importantList);
 
-        listMain.setCellFactory(
+        /*listMain.setCellFactory(
                 new Callback<ListView<ListItem>, ListCell<ListItem>>() {
                     @Override
                     public ListCell<ListItem> call(ListView<ListItem> param) {
@@ -150,14 +155,14 @@ public class MainController {
                             protected void updateItem(ListItem item, boolean bln) {
                                 super.updateItem(item, bln);
                                 if (item != null) {
-                                    setItem(item);
+
                                 }
                             }
                         };
 
                         return cell;
                     }
-                });
+                });*/
     }
 
     private void initStatsArea() {

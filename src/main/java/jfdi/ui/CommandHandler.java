@@ -9,15 +9,24 @@ import edu.emory.mathcs.backport.java.util.Collections;
 import jfdi.common.utilities.JfdiLogger;
 import jfdi.logic.events.AddTaskDoneEvent;
 import jfdi.logic.events.AddTaskFailEvent;
+import jfdi.logic.events.AliasDoneEvent;
+import jfdi.logic.events.AliasFailEvent;
 import jfdi.logic.events.DeleteTaskDoneEvent;
 import jfdi.logic.events.DeleteTaskFailEvent;
 import jfdi.logic.events.ExitCalledEvent;
 import jfdi.logic.events.InvalidCommandEvent;
 import jfdi.logic.events.ListDoneEvent;
+import jfdi.logic.events.MarkTaskDoneEvent;
+import jfdi.logic.events.MarkTaskFailEvent;
 import jfdi.logic.events.RenameTaskDoneEvent;
 import jfdi.logic.events.RenameTaskFailEvent;
 import jfdi.logic.events.RescheduleTaskDoneEvent;
 import jfdi.logic.events.RescheduleTaskFailEvent;
+import jfdi.logic.events.SearchDoneEvent;
+import jfdi.logic.events.UnaliasDoneEvent;
+import jfdi.logic.events.UnaliasFailEvent;
+import jfdi.logic.events.UnmarkTaskDoneEvent;
+import jfdi.logic.events.UnmarkTaskFailEvent;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.ui.Constants.MsgType;
 
@@ -27,60 +36,11 @@ public class CommandHandler {
     private Logger logger = JfdiLogger.getLogger();
 
     @Subscribe
-    public void handleListDoneEvent(ListDoneEvent e) {
-
-        logger.fine(Constants.LOG_LOGIC_LIST);
-        for (TaskAttributes item : e.getItems()) {
-            logger.fine("#" + item.getId() + "  " + item.getDescription());
-        }
-
-        controller.importantList.clear();
-        controller.indexMapId.clear();
-
-        int count = 1;
-        for (TaskAttributes item : e.getItems()) {
-            ListItem listItem = new ListItem(count, item, false);
-            controller.importantList.add(listItem);
-            controller.indexMapId.add(item.getId());
-            count++;
-        }
-        controller.relayFb(Constants.CMD_SUCCESS_LISTED, MsgType.SUCCESS);
-
-        logger.fine(Constants.LOG_SUCCESS_LISTED);
-        logger.fine(Constants.LOG_UI_LIST);
-        for (ListItem item : controller.importantList) {
-            logger.fine(item.toString());
-        }
-        count = 1;
-        logger.fine(Constants.LOG_LOGIC_LIST);
-        for (Integer num : controller.indexMapId) {
-            logger.fine("Index " + count + " => ID" + num);
-            count++;
-        }
-
-
-    }
-
-    @Subscribe
-    public void handleExitCalledEvent(ExitCalledEvent e) {
-        System.out.printf("\nMoriturus te saluto.\n");
-        System.exit(0);
-        logger.fine(Constants.LOG_USER_EXIT);
-    }
-
-    @Subscribe
-    public void handleInvalidCommandEvent(InvalidCommandEvent e) {
-        controller.relayFb(String.format(Constants.CMD_WARNING_DONTKNOW, e.getInputString()), MsgType.WARNING);
-        logger.fine(Constants.LOG_INVALID_COMMAND);
-    }
-
-    @Subscribe
     public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {
         TaskAttributes task = e.getTask();
         int index = controller.importantList.size() + 1;
         ListItem listItem = new ListItem(index, task, false);
         controller.importantList.add(listItem);
-        controller.indexMapId.add(task.getId());
         controller.relayFb(String.format(Constants.CMD_SUCCESS_ADDED, index, task.getDescription()), MsgType.SUCCESS);
         logger.fine(String.format(Constants.LOG_ADDED_SUCCESS, task.getId()));
     }
@@ -102,38 +62,50 @@ public class CommandHandler {
     }
 
     @Subscribe
+    public void handleAliasDoneEvent(AliasDoneEvent e) {
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_ALIAS, e.getAlias(), e.getCommand()),MsgType.SUCCESS);
+    }
+
+    @Subscribe
+    public void handleAliasFailEvent(AliasFailEvent e) {
+        switch (e.getError()) {
+            case INVALID_PARAMETERS:
+                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_ALIAS_INVALID, e.getAlias(), e.getCommand()), MsgType.ERROR);
+                //logger.fine(String.format(format, args));
+                break;
+            case DUPLICATED_ALIAS:
+                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_ALIAS_DUPLICATED, e.getAlias()), MsgType.ERROR);
+                //logger.fine(String.format(format, args));
+                break;
+            case UNKNOWN:
+                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_ALIAS_UNKNOWN, e.getCommand()), MsgType.ERROR);
+                //logger.fine(String.format(format, args));
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Subscribe
     public void handleDeleteTaskDoneEvent(DeleteTaskDoneEvent e) {
         ArrayList<Integer> deletedIds = e.getDeletedIds();
         Collections.sort(deletedIds);
 
         int indexCount = 0;
         for (Integer num : deletedIds) {
-            if (controller.indexMapId.get(indexCount) == num) {
-                controller.importantList.remove(indexCount);
-                controller.indexMapId.remove(indexCount);
-                controller.relayFb(String.format(Constants.CMD_SUCCESS_DELETED, indexCount + 1), MsgType.SUCCESS);
-                logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, num));
-            } else {
+            while (controller.getIdFromIndex(indexCount) != num) {
                 indexCount++;
             }
+            controller.importantList.remove(indexCount);
+            controller.relayFb(String.format(Constants.CMD_SUCCESS_DELETED, indexCount + 1), MsgType.SUCCESS);
+            logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, num));
         }
 
-        /*indexCount = 1;
-        logger.fine(Constants.LOG_UI_LIST);
-        for (ListItem item : controller.importantList) {
-            if (item.getIndex() == indexCount) {
-                indexCount++;
-            } else {
-                controller.importantList.get(indexCount - 1).setIndex(indexCount);
-                indexCount++;
-            }
-            logger.fine(item.toString());
-        }*/
-
         indexCount = 1;
-        logger.fine(Constants.LOG_LOGIC_LIST);
-        for (Integer num : controller.indexMapId) {
-            logger.fine("Index " + indexCount + " => ID" + num);
+        for (ListItem item : controller.importantList) {
+            if (item.getIndex() != indexCount) {
+                item.setIndex(indexCount);
+            }
             indexCount++;
         }
     }
@@ -142,13 +114,82 @@ public class CommandHandler {
     public void handleDeleteTaskFailEvent(DeleteTaskFailEvent e) {
         switch (e.getError()) {
             case UNKNOWN:
-                controller.relayFb(Constants.CMD_ERROR_CANT_DELETE, MsgType.ERROR);
+                controller.relayFb(Constants.CMD_ERROR_CANT_DELETE_UNKNOWN, MsgType.ERROR);
                 logger.fine(Constants.LOG_DELETE_FAIL_UNKNOWN);
                 break;
             case NON_EXISTENT_ID:
                 //NEED TO CHANGE TO INDEX SOON????
-                controller.relayFb(Constants.CMD_ERROR_CANT_DELETE, MsgType.ERROR);
+                for (Integer num : e.getInvalidIds()) {
+                    controller.relayFb(String.format(Constants.CMD_ERROR_CANT_DELETE_NO_ID, num), MsgType.ERROR);
+                }
                 logger.fine(Constants.LOG_DELETE_FAIL_NOID);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Subscribe
+    public void handleExitCalledEvent(ExitCalledEvent e) {
+        System.out.printf("\nMoriturus te saluto.\n");
+        System.exit(0);
+        logger.fine(Constants.LOG_USER_EXIT);
+    }
+
+    @Subscribe
+    public void handleInvalidCommandEvent(InvalidCommandEvent e) {
+        controller.relayFb(String.format(Constants.CMD_WARNING_DONTKNOW, e.getInputString()), MsgType.WARNING);
+        logger.fine(Constants.LOG_INVALID_COMMAND);
+    }
+
+    @Subscribe
+    public void handleListDoneEvent(ListDoneEvent e) {
+
+        controller.importantList.clear();
+
+        int count = 1;
+        for (TaskAttributes item : e.getItems()) {
+            ListItem listItem;
+            if (item.isCompleted()) {
+                listItem = new ListItem(count, item, true);
+            } else {
+                listItem = new ListItem(count, item, false);
+            }
+            controller.importantList.add(listItem);
+            count++;
+        }
+        controller.relayFb(Constants.CMD_SUCCESS_LISTED, MsgType.SUCCESS);
+    }
+
+    @Subscribe
+    public void handleMarkTaskDoneEvent(MarkTaskDoneEvent e) {
+        ArrayList<Integer> doneIds = e.getTaskIds();
+        Collections.sort(doneIds);
+        int indexCount = 0;
+        for (Integer num : doneIds) {
+            while (controller.getIdFromIndex(indexCount) != num) {
+                indexCount++;
+            }
+            controller.importantList.get(indexCount).setMarkT();
+            controller.importantList.get(indexCount).strikeOut();
+            controller.relayFb(String.format(Constants.CMD_SUCCESS_MARKED, indexCount + 1), MsgType.SUCCESS);
+            //logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, num));
+        }
+    }
+
+    @Subscribe
+    public void handleMarkTaskFailEvent(MarkTaskFailEvent e) {
+        switch (e.getError()) {
+            case UNKNOWN:
+                controller.relayFb(Constants.CMD_ERROR_CANT_MARK_UNKNOWN, MsgType.ERROR);
+                //logger.fine(Constants.LOG_DELETE_FAIL_UNKNOWN);
+                break;
+            case NON_EXISTENT_ID:
+                //NEED TO CHANGE TO INDEX SOON????
+                for (Integer num : e.getInvalidIds()) {
+                    controller.relayFb(String.format(Constants.CMD_ERROR_CANT_MARK_NO_ID, num), MsgType.ERROR);
+                }
+                //logger.fine(Constants.LOG_DELETE_FAIL_NOID);
                 break;
             default:
                 break;
@@ -159,12 +200,12 @@ public class CommandHandler {
     public void handleRenameTaskDoneEvent(RenameTaskDoneEvent e) {
         TaskAttributes task = e.getTask();
         int count = 0;
-        for (Integer id : controller.indexMapId) {
-            if (id == task.getId()) {
-                controller.importantList.get(count).setDescription(task.getDescription());
+        for (int i = 0; i < controller.importantList.size(); i++) {
+            if ( controller.getIdFromIndex(i) == task.getId()) {
+                controller.importantList.get(i).setDescription(task.getDescription());
+                count = i;
                 break;
             }
-            count++;
         }
         controller.relayFb(String.format(
                 Constants.CMD_SUCCESS_RENAMED, count + 1, task.getDescription()), MsgType.SUCCESS);
@@ -196,12 +237,12 @@ public class CommandHandler {
     @Subscribe
     public void handleRescheduleTaskDoneEvent(RescheduleTaskDoneEvent e) {
         int count = 0;
-        for (Integer id : controller.indexMapId) {
-            if (id == e.getTaskId()) {
-                controller.importantList.get(count).setTimeDate(e.getStartDateTime(), e.getEndDateTime());
+        for (int i = 0; i < controller.importantList.size(); i++) {
+            if (controller.getIdFromIndex(i) == e.getTaskId()) {
+                controller.importantList.get(i).setTimeDate(e.getStartDateTime(), e.getEndDateTime());
+                count = i;
                 break;
             }
-            count++;
         }
         controller.relayFb(String.format(Constants.CMD_SUCCESS_RESCHEDULED, count + 1), MsgType.SUCCESS);
         logger.fine(String.format(Constants.LOG_RESCHED_SUCCESS, e.getTaskId()));
@@ -225,6 +266,84 @@ public class CommandHandler {
                         Constants.CMD_ERROR_CANT_RESCHEDULE_NO_CHANGES + e.getStartDateTime() + " - to - "
                                 + e.getEndDateTime() + " -!", MsgType.ERROR);
                 logger.fine(Constants.LOG_RESCHE_FAIL_NOCHANGE);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Subscribe
+    public void handleSearchDoneEvent(SearchDoneEvent e) {
+
+        controller.importantList.clear();
+
+        int count = 1;
+        for (TaskAttributes item : e.getResults()) {
+            ListItem listItem;
+            if (item.isCompleted()) {
+                listItem= new ListItem(count, item, true);
+            } else {
+                listItem= new ListItem(count, item, false);
+            }
+            controller.importantList.add(listItem);
+            count++;
+        }
+        controller.setHighlights(e.getKeywords());
+        controller.relayFb(Constants.CMD_SUCCESS_SEARCH, MsgType.SUCCESS);
+    }
+
+    @Subscribe
+    public void handleUnaliasDoneEvent(UnaliasDoneEvent e) {
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_UNALIAS, e.getAlias()),MsgType.SUCCESS);
+    }
+
+    @Subscribe
+    public void handleUnaliasFailEvent(UnaliasFailEvent e) {
+        switch (e.getError()) {
+            case UNKNOWN:
+                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_UNALIAS_UNKNOWN, e.getAlias()), MsgType.ERROR);
+                //logger.fine(Constants.LOG_RESCHE_FAIL_UNKNOWN);
+                break;
+            case NON_EXISTENT_ALIAS:
+                //NEED TO CHANGE TO INDEX SOON????
+                controller.relayFb(String.format(
+                        Constants.CMD_ERROR_CANT_UNALIAS_NO_ALIAS, e.getAlias()), MsgType.ERROR);
+                //logger.fine(Constants.LOG_RESCHE_FAIL_NOID);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Subscribe
+    public void handleUnmarkTaskDoneEvent(UnmarkTaskDoneEvent e) {
+        ArrayList<Integer> undoneIds = e.getTaskIds();
+        Collections.sort(undoneIds);
+        int indexCount = 0;
+        for (Integer num : undoneIds) {
+            while (controller.getIdFromIndex(indexCount) != num) {
+                indexCount++;
+            }
+            controller.importantList.get(indexCount).setMarkF();
+            controller.importantList.get(indexCount).removeStrike();
+            controller.relayFb(String.format(Constants.CMD_SUCCESS_UNMARKED, indexCount + 1), MsgType.SUCCESS);
+            //logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, num));
+        }
+    }
+
+    @Subscribe
+    public void handleUnmarkTaskFailEvent(UnmarkTaskFailEvent e) {
+        switch (e.getError()) {
+            case UNKNOWN:
+                controller.relayFb(Constants.CMD_ERROR_CANT_UNMARK_UNKNOWN, MsgType.ERROR);
+                //logger.fine(Constants.LOG_DELETE_FAIL_UNKNOWN);
+                break;
+            case NON_EXISTENT_ID:
+                //NEED TO CHANGE TO INDEX SOON????
+                for (Integer num : e.getInvalidIds()) {
+                    controller.relayFb(String.format(Constants.CMD_ERROR_CANT_UNMARK_NO_ID, num), MsgType.ERROR);
+                }
+                //logger.fine(Constants.LOG_DELETE_FAIL_NOID);
                 break;
             default:
                 break;

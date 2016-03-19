@@ -26,19 +26,34 @@ public class Constants {
 
     public static final String CMD_ERROR_CANT_ADD_UNKNOWN = "Some stupid error occurred. Cannot add task!";
     public static final String CMD_ERROR_CANT_ADD_EMPTY = "Cannot add an empty task!";
-    public static final String CMD_ERROR_CANT_DELETE = "Some stupid error occurred. Cannot delete task!";
+    public static final String CMD_ERROR_CANT_ALIAS_INVALID = "- %s - is an invalid alias for - %s -";
+    public static final String CMD_ERROR_CANT_ALIAS_DUPLICATED = " - %s - is an duplicated alias.";
+    public static final String CMD_ERROR_CANT_ALIAS_UNKNOWN = "Some stupid error occurred. Cannot create alias for - %s -!";
+    public static final String CMD_ERROR_CANT_DELETE_NO_ID = "Some stupid error occurred. Cannot delete task(s)!";
+    public static final String CMD_ERROR_CANT_DELETE_UNKNOWN = "Cannot delete task. The ID #%d does not exist!";
+    public static final String CMD_ERROR_CANT_MARK_NO_ID = "Cannot mark task as completed. The ID #%d does not exist!!";
+    public static final String CMD_ERROR_CANT_MARK_UNKNOWN = "Some stupid error occurred. Cannot mark task(s) as done!";
     public static final String CMD_ERROR_CANT_RENAME_UNKNOWN = "Some stupid error occurred. Cannot rename task!";
     public static final String CMD_ERROR_CANT_RENAME_NO_ID = "Cannot rename task. The ID #%d does not exist!";
     public static final String CMD_ERROR_CANT_RENAME_NO_CHANGES = "No difference between new and old name - %s -!";
     public static final String CMD_ERROR_CANT_RESCHEDULE_UNKNOWN = "Some error occurred. Cannot reschedule task!";
     public static final String CMD_ERROR_CANT_RESCHEDULE_NO_ID = "Cannot reschedule task. The ID #%d does not exist!";
     public static final String CMD_ERROR_CANT_RESCHEDULE_NO_CHANGES = "No difference between new and old schedule - ";
+    public static final String CMD_ERROR_CANT_UNALIAS_UNKNOWN = "Some error occurred. Cannot remove alias - %s -!";
+    public static final String CMD_ERROR_CANT_UNALIAS_NO_ALIAS= "Cannot remove alias. The alias - %s - does not exist!";
+    public static final String CMD_ERROR_CANT_UNMARK_NO_ID = "Cannot unmark task. The ID #%d does not exist!!";
+    public static final String CMD_ERROR_CANT_UNMARK_UNKNOWN = "Some stupid error occurred. Cannot unmark task(s)!";
 
-    public static final String CMD_SUCCESS_LISTED = "Here is your requested list! :)";
     public static final String CMD_SUCCESS_ADDED = "Task #%d - %s added! :)";
+    public static final String CMD_SUCCESS_ALIAS = "Alias - %s - is created for command - %s -! :)";
     public static final String CMD_SUCCESS_DELETED = "Task #%d deleted! :)";
+    public static final String CMD_SUCCESS_LISTED = "Here is your requested list! :)";
+    public static final String CMD_SUCCESS_MARKED = "Task #%d is completed! Good job! :)";
     public static final String CMD_SUCCESS_RENAMED = "Task #%d renamed to - %s -! :)";
     public static final String CMD_SUCCESS_RESCHEDULED = "Task #%d rescheduled! :)";
+    public static final String CMD_SUCCESS_SEARCH = "Here are your search results! :)";
+    public static final String CMD_SUCCESS_UNALIAS = "Alias - %s - is removed! :)";
+    public static final String CMD_SUCCESS_UNMARKED = "Task #%d is marked as imcomplete! :)";
 
     public static final String CMD_WARNING_DONTKNOW = "Sorry, I do not understand what you mean by \"%s\" :(";
 

@@ -96,7 +96,7 @@ public class MainSetUp extends Application {
         controller.setMainApp(this);
         controller.setCmdHandler(cmdHandler);
 
-        controller.importantList.removeAll(controller.importantList);
+        //controller.importantList.removeAll(controller.importantList);
 
         controller.displayList();
         ui.displayWelcome();

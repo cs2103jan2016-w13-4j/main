@@ -27,7 +27,7 @@ public class Constants {
     public static final String REGEX_DELETE = "(?i)^(delete|remove)";
     public static final String REGEX_SEARCH = "(?i)^(delete|remove)";
     public static final String REGEX_MARK = "(?i)^(mark)";
-    public static final String REGEX_UNMARK = "(?i)^(mark)";
+    public static final String REGEX_UNMARK = "(?i)^(unmark)";
     public static final String REGEX_ALIAS = "(?i)^(alias)";
     public static final String REGEX_UNALIAS = "(?i)^(unalias)";
     public static final String REGEX_DIRECTORY = "(?i)^(directory)";

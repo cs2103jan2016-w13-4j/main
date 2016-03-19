@@ -3,8 +3,6 @@ package jfdi.ui;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -22,13 +20,17 @@ public class ListItem extends HBox{
 
     private int index;
     private TaskAttributes item;
-    private final BooleanProperty on = new SimpleBooleanProperty();
+    private Boolean mark;
 
-    public ListItem(int index, TaskAttributes task, boolean on) {
+    public ListItem(int index, TaskAttributes task, boolean bln) {
         loadView();
         setIndex(index);
         setItem(task);
-        setOn(on);
+        if (bln) {
+            setMarkT();
+        } else {
+            setMarkF();
+        }
     }
 
     private void loadView() {
@@ -89,15 +91,25 @@ public class ListItem extends HBox{
         }
     }
 
-    public final BooleanProperty onProperty() {
-        return this.on;
+    public void setMarkT() {
+        this.mark = true;
+        //  NEED TO BE ABLE TO STRIKE OUT THE TASK
     }
 
-    public final boolean isOn() {
-        return this.onProperty().get();
+    public void setMarkF() {
+        this.mark = false;
+        // UNSTRIKE IF IT IS PREVIOUSLY STRIKED
     }
 
-    public final void setOn(final boolean on) {
-        this.onProperty().set(on);
+    public Boolean getMark() {
+        return this.mark;
+    }
+
+    public void strikeOut() {
+
+    }
+
+    public void removeStrike() {
+
     }
 }

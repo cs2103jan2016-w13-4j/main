@@ -63,6 +63,12 @@ public class AliasAttributesTest {
     }
 
     @Test(expected = InvalidAliasParametersException.class)
+    public void testInvalidAliasSave() throws Exception {
+        AliasAttributes aliasAttributes = new AliasAttributes(Constants.TEST_COMMAND, Constants.TEST_COMMAND_2);
+        aliasAttributes.save();
+    }
+
+    @Test(expected = InvalidAliasParametersException.class)
     public void testInvalidCommandSave() throws Exception {
         AliasAttributes aliasAttributes = new AliasAttributes(Constants.TEST_ALIAS, Constants.TEST_ALIAS);
         aliasAttributes.save();

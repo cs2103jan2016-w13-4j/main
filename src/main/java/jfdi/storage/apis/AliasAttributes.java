@@ -72,9 +72,21 @@ public class AliasAttributes {
         return new Alias(alias, command);
     }
 
-    private void validateAttributes() throws InvalidAliasParametersException,
-        DuplicateAliasException {
+    /**
+     * This method checks if the current alias is valid.
+     *
+     * @return a boolean indicating if the current alias is valid
+     */
+    public boolean isValid() {
         if (alias == null || command == null || isValidCommand(alias) || !isValidCommand(command)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void validateAttributes() throws InvalidAliasParametersException {
+        if (!isValid()) {
             throw new InvalidAliasParametersException(this);
         }
     }

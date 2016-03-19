@@ -13,7 +13,9 @@ public class DirectoryCommand extends Command {
 
     public static class Builder {
 
-        public DirectoryCommand build() { return new DirectoryCommand(this); }
+        public DirectoryCommand build() {
+            return new DirectoryCommand(this);
+        }
 
     }
 

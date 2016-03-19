@@ -4,6 +4,7 @@ import jfdi.logic.commands.AddTaskCommand;
 import jfdi.logic.commands.AliasCommand;
 import jfdi.logic.commands.DeleteTaskCommand;
 import jfdi.logic.commands.DirectoryCommandStub;
+import jfdi.logic.commands.ExitCommand;
 import jfdi.logic.commands.HelpCommandStub;
 import jfdi.logic.commands.InvalidCommand;
 import jfdi.logic.commands.ListCommand;
@@ -384,6 +385,41 @@ public class InputParserTest {
         wildcardCommand = "surprise myself on my birthday (since nobody else will :()";
         try {
             Command command = parser.parse(wildcardCommand);
+            Assert.assertTrue(command instanceof AddTaskCommand);
+        } catch (InvalidInputException e) {
+            Assert.fail();
+        }
+    }
+
+    @Test
+    public void testUserInputExit() {
+        String exitCommand = "exit";
+        try {
+            Command command = parser.parse(exitCommand);
+            Assert.assertTrue(command instanceof ExitCommand);
+        } catch (InvalidInputException e) {
+            Assert.fail();
+        }
+
+        exitCommand = "quit";
+        try {
+            Command command = parser.parse(exitCommand);
+            Assert.assertTrue(command instanceof ExitCommand);
+        } catch (InvalidInputException e) {
+            Assert.fail();
+        }
+
+        exitCommand = "quit slacking";
+        try {
+            Command command = parser.parse(exitCommand);
+            Assert.assertTrue(command instanceof AddTaskCommand);
+        } catch (InvalidInputException e) {
+            Assert.fail();
+        }
+
+        exitCommand = "exit on the left";
+        try {
+            Command command = parser.parse(exitCommand);
             Assert.assertTrue(command instanceof AddTaskCommand);
         } catch (InvalidInputException e) {
             Assert.fail();

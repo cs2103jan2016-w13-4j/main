@@ -16,7 +16,8 @@ public class UI implements IUserInterface {
     private MainController controller;
     private ControlCenter logic;
 
-    private UI() {}
+    private UI() {
+    }
 
     public static UI getInstance() {
         return ourInstance;
@@ -44,9 +45,9 @@ public class UI implements IUserInterface {
     @Override
     public void processInput(String input) {
 
-        if (input.equalsIgnoreCase("QUIT")) {
-            System.exit(0);
-        }
+        // if (input.equalsIgnoreCase("QUIT")) {
+        // System.exit(0);
+        // }
 
         // Clear controller first
         controller.clearCmdArea();

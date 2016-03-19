@@ -35,8 +35,9 @@ public class TaskDbTest {
         testDirectory = Files.createTempDirectory(Constants.TEST_DIRECTORY_NAME);
         testDirectoryString = testDirectory.toString();
         mainStorageInstance = MainStorage.getInstance();
-        mainStorageInstance.initialize();
         originalPreference = mainStorageInstance.getPreferredDirectory();
+        mainStorageInstance.setPreferredDirectory(testDirectoryString);
+        mainStorageInstance.initialize();
         mainStorageInstance.use(testDirectoryString);
         taskDbInstance = TaskDb.getInstance();
     }

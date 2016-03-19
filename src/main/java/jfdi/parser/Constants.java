@@ -56,7 +56,7 @@ public class Constants {
     public static final String REGEX_YEARS_FULL = "((19|20)\\d\\d)";
     public static final String REGEX_DATE_ATTRIBUTES = "((?i)(day)(s)?|"
         + "(week|wk)(s)?|" + "(month|mth)(s)?|" + "(year|yr))(s)?";
-    public static final String REGEX_TIME_MILITARY = "(?i)([0-1][0-9]|[2][0-4])[.:][0-5][\\d]([h]([r][s]?)?)";
+    public static final String REGEX_TIME_MILITARY = "(?i)([0-1][0-9]|[2][0-4])[.:]?[0-5][\\d]([h]([r][s]?)?)";
     public static final String REGEX_TIME_NORMAL = "((?i)0?[1-9]|1[0-2])[.:]?([0-5][0-9])?[ :]?([a|p][m])";
 
     public static final String REGEX_RELATIVE_DATE_1 = "(?i)(tomorrow|yesterday|today|now)";
@@ -98,7 +98,7 @@ public class Constants {
         + REGEX_DATE_TIME_FORMAT;
     public static final String REGEX_EVENT_IDENTIFIER = "(?i)(from) "
         + REGEX_DATE_TIME_FORMAT + " (to|until) " + REGEX_DATE_TIME_FORMAT;
-    public static final String REGEX_POINT_TASK_IDENTIFIER = "(?i)(on|at) "
+    public static final String REGEX_POINT_TASK_IDENTIFIER = "(?i)(on |at )?"
         + REGEX_DATE_TIME_FORMAT;
     public static final String REGEX_REPEATED_TASK_IDENTIFIER = "(?i)(every) "
         + REGEX_DATE_TIME_FORMAT + "(?i)( to " + REGEX_DATE_TIME_FORMAT + ")?";
@@ -196,8 +196,7 @@ public class Constants {
 
     public static void main(String[] args) {
 
-        System.out.println("by 23:00hrs 1 year later"
-            .matches(REGEX_DATE_TIME_IDENTIFIER));
+        System.out.println("next week".matches(REGEX_DATE_TIME_IDENTIFIER));
 
     }
 }

@@ -85,16 +85,7 @@ public class DateTimeParserTest {
     // With time specified
     @Test
     public void testParseRelativeQueries2() {
-        DateTimeObject res = parseDateTime("by next week 11pm");
-
-        // Start date-time should be null
-        Assert.assertNull(res.getStartDateTime());
-
-        // Check end date time is corrently parsed
-        checkMatchingDateTime(res.getEndDateTime(), getCurrentYear(),
-            getCurrentMonth(), getCurrentDay() + 7, 23, 00);
-
-        res = parseDateTime("by 18:32h, tomorrow");
+        DateTimeObject res = parseDateTime("by 18.32h, tomorrow");
 
         // Start date-time should be null
         Assert.assertNull(res.getStartDateTime());
@@ -103,7 +94,7 @@ public class DateTimeParserTest {
         checkMatchingDateTime(res.getEndDateTime(), getCurrentYear(),
             getCurrentMonth(), getCurrentDay() + 1, 18, 32);
 
-        res = parseDateTime("by 3 days later, 23:00h");
+        res = parseDateTime("by 3 days later, 2300h");
 
         // Start date-time should be null
         Assert.assertNull(res.getStartDateTime());
@@ -120,6 +111,31 @@ public class DateTimeParserTest {
         // Check end date time is corrently parsed
         checkMatchingDateTime(res.getEndDateTime(), getCurrentYear(),
             getCurrentMonth(), getCurrentDay() + 3, 23, 0);
+
+    }
+
+    // Relative date time queries
+    // Point task
+    // With time specified
+    @Test
+    public void testParseRelativeQueries3() {
+        DateTimeObject res = parseDateTime("next week 11pm");
+
+        // Start date-time should be null
+        Assert.assertNull(res.getEndDateTime());
+
+        // Check end date time is corrently parsed
+        checkMatchingDateTime(res.getStartDateTime(), getCurrentYear(),
+            getCurrentMonth(), getCurrentDay() + 7, 23, 00);
+
+        res = parseDateTime("11pm, tomorrow");
+
+        // Start date-time should be null
+        Assert.assertNull(res.getEndDateTime());
+
+        // Check end date time is corrently parsed
+        checkMatchingDateTime(res.getStartDateTime(), getCurrentYear(),
+            getCurrentMonth(), getCurrentDay() + 1, 23, 00);
 
     }
 
@@ -256,7 +272,7 @@ public class DateTimeParserTest {
         try {
             res = parser.parseDateTime(input);
         } catch (BadDateTimeException e) {
-            Assert.assertTrue(true);
+            Assert.fail();
         }
 
         return res;

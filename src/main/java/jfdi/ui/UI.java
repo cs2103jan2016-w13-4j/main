@@ -1,16 +1,16 @@
 package jfdi.ui;
 
-import com.google.common.eventbus.EventBus;
-
 import jfdi.logic.ControlCenter;
 import jfdi.ui.Constants.MsgType;
 import jfdi.ui.commandhandlers.CommandHandler;
 
+import com.google.common.eventbus.EventBus;
+
 public class UI implements IUserInterface {
 
+    private static EventBus eventBus = new EventBus();
     public CommandHandler cmdHandler = new CommandHandler();
 
-    private static EventBus eventBus = new EventBus();
     private MainController controller;
     private ControlCenter logic;
 
@@ -45,7 +45,8 @@ public class UI implements IUserInterface {
         controller.clearFb();
 
         // Show user what the command recognized in the feedback area
-        // controller.displayFb(String.format(Constants.UI_MESSAGE_USERCMD, input));
+        // controller.displayFb(String.format(Constants.UI_MESSAGE_USERCMD,
+        // input));
 
         // Relay user input to logic and wait for reply
         relayToLogic(input);

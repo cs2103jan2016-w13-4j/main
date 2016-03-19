@@ -309,7 +309,7 @@ public class DateTimeParser {
 
     public static void main(String[] args) throws Exception {
         DateTimeParser parser = DateTimeParser.getInstance();
-        System.out.println(parser.parseDateTime("on 23-01-2017 23:00hrs")
+        System.out.println(parser.parseDateTime("by 3 days later, 2300hrs")
             .getStartDateTime());
     }
 }

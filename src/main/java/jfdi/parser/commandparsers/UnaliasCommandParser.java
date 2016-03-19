@@ -29,6 +29,7 @@ public class UnaliasCommandParser extends AbstractCommandParser {
     @Override
     public Command build(String input) {
         Builder builder = new Builder();
+        System.out.println(input);
         if (!isValidFormat(input)) {
             return createInvalidCommand(Constants.CommandType.alias, input);
         }
@@ -53,7 +54,7 @@ public class UnaliasCommandParser extends AbstractCommandParser {
     private boolean isValidFormat(String input) {
         String[] inputAsArray = input.split(Constants.REGEX_WHITESPACE);
         return inputAsArray.length == 2
-            && inputAsArray[0].equals(Constants.REGEX_UNALIAS);
+            && inputAsArray[0].matches(Constants.REGEX_UNALIAS);
     }
 
     /**

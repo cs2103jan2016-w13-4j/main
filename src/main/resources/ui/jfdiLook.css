@@ -19,7 +19,7 @@
 .ListLayout #dayDisplayer {
 	-fx-font: 14px Hammersmith;
 	-fx-text-fill: #eeeeee;
-	-fx-background-color: red;
+	-fx-background-color: #434343;
 }
 
 .ListLayout #statsDisplayer {

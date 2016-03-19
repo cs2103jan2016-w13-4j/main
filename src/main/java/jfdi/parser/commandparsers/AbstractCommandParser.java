@@ -11,9 +11,24 @@ import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
 import jfdi.parser.Constants.CommandType;
 
+/**
+ * The AbstractCommandParser class is the abstract class that all specific
+ * command parser should inherit from. It also contains the full implementation
+ * of some methods that can be used across many different command parsers.
+ *
+ * @author Leonard Hio
+ *
+ */
 public abstract class AbstractCommandParser {
     protected String userInput;
 
+    /**
+     * This method is used to build a command object based on the input string.
+     *
+     * @param input
+     *            the input string from which a command object is to be built
+     * @return a Command object.
+     */
     public abstract Command build(String input);
 
     protected List<String> getArguments(String input) {
@@ -65,11 +80,14 @@ public abstract class AbstractCommandParser {
     }
 
     /**
-     * This method converts a String object to an Integer.
+     * This method converts a string object to an Integer.
      *
      * @param toInt
-     *            a String that is to be converted to an Integer.
-     * @return an Integer representation of the String.
+     *            a string that is to be converted to an Integer.
+     * @return an Integer representation of the string.
+     *
+     * @throws NumberFormatException
+     *             if the input string does not represent an Integer.
      */
     protected Integer toInteger(String toInt) throws NumberFormatException {
         return Integer.parseInt(toInt);

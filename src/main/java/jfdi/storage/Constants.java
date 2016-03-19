@@ -77,6 +77,8 @@ public class Constants {
     public static final String TEST_COMMAND = "somecommand";
     public static final String TEST_ALIAS_2 = "somealias2";
     public static final String TEST_COMMAND_2 = "somecommand2";
+    public static final String TEST_COMMAND_REGEX = "(?i)^(" + TEST_COMMAND + ")|"
+            + "(?i)^(" + TEST_COMMAND_2 + ")";
 
     // Tasks
     public static final String TEST_TASK_DESCRIPTION_1 = "my favourite description";

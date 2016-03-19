@@ -32,6 +32,7 @@ public class AliasDbTest {
         MainStorage fileStorageInstance = MainStorage.getInstance();
         fileStorageInstance.load(testDirectory.toString());
         aliasDbInstance = AliasDb.getInstance();
+        AliasAttributes.setCommandRegex(Constants.TEST_COMMAND_REGEX);
     }
 
     @After

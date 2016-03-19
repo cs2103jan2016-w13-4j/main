@@ -51,7 +51,7 @@ public class DateTimeParserTest {
         Assert.assertNull(res.getStartDateTime());
         Assert.assertEquals(year, res.getEndDateTime().getYear());
 
-        dateTimeInput = "by 1 year from now";
+        dateTimeInput = "by 1 year later";
         res = null;
         try {
             res = parser.parseDateTime(dateTimeInput);
@@ -88,7 +88,7 @@ public class DateTimeParserTest {
         Assert.assertEquals(year, res.getEndDateTime().getYear());
         Assert.assertEquals(hour, res.getEndDateTime().getHour());
 
-        dateTimeInput = "by 1 year from now, 2300h";
+        dateTimeInput = "by next year, 2300h";
         res = null;
         try {
             res = parser.parseDateTime(dateTimeInput);
@@ -113,9 +113,9 @@ public class DateTimeParserTest {
             Assert.fail();
         }
         LocalDateTime testDateTime = LocalDateTime.of(year, month, dayOfMonth,
-                getCurrentHour(), getCurrentMinutes());
+            getCurrentHour(), getCurrentMinutes());
         Assert.assertEquals(testDateTime.toLocalDate(), res.getStartDateTime()
-                .toLocalDate());
+            .toLocalDate());
         Assert.assertEquals(hour, res.getStartDateTime().getHour());
         Assert.assertEquals(minute, res.getStartDateTime().getMinute());
 
@@ -134,13 +134,13 @@ public class DateTimeParserTest {
             Assert.fail();
         }
         LocalDateTime testDateTime = LocalDateTime.of(year, month, dayOfMonth,
-                getCurrentHour(), getCurrentMinutes());
+            getCurrentHour(), getCurrentMinutes());
         Assert.assertEquals(testDateTime.toLocalDate(), res.getStartDateTime()
-                .toLocalDate());
+            .toLocalDate());
         Assert.assertEquals(Constants.Time.DEFAULT_HOUR, res.getStartDateTime()
-                .getHour());
+            .getHour());
         Assert.assertEquals(Constants.Time.DEFAULT_MINUTES, res
-                .getStartDateTime().getMinute());
+            .getStartDateTime().getMinute());
 
     }
 
@@ -162,26 +162,26 @@ public class DateTimeParserTest {
         Assert.assertEquals(Month.FEBRUARY, res.getStartDateTime().getMonth());
         Assert.assertEquals(26, res.getStartDateTime().getDayOfMonth());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.nanoseconds, res
-                .getStartDateTime().getNano());
+            .getStartDateTime().getNano());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.seconds, res
-                .getStartDateTime().getSecond());
+            .getStartDateTime().getSecond());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.minutes, res
-                .getStartDateTime().getMinute());
+            .getStartDateTime().getMinute());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.hour, res
-                .getStartDateTime().getHour());
+            .getStartDateTime().getHour());
 
         // Check end date time is corrently parsed
         Assert.assertEquals(2019, res.getEndDateTime().getYear());
         Assert.assertEquals(Month.DECEMBER, res.getEndDateTime().getMonth());
         Assert.assertEquals(28, res.getEndDateTime().getDayOfMonth());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.nanoseconds, res
-                .getStartDateTime().getNano());
+            .getStartDateTime().getNano());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.seconds, res
-                .getStartDateTime().getSecond());
+            .getStartDateTime().getSecond());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.minutes, res
-                .getStartDateTime().getMinute());
+            .getStartDateTime().getMinute());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.hour, res
-                .getStartDateTime().getHour());
+            .getStartDateTime().getHour());
 
         dateTimeInput = "From 25/11/94 to 23/12/97";
         res = null;
@@ -196,26 +196,26 @@ public class DateTimeParserTest {
         Assert.assertEquals(Month.NOVEMBER, res.getStartDateTime().getMonth());
         Assert.assertEquals(25, res.getStartDateTime().getDayOfMonth());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.nanoseconds, res
-                .getStartDateTime().getNano());
+            .getStartDateTime().getNano());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.seconds, res
-                .getStartDateTime().getSecond());
+            .getStartDateTime().getSecond());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.minutes, res
-                .getStartDateTime().getMinute());
+            .getStartDateTime().getMinute());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.hour, res
-                .getStartDateTime().getHour());
+            .getStartDateTime().getHour());
 
         // Check end date time is corrently parsed
         Assert.assertEquals(1997, res.getEndDateTime().getYear());
         Assert.assertEquals(Month.DECEMBER, res.getEndDateTime().getMonth());
         Assert.assertEquals(23, res.getEndDateTime().getDayOfMonth());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.nanoseconds, res
-                .getStartDateTime().getNano());
+            .getStartDateTime().getNano());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.seconds, res
-                .getStartDateTime().getSecond());
+            .getStartDateTime().getSecond());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.minutes, res
-                .getStartDateTime().getMinute());
+            .getStartDateTime().getMinute());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.hour, res
-                .getStartDateTime().getHour());
+            .getStartDateTime().getHour());
     }
 
     // Explicit date time queries
@@ -236,11 +236,11 @@ public class DateTimeParserTest {
         Assert.assertEquals(Month.FEBRUARY, res.getStartDateTime().getMonth());
         Assert.assertEquals(26, res.getStartDateTime().getDayOfMonth());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.nanoseconds, res
-                .getStartDateTime().getNano());
+            .getStartDateTime().getNano());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.seconds, res
-                .getStartDateTime().getSecond());
+            .getStartDateTime().getSecond());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.minutes, res
-                .getStartDateTime().getMinute());
+            .getStartDateTime().getMinute());
         Assert.assertEquals(hour, res.getStartDateTime().getHour());
 
         // Check end date time is corrently parsed
@@ -248,11 +248,11 @@ public class DateTimeParserTest {
         Assert.assertEquals(Month.DECEMBER, res.getEndDateTime().getMonth());
         Assert.assertEquals(28, res.getEndDateTime().getDayOfMonth());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.nanoseconds, res
-                .getStartDateTime().getNano());
+            .getStartDateTime().getNano());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.seconds, res
-                .getStartDateTime().getSecond());
+            .getStartDateTime().getSecond());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.minutes, res
-                .getStartDateTime().getMinute());
+            .getStartDateTime().getMinute());
         Assert.assertEquals(hour, res.getStartDateTime().getHour());
 
         dateTimeInput = "From 25/11/94 to 23/12/97";
@@ -268,26 +268,26 @@ public class DateTimeParserTest {
         Assert.assertEquals(Month.NOVEMBER, res.getStartDateTime().getMonth());
         Assert.assertEquals(25, res.getStartDateTime().getDayOfMonth());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.nanoseconds, res
-                .getStartDateTime().getNano());
+            .getStartDateTime().getNano());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.seconds, res
-                .getStartDateTime().getSecond());
+            .getStartDateTime().getSecond());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.minutes, res
-                .getStartDateTime().getMinute());
+            .getStartDateTime().getMinute());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.hour, res
-                .getStartDateTime().getHour());
+            .getStartDateTime().getHour());
 
         // Check end date time is corrently parsed
         Assert.assertEquals(1997, res.getEndDateTime().getYear());
         Assert.assertEquals(Month.DECEMBER, res.getEndDateTime().getMonth());
         Assert.assertEquals(23, res.getEndDateTime().getDayOfMonth());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.nanoseconds, res
-                .getStartDateTime().getNano());
+            .getStartDateTime().getNano());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.seconds, res
-                .getStartDateTime().getSecond());
+            .getStartDateTime().getSecond());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.minutes, res
-                .getStartDateTime().getMinute());
+            .getStartDateTime().getMinute());
         Assert.assertEquals(Constants.TIME_BEGINNING_OF_DAY.hour, res
-                .getStartDateTime().getHour());
+            .getStartDateTime().getHour());
     }
 
     private int getCurrentYear() {

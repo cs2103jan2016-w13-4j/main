@@ -101,9 +101,7 @@ public class MainStorage implements IStorage {
         setCurrentDirectory(newStorageFolderPath);
     }
 
-    /**
-     * @return the currentDirectory
-     */
+    @Override
     public String getCurrentDirectory() {
         assert isInitialized;
         return currentDirectory;

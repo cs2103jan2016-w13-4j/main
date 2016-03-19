@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import jfdi.storage.apis.TaskAttributes;
 
-public class ListItem extends HBox{
+public class ListItem extends HBox {
 
     @FXML
     private Label rowIndex;
@@ -42,7 +42,8 @@ public class ListItem extends HBox{
 
         } catch (Exception e) {
             e.printStackTrace();
-        }    }
+        }
+    }
 
     public void setIndex(int index) {
         this.index = index;
@@ -75,7 +76,7 @@ public class ListItem extends HBox{
                 timeAndDate.setText(Constants.ITEM_NO_TIMEDATE);
             } else {
                 // Deadline Tasks
-                String end= formatter.format(endTime);
+                String end = formatter.format(endTime);
                 timeAndDate.setText(String.format(Constants.ITEM_DEADLINE, end));
             }
         } else {
@@ -85,7 +86,7 @@ public class ListItem extends HBox{
                 timeAndDate.setText(String.format(Constants.ITEM_POINT_TASK, start));
             } else {
                 // Event Tasks
-                String end= formatter.format(endTime);
+                String end = formatter.format(endTime);
                 timeAndDate.setText(String.format(Constants.ITEM_EVENT_TASK, start, end));
             }
         }

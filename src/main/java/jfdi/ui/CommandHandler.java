@@ -63,22 +63,25 @@ public class CommandHandler {
 
     @Subscribe
     public void handleAliasDoneEvent(AliasDoneEvent e) {
-        controller.relayFb(String.format(Constants.CMD_SUCCESS_ALIAS, e.getAlias(), e.getCommand()),MsgType.SUCCESS);
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_ALIAS, e.getAlias(), e.getCommand()), MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleAliasFailEvent(AliasFailEvent e) {
         switch (e.getError()) {
             case INVALID_PARAMETERS:
-                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_ALIAS_INVALID, e.getAlias(), e.getCommand()), MsgType.ERROR);
+                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_ALIAS_INVALID, e.getAlias(), e.getCommand()),
+                        MsgType.ERROR);
                 //logger.fine(String.format(format, args));
                 break;
             case DUPLICATED_ALIAS:
-                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_ALIAS_DUPLICATED, e.getAlias()), MsgType.ERROR);
+                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_ALIAS_DUPLICATED, e.getAlias()),
+                        MsgType.ERROR);
                 //logger.fine(String.format(format, args));
                 break;
             case UNKNOWN:
-                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_ALIAS_UNKNOWN, e.getCommand()), MsgType.ERROR);
+                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_ALIAS_UNKNOWN, e.getCommand()),
+                        MsgType.ERROR);
                 //logger.fine(String.format(format, args));
                 break;
             default:
@@ -201,7 +204,7 @@ public class CommandHandler {
         TaskAttributes task = e.getTask();
         int count = 0;
         for (int i = 0; i < controller.importantList.size(); i++) {
-            if ( controller.getIdFromIndex(i) == task.getId()) {
+            if (controller.getIdFromIndex(i) == task.getId()) {
                 controller.importantList.get(i).setDescription(task.getDescription());
                 count = i;
                 break;
@@ -281,27 +284,31 @@ public class CommandHandler {
         for (TaskAttributes item : e.getResults()) {
             ListItem listItem;
             if (item.isCompleted()) {
-                listItem= new ListItem(count, item, true);
+                listItem = new ListItem(count, item, true);
             } else {
-                listItem= new ListItem(count, item, false);
+                listItem = new ListItem(count, item, false);
             }
             controller.importantList.add(listItem);
             count++;
         }
+
+        System.out.println(e.getKeywords().isEmpty());
+
         controller.setHighlights(e.getKeywords());
         controller.relayFb(Constants.CMD_SUCCESS_SEARCH, MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleUnaliasDoneEvent(UnaliasDoneEvent e) {
-        controller.relayFb(String.format(Constants.CMD_SUCCESS_UNALIAS, e.getAlias()),MsgType.SUCCESS);
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_UNALIAS, e.getAlias()), MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleUnaliasFailEvent(UnaliasFailEvent e) {
         switch (e.getError()) {
             case UNKNOWN:
-                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_UNALIAS_UNKNOWN, e.getAlias()), MsgType.ERROR);
+                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_UNALIAS_UNKNOWN, e.getAlias()),
+                        MsgType.ERROR);
                 //logger.fine(Constants.LOG_RESCHE_FAIL_UNKNOWN);
                 break;
             case NON_EXISTENT_ALIAS:

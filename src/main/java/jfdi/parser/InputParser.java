@@ -64,7 +64,8 @@ public class InputParser implements IParser {
         String unaliasedInput = unalias(input);
         String firstWord = getFirstWord(unaliasedInput);
         CommandType commandType = ParserUtils.getCommandType(firstWord);
-        Command userCommand = getCommand(commandType, input);
+        System.out.println(commandType.toString());
+        Command userCommand = getCommand(commandType, unaliasedInput);
         return userCommand;
     }
 
@@ -113,12 +114,11 @@ public class InputParser implements IParser {
      */
     private String unalias(String input) {
         assert isValidInput(input);
-
+        String firstWord = getFirstWord(input);
         Set<String> aliasSet = aliasMap.keySet();
         for (String str : aliasSet) {
-            if (input.matches("$" + str)) {
-                input.replaceAll("$" + str, aliasMap.get(str));
-                break;
+            if (firstWord.matches("^" + str)) {
+                return input.replaceAll("^" + str, aliasMap.get(str));
             }
         }
         return input;

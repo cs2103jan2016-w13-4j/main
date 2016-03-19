@@ -53,15 +53,16 @@ public class Constants {
         + "(jun)(e)?|" + "(jul)(y)?|" + "(aug)(ust)?|" + "(sep)(tember)?|"
         + "(oct)(ober)?|" + "(nov)(ember)?|" + "(dec)(ember)?)";
     public static final String REGEX_YEARS = "((19|20)?\\d\\d)";
+    public static final String REGEX_YEARS_FULL = "((19|20)\\d\\d)";
     public static final String REGEX_DATE_ATTRIBUTES = "((?i)(day)(s)?|"
         + "(week|wk)(s)?|" + "(month|mth)(s)?|" + "(year|yr))(s)?";
-    public static final String REGEX_TIME_MILITARY = "(?i)([0-1][0-9]|[2][0-4])[.:-]?[0-5][\\d]([h]([r][s]?)?)";
-    public static final String REGEX_TIME_NORMAL = "((?i)0?[1-9]|1[0-2])[.-:]?([0-5][0-9])?[ -:]?([a|p][m])";
+    public static final String REGEX_TIME_MILITARY = "(?i)([0-1][0-9]|[2][0-4])[.:]?[0-5][\\d]([h]([r][s]?)?)";
+    public static final String REGEX_TIME_NORMAL = "((?i)0?[1-9]|1[0-2])[.:]?([0-5][0-9])?[ :]?([a|p][m])";
 
     public static final String REGEX_RELATIVE_DATE_1 = "(?i)(tomorrow|yesterday|today|now)";
     public static final String REGEX_RELATIVE_DATE_2 = "(?i)((next |this )?("
         + REGEX_DATE_ATTRIBUTES + "|" + REGEX_DAYS_TEXTUAL + "))";
-    public static final String REGEX_RELATIVE_DATE_3 = "((\\d+ |the )"
+    public static final String REGEX_RELATIVE_DATE_3 = "((\\d+ )"
         + REGEX_DATE_ATTRIBUTES + " (?i)(later|before|after))";
 
     public static final String REGEX_RELATIVE_DATE = "("
@@ -73,7 +74,7 @@ public class Constants {
         + REGEX_YEARS + ")?\\b";
     public static final String REGEX_ABSOLUTE_DATE_DDMONTHYYYY = "\\b"
         + REGEX_DAYS_NUMERIC + "[-/. ]" + REGEX_MONTHS_TEXTUAL + "([-/. ]"
-        + REGEX_YEARS + ")?\\b";
+        + REGEX_YEARS_FULL + ")?\\b";
 
     // Formats for date, time, and date-time in Regex (built from date and time
     // related Regex Strings)
@@ -82,16 +83,22 @@ public class Constants {
         + "|" + REGEX_RELATIVE_DATE + ")";
     public static final String REGEX_TIME_FORMAT = "(" + REGEX_TIME_MILITARY
         + "|" + REGEX_TIME_NORMAL + ")";
-    public static final String REGEX_DATE_TIME_FORMAT = "(("
-        + REGEX_DATE_FORMAT + "(,?[ ]" + REGEX_TIME_FORMAT + ")?)|("
-        + REGEX_TIME_FORMAT + "(,?[ ]" + REGEX_DATE_FORMAT + ")?))";
+    public static final String REGEX_DATE_TIME_FORMAT_DATE_FIRST = "("
+        + REGEX_DATE_FORMAT + ",?[ ]" + REGEX_TIME_FORMAT + ")";
+    public static final String REGEX_DATE_TIME_FORMAT_DATE_FIRST_WITH_NAMED_GROUPS = "((?<date>"
+        + REGEX_DATE_FORMAT + "),?[ ](?<time>" + REGEX_TIME_FORMAT + "))";
+    public static final String REGEX_DATE_TIME_FORMAT_TIME_FIRST = "("
+        + REGEX_TIME_FORMAT + ",?[ ]" + REGEX_DATE_FORMAT + ")";
+    public static final String REGEX_DATE_TIME_FORMAT = "(" + REGEX_DATE_FORMAT
+        + "|" + REGEX_TIME_FORMAT + "|" + REGEX_DATE_TIME_FORMAT_DATE_FIRST
+        + "|" + REGEX_DATE_TIME_FORMAT_TIME_FIRST + ")";
 
     // Regex used to detect date-time fields in the user's input String
     public static final String REGEX_DEADLINE_IDENTIFIER = "(?i)(by|before) "
         + REGEX_DATE_TIME_FORMAT;
     public static final String REGEX_EVENT_IDENTIFIER = "(?i)(from) "
         + REGEX_DATE_TIME_FORMAT + " (to|until) " + REGEX_DATE_TIME_FORMAT;
-    public static final String REGEX_POINT_TASK_IDENTIFIER = "(?i)(on|at) "
+    public static final String REGEX_POINT_TASK_IDENTIFIER = "(?i)(on |at )?"
         + REGEX_DATE_TIME_FORMAT;
     public static final String REGEX_REPEATED_TASK_IDENTIFIER = "(?i)(every) "
         + REGEX_DATE_TIME_FORMAT + "(?i)( to " + REGEX_DATE_TIME_FORMAT + ")?";
@@ -189,6 +196,7 @@ public class Constants {
 
     public static void main(String[] args) {
 
-        System.out.println("by next year".matches(REGEX_DATE_TIME_IDENTIFIER));
+        System.out.println("next week".matches(REGEX_DATE_TIME_IDENTIFIER));
+
     }
 }

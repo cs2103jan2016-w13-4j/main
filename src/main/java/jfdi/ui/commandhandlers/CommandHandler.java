@@ -1,4 +1,4 @@
-package jfdi.ui;
+package jfdi.ui.commandhandlers;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -28,12 +28,15 @@ import jfdi.logic.events.UnaliasFailEvent;
 import jfdi.logic.events.UnmarkTaskDoneEvent;
 import jfdi.logic.events.UnmarkTaskFailEvent;
 import jfdi.storage.apis.TaskAttributes;
+import jfdi.ui.Constants;
 import jfdi.ui.Constants.MsgType;
+import jfdi.ui.ListItem;
+import jfdi.ui.MainController;
 
 public class CommandHandler {
 
-    private MainController controller;
-    private Logger logger = JfdiLogger.getLogger();
+    public MainController controller;
+    public Logger logger = JfdiLogger.getLogger();
 
     @Subscribe
     public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {

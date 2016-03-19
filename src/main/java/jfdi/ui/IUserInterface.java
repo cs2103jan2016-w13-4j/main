@@ -14,8 +14,6 @@ public interface IUserInterface {
 
     void relayToLogic(String ctrlCmdShowlist);
 
-    CommandHandler getCmdHandler();
-
     int getTaskId(int onScreenId);
 
     void displayFeedback(String fb, MsgType type);

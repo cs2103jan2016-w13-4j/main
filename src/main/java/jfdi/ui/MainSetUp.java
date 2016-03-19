@@ -62,6 +62,7 @@ public class MainSetUp extends Application {
         // Display scene with root layout
         Scene scene = new Scene(rootLayout);
         scene.setFill(Color.TRANSPARENT);
+        scene.getStylesheets().add(MainSetUp.class.getResource("/ui/jfdiLook.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
         this.scene = scene;
@@ -71,7 +72,6 @@ public class MainSetUp extends Application {
     private void initView() throws IOException {
 
         IUserInterface ui = new UI();
-        CommandHandler cmdHandler = ui.getCmdHandler();
 
         // Load View
         FXMLLoader loader = new FXMLLoader();
@@ -83,8 +83,7 @@ public class MainSetUp extends Application {
         controller = loader.getController();
         controller.initialize();
 
-        // Link UI and CmdHandler with Controller
-        cmdHandler.setController(controller);
+        // Link UI with Controller
         ui.setController(controller);
         ui.init();
 
@@ -94,7 +93,6 @@ public class MainSetUp extends Application {
         // Link Controller with UI, MainSetUp and CommandHandler
         controller.setUi(ui);
         controller.setMainApp(this);
-        controller.setCmdHandler(cmdHandler);
 
         //controller.importantList.removeAll(controller.importantList);
 

@@ -8,15 +8,18 @@ import java.util.HashSet;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.ui.Constants.MsgType;
+import jfdi.ui.commandhandlers.CommandHandler;
 
 public class MainController {
 
@@ -27,6 +30,8 @@ public class MainController {
     public ObservableList<ListItem> importantList;
 
     @FXML
+    public VBox backDrop;
+    @FXML
     public SplitPane leftRightSplit;
     @FXML
     public SplitPane upDownSplit;
@@ -34,6 +39,8 @@ public class MainController {
     public TextField dayDisplayer;
     @FXML
     public TextArea statsDisplayer;
+    @FXML
+    public Label overdueLabel;
     @FXML
     public ListView<TaskAttributes> overdueList;
     @FXML

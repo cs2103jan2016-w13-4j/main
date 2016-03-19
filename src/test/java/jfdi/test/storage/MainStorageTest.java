@@ -56,7 +56,7 @@ public class MainStorageTest {
 
     @After
     public void tearDown() throws Exception {
-        revertOriginalPreference(originalPreference);
+        TestHelper.revertOriginalPreference(mainStorageInstance, originalPreference);
         mainStorageInstance.removeInstance();
         if (testDirectoryFile.exists()) {
             FileUtils.deleteDirectory(testDirectoryFile);
@@ -198,20 +198,5 @@ public class MainStorageTest {
      */
     private void createInvalidDataFiles() {
         TestHelper.createInvalidDataFiles(testDirectoryString);
-    }
-
-    /**
-     * This method reverts the preference file to its original form after using
-     * it in the tests.
-     *
-     * @param originalPreference
-     *            the original storage directory path
-     */
-    private void revertOriginalPreference(String originalPreference) {
-        if (originalPreference == null) {
-            FileUtils.deleteQuietly(Constants.PATH_PREFERENCE_FILE.toFile());
-            return;
-        }
-        mainStorageInstance.setPreferredDirectory(originalPreference);
     }
 }

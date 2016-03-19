@@ -18,6 +18,7 @@ import jfdi.storage.exceptions.NoAttributesChangedException;
 import jfdi.storage.serializer.Serializer;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -26,15 +27,23 @@ public class TaskDbTest {
     private static Path testDirectory = null;
     private static String testDirectoryString = null;
     private static TaskDb taskDbInstance = null;
+    private static MainStorage mainStorageInstance = null;
+    private static String originalPreference = null;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         testDirectory = Files.createTempDirectory(Constants.TEST_DIRECTORY_NAME);
         testDirectoryString = testDirectory.toString();
-        MainStorage fileStorageInstance = MainStorage.getInstance();
-        fileStorageInstance.initialize();
-        fileStorageInstance.use(testDirectoryString);
+        mainStorageInstance = MainStorage.getInstance();
+        mainStorageInstance.initialize();
+        originalPreference = mainStorageInstance.getPreferredDirectory();
+        mainStorageInstance.use(testDirectoryString);
         taskDbInstance = TaskDb.getInstance();
+    }
+
+    @AfterClass
+    public static void tearDownAfterClass() {
+        TestHelper.revertOriginalPreference(mainStorageInstance, originalPreference);
     }
 
     @After

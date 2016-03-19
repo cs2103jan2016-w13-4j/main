@@ -25,7 +25,8 @@ public class AliasAttributes {
     /**
      * Sets the regex used for checking if a given word is a valid command.
      *
-     * @param regex the regex that checks if a given word is a command command
+     * @param regex
+     *            the regex that checks if a given word is a command command
      */
     public static void setCommandRegex(String regex) {
         commandRegex = regex;
@@ -61,7 +62,8 @@ public class AliasAttributes {
      * @throws DuplicateAliasException
      *             if the alias already exists in the database
      */
-    public void save() throws InvalidAliasParametersException, DuplicateAliasException {
+    public void save() throws InvalidAliasParametersException,
+        DuplicateAliasException {
         validateAttributes();
         AliasDb.getInstance().create(this);
     }
@@ -70,7 +72,8 @@ public class AliasAttributes {
         return new Alias(alias, command);
     }
 
-    private void validateAttributes() throws InvalidAliasParametersException, DuplicateAliasException {
+    private void validateAttributes() throws InvalidAliasParametersException,
+        DuplicateAliasException {
         if (alias == null || command == null || !isValidCommand(command)) {
             throw new InvalidAliasParametersException(this);
         }

@@ -35,8 +35,7 @@ public class MoveCommandParser extends AbstractCommandParser {
         String directoryName = "";
 
         if (!isValidInput(input)) {
-            builder.setDirectory(directoryName);
-            return builder.build();
+            return createInvalidCommand(Constants.CommandType.move, input);
         }
 
         directoryName = getDirectoryName(input);

@@ -34,7 +34,7 @@ public class UseCommandParser extends AbstractCommandParser {
     @Override
     public Command build(String input) {
         if (!isValidInput(input)) {
-            return createInvalidCommand(CommandType.move, input);
+            return createInvalidCommand(CommandType.use, input);
         }
 
         String directoryName = getDirectoryName(input);

@@ -5,8 +5,8 @@ import jfdi.logic.interfaces.Command;
 public class UndoCommandStub extends Command {
 
     public static class Builder {
-        public DirectoryCommandStub build() {
-            return new DirectoryCommandStub();
+        public UndoCommandStub build() {
+            return new UndoCommandStub();
         }
     }
 

@@ -25,12 +25,12 @@ import org.junit.Test;
 public class FileManagerTest {
 
     private static Path testDirectoryRoot = null;
+    private static MainStorage mainStorageInstance = null;
+    private static String originalPreference = null;
 
     private Path testDirectoryPath = null;
     private File testDirectoryFile = null;
     private String testDirectoryString = null;
-    private static MainStorage mainStorageInstance = null;
-    private static String originalPreference = null;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {

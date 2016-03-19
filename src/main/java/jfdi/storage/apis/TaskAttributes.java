@@ -164,7 +164,7 @@ public class TaskAttributes {
     public boolean isValid() {
         try {
             validateAttributes();
-        } catch(InvalidTaskParametersException e) {
+        } catch (InvalidTaskParametersException e) {
             return false;
         }
         return true;

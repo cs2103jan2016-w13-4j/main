@@ -1,6 +1,6 @@
 package jfdi.logic.commands;
 
-import jfdi.logic.events.DirectoryMovedEvent;
+import jfdi.logic.events.MoveDirectoryDoneEvent;
 import jfdi.logic.events.MoveDirectoryFailedEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.MainStorage;
@@ -42,7 +42,7 @@ public class MoveDirectoryCommand extends Command {
     public void execute() {
         try {
             MainStorage.getInstance().changeDirectory(newDirectory);
-            eventBus.post(new DirectoryMovedEvent(newDirectory));
+            eventBus.post(new MoveDirectoryDoneEvent(newDirectory));
         } catch (FilesReplacedException e) {
             eventBus.post(new MoveDirectoryFailedEvent(newDirectory, MoveDirectoryFailedEvent.Error.FILE_REPLACED,
                 e.getReplacedFilePairs()));

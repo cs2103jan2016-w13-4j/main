@@ -8,20 +8,20 @@ import com.google.common.eventbus.Subscribe;
 import edu.emory.mathcs.backport.java.util.Collections;
 import jfdi.common.utilities.JfdiLogger;
 import jfdi.logic.events.AddTaskDoneEvent;
-import jfdi.logic.events.AddTaskFailEvent;
+import jfdi.logic.events.AddTaskFailedEvent;
 import jfdi.logic.events.AliasDoneEvent;
-import jfdi.logic.events.AliasFailEvent;
+import jfdi.logic.events.AliasFailedEvent;
 import jfdi.logic.events.DeleteTaskDoneEvent;
-import jfdi.logic.events.DeleteTaskFailEvent;
+import jfdi.logic.events.DeleteTaskFailedEvent;
 import jfdi.logic.events.ExitCalledEvent;
 import jfdi.logic.events.InvalidCommandEvent;
 import jfdi.logic.events.ListDoneEvent;
 import jfdi.logic.events.MarkTaskDoneEvent;
-import jfdi.logic.events.MarkTaskFailEvent;
+import jfdi.logic.events.MarkTaskFailedEvent;
 import jfdi.logic.events.RenameTaskDoneEvent;
-import jfdi.logic.events.RenameTaskFailEvent;
+import jfdi.logic.events.RenameTaskFailedEvent;
 import jfdi.logic.events.RescheduleTaskDoneEvent;
-import jfdi.logic.events.RescheduleTaskFailEvent;
+import jfdi.logic.events.RescheduleTaskFailedEvent;
 import jfdi.logic.events.SearchDoneEvent;
 import jfdi.logic.events.ShowDirectoryEvent;
 import jfdi.logic.events.UnaliasDoneEvent;
@@ -50,7 +50,7 @@ public class CommandHandler {
     }
 
     @Subscribe
-    public void handleAddTaskFailEvent(AddTaskFailEvent e) {
+    public void handleAddTaskFailEvent(AddTaskFailedEvent e) {
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_CANT_ADD_UNKNOWN, MsgType.ERROR);
@@ -71,7 +71,7 @@ public class CommandHandler {
     }
 
     @Subscribe
-    public void handleAliasFailEvent(AliasFailEvent e) {
+    public void handleAliasFailEvent(AliasFailedEvent e) {
         switch (e.getError()) {
             case INVALID_PARAMETERS:
                 controller.relayFb(String.format(Constants.CMD_ERROR_CANT_ALIAS_INVALID, e.getAlias(), e.getCommand()),
@@ -118,7 +118,7 @@ public class CommandHandler {
     }
 
     @Subscribe
-    public void handleDeleteTaskFailEvent(DeleteTaskFailEvent e) {
+    public void handleDeleteTaskFailEvent(DeleteTaskFailedEvent e) {
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_CANT_DELETE_UNKNOWN, MsgType.ERROR);
@@ -185,7 +185,7 @@ public class CommandHandler {
     }
 
     @Subscribe
-    public void handleMarkTaskFailEvent(MarkTaskFailEvent e) {
+    public void handleMarkTaskFailEvent(MarkTaskFailedEvent e) {
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_CANT_MARK_UNKNOWN, MsgType.ERROR);
@@ -220,7 +220,7 @@ public class CommandHandler {
     }
 
     @Subscribe
-    public void handleRenameTaskFailEvent(RenameTaskFailEvent e) {
+    public void handleRenameTaskFailEvent(RenameTaskFailedEvent e) {
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_CANT_RENAME_UNKNOWN, MsgType.ERROR);
@@ -256,7 +256,7 @@ public class CommandHandler {
     }
 
     @Subscribe
-    public void handleRescheduleTaskFailEvent(RescheduleTaskFailEvent e) {
+    public void handleRescheduleTaskFailEvent(RescheduleTaskFailedEvent e) {
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_CANT_RESCHEDULE_UNKNOWN, MsgType.ERROR);

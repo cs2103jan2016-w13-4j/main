@@ -3,11 +3,11 @@ package jfdi.logic.events;
 /**
  * @author Xinan
  */
-public class DirectoryMovedEvent {
+public class MoveDirectoryDoneEvent {
 
     private String newDirectory;
 
-    public DirectoryMovedEvent(String newDirectory) {
+    public MoveDirectoryDoneEvent(String newDirectory) {
         this.newDirectory = newDirectory;
     }
 

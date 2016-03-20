@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * @author Liu Xinan
  */
-public class DeleteTaskFailEvent {
+public class DeleteTaskFailedEvent {
 
     public enum Error {
         NON_EXISTENT_ID, UNKNOWN
@@ -14,11 +14,11 @@ public class DeleteTaskFailEvent {
     private ArrayList<Integer> invalidIds;
     private Error error;
 
-    public DeleteTaskFailEvent() {
+    public DeleteTaskFailedEvent() {
         error = Error.UNKNOWN;
     }
 
-    public DeleteTaskFailEvent(ArrayList<Integer> invalidIds) {
+    public DeleteTaskFailedEvent(ArrayList<Integer> invalidIds) {
         error = Error.NON_EXISTENT_ID;
         this.invalidIds = invalidIds;
     }

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 /**
  * @author Liu Xinan
  */
-public class RescheduleTaskFailEvent {
+public class RescheduleTaskFailedEvent {
 
     public enum Error {
         NON_EXISTENT_ID,
@@ -18,7 +18,7 @@ public class RescheduleTaskFailEvent {
     private LocalDateTime endDateTime;
     private Error error;
 
-    public RescheduleTaskFailEvent(int taskId, LocalDateTime startDateTime, LocalDateTime endDateTime, Error error) {
+    public RescheduleTaskFailedEvent(int taskId, LocalDateTime startDateTime, LocalDateTime endDateTime, Error error) {
         this.taskId = taskId;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;

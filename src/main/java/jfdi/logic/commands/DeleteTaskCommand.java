@@ -1,7 +1,7 @@
 package jfdi.logic.commands;
 
 import jfdi.logic.events.DeleteTaskDoneEvent;
-import jfdi.logic.events.DeleteTaskFailEvent;
+import jfdi.logic.events.DeleteTaskFailedEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
@@ -67,7 +67,7 @@ public class DeleteTaskCommand extends Command {
             });
             eventBus.post(new DeleteTaskDoneEvent(taskIds, deletedTasks));
         } else {
-            eventBus.post(new DeleteTaskFailEvent(invalidIds));
+            eventBus.post(new DeleteTaskFailedEvent(invalidIds));
         }
     }
 }

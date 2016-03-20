@@ -7,9 +7,9 @@ import com.google.common.eventbus.Subscribe;
 
 import jfdi.logic.ControlCenter;
 import jfdi.logic.events.AddTaskDoneEvent;
-import jfdi.logic.events.AddTaskFailEvent;
+import jfdi.logic.events.AddTaskFailedEvent;
 import jfdi.logic.events.DeleteTaskDoneEvent;
-import jfdi.logic.events.DeleteTaskFailEvent;
+import jfdi.logic.events.DeleteTaskFailedEvent;
 import jfdi.logic.events.ExitCalledEvent;
 import jfdi.logic.events.InvalidCommandEvent;
 import jfdi.logic.events.ListDoneEvent;
@@ -54,7 +54,7 @@ public class DummyUI {
     }
 
     @Subscribe
-    public void handleAddTaskFailEvent(AddTaskFailEvent e) {
+    public void handleAddTaskFailEvent(AddTaskFailedEvent e) {
         switch (e.getError()) {
             case UNKNOWN:
                 System.out.println("Some stupid error occurred.");
@@ -72,7 +72,7 @@ public class DummyUI {
     }
 
     @Subscribe
-    public void handleDeleteTaskFailEvent(DeleteTaskFailEvent e) {
+    public void handleDeleteTaskFailEvent(DeleteTaskFailedEvent e) {
         String list = e.getInvalidIds().stream()
             .map(Object::toString)
             .collect(Collectors.joining(", "));

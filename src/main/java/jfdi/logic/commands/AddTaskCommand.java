@@ -1,7 +1,7 @@
 package jfdi.logic.commands;
 
 import jfdi.logic.events.AddTaskDoneEvent;
-import jfdi.logic.events.AddTaskFailEvent;
+import jfdi.logic.events.AddTaskFailedEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.exceptions.InvalidIdException;
@@ -104,7 +104,7 @@ public class AddTaskCommand extends Command {
             task.save();
             eventBus.post(new AddTaskDoneEvent(task));
         } catch (InvalidTaskParametersException e) {
-            eventBus.post(new AddTaskFailEvent(AddTaskFailEvent.Error.EMPTY_DESCRIPTION));
+            eventBus.post(new AddTaskFailedEvent(AddTaskFailedEvent.Error.EMPTY_DESCRIPTION));
         } catch (NoAttributesChangedException e) {
             // Should not happen for creating tasks
             assert false;

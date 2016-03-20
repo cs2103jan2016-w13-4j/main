@@ -63,7 +63,7 @@ public class FileManagerTest {
     }
 
     @Test
-    public void testPrepareDirectory() {
+    public void testPrepareDirectory() throws Exception {
         // The folder should not exist at the start
         assertFalse(testDirectoryFile.exists());
 

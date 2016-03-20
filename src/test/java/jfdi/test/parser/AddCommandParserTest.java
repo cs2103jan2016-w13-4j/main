@@ -32,18 +32,21 @@ public class AddCommandParserTest {
 
     @Test
     public void testValidAddInputWithoutDateTime() {
+        // Equivalance class: valid inputs
         Command cmd = parser.build("add hello");
         AddTaskCommand addTaskCommand = validateAndReturnAddCommand(cmd);
         validateDescription(addTaskCommand, "hello");
         Assert.assertFalse(hasStartDateTime(addTaskCommand));
         Assert.assertFalse(hasEndDateTime(addTaskCommand));
 
-        cmd = parser.build("add hello, it's me.");
+        // Boundary case: capitalised add keyword
+        cmd = parser.build("ADD hello, it's me.");
         addTaskCommand = validateAndReturnAddCommand(cmd);
         validateDescription(addTaskCommand, "hello, it's me.");
         Assert.assertFalse(hasStartDateTime(addTaskCommand));
         Assert.assertFalse(hasEndDateTime(addTaskCommand));
 
+        // Boundary case: no 'add' keyword
         cmd = parser.build("This should parse as an add command.");
         addTaskCommand = validateAndReturnAddCommand(cmd);
         validateDescription(addTaskCommand,
@@ -51,16 +54,26 @@ public class AddCommandParserTest {
         Assert.assertFalse(hasStartDateTime(addTaskCommand));
         Assert.assertFalse(hasEndDateTime(addTaskCommand));
 
+        // Boundary case: symbols
         cmd = parser.build("&%&^%%*@^#!)!@#()\\@*@)_    @#@#***");
         addTaskCommand = validateAndReturnAddCommand(cmd);
         validateDescription(addTaskCommand,
             "&%&^%%*@^#!)!@#()\\@*@)_    @#@#***");
         Assert.assertFalse(hasStartDateTime(addTaskCommand));
         Assert.assertFalse(hasEndDateTime(addTaskCommand));
+
+        // Boundary case: numbers
+        cmd = parser.build("12381209474");
+        addTaskCommand = validateAndReturnAddCommand(cmd);
+        validateDescription(addTaskCommand, "12381209474");
+        Assert.assertFalse(hasStartDateTime(addTaskCommand));
+        Assert.assertFalse(hasEndDateTime(addTaskCommand));
     }
 
     @Test
     public void testValidAddInputWithDateTime() {
+        // Equivalence class: valid inputs with date-time
+        // covers the three types of date-time tasks: deadline, event, point
         Command addCommand = parser
             .build("add watch how i met your mother by tomorrow");
         AddTaskCommand addTaskCommand = validateAndReturnAddCommand(addCommand);
@@ -91,7 +104,12 @@ public class AddCommandParserTest {
 
     @Test
     public void testInvalidInput() {
+        // Boundary case: no description and no date-time
         Command addCommand = parser.build("add");
+        Assert.assertTrue(addCommand instanceof InvalidCommand);
+
+        // Boundary case: no description
+        addCommand = parser.build("add from 5pm to 6pm");
         Assert.assertTrue(addCommand instanceof InvalidCommand);
 
     }

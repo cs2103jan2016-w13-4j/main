@@ -64,7 +64,7 @@
             </StackPane>
             <ListView fx:id="listMain" prefHeight="500.0" prefWidth="450.0" style="-fx-background-color: faebcd;">
                <VBox.margin>
-                  <Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
+                  <Insets />
                </VBox.margin>
             </ListView>
             <TextArea fx:id="fbArea" blendMode="MULTIPLY" prefHeight="50.0" prefWidth="430.0" wrapText="true">

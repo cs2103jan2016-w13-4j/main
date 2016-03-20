@@ -12,12 +12,13 @@
 	src: url("/ui/fonts/raleway.heavy.ttf");
 }
 
-.list-cell {
-	-fx-background-color: #faebcd;
-	-fx-border-color: #faebcd;
-}
-
 .list-cell:empty {
     -fx-background-color: #faebcd;
-    -fx-border-color: #faebcd;
+    -fx-border-color: #faebcd
 }
+
+.list-cell {
+	-fx-background-color: #faebcd;
+	-fx-border-color: #faebcd
+}
+

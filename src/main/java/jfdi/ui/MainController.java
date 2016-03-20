@@ -244,8 +244,7 @@ public class MainController {
     }
 
     private Timeline generateHelpOverlayTimeline(FadeTransition fadeIn) {
-        return new Timeline(new KeyFrame(new Duration(1),
-                new EventHandler<ActionEvent>() {
+        return new Timeline(new KeyFrame(new Duration(1), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 initHelpOverlay();
@@ -274,9 +273,9 @@ public class MainController {
 
     private void handleOverlays(ObservableList<ListItem> tasks) {
         hideOverlays();
-        if (tasks.isEmpty()) {
-            //showNoTaskOverlay();
-        }
+        //if (tasks.isEmpty()) {
+        //showNoTaskOverlay();
+        //}
     }
 
     @FXML

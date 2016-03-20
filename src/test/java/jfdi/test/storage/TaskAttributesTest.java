@@ -29,8 +29,7 @@ public class TaskAttributesTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         testDirectory = Files.createTempDirectory(Constants.TEST_DIRECTORY_NAME);
-        MainStorage fileStorageInstance = MainStorage.getInstance();
-        fileStorageInstance.load(testDirectory.toString());
+        MainStorage.getInstance().load(testDirectory.toString());
         taskDbInstance = TaskDb.getInstance();
     }
 
@@ -52,17 +51,17 @@ public class TaskAttributesTest {
         taskAttributes.setCompleted(true);
 
         // Assert that the getter returns the same attributes
-        assertEquals(taskAttributes.getId(), new Integer(1));
-        assertEquals(taskAttributes.getDescription(), Constants.TEST_TASK_DESCRIPTION_1);
-        assertEquals(taskAttributes.getStartDateTime(), Constants.TEST_TASK_STARTDATETIME);
-        assertEquals(taskAttributes.getEndDateTime(), Constants.TEST_TASK_ENDDATETIME);
+        assertEquals(new Integer(1), taskAttributes.getId());
+        assertEquals(Constants.TEST_TASK_DESCRIPTION_1, taskAttributes.getDescription());
+        assertEquals(Constants.TEST_TASK_STARTDATETIME, taskAttributes.getStartDateTime());
+        assertEquals(Constants.TEST_TASK_ENDDATETIME, taskAttributes.getEndDateTime());
         HashSet<String> tags = taskAttributes.getTags();
-        assertEquals(tags.size(), 1);
+        assertEquals(1, tags.size());
         assertTrue(tags.contains(Constants.TEST_TASK_TAG_1));
         TreeSet<Duration> reminders = taskAttributes.getReminders();
-        assertEquals(reminders.size(), 1);
+        assertEquals(1, reminders.size());
         assertTrue(reminders.contains(Constants.TEST_TASK_REMINDER_DURATION_1));
-        assertEquals(taskAttributes.isCompleted(), true);
+        assertEquals(true, taskAttributes.isCompleted());
     }
 
     @Test
@@ -82,101 +81,99 @@ public class TaskAttributesTest {
 
     @Test(expected = InvalidTaskParametersException.class)
     public void testInvalidParametersSave() throws Exception {
-        assertTrue(taskDbInstance.getAll().isEmpty());
-        TaskAttributes taskAttributes = new TaskAttributes();
-
-        // Omit all attributes and save
-        taskAttributes.save();
+        // Save an invalid TaskAttributes object (without parameters)
+        // This should throw an exception
+        new TaskAttributes().save();
     }
 
     @Test(expected = NoAttributesChangedException.class)
     public void testNoChangesSave() throws Exception {
-        assertTrue(taskDbInstance.getAll().isEmpty());
+        // Persist the Task to storage
         TaskAttributes taskAttributes = new TaskAttributes();
         taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
         taskAttributes.save();
 
-        // The second save with no changes
+        // Call a second save with no changes
+        // This should throw an exception
         taskAttributes.save();
     }
 
     @Test(expected = InvalidIdException.class)
     public void testInvalidIdSave() throws Exception {
+        // Ensure that there are no other tasks in the DB first
         assertTrue(taskDbInstance.getAll().isEmpty());
+
+        // Create a Task with an invalid ID and save
         TaskAttributes taskAttributes = new TaskAttributes();
         taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
-
-        // Point to an invalid ID and save
         taskAttributes.setId(1);
+
+        // This should trigger the exception
         taskAttributes.save();
     }
 
     @Test
-    public void testCreateOnSave() {
-        try {
-            // Make sure that the database starts off empty
-            assertTrue(taskDbInstance.getAll().isEmpty());
-            TaskAttributes taskAttributes = new TaskAttributes();
-            taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
-            taskAttributes.setStartDateTime(Constants.TEST_TASK_STARTDATETIME);
-            taskAttributes.setEndDateTime(Constants.TEST_TASK_ENDDATETIME);
-            taskAttributes.setTags(Constants.TEST_TASK_TAG_1);
-            taskAttributes.setReminders(Constants.TEST_TASK_REMINDER_DURATION_1);
-            taskAttributes.save();
+    public void testCreateOnSave() throws Exception {
+        // Make sure that the database starts off empty
+        assertTrue(taskDbInstance.getAll().isEmpty());
 
-            // Verify that a task has been created
-            assertEquals(taskDbInstance.getAll().size(), 1);
+        // We create a Task
+        TaskAttributes taskAttributes = new TaskAttributes();
+        taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        taskAttributes.setStartDateTime(Constants.TEST_TASK_STARTDATETIME);
+        taskAttributes.setEndDateTime(Constants.TEST_TASK_ENDDATETIME);
+        taskAttributes.setTags(Constants.TEST_TASK_TAG_1);
+        taskAttributes.setReminders(Constants.TEST_TASK_REMINDER_DURATION_1);
+        taskAttributes.save();
 
-            // Check that the task has been created with the correct attributes
-            TaskAttributes taskAttributes2 = taskDbInstance.getById(1);
-            assertEquals(taskAttributes2.getId(), new Integer(1));
-            assertEquals(taskAttributes2.getDescription(), Constants.TEST_TASK_DESCRIPTION_1);
-            assertEquals(taskAttributes2.getStartDateTime(), Constants.TEST_TASK_STARTDATETIME);
-            assertEquals(taskAttributes2.getEndDateTime(), Constants.TEST_TASK_ENDDATETIME);
-            assertTrue(taskAttributes2.hasTag(Constants.TEST_TASK_TAG_1));
-            TreeSet<Duration> reminders = taskAttributes2.getReminders();
-            assertEquals(reminders.size(), 1);
-            assertTrue(reminders.contains(Constants.TEST_TASK_REMINDER_DURATION_1));
-            assertEquals(taskAttributes2.isCompleted(), false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // Verify that a task has been created
+        assertEquals(1, taskDbInstance.getAll().size());
+
+        // Check that the task has been created with the correct attributes
+        TaskAttributes taskAttributes2 = taskDbInstance.getById(1);
+        assertEquals(new Integer(1), taskAttributes2.getId());
+        assertEquals(Constants.TEST_TASK_DESCRIPTION_1, taskAttributes2.getDescription());
+        assertEquals(Constants.TEST_TASK_STARTDATETIME, taskAttributes2.getStartDateTime());
+        assertEquals(Constants.TEST_TASK_ENDDATETIME, taskAttributes2.getEndDateTime());
+        assertTrue(taskAttributes2.hasTag(Constants.TEST_TASK_TAG_1));
+        TreeSet<Duration> reminders = taskAttributes2.getReminders();
+        assertEquals(1, reminders.size());
+        assertTrue(reminders.contains(Constants.TEST_TASK_REMINDER_DURATION_1));
+        assertEquals(false, taskAttributes2.isCompleted());
     }
 
     @Test
-    public void testUpdateOnSave() {
-        try {
-            // Make sure that the database starts off empty
-            assertTrue(taskDbInstance.getAll().isEmpty());
-            TaskAttributes taskAttributes = new TaskAttributes();
-            taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
-            taskAttributes.save();
+    public void testUpdateOnSave() throws Exception {
+        // Make sure that the database starts off empty
+        assertTrue(taskDbInstance.getAll().isEmpty());
 
-            // Verify that a task has been created
-            assertEquals(taskDbInstance.getAll().size(), 1);
+        // Create a Task
+        TaskAttributes taskAttributes = new TaskAttributes();
+        taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        taskAttributes.save();
 
-            // Add more attributes to it
-            taskAttributes.setStartDateTime(Constants.TEST_TASK_STARTDATETIME);
-            taskAttributes.setEndDateTime(Constants.TEST_TASK_ENDDATETIME);
-            taskAttributes.setTags(Constants.TEST_TASK_TAG_1);
-            taskAttributes.setReminders(Constants.TEST_TASK_REMINDER_DURATION_1);
-            taskAttributes.setCompleted(true);
-            taskAttributes.save();
+        // Verify that a task has been created
+        assertEquals(1, taskDbInstance.getAll().size());
 
-            // Verify that the attributes have been updated
-            TaskAttributes taskAttributes2 = taskDbInstance.getById(1);
-            assertEquals(taskAttributes2.getId(), new Integer(1));
-            assertEquals(taskAttributes2.getDescription(), Constants.TEST_TASK_DESCRIPTION_1);
-            assertEquals(taskAttributes2.getStartDateTime(), Constants.TEST_TASK_STARTDATETIME);
-            assertEquals(taskAttributes2.getEndDateTime(), Constants.TEST_TASK_ENDDATETIME);
-            assertTrue(taskAttributes2.hasTag(Constants.TEST_TASK_TAG_1));
-            TreeSet<Duration> reminders = taskAttributes2.getReminders();
-            assertEquals(reminders.size(), 1);
-            assertTrue(reminders.contains(Constants.TEST_TASK_REMINDER_DURATION_1));
-            assertEquals(taskAttributes2.isCompleted(), true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // Add more attributes to it
+        taskAttributes.setStartDateTime(Constants.TEST_TASK_STARTDATETIME);
+        taskAttributes.setEndDateTime(Constants.TEST_TASK_ENDDATETIME);
+        taskAttributes.setTags(Constants.TEST_TASK_TAG_1);
+        taskAttributes.setReminders(Constants.TEST_TASK_REMINDER_DURATION_1);
+        taskAttributes.setCompleted(true);
+        taskAttributes.save();
+
+        // Verify that the attributes have been updated
+        TaskAttributes taskAttributes2 = taskDbInstance.getById(1);
+        assertEquals(new Integer(1), taskAttributes2.getId());
+        assertEquals(Constants.TEST_TASK_DESCRIPTION_1, taskAttributes2.getDescription());
+        assertEquals(Constants.TEST_TASK_STARTDATETIME, taskAttributes2.getStartDateTime());
+        assertEquals(Constants.TEST_TASK_ENDDATETIME, taskAttributes2.getEndDateTime());
+        assertTrue(taskAttributes2.hasTag(Constants.TEST_TASK_TAG_1));
+        TreeSet<Duration> reminders = taskAttributes2.getReminders();
+        assertEquals(1, reminders.size());
+        assertTrue(reminders.contains(Constants.TEST_TASK_REMINDER_DURATION_1));
+        assertEquals(true, taskAttributes2.isCompleted());
     }
 
     @Test
@@ -203,16 +200,16 @@ public class TaskAttributesTest {
 
         // Add a new tag
         taskAttributes.addTag(Constants.TEST_TASK_TAG_1);
-        assertEquals(taskAttributes.getTags().size(), 1);
+        assertEquals(1, taskAttributes.getTags().size());
         assertTrue(taskAttributes.getTags().contains(Constants.TEST_TASK_TAG_1));
 
         // Add the same tag - it should not be doubly-added
         assertFalse(taskAttributes.addTag(Constants.TEST_TASK_TAG_1));
-        assertEquals(taskAttributes.getTags().size(), 1);
+        assertEquals(1, taskAttributes.getTags().size());
 
         // Add a second unique tag
         taskAttributes.addTag(Constants.TEST_TASK_TAG_2);
-        assertEquals(taskAttributes.getTags().size(), 2);
+        assertEquals(2, taskAttributes.getTags().size());
         assertTrue(taskAttributes.getTags().contains(Constants.TEST_TASK_TAG_2));
     }
 
@@ -222,23 +219,23 @@ public class TaskAttributesTest {
         TaskAttributes taskAttributes = new TaskAttributes();
         taskAttributes.addTag(Constants.TEST_TASK_TAG_1);
         taskAttributes.addTag(Constants.TEST_TASK_TAG_2);
-        assertEquals(taskAttributes.getTags().size(), 2);
+        assertEquals(2, taskAttributes.getTags().size());
 
         // Try removing a non-existent tag - it shouldn't work
         assertFalse(taskAttributes.removeTag(Constants.TEST_TASK_DESCRIPTION_1));
-        assertEquals(taskAttributes.getTags().size(), 2);
+        assertEquals(2, taskAttributes.getTags().size());
 
         // Remove a valid tag
         assertTrue(taskAttributes.removeTag(Constants.TEST_TASK_TAG_1));
-        assertEquals(taskAttributes.getTags().size(), 1);
+        assertEquals(1, taskAttributes.getTags().size());
 
         // Remove the same tag - it shouldn't work
         assertFalse(taskAttributes.removeTag(Constants.TEST_TASK_TAG_1));
-        assertEquals(taskAttributes.getTags().size(), 1);
+        assertEquals(1, taskAttributes.getTags().size());
 
         // Remove the last tag
         assertTrue(taskAttributes.removeTag(Constants.TEST_TASK_TAG_2));
-        assertEquals(taskAttributes.getTags().size(), 0);
+        assertEquals(0, taskAttributes.getTags().size());
     }
 
     @Test
@@ -249,16 +246,16 @@ public class TaskAttributesTest {
 
         // Add a new reminder
         taskAttributes.addReminder(Constants.TEST_TASK_REMINDER_DURATION_1);
-        assertEquals(taskAttributes.getReminders().size(), 1);
+        assertEquals(1, taskAttributes.getReminders().size());
         assertTrue(taskAttributes.getReminders().contains(Constants.TEST_TASK_REMINDER_DURATION_1));
 
         // Add the same reminder - it should not be doubly-added
         assertFalse(taskAttributes.addReminder(Constants.TEST_TASK_REMINDER_DURATION_1));
-        assertEquals(taskAttributes.getReminders().size(), 1);
+        assertEquals(1, taskAttributes.getReminders().size());
 
         // Add a second unique reminder
         taskAttributes.addReminder(Constants.TEST_TASK_REMINDER_DURATION_2);
-        assertEquals(taskAttributes.getReminders().size(), 2);
+        assertEquals(2, taskAttributes.getReminders().size());
         assertTrue(taskAttributes.getReminders().contains(Constants.TEST_TASK_REMINDER_DURATION_2));
     }
 

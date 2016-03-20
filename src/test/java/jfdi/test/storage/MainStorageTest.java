@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -40,8 +39,7 @@ public class MainStorageTest {
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        File testDirectoryRootFile = testDirectoryRoot.toFile();
-        FileUtils.deleteDirectory(testDirectoryRootFile);
+        FileUtils.deleteDirectory(testDirectoryRoot.toFile());
     }
 
     @Before
@@ -65,16 +63,16 @@ public class MainStorageTest {
 
     @Test
     public void testGetInstance() {
-        // Test the ability to get an instance of MainStorage in setUp()
+        // Test the ability to get an instance of MainStorage in the test's setUp() method
         assertTrue(mainStorageInstance instanceof MainStorage);
 
         // Make sure that getInstance returns the same instance in every call
-        MainStorage mainStorageInstance2 = MainStorage.getInstance();
-        assertSame(mainStorageInstance, mainStorageInstance2);
+        assertSame(mainStorageInstance, MainStorage.getInstance());
     }
 
     @Test
     public void testInitialize() throws Exception {
+        // Command under test
         initializeStorage();
 
         // Assert test folder exists after a successful initialization
@@ -87,6 +85,7 @@ public class MainStorageTest {
 
     @Test
     public void testUse() throws Exception {
+        // Initialize storage and create a valid task file to load from
         initializeStorage();
         Path subdirectoryPath = Paths.get(testDirectoryString, Constants.TEST_SUBDIRECTORY_NAME);
         String subdirectoryString = subdirectoryPath.toString();
@@ -99,75 +98,78 @@ public class MainStorageTest {
         // Command under test
         mainStorageInstance.use(subdirectoryString);
 
-        // The preferred directory should be set as the subdirectory
-        assertEquals(mainStorageInstance.getPreferredDirectory(), subdirectoryString);
-        // There should now be 1 task loaded from the subdirectory
+        // The preferred directory should be set as the subdirectory and there
+        // should be 1 task loaded from the subdirectory
+        assertEquals(subdirectoryString, mainStorageInstance.getPreferredDirectory());
         assertEquals(1, TaskDb.getInstance().getAll().size());
     }
 
     @Test
-    public void testSuccessfulLoad() {
-        try {
-            mainStorageInstance.load(testDirectoryString);
+    public void testSuccessfulLoad() throws Exception {
+        // Command under test
+        mainStorageInstance.load(testDirectoryString);
 
-            // Assert test folder exists after a successful load
-            assertTrue(testDirectoryFile.exists());
+        // Assert test folder exists after a successful load
+        assertTrue(testDirectoryFile.exists());
 
-            // Check that the file permissions are set correctly
-            assertTrue(testDirectoryFile.canExecute());
-            assertTrue(testDirectoryFile.canWrite());
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        // Check that the file permissions are set correctly
+        assertTrue(testDirectoryFile.canExecute());
+        assertTrue(testDirectoryFile.canWrite());
     }
 
     @Test
-    public void testLoadValidExistingFiles() {
+    public void testLoadValidExistingFiles() throws Exception {
+        // Create some valid data files to load from
         createValidDataFiles();
 
-        try {
-            mainStorageInstance.load(testDirectoryString);
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        // Command under test (there should be no exceptions thrown)
+        mainStorageInstance.load(testDirectoryString);
     }
 
     @Test(expected = FilesReplacedException.class)
     public void testLoadInvalidExistingFiles() throws Exception {
+        // Create some invalid data files to load from
         createInvalidDataFiles();
+
+        // Loading the invalid data files should give an exception
         String dataDirectory = mainStorageInstance.getDataDirectory(testDirectoryString);
         mainStorageInstance.load(dataDirectory);
     }
 
     @Test(expected = AssertionError.class)
-    public void testChangeDirectoryBeforeLoad() throws Exception {
+    public void testChangeDirectoryBeforeInitialization() throws Exception {
+        // We should not be able to change directory before storage is initialized
         mainStorageInstance.changeDirectory(testDirectoryString);
     }
 
     @Test(expected = FilesReplacedException.class)
     public void testChangeDirectoryWithExistingInvalidFiles() throws Exception {
+        // Initialized storage and create some valid data files to be moved
         initializeStorage();
         TestHelper.createValidDataFiles(testDirectoryString);
+
+        // Create some invalid data files in the destination directory
         Path subdirectoryPath = Paths.get(testDirectoryString, Constants.TEST_SUBDIRECTORY_NAME);
         String subdirectoryString = subdirectoryPath.toString();
         TestHelper.createInvalidDataFiles(subdirectoryString);
+
+        // An exception will be thrown when the invalid data files are replaced
         mainStorageInstance.changeDirectory(subdirectoryString);
     }
 
     @Test
-    public void testChangeToNewDirectory() {
+    public void testChangeToNewDirectory() throws Exception {
+        // Initialize storage and set up the paths to be used
         initializeStorage();
         Path subdirectoryPath = Paths.get(testDirectoryString, Constants.TEST_SUBDIRECTORY_NAME);
         String subdirectoryString = subdirectoryPath.toString();
-        try {
-            mainStorageInstance.changeDirectory(subdirectoryString);
 
-            // Check that the path to the new directory is saved
-            String preferredDirectory = mainStorageInstance.getPreferredDirectory();
-            assertEquals(preferredDirectory, subdirectoryString);
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
+        // Command under test (change to the new directory)
+        mainStorageInstance.changeDirectory(subdirectoryString);
+
+        // Check that the path to the new directory is saved and no exceptions are thrown
+        String preferredDirectory = mainStorageInstance.getPreferredDirectory();
+        assertEquals(preferredDirectory, subdirectoryString);
     }
 
     /**

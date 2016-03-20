@@ -33,13 +33,13 @@ public class TaskTest {
                 );
 
         // Check for equivalence in all attributes
-        assertEquals(task.getId(), new Integer(1));
-        assertEquals(task.getDescription(), Constants.TEST_TASK_DESCRIPTION_1);
-        assertEquals(task.getStartDateTime(), Constants.TEST_TASK_STARTDATETIME);
-        assertEquals(task.getEndDateTime(), Constants.TEST_TASK_ENDDATETIME);
-        assertEquals(task.getTags(), tags);
-        assertEquals(task.getReminders(), reminders);
-        assertEquals(task.isCompleted(), false);
+        assertEquals(new Integer(1), task.getId());
+        assertEquals(Constants.TEST_TASK_DESCRIPTION_1, task.getDescription());
+        assertEquals(Constants.TEST_TASK_STARTDATETIME, task.getStartDateTime());
+        assertEquals(Constants.TEST_TASK_ENDDATETIME, task.getEndDateTime());
+        assertEquals(tags, task.getTags());
+        assertEquals(reminders, task.getReminders());
+        assertEquals(false, task.isCompleted());
     }
 
     @Test
@@ -59,13 +59,13 @@ public class TaskTest {
         task.update(taskAttributes);
 
         // Check if the new attributes are correct
-        assertEquals(task.getId(), new Integer(1));
-        assertEquals(task.getDescription(), Constants.TEST_TASK_DESCRIPTION_2);
-        assertEquals(task.getStartDateTime(), Constants.TEST_TASK_STARTDATETIME);
-        assertEquals(task.getEndDateTime(), Constants.TEST_TASK_ENDDATETIME);
+        assertEquals(new Integer(1), task.getId());
+        assertEquals(Constants.TEST_TASK_DESCRIPTION_2, task.getDescription());
+        assertEquals(Constants.TEST_TASK_STARTDATETIME, task.getStartDateTime());
+        assertEquals(Constants.TEST_TASK_ENDDATETIME, task.getEndDateTime());
         assertTrue(task.getTags().contains(Constants.TEST_TASK_TAG_1));
         assertTrue(task.getReminders().contains(Constants.TEST_TASK_REMINDER_DURATION_1));
-        assertEquals(task.isCompleted(), true);
+        assertEquals(true, task.isCompleted());
     }
 
 }

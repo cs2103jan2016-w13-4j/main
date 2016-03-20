@@ -25,10 +25,9 @@ public class AliasAttributesTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         testDirectory = Files.createTempDirectory(Constants.TEST_DIRECTORY_NAME);
-        MainStorage fileStorageInstance = MainStorage.getInstance();
-        fileStorageInstance.load(testDirectory.toString());
         aliasDbInstance = AliasDb.getInstance();
         AliasAttributes.setCommandRegex(Constants.TEST_COMMAND_REGEX);
+        MainStorage.getInstance().load(testDirectory.toString());
     }
 
     @After
@@ -38,13 +37,13 @@ public class AliasAttributesTest {
 
     @Test
     public void testConstructorsAndGetters() {
-        // Test the first constructor
+        // Test the first constructor (i.e. AliasAttributes(Alias))
         Alias alias = new Alias(Constants.TEST_ALIAS, Constants.TEST_COMMAND);
         AliasAttributes aliasAttributes = new AliasAttributes(alias);
         assertEquals(alias.getAlias(), aliasAttributes.getAlias());
         assertEquals(alias.getCommand(), aliasAttributes.getCommand());
 
-        // Test the second constructor
+        // Test the second constructor (i.e. AliasAttributes(alias, command))
         AliasAttributes aliasAttributes2 = new AliasAttributes(Constants.TEST_ALIAS, Constants.TEST_COMMAND);
         assertEquals(Constants.TEST_ALIAS, aliasAttributes2.getAlias());
         assertEquals(Constants.TEST_COMMAND, aliasAttributes2.getCommand());
@@ -52,32 +51,37 @@ public class AliasAttributesTest {
 
     @Test(expected = AssertionError.class)
     public void testNullAliasInConstructor() throws Exception {
+        // The AliasAttributes constructor should reject any null arguments
         new AliasAttributes(null, Constants.TEST_COMMAND);
     }
 
     @Test(expected = AssertionError.class)
     public void testNullCommandInConstructor() throws Exception {
+        // The AliasAttributes constructor should reject any null arguments
         new AliasAttributes(Constants.TEST_ALIAS, null);
     }
 
     @Test(expected = InvalidAliasParametersException.class)
     public void testInvalidAliasSave() throws Exception {
+        // Create an AliasAttributes with an invalid alias (the alias should not be a command)
         AliasAttributes aliasAttributes = new AliasAttributes(Constants.TEST_COMMAND, Constants.TEST_COMMAND_2);
         aliasAttributes.save();
     }
 
     @Test(expected = InvalidAliasParametersException.class)
     public void testInvalidCommandSave() throws Exception {
+        // Create an AliasAttributes with an invalid aliased command
         AliasAttributes aliasAttributes = new AliasAttributes(Constants.TEST_ALIAS, Constants.TEST_ALIAS);
         aliasAttributes.save();
     }
 
     @Test(expected = DuplicateAliasException.class)
     public void testDuplicateSave() throws Exception {
+        // Create an AliasAttributes and perform the first save
         AliasAttributes aliasAttributes = new AliasAttributes(Constants.TEST_ALIAS, Constants.TEST_COMMAND);
         aliasAttributes.save();
 
-        // Duplicate save
+        // Duplicate save should throw an exception
         aliasAttributes.save();
     }
 
@@ -92,16 +96,19 @@ public class AliasAttributesTest {
         aliasAttributes.save();
 
         // Check that the alias has been persisted
-        assertEquals(aliasDbInstance.getAll().size(), 1);
-        assertEquals(aliasDbInstance.getCommandFromAlias(Constants.TEST_ALIAS), Constants.TEST_COMMAND);
+        assertEquals(1, aliasDbInstance.getAll().size());
+        assertEquals(Constants.TEST_COMMAND, aliasDbInstance.getCommandFromAlias(Constants.TEST_ALIAS));
     }
 
     @Test
     public void testToEntity() {
+        // Create an AliasAttributes and turn it into an Alias entity
         AliasAttributes aliasAttributes = new AliasAttributes(Constants.TEST_ALIAS, Constants.TEST_COMMAND);
         Alias alias = aliasAttributes.toEntity();
-        assertEquals(alias.getAlias(), aliasAttributes.getAlias());
-        assertEquals(alias.getCommand(), aliasAttributes.getCommand());
+
+        // Assert that the attributes remain the same
+        assertEquals(aliasAttributes.getAlias(), alias.getAlias());
+        assertEquals(aliasAttributes.getCommand(), alias.getCommand());
     }
 
 }

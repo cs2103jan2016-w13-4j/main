@@ -189,6 +189,14 @@ public class TestHelper {
         return dataFiles;
     }
 
+    /**
+     * This method returns a HashMap of data filenames mapped to their
+     * respective checksums.
+     *
+     * @param storageDirectory
+     *            the storage directory
+     * @return a HashMap of data filenames mapped to their checksums
+     */
     public static HashMap<String, Long> getDataFileChecksums(String storageDirectory) {
         try {
             HashMap<String, Long> checksums = new HashMap<String, Long>();
@@ -205,6 +213,17 @@ public class TestHelper {
         }
     }
 
+    /**
+     * This method checks if the given storageDirectory contains data files with
+     * the same checksums.
+     *
+     * @param storageDirectory
+     *            the storage directory
+     * @param checksums
+     *            the checksums that we want to check against
+     * @return a boolean indicating if the given storageDirectory contains data
+     *         files with the same checksums
+     */
     public static boolean hasDataFileChecksums(String storageDirectory, HashMap<String, Long> checksums) {
         HashMap<String, Long> directoryChecksums = getDataFileChecksums(storageDirectory);
         return checksums.equals(directoryChecksums);

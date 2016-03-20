@@ -81,6 +81,7 @@ public class MainController {
         initUpcomingList();
         initFbArea();
         initCmdArea();
+        initTimelines();
         initHelpList();
 
     }
@@ -167,9 +168,9 @@ public class MainController {
 
         listMain.setMouseTransparent(true);
         listMain.setFocusTraversable(false);
-
         importantList = FXCollections.observableArrayList();
         listMain.setItems(importantList);
+        handleOverlays(importantList);
 
     }
 
@@ -200,6 +201,11 @@ public class MainController {
         cmdArea.setPromptText(Constants.CTRL_CMD_PROMPT_TEXT);
         handleEnterKey();
         disableScrollBarCmd();
+    }
+
+    private void initTimelines() {
+        //feedbackTimeline = new Timeline();
+        overlayTimeline = new Timeline();
     }
 
     private void initHelpList() {
@@ -255,9 +261,24 @@ public class MainController {
         return fadeIn;
     }
 
+    private FadeTransition initFadeOut(Node node, int duration) {
+        FadeTransition fadeOut = new FadeTransition(new Duration(duration));
+        fadeOut.setNode(node);
+        fadeOut.setToValue(0);
+        return fadeOut;
+    }
+
     /***************************
      *** LEVEL 2 Abstraction ***
      ***************************/
+
+    private void handleOverlays(ObservableList<ListItem> tasks) {
+        hideOverlays();
+        if (tasks.isEmpty()) {
+            //showNoTaskOverlay();
+        }
+    }
+
     @FXML
     private void handleEnterKey() {
         cmdArea.setOnKeyPressed((keyEvent) -> {

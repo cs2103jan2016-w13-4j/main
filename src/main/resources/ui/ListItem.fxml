@@ -14,24 +14,27 @@
 		 	<Label fx:id="rowIndex" alignment="CENTER" focusTraversable="false" prefHeight="40.0" prefWidth="60.0" text="Index" textAlignment="CENTER">
                <font>
                   <Font name="Hammersmith One" size="16.0" />
-               </font></Label>
+               </font>
+            </Label>
 		 	<VBox VBox.vgrow="ALWAYS">
 		 		<children>
 		 			<Label fx:id="description" focusTraversable="false" prefHeight="20.0" prefWidth="380.0" text="Description">
-                     <font>
-                        <Font name="Hammersmith One" size="14.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets left="5.0" />
-                     </VBox.margin></Label>
+	                     <font>
+	                        <Font name="Hammersmith One" size="14.0" />
+	                     </font>
+	                     <VBox.margin>
+	                        <Insets left="5.0" />
+	                     </VBox.margin>
+                    </Label>
 		    		<Label fx:id="timeAndDate" focusTraversable="false" prefHeight="20.0" prefWidth="380.0" text="Time and Date" textFill="#575757">
-                     <font>
-                        <Font name="Helvetica Light" size="11.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets left="5.0" />
-                     </VBox.margin></Label>
-                  <Line endX="250.0" scaleX="1.5" startX="-15.0" stroke="#434343" strokeLineCap="ROUND" translateX="30.0" />
+	                     <font>
+	                        <Font name="Helvetica Light" size="11.0" />
+	                     </font>
+	                     <VBox.margin>
+	                        <Insets left="5.0" />
+	                     </VBox.margin>
+                     </Label>
+                  	 <Line endX="250.0" scaleX="1.5" startX="-15.0" stroke="#434343" strokeLineCap="ROUND" translateX="30.0" />
 		 		</children>
 		 	</VBox>
          </children>

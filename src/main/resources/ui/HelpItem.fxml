@@ -5,9 +5,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root alignment="CENTER_LEFT" prefWidth="350.0" styleClass="helpLayout" type="HBox" 
-	xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="jfdi.ui.HelpLayout">
+<fx:root alignment="CENTER_LEFT" prefWidth="350.0" styleClass="helpBox" type="HBox" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="description" focusTraversable="false" text="Description" />
       <HBox alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" HBox.hgrow="ALWAYS">

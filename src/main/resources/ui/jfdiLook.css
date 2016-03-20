@@ -20,3 +20,24 @@
     -fx-background-color: #faebcd;
     -fx-border-color: #faebcd;
 }
+
+/*
+ * ================================================================
+ * HelpBox styles
+ * ================================================================
+ */
+.helpItem {
+	-fx-padding: 0;
+	-fx-font-family: Hammersmith;
+	-fx-font-size: 16px;
+	-fx-background-color: transparent;
+}
+
+.helpItem #command {
+	-fx-font-weight: 700;
+	-fx-text-fill: white;
+}
+
+.helpItem #description {
+	-fx-text-fill: white;
+}

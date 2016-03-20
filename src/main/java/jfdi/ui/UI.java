@@ -1,10 +1,10 @@
 package jfdi.ui;
 
+import com.google.common.eventbus.EventBus;
+
 import jfdi.logic.ControlCenter;
 import jfdi.ui.Constants.MsgType;
 import jfdi.ui.commandhandlers.CommandHandler;
-
-import com.google.common.eventbus.EventBus;
 
 public class UI implements IUserInterface {
 
@@ -81,6 +81,7 @@ public class UI implements IUserInterface {
                 showToUser(Constants.UI_MESSAGE_QUIT);
                 break;
             default:
+                showToUser(fb);
                 break;
         }
 

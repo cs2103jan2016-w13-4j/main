@@ -12,78 +12,91 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="670.0" maxWidth="650.0" prefHeight="670.0" prefWidth="650.0" style="-fx-background-color: #f7c873;" xmlns="http://javafx.com/javafx/8.0.40
-" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfdi.ui.MainController">
+" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfdi.ui.MainController" style="-fx-background-color: #f7c873;">
    <children>
-      <VBox fx:id="backDrop" prefHeight="670.0" prefWidth="200.0" style="-fx-background-color: #f7c873;">
-         <children>
-            <Label fx:id="dayDisplayer" alignment="CENTER" contentDisplay="CENTER" prefHeight="68.0" prefWidth="200.0" style="-fx-background-color: #434343;" textAlignment="CENTER" textFill="#eeeeee" wrapText="true">
-               <font>
-                  <Font name="Hammersmith One" size="18.0" />
-               </font>
-            </Label>
-            <ListView fx:id="statsDisplayer" prefHeight="70.0" prefWidth="200.0" style="-fx-background-color: #434343;">
-               <VBox.margin>
-                  <Insets top="4.0" />
-               </VBox.margin>
-            </ListView>
-            <Label fx:id="overdueLabel" alignment="CENTER" layoutX="0.0" layoutY="139.0" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: #434343;" text="Overdue" textFill="#eeeeee">
-               <font>
-                  <Font name="Hammersmith One" size="18.0" />
-               </font>
-               <VBox.margin>
-                  <Insets top="4.0" />
-               </VBox.margin>
-            </Label>
-            <ListView fx:id="overdueList" prefHeight="230.0" prefWidth="200.0" style="-fx-background-color: #434343;" />
-            <Label fx:id="overdueLabel" alignment="CENTER" layoutX="0.0" layoutY="405.0" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: #434343;" text="Upcoming" textFill="#eeeeee">
-               <font>
-                  <Font name="Hammersmith One" size="18.0" />
-               </font>
-               <VBox.margin>
-                  <Insets top="4.0" />
-               </VBox.margin>
-            </Label>
-            <ListView fx:id="upcomingList" prefHeight="230.0" prefWidth="195.0" style="-fx-background-color: #434343;" />
-         </children>
-      </VBox>
-      <VBox layoutX="200.0" prefHeight="670.0" prefWidth="450.0">
-         <children>
-            <StackPane prefHeight="65.0" prefWidth="450.0" style="-fx-background-color: #faebcd;">
-               <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#434343" height="40.0" stroke="#434343" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="10.0" translateZ="5.0" width="400.0">
-                     <StackPane.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </StackPane.margin>
-                  </Rectangle>
-                  <Label alignment="CENTER" prefHeight="40.0" prefWidth="408.0" text="Display List" textAlignment="CENTER" textFill="#eeeeee">
-                     <font>
-                        <Font name="Raleway Heavy" size="24.0" />
-                     </font>
-                  </Label>
-               </children>
-            </StackPane>
-            <ListView fx:id="listMain" prefHeight="500.0" prefWidth="450.0" style="-fx-background-color: faebcd;" stylesheets="@jfdiLook.css">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </ListView>
-            <TextArea fx:id="fbArea" blendMode="MULTIPLY" prefHeight="50.0" prefWidth="430.0" wrapText="true">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="10.0" right="10.0" top="7.0" />
-               </VBox.margin>
-               <font>
-                  <Font name="Hammersmith One" size="13.0" />
-               </font>
-            </TextArea>
-            <TextField fx:id="cmdArea" blendMode="SRC_ATOP" maxHeight="35.0" maxWidth="430.0" prefHeight="25.0" prefWidth="430.0" promptText="(Hey Jim! Please let me know what I can do for you!)">
-               <VBox.margin>
-                  <Insets left="10.0" right="10.0" top="5.0" />
-               </VBox.margin>
-               <font>
-                  <Font name="Hammersmith One" size="12.0" />
-               </font>
-            </TextField>
-         </children>
-      </VBox>
+      <StackPane VBox.vgrow="ALWAYS">
+          <children>
+	          <HBox maxHeight="670.0" maxWidth="650.0" prefHeight="670.0" prefWidth="650.0">
+			      <VBox fx:id="backDrop" prefHeight="670.0" prefWidth="200.0" style="-fx-background-color: #f7c873;">
+			         <children>
+			            <Label fx:id="dayDisplayer" alignment="CENTER" contentDisplay="CENTER" prefHeight="68.0" prefWidth="200.0" style="-fx-background-color: #434343;" textAlignment="CENTER" textFill="#eeeeee" wrapText="true">
+			               <font>
+			                  <Font name="Hammersmith One" size="18.0" />
+			               </font>
+			            </Label>
+			            <ListView fx:id="statsDisplayer" prefHeight="70.0" prefWidth="200.0" style="-fx-background-color: #434343;">
+			               <VBox.margin>
+			                  <Insets top="4.0" />
+			               </VBox.margin>
+			            </ListView>
+			            <Label fx:id="overdueLabel" alignment="CENTER" layoutX="0.0" layoutY="139.0" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: #434343;" text="Overdue" textFill="#eeeeee">
+			               <font>
+			                  <Font name="Hammersmith One" size="18.0" />
+			               </font>
+			               <VBox.margin>
+			                  <Insets top="4.0" />
+			               </VBox.margin>
+			            </Label>
+			            <ListView fx:id="overdueList" prefHeight="230.0" prefWidth="200.0" style="-fx-background-color: #434343;" />
+			            <Label fx:id="overdueLabel" alignment="CENTER" layoutX="0.0" layoutY="405.0" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: #434343;" text="Upcoming" textFill="#eeeeee">
+			               <font>
+			                  <Font name="Hammersmith One" size="18.0" />
+			               </font>
+			               <VBox.margin>
+			                  <Insets top="4.0" />
+			               </VBox.margin>
+			            </Label>
+			            <ListView fx:id="upcomingList" prefHeight="230.0" prefWidth="195.0" style="-fx-background-color: #434343;" />
+			         </children>
+			      </VBox>
+			      <VBox layoutX="200.0" prefHeight="670.0" prefWidth="450.0">
+			         <children>
+			            <StackPane prefHeight="65.0" prefWidth="450.0" style="-fx-background-color: #faebcd;">
+			               <children>
+			                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#434343" height="40.0" stroke="#434343" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="10.0" translateZ="5.0" width="400.0">
+			                     <StackPane.margin>
+			                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+			                     </StackPane.margin>
+			                  </Rectangle>
+			                  <Label alignment="CENTER" prefHeight="40.0" prefWidth="408.0" text="Display List" textAlignment="CENTER" textFill="#eeeeee">
+			                     <font>
+			                        <Font name="Raleway Heavy" size="24.0" />
+			                     </font>
+			                  </Label>
+			               </children>
+			            </StackPane>
+			            <ListView fx:id="listMain" prefHeight="500.0" prefWidth="450.0" style="-fx-background-color: faebcd;" stylesheets="@jfdiLook.css">
+			               <VBox.margin>
+			                  <Insets />
+			               </VBox.margin>
+			            </ListView>
+			            <TextArea fx:id="fbArea" blendMode="MULTIPLY" prefHeight="50.0" prefWidth="430.0" wrapText="true">
+			               <VBox.margin>
+			                  <Insets bottom="5.0" left="10.0" right="10.0" top="7.0" />
+			               </VBox.margin>
+			               <font>
+			                  <Font name="Hammersmith One" size="13.0" />
+			               </font>
+			            </TextArea>
+			            <TextField fx:id="cmdArea" blendMode="SRC_ATOP" maxHeight="35.0" maxWidth="430.0" prefHeight="25.0" prefWidth="430.0" promptText="(Hey Jim! Please let me know what I can do for you!)">
+			               <VBox.margin>
+			                  <Insets left="10.0" right="10.0" top="5.0" />
+			               </VBox.margin>
+			               <font>
+			                  <Font name="Hammersmith One" size="12.0" />
+			               </font>
+			            </TextField>
+			         </children>
+			      </VBox>
+			   </HBox>
+			   <VBox fx:id="helpOverlay" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="550.0" prefWidth="500.0" StackPane.alignment="CENTER">
+	               <children>
+	                  <Label fx:id="helpIcon" focusTraversable="false" text="Help Icon" />
+	                  <Label fx:id="helpTitle" focusTraversable="false" text="Help title" />
+	                  <ListView fx:id="helpContent" focusTraversable="false" maxWidth="-Infinity" prefWidth="400.0" />
+	               </children>
+               </VBox>
+		   <children>
+      </StackPane>
    </children>
 </AnchorPane>

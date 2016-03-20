@@ -2,7 +2,7 @@ package jfdi.logic.commands;
 
 import jfdi.common.utilities.JfdiLogger;
 import jfdi.logic.events.MarkTaskDoneEvent;
-import jfdi.logic.events.MarkTaskFailEvent;
+import jfdi.logic.events.MarkTaskFailedEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
@@ -74,7 +74,7 @@ public class MarkTaskCommand extends Command {
             });
             eventBus.post(new MarkTaskDoneEvent(taskIds, markedTasks));
         } else {
-            eventBus.post(new MarkTaskFailEvent(taskIds, invalidIds));
+            eventBus.post(new MarkTaskFailedEvent(taskIds, invalidIds));
         }
     }
 }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * @author Liu Xinan
  */
-public class MarkTaskFailEvent {
+public class MarkTaskFailedEvent {
 
     public enum Error {
         NON_EXISTENT_ID, UNKNOWN
@@ -15,7 +15,7 @@ public class MarkTaskFailEvent {
     private ArrayList<Integer> invalidIds;
     private Error error;
 
-    public MarkTaskFailEvent(ArrayList<Integer> taskIds, ArrayList<Integer> invalidIds) {
+    public MarkTaskFailedEvent(ArrayList<Integer> taskIds, ArrayList<Integer> invalidIds) {
         this.taskIds = taskIds;
         this.invalidIds = invalidIds;
         this.error = Error.NON_EXISTENT_ID;

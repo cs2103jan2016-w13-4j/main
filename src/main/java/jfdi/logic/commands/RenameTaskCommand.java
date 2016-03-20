@@ -1,7 +1,7 @@
 package jfdi.logic.commands;
 
 import jfdi.logic.events.RenameTaskDoneEvent;
-import jfdi.logic.events.RenameTaskFailEvent;
+import jfdi.logic.events.RenameTaskFailedEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
@@ -56,12 +56,12 @@ public class RenameTaskCommand extends Command {
             task.save();
             eventBus.post(new RenameTaskDoneEvent(task));
         } catch (InvalidIdException e) {
-            eventBus.post(new RenameTaskFailEvent(taskId, description, RenameTaskFailEvent.Error.NON_EXISTENT_ID));
+            eventBus.post(new RenameTaskFailedEvent(taskId, description, RenameTaskFailedEvent.Error.NON_EXISTENT_ID));
         } catch (InvalidTaskParametersException e) {
             // Should not happen
             assert false;
         } catch (NoAttributesChangedException e) {
-            eventBus.post(new RenameTaskFailEvent(taskId, description, RenameTaskFailEvent.Error.NO_CHANGES));
+            eventBus.post(new RenameTaskFailedEvent(taskId, description, RenameTaskFailedEvent.Error.NO_CHANGES));
         }
     }
 

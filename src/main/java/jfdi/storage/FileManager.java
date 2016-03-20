@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -14,6 +13,7 @@ import java.util.Scanner;
 
 import jfdi.storage.exceptions.FilesReplacedException;
 import jfdi.storage.exceptions.FilePathPair;
+import jfdi.storage.exceptions.InvalidFilePathException;
 
 /**
  * This class manages file operations required by Storage.
@@ -30,16 +30,16 @@ public class FileManager {
      * This method creates the necessary directories for files to be stored in
      * storageFolderPath. If there are issues creating the directory or if there
      * is insufficient permission to carry out normal file operations in the
-     * directory, then an InvalidPathException is thrown.
+     * directory, then an InvalidFilePathException is thrown.
      *
      * @param storageFolderPath
      *            the root directory of the data files
-     * @throws InvalidPathException
+     * @throws InvalidFilePathException
      *             if there are errors creating the directory or if there is
      *             insufficient permission to carry out normal file operations
      *             in the directory
      */
-    public static void prepareDirectory(String storageFolderPath) throws InvalidPathException {
+    public static void prepareDirectory(String storageFolderPath) throws InvalidFilePathException {
         assert storageFolderPath != null;
         Path directoryPath = Paths.get(storageFolderPath);
         boolean isValidDirectory = true;
@@ -57,7 +57,7 @@ public class FileManager {
 
         if (!isValidDirectory) {
             String errorMessage = String.format(Constants.MESSAGE_INVALID_PATH, storageFolderPath);
-            throw new InvalidPathException(storageFolderPath, errorMessage);
+            throw new InvalidFilePathException(storageFolderPath, errorMessage);
         }
     }
 

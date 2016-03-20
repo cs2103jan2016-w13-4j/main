@@ -1,7 +1,7 @@
 package jfdi.logic.commands;
 
 import jfdi.logic.events.AliasDoneEvent;
-import jfdi.logic.events.AliasFailEvent;
+import jfdi.logic.events.AliasFailedEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.InputParser;
 import jfdi.storage.apis.AliasAttributes;
@@ -60,11 +60,11 @@ public class AliasCommand extends Command {
                 .setAliases(AliasDb.getInstance().getAll());
             eventBus.post(new AliasDoneEvent(command, alias));
         } catch (InvalidAliasParametersException e) {
-            eventBus.post(new AliasFailEvent(command, alias,
-                AliasFailEvent.Error.INVALID_PARAMETERS));
+            eventBus.post(new AliasFailedEvent(command, alias,
+                AliasFailedEvent.Error.INVALID_PARAMETERS));
         } catch (DuplicateAliasException e) {
-            eventBus.post(new AliasFailEvent(command, alias,
-                AliasFailEvent.Error.DUPLICATED_ALIAS));
+            eventBus.post(new AliasFailedEvent(command, alias,
+                AliasFailedEvent.Error.DUPLICATED_ALIAS));
         }
     }
 }

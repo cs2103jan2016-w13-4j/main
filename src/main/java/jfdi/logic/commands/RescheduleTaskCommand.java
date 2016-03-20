@@ -1,7 +1,7 @@
 package jfdi.logic.commands;
 
 import jfdi.logic.events.RescheduleTaskDoneEvent;
-import jfdi.logic.events.RescheduleTaskFailEvent;
+import jfdi.logic.events.RescheduleTaskFailedEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
@@ -64,14 +64,14 @@ public class RescheduleTaskCommand extends Command {
             task.save();
             eventBus.post(new RescheduleTaskDoneEvent(taskId, startDateTime, endDateTime));
         } catch (InvalidIdException e) {
-            eventBus.post(new RescheduleTaskFailEvent(taskId, startDateTime, endDateTime,
-                RescheduleTaskFailEvent.Error.NON_EXISTENT_ID));
+            eventBus.post(new RescheduleTaskFailedEvent(taskId, startDateTime, endDateTime,
+                RescheduleTaskFailedEvent.Error.NON_EXISTENT_ID));
         } catch (InvalidTaskParametersException e) {
             // Should not happen
             assert false;
         } catch (NoAttributesChangedException e) {
-            eventBus.post(new RescheduleTaskFailEvent(taskId, startDateTime, endDateTime,
-                RescheduleTaskFailEvent.Error.NO_CHANGES));
+            eventBus.post(new RescheduleTaskFailedEvent(taskId, startDateTime, endDateTime,
+                RescheduleTaskFailedEvent.Error.NO_CHANGES));
         }
 
     }

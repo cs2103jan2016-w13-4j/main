@@ -13,7 +13,8 @@ import jfdi.storage.FileManager;
 import jfdi.storage.exceptions.FilesReplacedException;
 
 /**
- * This class serves as the facade of the Storage component.
+ * This class deals with all the file path operations within the Storage
+ * component.
  *
  * @author Thng Kai Yuan
  */
@@ -47,7 +48,6 @@ public class MainStorage implements IStorage {
         if (instance == null) {
             instance = new MainStorage();
         }
-
         return instance;
     }
 
@@ -69,31 +69,20 @@ public class MainStorage implements IStorage {
     }
 
     @Override
-    public void use(String newStorageFolderPath) throws InvalidPathException, FilesReplacedException,
-            IllegalAccessException {
-
-        if (!isInitialized) {
-            throw new IllegalAccessException(Constants.MESSAGE_UNINITIALIZED_STORAGE);
-        }
-
+    public void use(String newStorageFolderPath) throws InvalidPathException, FilesReplacedException {
+        assert isInitialized;
         load(getDataDirectory(newStorageFolderPath));
         setPreferredDirectory(newStorageFolderPath);
         setCurrentDirectory(newStorageFolderPath);
     }
 
     @Override
-    public void changeDirectory(String newStorageFolderPath) throws InvalidPathException,
-            FilesReplacedException, IllegalAccessException {
-
-        if (!isInitialized) {
-            throw new IllegalAccessException(Constants.MESSAGE_UNINITIALIZED_STORAGE);
-        }
-
+    public void changeDirectory(String newStorageFolderPath) throws InvalidPathException, FilesReplacedException {
+        assert isInitialized;
         String newDataDirectory = getDataDirectory(newStorageFolderPath);
         FileManager.prepareDirectory(newDataDirectory);
         FileManager.moveFilesToDirectory(newDataDirectory);
         DatabaseManager.setAllFilePaths(newDataDirectory);
-
         setPreferredDirectory(newStorageFolderPath);
         setCurrentDirectory(newStorageFolderPath);
     }
@@ -108,6 +97,7 @@ public class MainStorage implements IStorage {
      * @param currentDirectory the currentDirectory to set
      */
     private void setCurrentDirectory(String currentDirectory) {
+        assert currentDirectory != null;
         Path absolutePath = Paths.get(currentDirectory).toAbsolutePath();
         this.currentDirectory = absolutePath.toString();
         logger.fine(String.format(Constants.MESSAGE_LOG_SET_DIRECTORY, absolutePath));
@@ -131,6 +121,7 @@ public class MainStorage implements IStorage {
      *             (with backups made) in the given storageFolderPath
      */
     public void load(String storageFolderPath) throws InvalidPathException, FilesReplacedException {
+        assert storageFolderPath != null;
         FileManager.prepareDirectory(storageFolderPath);
         DatabaseManager.setAllFilePaths(storageFolderPath);
         DatabaseManager.loadAllDatabases();
@@ -145,6 +136,7 @@ public class MainStorage implements IStorage {
      * @return the path to the data directory within the storage directory
      */
     public String getDataDirectory(String storageDirectory) {
+        assert storageDirectory != null;
         return Paths.get(storageDirectory, Constants.FILENAME_DATA_DIRECTORY).toString();
     }
 
@@ -184,10 +176,9 @@ public class MainStorage implements IStorage {
             return null;
         }
 
-        String preference = FileManager.readFileToString(Constants.PATH_PREFERENCE_FILE);
         try {
-            Path preferredDirectory = Paths.get(preference);
-            return preferredDirectory.toString();
+            String preference = FileManager.readFileToString(Constants.PATH_PREFERENCE_FILE);
+            return Paths.get(preference).toString();
         } catch (InvalidPathException e) {
             return null;
         }

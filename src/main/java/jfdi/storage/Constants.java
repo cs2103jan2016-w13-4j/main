@@ -46,7 +46,6 @@ public class Constants {
     public static final String MESSAGE_INVALID_PATH = "The directory %s cannot be used to store the program data.";
     public static final String MESSAGE_MISSING_DESCRIPTION = "This task is missing a description.";
     public static final String MESSAGE_INVALID_DATETIME = "Start date and time cannot be after end date and time.";
-    public static final String MESSAGE_UNINITIALIZED_STORAGE = "Storage needs to be initialized first.";
 
     // Logging messages
     public static final String MESSAGE_LOG_SET_DIRECTORY = "Storage directory has been set to '%s'.";

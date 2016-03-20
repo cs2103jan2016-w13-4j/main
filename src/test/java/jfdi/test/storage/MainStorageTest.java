@@ -139,7 +139,7 @@ public class MainStorageTest {
         mainStorageInstance.load(dataDirectory);
     }
 
-    @Test(expected = IllegalAccessException.class)
+    @Test(expected = AssertionError.class)
     public void testChangeDirectoryBeforeLoad() throws Exception {
         mainStorageInstance.changeDirectory(testDirectoryString);
     }

@@ -351,7 +351,7 @@ public class TaskDbTest {
         assertTrue(taskDbInstance.getById(taskAttributes.getId()).hasTag(Constants.TEST_TASK_TAG_1));
     }
 
-    @Test(expected = InvalidIdException.class)
+    @Test(expected = AssertionError.class)
     public void testAddTagToNull() throws Exception {
         taskDbInstance.addTagById(null, Constants.TEST_TASK_TAG_1);
     }
@@ -387,7 +387,7 @@ public class TaskDbTest {
         assertTrue(persistedReminderList.contains(Constants.TEST_TASK_REMINDER_DURATION_1));
     }
 
-    @Test(expected = InvalidIdException.class)
+    @Test(expected = AssertionError.class)
     public void testAddReminderToNull() throws Exception {
         taskDbInstance.addReminderById(null, Constants.TEST_TASK_REMINDER_DURATION_1);
     }

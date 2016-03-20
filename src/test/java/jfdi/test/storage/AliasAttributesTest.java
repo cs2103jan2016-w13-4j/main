@@ -50,15 +50,19 @@ public class AliasAttributesTest {
         assertEquals(Constants.TEST_COMMAND, aliasAttributes2.getCommand());
     }
 
-    @Test(expected = InvalidAliasParametersException.class)
-    public void testNullAliasSave() throws Exception {
-        AliasAttributes aliasAttributes = new AliasAttributes(null, Constants.TEST_COMMAND);
-        aliasAttributes.save();
+    @Test(expected = AssertionError.class)
+    public void testNullAliasInConstructor() throws Exception {
+        new AliasAttributes(null, Constants.TEST_COMMAND);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void testNullCommandInConstructor() throws Exception {
+        new AliasAttributes(Constants.TEST_ALIAS, null);
     }
 
     @Test(expected = InvalidAliasParametersException.class)
-    public void testNullCommandSave() throws Exception {
-        AliasAttributes aliasAttributes = new AliasAttributes(Constants.TEST_ALIAS, null);
+    public void testInvalidAliasSave() throws Exception {
+        AliasAttributes aliasAttributes = new AliasAttributes(Constants.TEST_COMMAND, Constants.TEST_COMMAND_2);
         aliasAttributes.save();
     }
 

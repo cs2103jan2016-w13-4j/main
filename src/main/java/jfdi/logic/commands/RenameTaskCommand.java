@@ -8,27 +8,28 @@ import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
+import jfdi.ui.UI;
 
 /**
  * @author Liu Xinan
  */
 public class RenameTaskCommand extends Command {
 
-    private int taskId;
+    private int screenId;
     private String description;
 
     private RenameTaskCommand(Builder builder) {
-        this.taskId = builder.taskId;
+        this.screenId = builder.screenId;
         this.description = builder.description;
     }
 
     public static class Builder {
 
-        int taskId = -1;
+        int screenId = -1;
         String description;
 
-        public Builder setId(int taskId) {
-            this.taskId = taskId;
+        public Builder setId(int screenId) {
+            this.screenId = screenId;
             return this;
         }
 
@@ -38,7 +39,7 @@ public class RenameTaskCommand extends Command {
         }
 
         public RenameTaskCommand build() {
-            if (taskId == -1) {
+            if (screenId == -1) {
                 throw new IllegalStateException("You must set the task ID for rename!");
             }
             return new RenameTaskCommand(this);
@@ -48,6 +49,7 @@ public class RenameTaskCommand extends Command {
 
     @Override
     public void execute() {
+        int taskId = UI.getInstance().getTaskId(screenId);
         try {
             TaskAttributes task = TaskDb.getInstance().getById(taskId);
             task.setDescription(description);

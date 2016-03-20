@@ -8,6 +8,7 @@ import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
+import jfdi.ui.UI;
 
 import java.time.LocalDateTime;
 
@@ -16,24 +17,24 @@ import java.time.LocalDateTime;
  */
 public class RescheduleTaskCommand extends Command {
 
-    private int taskId;
+    private int screenId;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
 
     private RescheduleTaskCommand(Builder builder) {
-        this.taskId = builder.taskId;
+        this.screenId = builder.screenId;
         this.startDateTime = builder.startDateTime;
         this.endDateTime = builder.endDateTime;
     }
 
     public static class Builder {
 
-        int taskId;
+        int screenId;
         LocalDateTime startDateTime;
         LocalDateTime endDateTime;
 
-        public Builder setId(int taskId) {
-            this.taskId = taskId;
+        public Builder setId(int screenId) {
+            this.screenId = screenId;
             return this;
         }
 
@@ -55,6 +56,7 @@ public class RescheduleTaskCommand extends Command {
 
     @Override
     public void execute() {
+        int taskId = UI.getInstance().getTaskId(screenId);
         try {
             TaskAttributes task = TaskDb.getInstance().getById(taskId);
             task.setStartDateTime(startDateTime);

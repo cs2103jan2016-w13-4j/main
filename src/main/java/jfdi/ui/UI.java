@@ -1,18 +1,27 @@
 package jfdi.ui;
 
-import com.google.common.eventbus.EventBus;
-
 import jfdi.logic.ControlCenter;
 import jfdi.ui.Constants.MsgType;
 import jfdi.ui.commandhandlers.CommandHandler;
 
+import com.google.common.eventbus.EventBus;
+
 public class UI implements IUserInterface {
 
     private static EventBus eventBus = new EventBus();
+    private static UI ourInstance = new UI();
+
     public CommandHandler cmdHandler = new CommandHandler();
 
     private MainController controller;
     private ControlCenter logic;
+
+    private UI() {
+    }
+
+    public static UI getInstance() {
+        return ourInstance;
+    }
 
     @Override
     public void init() {
@@ -36,16 +45,17 @@ public class UI implements IUserInterface {
     @Override
     public void processInput(String input) {
 
-        if (input.equalsIgnoreCase("QUIT")) {
-            System.exit(0);
-        }
+        // if (input.equalsIgnoreCase("QUIT")) {
+        // System.exit(0);
+        // }
 
         // Clear controller first
         controller.clearCmdArea();
         controller.clearFb();
 
         // Show user what the command recognized in the feedback area
-        // controller.displayFb(String.format(Constants.UI_MESSAGE_USERCMD, input));
+        // controller.displayFb(String.format(Constants.UI_MESSAGE_USERCMD,
+        // input));
 
         // Relay user input to logic and wait for reply
         relayToLogic(input);

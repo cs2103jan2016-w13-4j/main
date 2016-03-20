@@ -2,6 +2,8 @@ package jfdi.storage;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 
 import jfdi.storage.exceptions.FilesReplacedException;
 import jfdi.storage.exceptions.FilePathPair;
@@ -25,6 +27,7 @@ public class DatabaseManager {
      *            the root directory where all data will be stored
      */
     public static void setAllFilePaths(String storageFolderPath) {
+        assert storageFolderPath != null;
         for (IDatabase database : Constants.DATABASES) {
             database.setFilePath(storageFolderPath);
         }
@@ -34,9 +37,7 @@ public class DatabaseManager {
      * This method persists all databases to disk.
      */
     public static void persistAll() {
-        for (IDatabase database : Constants.DATABASES) {
-            database.persist();
-        }
+        Arrays.stream(Constants.DATABASES).forEach(IDatabase::persist);
     }
 
     /**
@@ -44,35 +45,31 @@ public class DatabaseManager {
      * the data file defined by the file path of each record.
      *
      * @throws FilesReplacedException
-     *             if unrecognized files were replaced (with backups made)
+     *             if unrecognized files were moved
      */
     public static void loadAllDatabases() throws FilesReplacedException {
-        ArrayList<FilePathPair> replacedFiles = new ArrayList<FilePathPair>();
-        FilePathPair filePathPair = null;
+        ArrayList<FilePathPair> movedFiles = new ArrayList<FilePathPair>();
+        Arrays.stream(Constants.DATABASES)
+            .map(IDatabase::load)
+            .filter(Objects::nonNull)
+            .forEach(movedFiles::add);
 
-        for (IDatabase database : Constants.DATABASES) {
-            filePathPair = database.load();
-            if (filePathPair != null) {
-                replacedFiles.add(filePathPair);
-            }
-        }
-
-        if (!replacedFiles.isEmpty()) {
-            throw new FilesReplacedException(replacedFiles);
+        if (!movedFiles.isEmpty()) {
+            throw new FilesReplacedException(movedFiles);
         }
     }
 
     /**
-     * @return an ArrayList of Paths where the existing data for each database is
-     *         stored.
+     * This method returns an ArrayList of Paths to each data file.
+     *
+     * @return an ArrayList of Paths where the existing data for each database
+     *         is stored
      */
     public static ArrayList<Path> getAllFilePaths() {
         ArrayList<Path> filePaths = new ArrayList<Path>();
-
-        for (IDatabase database : Constants.DATABASES) {
-            Path filePath = database.getFilePath();
-            filePaths.add(filePath);
-        }
+        Arrays.stream(Constants.DATABASES)
+            .map(IDatabase::getFilePath)
+            .forEach(filePaths::add);
 
         return filePaths;
     }

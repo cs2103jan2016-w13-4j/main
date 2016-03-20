@@ -5,8 +5,8 @@ import java.nio.file.InvalidPathException;
 import jfdi.storage.exceptions.FilesReplacedException;
 
 /**
- * The Storage interface serves as the facade of the Storage component. It
- * allows the storage folder path to be initialized/changed.
+ * The Storage interface deals with all the file path operations within the
+ * program.
  *
  * @author Thng Kai Yuan
  */
@@ -37,11 +37,8 @@ public interface IStorage {
      *             if the given path is invalid
      * @throws FilesReplacedException
      *             if invalid files were replaced in the process
-     * @throws IllegalAccessException
-     *             if the method is called before Storage is initialized
      */
-    void use(String newStorageFolderPath) throws InvalidPathException, FilesReplacedException,
-            IllegalAccessException;
+    void use(String newStorageFolderPath) throws InvalidPathException, FilesReplacedException;
 
     /**
      * This method can only be executed after storage is initialized. It saves
@@ -59,11 +56,9 @@ public interface IStorage {
      * @throws FilesReplacedException
      *             if existing files had to be replaced (with backups made) in
      *             the newStorageFolderPath
-     * @throws IllegalAccessException
-     *             if changeDirectory is called before Storage is initialized
      */
     void changeDirectory(String newStorageFolderPath) throws InvalidPathException,
-            FilesReplacedException, IllegalAccessException;
+            FilesReplacedException;
 
     /**
      * This method returns the path of the current storage directory.

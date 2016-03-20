@@ -56,7 +56,7 @@ public class MainStorageTest {
 
     @After
     public void tearDown() throws Exception {
-        revertOriginalPreference(originalPreference);
+        TestHelper.revertOriginalPreference(mainStorageInstance, originalPreference);
         mainStorageInstance.removeInstance();
         if (testDirectoryFile.exists()) {
             FileUtils.deleteDirectory(testDirectoryFile);
@@ -139,7 +139,7 @@ public class MainStorageTest {
         mainStorageInstance.load(dataDirectory);
     }
 
-    @Test(expected = IllegalAccessException.class)
+    @Test(expected = AssertionError.class)
     public void testChangeDirectoryBeforeLoad() throws Exception {
         mainStorageInstance.changeDirectory(testDirectoryString);
     }
@@ -147,14 +147,11 @@ public class MainStorageTest {
     @Test(expected = FilesReplacedException.class)
     public void testChangeDirectoryWithExistingInvalidFiles() throws Exception {
         initializeStorage();
+        TestHelper.createValidDataFiles(testDirectoryString);
         Path subdirectoryPath = Paths.get(testDirectoryString, Constants.TEST_SUBDIRECTORY_NAME);
         String subdirectoryString = subdirectoryPath.toString();
         TestHelper.createInvalidDataFiles(subdirectoryString);
         mainStorageInstance.changeDirectory(subdirectoryString);
-
-        // Check that the path to the new directory is saved
-        String preferredDirectory = mainStorageInstance.getPreferredDirectory();
-        assertEquals(preferredDirectory, subdirectoryString);
     }
 
     @Test
@@ -198,20 +195,5 @@ public class MainStorageTest {
      */
     private void createInvalidDataFiles() {
         TestHelper.createInvalidDataFiles(testDirectoryString);
-    }
-
-    /**
-     * This method reverts the preference file to its original form after using
-     * it in the tests.
-     *
-     * @param originalPreference
-     *            the original storage directory path
-     */
-    private void revertOriginalPreference(String originalPreference) {
-        if (originalPreference == null) {
-            FileUtils.deleteQuietly(Constants.PATH_PREFERENCE_FILE.toFile());
-            return;
-        }
-        mainStorageInstance.setPreferredDirectory(originalPreference);
     }
 }

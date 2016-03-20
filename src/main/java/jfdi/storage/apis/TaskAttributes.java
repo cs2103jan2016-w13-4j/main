@@ -13,8 +13,15 @@ import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
 
+/**
+ * This is the data transfer class of the Task entity.
+ *
+ * @author Thng Kai Yuan
+ *
+ */
 public class TaskAttributes {
 
+    // Attributes of a Task
     private Integer id = null;
     private String description = null;
     private LocalDateTime startDateTime = null;
@@ -23,8 +30,7 @@ public class TaskAttributes {
     private TreeSet<Duration> reminders = new TreeSet<Duration>();
     private boolean isCompleted = false;
 
-    public TaskAttributes() {
-    }
+    public TaskAttributes() {}
 
     @SuppressWarnings("unchecked")
     public TaskAttributes(Task task) {
@@ -33,6 +39,8 @@ public class TaskAttributes {
         this.startDateTime = task.getStartDateTime();
         this.endDateTime = task.getEndDateTime();
         this.isCompleted = task.isCompleted();
+
+        // We don't want to expose the mutable attributes so we clone them
         if (task.getTags() instanceof HashSet<?>) {
             this.tags = (HashSet<String>) task.getTags().clone();
         }
@@ -47,9 +55,6 @@ public class TaskAttributes {
 
     /**
      * This method should only be used internally by the database/test.
-     *
-     * @param id
-     *            the id of the task
      */
     public void setId(Integer id) {
         this.id = id;
@@ -152,10 +157,35 @@ public class TaskAttributes {
         TaskDb.getInstance().createOrUpdate(this);
     }
 
+    /**
+     * Converts the current TaskAttributes to its corresponding Task entity.
+     *
+     * @return the corresponding Task entity
+     */
     public Task toEntity() {
         return new Task(id, description, startDateTime, endDateTime, tags, reminders);
     }
 
+    /**
+     * This method checks if the current Task is valid.
+     *
+     * @return a boolean indicating if the current task is valid
+     */
+    public boolean isValid() {
+        try {
+            validateAttributes();
+            return true;
+        } catch (InvalidTaskParametersException e) {
+            return false;
+        }
+    }
+
+    /**
+     * This method validates the existing TaskAttributes.
+     *
+     * @throws InvalidTaskParametersException
+     *             if the existing TaskAttributes contains invalid parameters
+     */
     private void validateAttributes() throws InvalidTaskParametersException {
         ArrayList<String> errors = new ArrayList<String>();
 
@@ -172,7 +202,16 @@ public class TaskAttributes {
         }
     }
 
+    /**
+     * This method allows one to compare a TaskAttributes with a Task.
+     *
+     * @param task
+     *            the Task to be compared with
+     * @return a boolean indicating if the existing TaskAttributes has the same
+     *         attributes as the Task compared
+     */
     public boolean equalTo(Task task) {
+        assert task != null;
         return Objects.equals(this.id, task.getId())
                 && Objects.equals(this.description, task.getDescription())
                 && Objects.equals(this.startDateTime, task.getStartDateTime())

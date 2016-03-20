@@ -13,6 +13,7 @@ import jfdi.parser.commandparsers.AddCommandParser;
 import jfdi.parser.commandparsers.AliasCommandParser;
 import jfdi.parser.commandparsers.DeleteCommandParser;
 import jfdi.parser.commandparsers.DirectoryCommandParser;
+import jfdi.parser.commandparsers.ExitCommandParser;
 import jfdi.parser.commandparsers.HelpCommandParser;
 import jfdi.parser.commandparsers.ListCommandParser;
 import jfdi.parser.commandparsers.MarkCommandParser;
@@ -64,7 +65,8 @@ public class InputParser implements IParser {
         String unaliasedInput = unalias(input);
         String firstWord = getFirstWord(unaliasedInput);
         CommandType commandType = ParserUtils.getCommandType(firstWord);
-        Command userCommand = getCommand(commandType, input);
+        System.out.println(commandType.toString());
+        Command userCommand = getCommand(commandType, unaliasedInput);
         return userCommand;
     }
 
@@ -113,12 +115,11 @@ public class InputParser implements IParser {
      */
     private String unalias(String input) {
         assert isValidInput(input);
-
+        String firstWord = getFirstWord(input);
         Set<String> aliasSet = aliasMap.keySet();
         for (String str : aliasSet) {
-            if (input.matches("$" + str)) {
-                input.replaceAll("$" + str, aliasMap.get(str));
-                break;
+            if (firstWord.matches("^" + str)) {
+                return input.replaceAll("^" + str, aliasMap.get(str));
             }
         }
         return input;
@@ -178,6 +179,9 @@ public class InputParser implements IParser {
                 return isSingleWord(input) ? WildcardCommandParser
                     .getInstance().build(input) : AddCommandParser
                     .getInstance().build(input);
+            case exit:
+                return isSingleWord(input) ? ExitCommandParser.getInstance()
+                    .build(input) : AddCommandParser.getInstance().build(input);
             default:
                 return AddCommandParser.getInstance().build(input);
         }

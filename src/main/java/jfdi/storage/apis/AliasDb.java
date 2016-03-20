@@ -1,6 +1,6 @@
 package jfdi.storage.apis;
 
-import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -16,6 +16,13 @@ import jfdi.storage.exceptions.FilePathPair;
 import jfdi.storage.exceptions.InvalidAliasException;
 import jfdi.storage.serializer.Serializer;
 
+/**
+ * This class manages the collection of Aliases persisted in the program
+ * storage.
+ *
+ * @author Thng Kai Yuan
+ *
+ */
 public class AliasDb implements IDatabase {
 
     // Singleton instance of AliasDb
@@ -56,6 +63,7 @@ public class AliasDb implements IDatabase {
      *             if the given alias already exists in the database
      */
     public void create(AliasAttributes aliasAttributes) throws DuplicateAliasException {
+        assert aliasAttributes != null;
         if (isDuplicate(aliasAttributes)) {
             throw new DuplicateAliasException(aliasAttributes);
         }
@@ -88,10 +96,9 @@ public class AliasDb implements IDatabase {
      *             if the alias does not exist in the database
      */
     public String getCommandFromAlias(String alias) throws InvalidAliasException {
-        String alias2 = null;
+        assert alias != null;
         for (Alias aliasRecord : aliasList) {
-            alias2 = aliasRecord.getAlias();
-            if (alias.equals(alias2)) {
+            if (aliasRecord.getAlias().equals(alias)) {
                 return aliasRecord.getCommand();
             }
         }
@@ -108,14 +115,9 @@ public class AliasDb implements IDatabase {
      */
     public boolean hasAlias(String alias) {
         assert alias != null;
-        String alias2 = null;
-        for (Alias aliasRecord : aliasList) {
-            alias2 = aliasRecord.getAlias();
-            if (alias.equals(alias2)) {
-                return true;
-            }
-        }
-        return false;
+        return aliasList.stream().anyMatch(aliasRecord -> {
+            return aliasRecord.getAlias().equals(alias);
+        });
     }
 
     /**
@@ -127,16 +129,14 @@ public class AliasDb implements IDatabase {
      *             if the alias does not exist in the database
      */
     public void destroy(String alias) throws InvalidAliasException {
-        String alias2 = null;
+        assert alias != null;
         for (Alias aliasRecord : aliasList) {
-            alias2 = aliasRecord.getAlias();
-            if (alias.equals(alias2)) {
+            if (aliasRecord.getAlias().equals(alias)) {
                 aliasList.remove(aliasRecord);
                 deletedAliasList.add(aliasRecord);
                 return;
             }
         }
-
         throw new InvalidAliasException(alias);
     }
 
@@ -149,18 +149,20 @@ public class AliasDb implements IDatabase {
      *             if the alias does not exist in the database
      */
     public void undestroy(String alias) throws InvalidAliasException {
+        assert alias != null;
         Alias deletedAlias = null;
 
         // Start searching from the back to undestroy the latest matching alias
+        // if does not already exist
         for (int i = deletedAliasList.size() - 1; i >= 0; i--) {
             deletedAlias = deletedAliasList.get(i);
-            if (alias.equals(deletedAlias.getAlias()) && !isDuplicate(new AliasAttributes(deletedAlias))) {
+            if (deletedAlias.getAlias().equals(alias)
+                    && !isDuplicate(new AliasAttributes(deletedAlias))) {
                 deletedAliasList.remove(i);
                 aliasList.add(deletedAlias);
                 return;
             }
         }
-
         throw new InvalidAliasException(alias);
     }
 
@@ -173,16 +175,11 @@ public class AliasDb implements IDatabase {
      * @return boolean indicating if the alias already exists
      */
     private boolean isDuplicate(AliasAttributes aliasAttributes) {
-        String alias1 = aliasAttributes.getAlias();
-        String alias2;
-        for (Alias aliasRecord : aliasList) {
-            alias2 = aliasRecord.getAlias();
-            if (alias1.equals(alias2)) {
-                return true;
-            }
-        }
-
-        return false;
+        assert aliasAttributes != null;
+        String alias = aliasAttributes.getAlias();
+        return aliasList.stream().anyMatch(aliasRecord -> {
+            return aliasRecord.getAlias().equals(alias);
+        });
     }
 
     /**
@@ -210,6 +207,7 @@ public class AliasDb implements IDatabase {
      *            the directory that should contain the data file
      */
     public void setFilePath(String absoluteFolderPath) {
+        assert absoluteFolderPath != null;
         filePath = Paths.get(absoluteFolderPath, Constants.FILENAME_ALIAS);
     }
 
@@ -228,13 +226,14 @@ public class AliasDb implements IDatabase {
      *         renamed
      */
     public FilePathPair load() {
-        File dataFile = filePath.toFile();
-        if (!dataFile.exists()) {
+        if (!Files.exists(filePath)) {
             return null;
         }
 
         String persistedJsonData = FileManager.readFileToString(filePath);
         Alias[] aliasArray = Serializer.deserialize(persistedJsonData, Alias[].class);
+        aliasArray = validateAliasArray(aliasArray);
+
         if (aliasArray != null) {
             aliasList = new ArrayList<Alias>(Arrays.asList(aliasArray));
             deletedAliasList = new ArrayList<Alias>();
@@ -245,6 +244,30 @@ public class AliasDb implements IDatabase {
 
         String movedTo = FileManager.backupAndRemove(filePath);
         return new FilePathPair(filePath.toString(), movedTo);
+    }
+
+    /**
+     * This method validates an array of Aliases. If any of the Aliases are
+     * invalid, null is returned. Otherwise, the original aliasArray is
+     * returned.
+     *
+     * @param aliasArray
+     *            the array of Alias that is to be validated
+     * @return null if any of the aliases are invalid, otherwise the original
+     *         aliasArray is returned
+     */
+    private Alias[] validateAliasArray(Alias[] aliasArray) {
+        if (aliasArray == null) {
+            return null;
+        }
+
+        for (Alias alias : aliasArray) {
+            if (!(new AliasAttributes(alias).isValid())) {
+                return null;
+            }
+        }
+
+        return aliasArray;
     }
 
 }

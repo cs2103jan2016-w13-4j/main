@@ -12,11 +12,13 @@ import jfdi.storage.Constants;
 import jfdi.storage.apis.MainStorage;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
+import jfdi.storage.exceptions.FilePathPair;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
 import jfdi.storage.serializer.Serializer;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -25,15 +27,24 @@ public class TaskDbTest {
     private static Path testDirectory = null;
     private static String testDirectoryString = null;
     private static TaskDb taskDbInstance = null;
+    private static MainStorage mainStorageInstance = null;
+    private static String originalPreference = null;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         testDirectory = Files.createTempDirectory(Constants.TEST_DIRECTORY_NAME);
         testDirectoryString = testDirectory.toString();
-        MainStorage fileStorageInstance = MainStorage.getInstance();
-        fileStorageInstance.initialize();
-        fileStorageInstance.use(testDirectoryString);
+        mainStorageInstance = MainStorage.getInstance();
+        originalPreference = mainStorageInstance.getPreferredDirectory();
+        mainStorageInstance.setPreferredDirectory(testDirectoryString);
+        mainStorageInstance.initialize();
+        mainStorageInstance.use(testDirectoryString);
         taskDbInstance = TaskDb.getInstance();
+    }
+
+    @AfterClass
+    public static void tearDownAfterClass() {
+        TestHelper.revertOriginalPreference(mainStorageInstance, originalPreference);
     }
 
     @After
@@ -101,6 +112,7 @@ public class TaskDbTest {
 
     @Test
     public void testSetAndGetFilePath() {
+        Path originalFilePath = taskDbInstance.getFilePath();
         Path subdirectory = Paths.get(testDirectory.toString(), Constants.TEST_SUBDIRECTORY_NAME);
         Path expectedTaskPath = Paths.get(subdirectory.toString(), Constants.FILENAME_TASK);
 
@@ -109,7 +121,7 @@ public class TaskDbTest {
         assertEquals(expectedTaskPath, taskDbInstance.getFilePath());
 
         // Reset back to the original file path
-        taskDbInstance.setFilePath(testDirectoryString);
+        taskDbInstance.setFilePath(originalFilePath.getParent().toString());
     }
 
     @Test
@@ -254,12 +266,22 @@ public class TaskDbTest {
 
         // Create the data file and load from it
         TestHelper.createTaskFileWith(testDirectoryString, json);
-        taskDbInstance.load();
+        FilePathPair filesReplaced = taskDbInstance.load();
+
+        // No files should have been replaced
+        assertNull(filesReplaced);
 
         // Check that the original task exists
         assertEquals(taskDbInstance.getAll().size(), 1);
         TaskAttributes retrievedTaskAttributes = taskDbInstance.getById(taskAttributes.getId());
         assertEquals(retrievedTaskAttributes.getDescription(), Constants.TEST_TASK_DESCRIPTION_1);
+    }
+
+    @Test
+    public void testLoadFromInvalidData() throws Exception {
+        TestHelper.createInvalidTaskFile(testDirectoryString);
+        FilePathPair filesReplaced = taskDbInstance.load();
+        assertNotNull(filesReplaced);
     }
 
     @Test(expected = InvalidIdException.class)
@@ -329,7 +351,7 @@ public class TaskDbTest {
         assertTrue(taskDbInstance.getById(taskAttributes.getId()).hasTag(Constants.TEST_TASK_TAG_1));
     }
 
-    @Test(expected = InvalidIdException.class)
+    @Test(expected = AssertionError.class)
     public void testAddTagToNull() throws Exception {
         taskDbInstance.addTagById(null, Constants.TEST_TASK_TAG_1);
     }
@@ -365,7 +387,7 @@ public class TaskDbTest {
         assertTrue(persistedReminderList.contains(Constants.TEST_TASK_REMINDER_DURATION_1));
     }
 
-    @Test(expected = InvalidIdException.class)
+    @Test(expected = AssertionError.class)
     public void testAddReminderToNull() throws Exception {
         taskDbInstance.addReminderById(null, Constants.TEST_TASK_REMINDER_DURATION_1);
     }

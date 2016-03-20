@@ -7,6 +7,12 @@ import java.util.TreeSet;
 
 import jfdi.storage.apis.TaskAttributes;
 
+/**
+ * This is the Task entity class.
+ *
+ * @author Thng Kai Yuan
+ *
+ */
 public class Task {
 
     private Integer id = null;
@@ -59,6 +65,12 @@ public class Task {
         return isCompleted;
     }
 
+    /**
+     * This method copies the attributes from taskAttributes onto itself.
+     *
+     * @param taskAttributes
+     *            the data transfer object that we want to copy the attributes from
+     */
     public void update(TaskAttributes taskAttributes) {
         assert this.getId() == taskAttributes.getId();
         this.description = taskAttributes.getDescription();

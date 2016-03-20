@@ -9,6 +9,7 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 import jfdi.storage.exceptions.FilesReplacedException;
@@ -39,6 +40,7 @@ public class FileManager {
      *             in the directory
      */
     public static void prepareDirectory(String storageFolderPath) throws InvalidPathException {
+        assert storageFolderPath != null;
         Path directoryPath = Paths.get(storageFolderPath);
         boolean isValidDirectory = true;
 
@@ -60,7 +62,7 @@ public class FileManager {
     }
 
     /**
-     * This method moves all the data files to newStorageFolderPath.
+     * This method moves all the existing data files to newStorageFolderPath.
      *
      * @param newStorageFolderPath
      *            the new storage directory
@@ -69,6 +71,7 @@ public class FileManager {
      *             made)
      */
     public static void moveFilesToDirectory(String newStorageFolderPath) throws FilesReplacedException {
+        assert newStorageFolderPath != null;
         // Create the new folder if it doesn't already exist
         File newStorageFolder = new File(newStorageFolderPath);
         newStorageFolder.mkdirs();
@@ -92,29 +95,18 @@ public class FileManager {
      * @return the path of the backup file created
      */
     public static String backupAndRemove(Path sourcePath) {
+        assert sourcePath != null;
         String sourceDirectoryPath = sourcePath.getParent().toString();
         String originalFilename = sourcePath.getFileName().toString();
-        String destinationFilename = null;
-        Path destinationPath = null;
-        File destinationFile = null;
-        int attempts = 0;
+        Path destinationPath = getUnusedBackupPath(sourceDirectoryPath, originalFilename);
 
-        // Try a different backup filename until we get one that doesn't yet exist
-        do {
-            destinationFilename = originalFilename + getBackupExtension(attempts++);
-            destinationPath = Paths.get(sourceDirectoryPath, destinationFilename);
-            destinationFile = destinationPath.toFile();
-        } while (destinationFile.exists());
-
-        // Once we find a backup name that doesn't yet exist, we rename the
-        // original file to this filename
         try {
             Files.move(sourcePath, destinationPath);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return destinationFile.getAbsolutePath();
+        return destinationPath.toAbsolutePath().toString();
     }
 
     /**
@@ -126,6 +118,7 @@ public class FileManager {
      *            the path of the file that we want to write data into
      */
     public static void writeToFile(String data, Path filePath) {
+        assert data != null && filePath != null;
         try {
             File file = filePath.toFile();
             file.getParentFile().mkdirs();
@@ -147,8 +140,9 @@ public class FileManager {
      *         error reading the file
      */
     public static String readFileToString(Path filePath) {
-        File file = filePath.toFile();
+        assert filePath != null;
         try {
+            File file = filePath.toFile();
             Scanner scanner = new Scanner(file, Constants.CHARSET);
             scanner.useDelimiter("\\Z");
             String data = scanner.next();
@@ -166,34 +160,52 @@ public class FileManager {
      */
 
     /**
+     * This method returns a suitable backup path for the given file in the
+     * given directory.
+     *
+     * @param directory
+     *            the directory which contains the original file
+     * @param originalFilename
+     *            the filename of the original file
+     * @return the path to a suitable (unused) backup file
+     */
+    private static Path getUnusedBackupPath(String directory, String originalFilename) {
+        assert directory != null && originalFilename != null;
+        String destinationFilename = null;
+        Path destinationPath = null;
+        int attempts = 0;
+
+        // Try a different backup filename until we get one that doesn't yet exist
+        do {
+            destinationFilename = originalFilename + getBackupExtension(attempts++);
+            destinationPath = Paths.get(directory, destinationFilename);
+        } while (Files.exists(destinationPath));
+
+        return destinationPath;
+    }
+
+    /**
      * This method moves all existing files in filePaths to the destination folder.
      *
      * @param filePaths
      *            an ArrayList of Paths for the files that are to be moved
      * @param destination
      *            the destination directory
-     * @return an ArrayList of FilePathPairs for every file that was replaced in
+     * @return an ArrayList of FilePathPairs for every file that was moved in
      *         the destination directory
      */
     private static ArrayList<FilePathPair> moveFilesTo(ArrayList<Path> filePaths, String destination) {
-        ArrayList<FilePathPair> replacedFiles = new ArrayList<FilePathPair>();
-        FilePathPair filePathPair = null;
+        assert filePaths != null && destination != null;
+        ArrayList<FilePathPair> movedFiles = new ArrayList<FilePathPair>();
 
-        for (Path sourcePath : filePaths) {
-            File sourceFile = sourcePath.toFile();
-            if (!sourceFile.exists()) {
-                continue;
-            }
-
+        // For each file path that exists, we backup the file and add it to the list of moved files
+        filePaths.stream().filter(Files::exists).map(sourcePath -> {
             String filename = sourcePath.getFileName().toString();
             Path destinationPath = Paths.get(destination, filename);
-            filePathPair = moveAndBackup(sourcePath, destinationPath);
-            if (filePathPair != null) {
-                replacedFiles.add(filePathPair);
-            }
-        }
+            return moveAndBackup(sourcePath, destinationPath);
+        }).filter(Objects::nonNull).forEach(movedFiles::add);
 
-        return replacedFiles;
+        return movedFiles;
     }
 
     /**
@@ -208,10 +220,10 @@ public class FileManager {
      * @return FilePathPair if a backup was made, null otherwise
      */
     private static FilePathPair moveAndBackup(Path source, Path destination) {
-        File destinationFile = destination.toFile();
+        assert source != null && destination != null;
         FilePathPair filePathPair = null;
 
-        if (destinationFile.exists()) {
+        if (Files.exists(destination)) {
             String movedTo = backupAndRemove(destination);
             filePathPair = new FilePathPair(source.toString(), movedTo);
         }
@@ -235,6 +247,7 @@ public class FileManager {
      * @return a backup file extension
      */
     private static String getBackupExtension(int i) {
+        assert i >= 0;
         if (i == 0) {
             return Constants.EXTENSION_BACKUP;
         }
@@ -252,6 +265,7 @@ public class FileManager {
      *         required by the program
      */
     private static boolean canUseDirectory(File directory) {
+        assert directory != null;
         return directory.canExecute() && directory.canWrite();
     }
 

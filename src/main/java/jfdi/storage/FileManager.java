@@ -203,7 +203,7 @@ public class FileManager {
             String filename = sourcePath.getFileName().toString();
             Path destinationPath = Paths.get(destination, filename);
             return moveAndBackup(sourcePath, destinationPath);
-        }).filter(Objects::nonNull).forEach(movedFiles::add);;
+        }).filter(Objects::nonNull).forEach(movedFiles::add);
 
         return movedFiles;
     }

@@ -27,6 +27,7 @@ public class DatabaseManager {
      *            the root directory where all data will be stored
      */
     public static void setAllFilePaths(String storageFolderPath) {
+        assert storageFolderPath != null;
         for (IDatabase database : Constants.DATABASES) {
             database.setFilePath(storageFolderPath);
         }

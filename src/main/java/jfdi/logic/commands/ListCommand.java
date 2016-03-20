@@ -1,12 +1,12 @@
 package jfdi.logic.commands;
 
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 import jfdi.logic.events.ListDoneEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
-
-import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 /**
  * @author Liu Xinan
@@ -14,7 +14,10 @@ import java.util.stream.Collectors;
 public class ListCommand extends Command {
 
     public enum ListType {
-        ALL, COMPLETED, INCOMPLETE
+        ALL,
+        COMPLETED,
+        INCOMPLETE,
+        ALIASES
     }
 
     private ListType listType;
@@ -40,17 +43,19 @@ public class ListCommand extends Command {
     @Override
     public void execute() {
         ArrayList<TaskAttributes> tasks = new ArrayList<>(TaskDb.getInstance()
-                .getAll());
+            .getAll());
         switch (listType) {
             case ALL:
                 break;
             case COMPLETED:
                 tasks = tasks.stream().filter(task -> task.isCompleted())
-                        .collect(Collectors.toCollection(ArrayList::new));
+                    .collect(Collectors.toCollection(ArrayList::new));
                 break;
             case INCOMPLETE:
                 tasks = tasks.stream().filter(task -> !task.isCompleted())
-                        .collect(Collectors.toCollection(ArrayList::new));
+                    .collect(Collectors.toCollection(ArrayList::new));
+                break;
+            case ALIASES:
                 break;
             default:
                 break;

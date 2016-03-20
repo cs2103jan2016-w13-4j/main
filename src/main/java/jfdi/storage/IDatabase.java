@@ -4,6 +4,13 @@ import java.nio.file.Path;
 
 import jfdi.storage.exceptions.FilePathPair;
 
+/**
+ * This interface defines the methods that an entity database should implement
+ * in order for the database to be managed by DatabaseManager appropriately.
+ *
+ * @author Thng Kai Yuan
+ *
+ */
 public interface IDatabase {
 
     /**

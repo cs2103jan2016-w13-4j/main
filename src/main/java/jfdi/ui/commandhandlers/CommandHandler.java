@@ -23,6 +23,7 @@ import jfdi.logic.events.RenameTaskFailEvent;
 import jfdi.logic.events.RescheduleTaskDoneEvent;
 import jfdi.logic.events.RescheduleTaskFailEvent;
 import jfdi.logic.events.SearchDoneEvent;
+import jfdi.logic.events.ShowDirectoryEvent;
 import jfdi.logic.events.UnaliasDoneEvent;
 import jfdi.logic.events.UnaliasFailEvent;
 import jfdi.logic.events.UnmarkTaskDoneEvent;
@@ -299,6 +300,11 @@ public class CommandHandler {
 
         controller.setHighlights(e.getKeywords());
         controller.relayFb(Constants.CMD_SUCCESS_SEARCH, MsgType.SUCCESS);
+    }
+
+    @Subscribe
+    public void handleShowDirectoryEvent(ShowDirectoryEvent e) {
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_SHOWDIRECTORY, e.getPwd()), MsgType.SUCCESS);
     }
 
     @Subscribe

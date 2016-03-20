@@ -54,6 +54,7 @@ public class Constants {
     public static final String CMD_SUCCESS_RENAMED = "Task #%d renamed to - %s -! :)";
     public static final String CMD_SUCCESS_RESCHEDULED = "Task #%d rescheduled! :)";
     public static final String CMD_SUCCESS_SEARCH = "Here are your search results! :)";
+    public static final String CMD_SUCCESS_SHOWDIRECTORY = "Your current directory is : %s ! :)";
     public static final String CMD_SUCCESS_UNALIAS = "Alias - %s - is removed! :)";
     public static final String CMD_SUCCESS_UNMARKED = "Task(s) marked as imcomplete! :)";
 

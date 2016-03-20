@@ -9,9 +9,8 @@ import java.util.ArrayList;
  */
 public class MoveDirectoryFailedEvent {
 
-
     public enum Error {
-        FILE_REPLACED, ACCESS_DENIED, UNKNOWN
+        FILE_REPLACED, INVALID_PATH, UNKNOWN
     }
 
     private String newDirectory;

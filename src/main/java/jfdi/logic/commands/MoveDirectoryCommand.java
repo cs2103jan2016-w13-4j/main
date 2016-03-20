@@ -6,6 +6,8 @@ import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.MainStorage;
 import jfdi.storage.exceptions.FilesReplacedException;
 
+import java.nio.file.InvalidPathException;
+
 /**
  * @author Xinan
  */
@@ -44,8 +46,8 @@ public class MoveDirectoryCommand extends Command {
         } catch (FilesReplacedException e) {
             eventBus.post(new MoveDirectoryFailedEvent(newDirectory, MoveDirectoryFailedEvent.Error.FILE_REPLACED,
                 e.getReplacedFilePairs()));
-        } catch (IllegalAccessException e) {
-            eventBus.post(new MoveDirectoryFailedEvent(newDirectory, MoveDirectoryFailedEvent.Error.ACCESS_DENIED));
+        } catch (InvalidPathException e) {
+            eventBus.post(new MoveDirectoryFailedEvent(newDirectory, MoveDirectoryFailedEvent.Error.INVALID_PATH));
         }
     }
 

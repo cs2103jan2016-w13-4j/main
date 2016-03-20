@@ -21,4 +21,8 @@
 	-fx-background-color: #faebcd;
 	-fx-border-color: #faebcd
 }
-
+ 
+.ListLayout .list-view {
+	-fx-padding: 8 15 8 15;
+	-fx-background-color: #faebcd;
+}

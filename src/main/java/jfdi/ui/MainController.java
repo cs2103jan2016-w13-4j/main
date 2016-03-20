@@ -36,9 +36,9 @@ public class MainController {
     @FXML
     public SplitPane upDownSplit;
     @FXML
-    public TextField dayDisplayer;
+    public Label dayDisplayer;
     @FXML
-    public TextArea statsDisplayer;
+    public ListView<String> statsDisplayer;
     @FXML
     public Label overdueLabel;
     @FXML
@@ -50,11 +50,10 @@ public class MainController {
     @FXML
     public TextArea fbArea;
     @FXML
-    public TextArea cmdArea;
+    public TextField cmdArea;
 
     public void initialize() {
 
-        intSplitPanes();
         initDate();
         initImportantList();
         initStatsArea();
@@ -127,18 +126,8 @@ public class MainController {
      *** LEVEL 1 Abstraction ***
      ***************************/
 
-    private void intSplitPanes() {
-        leftRightSplit.lookupAll(".split-pane-divider").stream()
-        .forEach(div ->  div.setMouseTransparent(true));
-
-        upDownSplit.lookupAll(".split-pane-divider").stream()
-        .forEach(div ->  div.setMouseTransparent(true));
-    }
-
     public void initDate() {
 
-        dayDisplayer.setMouseTransparent(true);
-        dayDisplayer.setFocusTraversable(false);
         DateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
         Calendar cal = Calendar.getInstance();
         dayDisplayer.setText(dateFormat.format(cal.getTime()));
@@ -152,24 +141,6 @@ public class MainController {
         importantList = FXCollections.observableArrayList();
         listMain.setItems(importantList);
 
-        /*listMain.setCellFactory(
-                new Callback<ListView<ListItem>, ListCell<ListItem>>() {
-                    @Override
-                    public ListCell<ListItem> call(ListView<ListItem> param) {
-
-                        ListCell<ListItem> cell = new ListCell<ListItem>() {
-                            @Override
-                            protected void updateItem(ListItem item, boolean bln) {
-                                super.updateItem(item, bln);
-                                if (item != null) {
-
-                                }
-                            }
-                        };
-
-                        return cell;
-                    }
-                });*/
     }
 
     private void initStatsArea() {

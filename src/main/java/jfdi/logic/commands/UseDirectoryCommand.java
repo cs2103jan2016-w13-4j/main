@@ -1,6 +1,5 @@
 package jfdi.logic.commands;
 
-import jfdi.logic.events.DirectoryMovedEvent;
 import jfdi.logic.events.MoveDirectoryFailedEvent;
 import jfdi.logic.events.UseDirectoryDoneEvent;
 import jfdi.logic.interfaces.Command;

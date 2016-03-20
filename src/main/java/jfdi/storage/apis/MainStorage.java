@@ -11,6 +11,7 @@ import jfdi.storage.Constants;
 import jfdi.storage.DatabaseManager;
 import jfdi.storage.FileManager;
 import jfdi.storage.exceptions.FilesReplacedException;
+import jfdi.storage.exceptions.InvalidFilePathException;
 
 /**
  * This class deals with all the file path operations within the Storage
@@ -60,7 +61,7 @@ public class MainStorage implements IStorage {
     }
 
     @Override
-    public void initialize() throws FilesReplacedException {
+    public void initialize() throws FilesReplacedException, InvalidFilePathException {
         String storageDirectory = getInitializationPath();
         String dataDirectory = getDataDirectory(storageDirectory);
         load(dataDirectory);
@@ -69,7 +70,7 @@ public class MainStorage implements IStorage {
     }
 
     @Override
-    public void use(String newStorageFolderPath) throws InvalidPathException, FilesReplacedException {
+    public void use(String newStorageFolderPath) throws InvalidFilePathException, FilesReplacedException {
         assert isInitialized;
         load(getDataDirectory(newStorageFolderPath));
         setPreferredDirectory(newStorageFolderPath);
@@ -77,7 +78,7 @@ public class MainStorage implements IStorage {
     }
 
     @Override
-    public void changeDirectory(String newStorageFolderPath) throws InvalidPathException, FilesReplacedException {
+    public void changeDirectory(String newStorageFolderPath) throws InvalidFilePathException, FilesReplacedException {
         assert isInitialized;
         String newDataDirectory = getDataDirectory(newStorageFolderPath);
         FileManager.prepareDirectory(newDataDirectory);
@@ -113,14 +114,14 @@ public class MainStorage implements IStorage {
      * @param storageFolderPath
      *            the absolute path of the directory that data is to be loaded
      *            from and saved to
-     * @throws InvalidPathException
+     * @throws InvalidFilePathException
      *             if the program does not have sufficient permissions to carry
      *             out file operations in storageFolderPath
      * @throws FilesReplacedException
      *             if existing unrecognized data files are found and replaced
      *             (with backups made) in the given storageFolderPath
      */
-    public void load(String storageFolderPath) throws InvalidPathException, FilesReplacedException {
+    public void load(String storageFolderPath) throws InvalidFilePathException, FilesReplacedException {
         assert storageFolderPath != null;
         FileManager.prepareDirectory(storageFolderPath);
         DatabaseManager.setAllFilePaths(storageFolderPath);

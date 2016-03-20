@@ -2,18 +2,19 @@
 	font-family: Hammersmith;
 	font-weight: normal;
 	font-style: normal;
-	src: url("/ui/fonts/Roboto-Regular.ttf");
+	src: url("/ui/fonts/HammersmithOne.ttf");
 }
 
 @font-face {
 	font-family: Raleway;
 	font-weight: normal;
 	font-style: normal;
-	src: url("/ui/fonts/Roboto-Italic.ttf");
+	src: url("/ui/fonts/raleway.heavy.ttf");
 }
 
 .list-cell {
 	-fx-background-color: #faebcd;
+	-fx-border-color: #faebcd;
 }
 
 .list-cell:empty {

@@ -62,7 +62,6 @@ public class MainSetUp extends Application {
         // Display scene with root layout
         Scene scene = new Scene(rootLayout);
         scene.setFill(Color.TRANSPARENT);
-        scene.getStylesheets().add(MainSetUp.class.getResource("/ui/jfdiLook.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
         this.scene = scene;

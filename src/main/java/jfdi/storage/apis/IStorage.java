@@ -21,6 +21,8 @@ public interface IStorage {
      * @throws FilesReplacedException
      *             if existing unrecognized data files are found and replaced
      *             (with backups made) in the given storageFolderPath
+     * @throws InvalidFilePathException
+     *             if the given path is invalid
      */
     void initialize() throws FilesReplacedException, InvalidFilePathException;
 

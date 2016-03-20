@@ -3,7 +3,7 @@ package jfdi.test.parser;
 import jfdi.logic.commands.AddTaskCommand;
 import jfdi.logic.commands.AliasCommand;
 import jfdi.logic.commands.DeleteTaskCommand;
-import jfdi.logic.commands.DirectoryCommandStub;
+import jfdi.logic.commands.DirectoryCommand;
 import jfdi.logic.commands.ExitCommand;
 import jfdi.logic.commands.HelpCommandStub;
 import jfdi.logic.commands.InvalidCommand;
@@ -266,7 +266,7 @@ public class InputParserTest {
         String directoryCommand = "directory";
         try {
             Command command = parser.parse(directoryCommand);
-            Assert.assertTrue(command instanceof DirectoryCommandStub);
+            Assert.assertTrue(command instanceof DirectoryCommand);
         } catch (InvalidInputException e) {
             Assert.fail();
         }

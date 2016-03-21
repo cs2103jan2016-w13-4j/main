@@ -54,6 +54,23 @@ public class AddCommandParserTest {
         Assert.assertFalse(hasStartDateTime(addTaskCommand));
         Assert.assertFalse(hasEndDateTime(addTaskCommand));
 
+        // Boundary case: With escape delimiters
+        cmd = parser.build("\"This should parse as an add command.\"");
+        addTaskCommand = validateAndReturnAddCommand(cmd);
+        validateDescription(addTaskCommand,
+            "This should parse as an add command.");
+        Assert.assertFalse(hasStartDateTime(addTaskCommand));
+        Assert.assertFalse(hasEndDateTime(addTaskCommand));
+
+        // Boundary case: With escape delimiters
+        cmd = parser
+            .build("\"The date time here should not be parsed by tomorrow\"");
+        addTaskCommand = validateAndReturnAddCommand(cmd);
+        validateDescription(addTaskCommand,
+            "The date time here should not be parsed by tomorrow");
+        Assert.assertFalse(hasStartDateTime(addTaskCommand));
+        Assert.assertFalse(hasEndDateTime(addTaskCommand));
+
         // Boundary case: symbols
         cmd = parser.build("&%&^%%*@^#!)!@#()\\@*@)_    @#@#***");
         addTaskCommand = validateAndReturnAddCommand(cmd);
@@ -100,6 +117,18 @@ public class AddCommandParserTest {
             getStartDateTime("from 4pm to 11pm"));
         Assert.assertEquals(getEndDateTime(addTaskCommand),
             getEndDateTime("from 4pm to 11pm"));
+
+        // Boundary case: with escape delimiters
+        addCommand = parser.build("\"play Goat Simulator\" from 4pm to 11pm");
+        addTaskCommand = validateAndReturnAddCommand(addCommand);
+        validateDescription(addTaskCommand, "play Goat Simulator");
+        Assert.assertTrue(hasStartDateTime(addTaskCommand));
+        Assert.assertTrue(hasEndDateTime(addTaskCommand));
+        Assert.assertEquals(getStartDateTime(addTaskCommand),
+            getStartDateTime("from 4pm to 11pm"));
+        Assert.assertEquals(getEndDateTime(addTaskCommand),
+            getEndDateTime("from 4pm to 11pm"));
+
     }
 
     @Test
@@ -110,6 +139,10 @@ public class AddCommandParserTest {
 
         // Boundary case: no description
         addCommand = parser.build("add from 5pm to 6pm");
+        Assert.assertTrue(addCommand instanceof InvalidCommand);
+
+        // Boundary case: with delimiters, wrapped around nothing
+        addCommand = parser.build("\"\" from 5pm to 6pm");
         Assert.assertTrue(addCommand instanceof InvalidCommand);
 
     }

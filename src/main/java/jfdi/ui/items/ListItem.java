@@ -1,4 +1,4 @@
-package jfdi.ui;
+package jfdi.ui.items;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import jfdi.storage.apis.TaskAttributes;
+import jfdi.ui.Constants;
 
 public class ListItem extends HBox {
 

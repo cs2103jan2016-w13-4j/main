@@ -31,7 +31,7 @@ import jfdi.logic.events.UnmarkTaskFailEvent;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.ui.Constants;
 import jfdi.ui.Constants.MsgType;
-import jfdi.ui.ListItem;
+import jfdi.ui.items.ListItem;
 import jfdi.ui.MainController;
 
 public class CommandHandler {

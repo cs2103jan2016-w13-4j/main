@@ -29,6 +29,8 @@ import javafx.util.Duration;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.ui.Constants.MsgType;
 import jfdi.ui.commandhandlers.CommandHandler;
+import jfdi.ui.items.HelpItem;
+import jfdi.ui.items.ListItem;
 
 public class MainController {
 

@@ -16,20 +16,22 @@ import jfdi.parser.exceptions.BadTaskDescriptionException;
  * The AddCommandParser class is used to parse a user input String that
  * resembles an add command. All user inputs for adding tasks must adhere to the
  * following format: {add identifier}(optional) {task description} {date time
- * identifier}(optional)
+ * identifier}(optional). In addition, a user may wrap his task description with
+ * "{task description}", where " is the escape delimiter, to escape inadventent
+ * formatting of date-tme in the description.
  *
  * @author Leonard Hio
  *
  */
 public class AddCommandParser extends AbstractCommandParser {
 
-    private static AbstractCommandParser instance;
+    private static AddCommandParser instance;
 
     private AddCommandParser() {
 
     }
 
-    public static AbstractCommandParser getInstance() {
+    public static AddCommandParser getInstance() {
         if (instance == null) {
             return instance = new AddCommandParser();
         }
@@ -56,7 +58,7 @@ public class AddCommandParser extends AbstractCommandParser {
             setDescription(input, addCommandBuilder);
         } catch (BadDateTimeException | BadTaskDescriptionException e) {
             return createInvalidCommand(Constants.CommandType.add,
-                    originalInput);
+                originalInput);
         }
 
         AddTaskCommand addCommand = addCommandBuilder.build();
@@ -82,17 +84,17 @@ public class AddCommandParser extends AbstractCommandParser {
      *             if input cannot be parsed as a date time
      */
     private String setAndRemoveDateTime(String input, Builder builder)
-            throws BadDateTimeException {
+        throws BadDateTimeException {
         // Date time identifier must be at the end of the input String, hence
         // the "$" end-of-line flag
         Pattern dateTimePattern = Pattern
-                .compile(Constants.REGEX_DATE_TIME_IDENTIFIER + "$");
+            .compile(Constants.REGEX_DATE_TIME_IDENTIFIER + "$");
         Matcher matcher = dateTimePattern.matcher(input);
         String dateTimeIdentifier = null;
 
         if (matcher.find()) {
             dateTimeIdentifier = getTrimmedSubstringInRange(input,
-                    matcher.start(), matcher.end());
+                matcher.start(), matcher.end());
             input = getTrimmedSubstringInRange(input, 0, matcher.start());
         }
 
@@ -124,7 +126,7 @@ public class AddCommandParser extends AbstractCommandParser {
      *             if input is invalid as a task description
      */
     private void setDescription(String input, Builder builder)
-            throws BadTaskDescriptionException {
+        throws BadTaskDescriptionException {
 
         if (!input.isEmpty()) {
             String firstWord = getFirstWord(input);
@@ -135,11 +137,13 @@ public class AddCommandParser extends AbstractCommandParser {
                 taskDescription = input;
             }
 
-            if (taskDescription == null || taskDescription.isEmpty()) {
-                throw new BadTaskDescriptionException(input);
+            if (taskDescription != null && !taskDescription.isEmpty()) {
+                if (isWrappedWithEscapeDelimiters(taskDescription)) {
+                    taskDescription = removeEscapeDelimiters(taskDescription);
+                }
+                builder.setDescription(taskDescription);
             }
 
-            builder.setDescription(taskDescription);
         } else {
             throw new BadTaskDescriptionException(input);
         }
@@ -147,6 +151,41 @@ public class AddCommandParser extends AbstractCommandParser {
 
     private String getFirstWord(String input) {
         return input.split(Constants.REGEX_WHITESPACE)[0];
+    }
+
+    /**
+     * This method checks to see if the given input is a task description,
+     * wrapped with the description escape delimiters.
+     *
+     * @param input
+     *            the task description input
+     * @return true if description is wrapped; false otherwise
+     */
+    private boolean isWrappedWithEscapeDelimiters(String input) {
+        return input.substring(0, 1).matches(
+            Constants.REGEX_DESCRIPTION_ESCAPE_DELIMITER)
+            && input.substring(input.length() - 1, input.length()).matches(
+                Constants.REGEX_DESCRIPTION_ESCAPE_DELIMITER);
+    }
+
+    /**
+     * This method strips the given input of the description escape delimiters.
+     *
+     * @param input
+     *            the task description that is wrapped with delimiters.
+     * @return the input without delimiters.
+     * @throws BadTaskDescriptionException
+     *             if the resulting input without delimiters is an empty string
+     */
+    private String removeEscapeDelimiters(String input)
+        throws BadTaskDescriptionException {
+        assert isWrappedWithEscapeDelimiters(input);
+        String unwrappedInput = input.substring(1, input.length() - 1);
+        if (unwrappedInput.isEmpty()) {
+            throw new BadTaskDescriptionException(input);
+        } else {
+            return unwrappedInput;
+        }
     }
 
 }

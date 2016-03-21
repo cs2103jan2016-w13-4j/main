@@ -18,6 +18,7 @@ public class Constants {
 
     // General Regex Strings
     public static final String REGEX_WHITESPACE = "\\s";
+    public static final String REGEX_DESCRIPTION_ESCAPE_DELIMITER = "\"";
 
     // Task type specific Regex Strings
     public static final String REGEX_ADD = "(?i)^(add)";

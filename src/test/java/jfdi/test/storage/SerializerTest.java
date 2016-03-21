@@ -38,13 +38,13 @@ public class SerializerTest {
         // Deserialize the serialized JSON
         Task deserializedTask = Serializer.deserialize(serializedJson, Task.class);
 
-        // Check if the properties are still the same
-        assertEquals(deserializedTask.getDescription(), Constants.TEST_TASK_DESCRIPTION_1);
-        assertEquals(deserializedTask.getStartDateTime(), Constants.TEST_TASK_STARTDATETIME);
-        assertEquals(deserializedTask.getEndDateTime(), Constants.TEST_TASK_ENDDATETIME);
-        assertEquals(deserializedTask.getTags(), tags);
-        assertEquals(deserializedTask.getReminders(), reminders);
-        assertEquals(deserializedTask.isCompleted(), false);
+        // Assert that the properties are still the same
+        assertEquals(Constants.TEST_TASK_DESCRIPTION_1, deserializedTask.getDescription());
+        assertEquals(Constants.TEST_TASK_STARTDATETIME, deserializedTask.getStartDateTime());
+        assertEquals(Constants.TEST_TASK_ENDDATETIME, deserializedTask.getEndDateTime());
+        assertEquals(tags, deserializedTask.getTags());
+        assertEquals(reminders, deserializedTask.getReminders());
+        assertEquals(false, deserializedTask.isCompleted());
     }
 
 }

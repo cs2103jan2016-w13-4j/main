@@ -43,8 +43,7 @@ public class FileManagerTest {
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        File testDirectoryRootFile = testDirectoryRoot.toFile();
-        FileUtils.deleteDirectory(testDirectoryRootFile);
+        FileUtils.deleteDirectory(testDirectoryRoot.toFile());
         TestHelper.revertOriginalPreference(mainStorageInstance, originalPreference);
     }
 
@@ -64,57 +63,68 @@ public class FileManagerTest {
     }
 
     @Test
-    public void testPrepareDirectory() {
+    public void testPrepareDirectory() throws Exception {
+        // The folder should not exist at the start
         assertFalse(testDirectoryFile.exists());
 
+        // Command under test (we prepare the directory for storage)
         FileManager.prepareDirectory(testDirectoryString);
 
+        // Now the folder should exist
         assertTrue(testDirectoryFile.exists());
     }
 
     @Test
-    public void testMoveFilesToNewDirectory() {
-        try {
-            mainStorageInstance.use(testDirectoryString);
-            TestHelper.createValidDataFiles(testDirectoryString);
-            HashMap<String, Long> checksums = TestHelper.getDataFileChecksums(testDirectoryString);
-            Path subdirectory = Paths.get(testDirectoryString, Constants.TEST_SUBDIRECTORY_NAME);
-            String subdirectoryString = subdirectory.toString();
+    public void testMoveFilesToNewDirectory() throws Exception {
+        // Create some valid data files and get their checksums
+        mainStorageInstance.use(testDirectoryString);
+        TestHelper.createValidDataFiles(testDirectoryString);
+        HashMap<String, Long> checksums = TestHelper.getDataFileChecksums(testDirectoryString);
+        String subdirectory = Paths.get(testDirectoryString, Constants.TEST_SUBDIRECTORY_NAME).toString();
 
-            String dataPath = TestHelper.getDataDirectory(subdirectoryString);
-            FileManager.moveFilesToDirectory(dataPath);
+        // Command under test (move the data files to the new directory)
+        String dataPath = TestHelper.getDataDirectory(subdirectory);
+        FileManager.moveFilesToDirectory(dataPath);
 
-            assertTrue(TestHelper.hasDataFileChecksums(subdirectoryString, checksums));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // Assert that their checksums remain the same
+        assertTrue(TestHelper.hasDataFileChecksums(subdirectory, checksums));
     }
 
     @Test(expected = FilesReplacedException.class)
     public void testMoveFilesToDirectoryWithExistingData() throws Exception {
+        // Create some valid data files and get their checksums
         mainStorageInstance.use(testDirectoryString);
         TestHelper.createValidDataFiles(testDirectoryString);
         HashMap<String, Long> checksums = TestHelper.getDataFileChecksums(testDirectoryString);
-        Path subdirectory = Paths.get(testDirectoryString, Constants.TEST_SUBDIRECTORY_NAME);
-        String subdirectoryString = subdirectory.toString();
-        TestHelper.createInvalidDataFiles(subdirectoryString);
+        String subdirectory = Paths.get(testDirectoryString, Constants.TEST_SUBDIRECTORY_NAME).toString();
+
+        // Create some invalid data files in the destination directory for collision
+        TestHelper.createInvalidDataFiles(subdirectory);
 
         try {
-            String dataPath = TestHelper.getDataDirectory(subdirectoryString);
+            // Command under test (move the data files to the new directory)
+            String dataPath = TestHelper.getDataDirectory(subdirectory);
             FileManager.moveFilesToDirectory(dataPath);
         } catch (FilesReplacedException e) {
-            assertTrue(TestHelper.hasDataFileChecksums(subdirectoryString, checksums));
+            // Ensure that files are replaced and assert that the data files in
+            // the destination remains the same
+            assertTrue(TestHelper.hasDataFileChecksums(subdirectory, checksums));
             throw e;
         }
     }
 
     @Test
     public void testBackupAndRemove() {
+        // Create the test file
         Path testFilePath = Paths.get(testDirectoryString, Constants.TEST_FILE_NAME);
         File testFile = testFilePath.toFile();
         testFile.getParentFile().mkdirs();
         FileManager.writeToFile(Constants.TEST_FILE_DATA, testFilePath);
+
+        // Command under test (backup and remove the file)
         String backupPath = FileManager.backupAndRemove(testFilePath);
+
+        // Assert that the test file has now been moved to the backup location
         File backupFile = new File(backupPath);
         assertFalse(testFile.exists());
         assertTrue(backupFile.exists());
@@ -122,14 +132,19 @@ public class FileManagerTest {
 
     @Test
     public void testWriteAndRead() {
+        // Create the necessary directories
         Path filePath = Paths.get(testDirectoryString, Constants.TEST_FILE_NAME);
         File parentFile = filePath.getParent().toFile();
         parentFile.mkdirs();
 
+        // Test writing to the file
         FileManager.writeToFile(Constants.TEST_FILE_DATA, filePath);
+
+        // Test reading from the file
         String readString = FileManager.readFileToString(filePath);
 
-        assertEquals(readString, Constants.TEST_FILE_DATA);
+        // Ensure that both are the same
+        assertEquals(Constants.TEST_FILE_DATA, readString);
     }
 
 }

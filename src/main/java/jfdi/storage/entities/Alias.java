@@ -1,5 +1,11 @@
 package jfdi.storage.entities;
 
+/**
+ * This is the Alias entity class.
+ *
+ * @author Thng Kai Yuan
+ *
+ */
 public class Alias {
 
     private String alias;

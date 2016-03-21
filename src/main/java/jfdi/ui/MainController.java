@@ -5,9 +5,17 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashSet;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
@@ -17,17 +25,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.ui.Constants.MsgType;
 import jfdi.ui.commandhandlers.CommandHandler;
+import jfdi.ui.items.HelpItem;
+import jfdi.ui.items.ListItem;
 
 public class MainController {
-
-    public MainSetUp main;
-    public IUserInterface ui;
-    public CommandHandler cmdHandler;
-    public Stage mainStage;
-    public ObservableList<ListItem> importantList;
 
     @FXML
     public VBox backDrop;
@@ -36,9 +41,9 @@ public class MainController {
     @FXML
     public SplitPane upDownSplit;
     @FXML
-    public TextField dayDisplayer;
+    public Label dayDisplayer;
     @FXML
-    public TextArea statsDisplayer;
+    public ListView<String> statsDisplayer;
     @FXML
     public Label overdueLabel;
     @FXML
@@ -50,11 +55,27 @@ public class MainController {
     @FXML
     public TextArea fbArea;
     @FXML
-    public TextArea cmdArea;
+    public TextField cmdArea;
+
+    @FXML
+    public VBox helpOverlay;
+    @FXML
+    public Label helpIcon;
+    @FXML
+    public Label helpTitle;
+    @FXML
+    public ListView<HelpItem> helpContent;
+
+    public MainSetUp main;
+    public IUserInterface ui;
+    public CommandHandler cmdHandler;
+    public Stage mainStage;
+    public ObservableList<ListItem> importantList;
+    private ObservableList<HelpItem> helpList;
+    private Timeline overlayTimeline;
 
     public void initialize() {
 
-        intSplitPanes();
         initDate();
         initImportantList();
         initStatsArea();
@@ -62,15 +83,16 @@ public class MainController {
         initUpcomingList();
         initFbArea();
         initCmdArea();
+        initTimelines();
         initHelpList();
 
     }
 
     public void hideOverlays() {
         //noTaskOverlay.toBack();
-        //helpOverlay.toBack();
+        helpOverlay.toBack();
         //noTaskOverlay.setOpacity(0);
-        //helpOverlay.setOpacity(0);
+        helpOverlay.setOpacity(0);
     }
 
     public void clearCmdArea() {
@@ -103,6 +125,16 @@ public class MainController {
         // TODO Auto-generated method stub
     }
 
+    public void showHelpDisplay() {
+        hideOverlays();
+        FadeTransition fadeIn = initFadeIn(helpOverlay,
+                Constants.OVERLAY_FADE_IN_MILLISECONDS);
+
+        overlayTimeline = generateHelpOverlayTimeline(fadeIn);
+        overlayTimeline.play();
+    }
+
+
     public void setMainApp(MainSetUp main) {
         this.main = main;
     }
@@ -127,18 +159,8 @@ public class MainController {
      *** LEVEL 1 Abstraction ***
      ***************************/
 
-    private void intSplitPanes() {
-        leftRightSplit.lookupAll(".split-pane-divider").stream()
-        .forEach(div ->  div.setMouseTransparent(true));
-
-        upDownSplit.lookupAll(".split-pane-divider").stream()
-        .forEach(div ->  div.setMouseTransparent(true));
-    }
-
     public void initDate() {
 
-        dayDisplayer.setMouseTransparent(true);
-        dayDisplayer.setFocusTraversable(false);
         DateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
         Calendar cal = Calendar.getInstance();
         dayDisplayer.setText(dateFormat.format(cal.getTime()));
@@ -148,28 +170,10 @@ public class MainController {
 
         listMain.setMouseTransparent(true);
         listMain.setFocusTraversable(false);
-
         importantList = FXCollections.observableArrayList();
         listMain.setItems(importantList);
+        handleOverlays(importantList);
 
-        /*listMain.setCellFactory(
-                new Callback<ListView<ListItem>, ListCell<ListItem>>() {
-                    @Override
-                    public ListCell<ListItem> call(ListView<ListItem> param) {
-
-                        ListCell<ListItem> cell = new ListCell<ListItem>() {
-                            @Override
-                            protected void updateItem(ListItem item, boolean bln) {
-                                super.updateItem(item, bln);
-                                if (item != null) {
-
-                                }
-                            }
-                        };
-
-                        return cell;
-                    }
-                });*/
     }
 
     private void initStatsArea() {
@@ -201,36 +205,81 @@ public class MainController {
         disableScrollBarCmd();
     }
 
+    private void initTimelines() {
+        //feedbackTimeline = new Timeline();
+        overlayTimeline = new Timeline();
+    }
+
     private void initHelpList() {
-        /*        helpList = FXCollections.observableArrayList();
-        helpList.add(new HelpBox(HELP_ADD_DESC, HELP_ADD_COMMAND));
-        helpList.add(new HelpBox(HELP_EDIT_DESC, HELP_EDIT_COMMAND));
-        helpList.add(new HelpBox(HELP_DELETE_DESC, HELP_DELETE_COMMAND));
-        helpList.add(new HelpBox(HELP_COMPLETE_DESC, HELP_COMPLETE_COMMAND));
-        helpList.add(new HelpBox(HELP_INCOMPLETE_DESC, HELP_INCOMPLETE_COMMAND));
-        helpList.add(new HelpBox(HELP_UNDO_DESC, HELP_UNDO_COMMAND));
-        helpList.add(new HelpBox(HELP_SET_SAVE_LOCATION_DESC,
-                                 HELP_SET_SAVE_LOCATION_COMMAND));
-        helpList.add(new HelpBox(HELP_MOVE_SAVE_LOCATION_DESC,
-                                 HELP_MOVE_SAVE_LOCATION_COMMAND));
-        helpList.add(new HelpBox(HELP_SEARCH_DESC, HELP_SEARCH_COMMAND));
-        helpList.add(new HelpBox(HELP_DISPLAY_INCOMPLETE_DESC,
-                                 HELP_DISPLAY_INCOMPLETE_COMMAND));
-        helpList.add(new HelpBox(HELP_DISPLAY_COMPLETE_DESC,
-                                 HELP_DISPLAY_COMPLETE_COMMAND));
-        helpList.add(new HelpBox(HELP_EXIT_DESC, HELP_EXIT_COMMAND));*/
+        helpList = FXCollections.observableArrayList();
+        helpList.add(new HelpItem(Constants.HELP_ADD_FLOATING_DESC, Constants.HELP_ADD_FLOATING_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_ADD_POINT_DESC, Constants.HELP_ADD_POINT_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_ADD_DEADLINE_DESC, Constants.HELP_ADD_DEADLINE_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_ADD_EVENT_DESC, Constants.HELP_ADD_EVENT_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_LIST_INCOMPLETE_DESC, Constants.HELP_LIST_INCOMPLETE_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_LIST_COMPLETE_DESC, Constants.HELP_LIST_COMPLETE_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_LIST_ALL_DESC, Constants.HELP_LIST_ALL_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_RENAME_DESC, Constants.HELP_RENAME_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_RESCH_DESC, Constants.HELP_RESCH_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_REMOVE_TIME_DESC, Constants.HELP_REMOVE_TIME_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_DONE_DESC, Constants.HELP_DONE_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_UNDONE_DESC, Constants.HELP_UNDONE_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_DELETE_DESC, Constants.HELP_DELETE_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_SEARCH_DESC, Constants.HELP_SEARCH_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_REMINDER_DESC, Constants.HELP_REMINDER_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_UNDO_DESC, Constants.HELP_UNDO_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_CREATE_ALIAS_DESC, Constants.HELP_CREATE_ALIAS_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_DELETE_ALIAS_DESC, Constants.HELP_DELETE_ALIAS_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_WILDCARD_DESC, Constants.HELP_WILDCARD_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_CHECK_DIR_DESC, Constants.HELP_CHECK_DIR_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_USE_DIR_DESC, Constants.HELP_USE_DIR_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_MOVE_DIR_DESC, Constants.HELP_MOVE_DIR_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_UP_DOWN_DESC, Constants.HELP_UP_DOWN_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_EXIT_DESC, Constants.HELP_EXIT_COMMAND));
     }
 
     private void initHelpOverlay() {
-        /*        helpOverlay.toFront();
-        helpOverlayIcon.setText(HELP_OVERLAY_ICON);
-        helpOverlayTitle.setText(HELP_OVERLAY_TITLE);
-        helpOverlayContents.setItems(helpList);*/
+        helpOverlay.toFront();
+        helpIcon.setText(Constants.HELP_OVERLAY_ICON);
+        helpTitle.setText(Constants.HELP_OVERLAY_TITLE);
+        helpContent.setItems(helpList);
+    }
+
+    private Timeline generateHelpOverlayTimeline(FadeTransition fadeIn) {
+        return new Timeline(new KeyFrame(new Duration(1), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                initHelpOverlay();
+                fadeIn.play();
+            }
+        }, new KeyValue(helpOverlay.alignmentProperty(), Pos.CENTER_LEFT)));
+    }
+
+    private FadeTransition initFadeIn(Node node, int duration) {
+        FadeTransition fadeIn = new FadeTransition(new Duration(duration));
+        fadeIn.setNode(node);
+        fadeIn.setToValue(1);
+        return fadeIn;
+    }
+
+    private FadeTransition initFadeOut(Node node, int duration) {
+        FadeTransition fadeOut = new FadeTransition(new Duration(duration));
+        fadeOut.setNode(node);
+        fadeOut.setToValue(0);
+        return fadeOut;
     }
 
     /***************************
      *** LEVEL 2 Abstraction ***
      ***************************/
+
+    private void handleOverlays(ObservableList<ListItem> tasks) {
+        hideOverlays();
+        //if (tasks.isEmpty()) {
+        //showNoTaskOverlay();
+        //}
+    }
+
     @FXML
     private void handleEnterKey() {
         cmdArea.setOnKeyPressed((keyEvent) -> {

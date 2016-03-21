@@ -4,8 +4,8 @@ public class Constants {
 
     public static final String UI_MESSAGE_INIT = "Initializing UI...";
     public static final String UI_MESSAGE_INITED = "Initialization Completed!";
-    public static final String UI_MESSAGE_GREETING = "\n\nJ.F.D.I. : Hello Jim! Nice to see you again! :)\n";
-    public static final String UI_MESSAGE_WELCOME = "J.F.D.I. : What can I do for you?\n";
+    public static final String UI_MESSAGE_GREETING = "J.F.D.I. : Hello Jim! Nice to see you again! :)";
+    public static final String UI_MESSAGE_WELCOME = "\nJ.F.D.I. : What can I do for you?";
     public static final String UI_MESSAGE_USERCMD = "You said: %1$s\n";
     public static final String UI_MESSAGE_RESPONSE = "J.F.D.I. : %1$s\n";
     public static final String UI_MESSAGE_WARNING = "Warning: %1$s\n";
@@ -14,11 +14,13 @@ public class Constants {
 
     public static final String URL_ROOT_PATH = "/ui/RootLayout.fxml";
     public static final String URL_LIST_PATH = "/ui/ListLayout.fxml";
-    public static final String URL_HELP_PATH = "/ui/HelpLayout.fxml";
+    public static final String URL_HELP_PATH = "/ui/HelpItem.fxml";
     public static final String URL_ITEM_PATH = "/ui/ListItem.fxml";
 
     public static final String CTRL_CMD_PROMPT_TEXT = "(Hey Jim! Please let me know what I can do for you!)";
     public static final String CTRL_CMD_SHOWLIST = "list";
+    public static final int OVERLAY_FADE_IN_MILLISECONDS = 200;
+
 
     public enum MsgType {
         SUCCESS, WARNING, ERROR, EXIT
@@ -54,6 +56,7 @@ public class Constants {
     public static final String CMD_SUCCESS_RENAMED = "Task #%d renamed to - %s -! :)";
     public static final String CMD_SUCCESS_RESCHEDULED = "Task #%d rescheduled! :)";
     public static final String CMD_SUCCESS_SEARCH = "Here are your search results! :)";
+    public static final String CMD_SUCCESS_SHOWDIRECTORY = "Your current directory is : %s ! :)";
     public static final String CMD_SUCCESS_UNALIAS = "Alias - %s - is removed! :)";
     public static final String CMD_SUCCESS_UNMARKED = "Task(s) marked as imcomplete! :)";
 
@@ -81,19 +84,17 @@ public class Constants {
     public static final String LOG_RESCHE_FAIL_NOID = "An non-existent ID was queried for reschedule.";
     public static final String LOG_RESCHE_FAIL_NOCHANGE = "A rescheduling with no change was queried.";
 
-    public static final String HELP_OVERLAY_TITLE = "JFDI TO THE RESCUE";
-    //public static final String HELP_OVERLAY_ICON = " "; // SUB IN ACTUAL ADDRESS
-    public static final String HELP_ADD_FLOATING_DESC = "Add a task without a start/end date";
+    public static final String HELP_OVERLAY_TITLE = "JFDI TO THE RESCUE!";
+    public static final String HELP_OVERLAY_ICON = "\uf05a"; // SUB IN ACTUAL ADDRESS
+    public static final String HELP_ADD_FLOATING_DESC = "Add a task with no specific time or date";
     public static final String HELP_ADD_FLOATING_COMMAND = "add <task description>";
-    public static final String HELP_ADD_POINT_DESC = "Add a task to be done AT a particular date and time";
-    public static final String HELP_ADD_POINT_COMMAND = "add <task description> at <datetime>";
+    public static final String HELP_ADD_POINT_DESC = "Add a task to be done AT/ON a particular date and time";
+    public static final String HELP_ADD_POINT_COMMAND = "add <task description> <at/on> <datetime>";
     public static final String HELP_ADD_DEADLINE_DESC = "Add a task to be done BY a certain date and time";
     public static final String HELP_ADD_DEADLINE_COMMAND = "add <task description> by <datetime>";
-    public static final String HELP_ADD_ONDAY_DESC = "Add a task to be done ON a certain day";
-    public static final String HELP_ADD_ONDAY_COMMAND = "add <task description> on <datetime>";
     public static final String HELP_ADD_EVENT_DESC = "Add a task with a start and end date";
     public static final String HELP_ADD_EVENT_COMMAND = "add <task description> from <datetime> to <datetime>";
-    public static final String HELP_LIST_INCOMPLETE_DESC = "See incompleted tasks";
+    public static final String HELP_LIST_INCOMPLETE_DESC = "See incomplete tasks";
     public static final String HELP_LIST_INCOMPLETE_COMMAND = "list";
     public static final String HELP_LIST_COMPLETE_DESC = "See completed tasks";
     public static final String HELP_LIST_COMPLETE_COMMAND = "list completed";
@@ -122,13 +123,13 @@ public class Constants {
     public static final String HELP_DELETE_ALIAS_DESC = "Remove a previously defined alias";
     public static final String HELP_DELETE_ALIAS_COMMAND = "unalias <alias>";
     public static final String HELP_WILDCARD_DESC = "Let JFDI surprise you";
-    public static final String HELP_WILDCARD_COMMAND = "surprise me";
-    public static final String HELP_SET_DIRECTORY_DESC = "Specify directory to store tasks";
-    public static final String HELP_SET_DIRECTORY_COMMAND = "directory <new directory>";
-    public static final String HELP_SWITCH_DIRECTORY_DESC = "Use data from another directory";
-    public static final String HELP_SWITCH_DIRECTORY_COMMAND = "switch <directory>";
-    public static final String HELP_MOVE_DIRECTORY_DESC = "Move existing program data to another directory";
-    public static final String HELP_MOVE_DIRECTORY_COMMAND = "move <directory>";
+    public static final String HELP_WILDCARD_COMMAND = "surprise!";
+    public static final String HELP_CHECK_DIR_DESC = "Check what the current directory is";
+    public static final String HELP_CHECK_DIR_COMMAND = "directory";
+    public static final String HELP_USE_DIR_DESC = "Use data from another directory";
+    public static final String HELP_USE_DIR_COMMAND = "use <new directory>";
+    public static final String HELP_MOVE_DIR_DESC = "Move existing program data to another directory";
+    public static final String HELP_MOVE_DIR_COMMAND = "move <new directory>";
     public static final String HELP_UP_DOWN_DESC = "Scroll through your previous commands";
     public static final String HELP_UP_DOWN_COMMAND = "↑/↓";
     public static final String HELP_EXIT_DESC = "GET OUT OF JFDI";

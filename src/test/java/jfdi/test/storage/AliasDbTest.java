@@ -54,13 +54,17 @@ public class AliasDbTest {
 
     @Test
     public void testCreate() throws Exception {
+        // Create an Alias from an AliasAttributes
         AliasAttributes aliasAttributes = new AliasAttributes(Constants.TEST_ALIAS, Constants.TEST_COMMAND);
         aliasDbInstance.create(aliasAttributes);
-        assertEquals(aliasDbInstance.getCommandFromAlias(aliasAttributes.getAlias()), aliasAttributes.getCommand());
+
+        // Assert that the properties remain the same
+        assertEquals(aliasAttributes.getCommand(), aliasDbInstance.getCommandFromAlias(aliasAttributes.getAlias()));
     }
 
     @Test(expected = DuplicateAliasException.class)
     public void testCreateDuplicateAlias() throws Exception {
+        // Create the first instance of the Alias
         AliasAttributes aliasAttributes = new AliasAttributes(Constants.TEST_ALIAS, Constants.TEST_COMMAND);
         aliasDbInstance.create(aliasAttributes);
 
@@ -81,21 +85,21 @@ public class AliasDbTest {
         // Make sure that the database contains exactly these 2 aliases
         ArrayList<AliasAttributes> aliasAttributesList = new ArrayList<AliasAttributes>(
                 aliasDbInstance.getAll());
-        assertEquals(aliasAttributesList.size(), 2);
+        assertEquals(2, aliasAttributesList.size());
         assertTrue(contains(aliasAttributesList, aliasAttributes));
         assertTrue(contains(aliasAttributesList, aliasAttributes2));
     }
 
     @Test
     public void testHasAlias() throws Exception {
-        // No aliases exist yet, so any alias should be invalid
+        // No aliases exist yet, so checking any alias should return false
         assertFalse(aliasDbInstance.hasAlias(Constants.TEST_ALIAS));
 
         // Create an alias
         AliasAttributes aliasAttributes = new AliasAttributes(Constants.TEST_ALIAS, Constants.TEST_COMMAND);
         aliasAttributes.save();
 
-        // Check that aliasDbInstance.has that alias
+        // Check that aliasDbInstance has that alias
         assertTrue(aliasDbInstance.hasAlias(Constants.TEST_ALIAS));
     }
 
@@ -104,44 +108,46 @@ public class AliasDbTest {
         // Create an alias
         AliasAttributes aliasAttributes = new AliasAttributes(Constants.TEST_ALIAS, Constants.TEST_COMMAND);
         aliasAttributes.save();
-        assertEquals(aliasDbInstance.getAll().size(), 1);
+        assertEquals(1, aliasDbInstance.getAll().size());
 
         // Destroy it and check that the database is empty
         aliasDbInstance.destroy(aliasAttributes.getAlias());
-        assertEquals(aliasDbInstance.getAll().size(), 0);
+        assertEquals(0, aliasDbInstance.getAll().size());
 
         // Undestroy it and check that it's back in the database
         aliasDbInstance.undestroy(aliasAttributes.getAlias());
-        assertEquals(aliasDbInstance.getAll().size(), 1);
+        assertEquals(1, aliasDbInstance.getAll().size());
     }
 
     @Test
     public void testGetCommandFromAlias() throws Exception {
+        // Create an Alias in the database
         AliasAttributes aliasAttributes = new AliasAttributes(Constants.TEST_ALIAS, Constants.TEST_COMMAND);
         aliasAttributes.save();
-        assertEquals(aliasDbInstance.getCommandFromAlias(aliasAttributes.getAlias()), aliasAttributes.getCommand());
+
+        // Assert the the command we obtain is the same as the one we set
+        assertEquals(aliasAttributes.getCommand(), aliasDbInstance.getCommandFromAlias(aliasAttributes.getAlias()));
     }
 
     @Test(expected = InvalidAliasException.class)
     public void testGetCommandFromInvalidAlias() throws Exception {
+        // Try getting the command of an inexistent alias
         aliasDbInstance.getCommandFromAlias(Constants.TEST_ALIAS);
     }
 
     @Test
     public void testLoad() throws Exception {
-        // Create an alias
+        // Create an alias and get the JSON form of the current state
         AliasAttributes aliasAttributes = new AliasAttributes(Constants.TEST_ALIAS, Constants.TEST_COMMAND);
         aliasAttributes.save();
-
-        // Get the JSON form of the current state
         String json = Serializer.serialize(aliasDbInstance.getAll());
 
-        // Remove the alias
+        // Remove the alias and create the data file
         aliasDbInstance.destroy(aliasAttributes.getAlias());
         assertTrue(aliasDbInstance.getAll().isEmpty());
-
-        // Create the data file and load from it
         TestHelper.createDataFilesWith(testDirectoryString, json);
+
+        // Command under test (load from data file)
         FilePathPair replacedFiles = aliasDbInstance.load();
 
         // Ensure that no files were replaced
@@ -154,31 +160,52 @@ public class AliasDbTest {
 
     @Test
     public void testInvalidLoad() throws Exception {
+        // Create an invalid alias data file to load from
         TestHelper.createInvalidAliasFile(testDirectoryString);
+
+        // Command under test (load from the invalid data file)
         FilePathPair replacedFiles = aliasDbInstance.load();
+
+        // Assert that the invalid file was moved
         assertNotNull(replacedFiles);
     }
 
     @Test
     public void testSetAndGetFilePath() {
+        // Get the original file path so that we can revert it later
         Path originalFilePath = aliasDbInstance.getFilePath();
+
+        // Set up the paths that we want to use during the test
         Path subdirectory = Paths.get(testDirectory.toString(), Constants.TEST_SUBDIRECTORY_NAME);
         Path expectedAliasPath = Paths.get(subdirectory.toString(), Constants.FILENAME_ALIAS);
+
+        // Command under test
         aliasDbInstance.setFilePath(subdirectory.toString());
+
+        // Assert that the file path is now set correctly
         assertEquals(expectedAliasPath, aliasDbInstance.getFilePath());
 
         // Reset back to the original file path
         aliasDbInstance.setFilePath(originalFilePath.getParent().toString());
     }
 
+    /**
+     * This method checks if aliasAttributesList contains an AliasAttributes
+     * that is equal to aliasAttributes.
+     *
+     * @param aliasAttributesList
+     *            the list that we want to check
+     * @param aliasAttributes
+     *            the aliasAttributes that we want to find in
+     *            aliasAttributesList
+     * @return a boolean indicating if aliasAttributesList contains an
+     *         AliasAttributes that is equal to aliasAttributes
+     */
     private boolean contains(ArrayList<AliasAttributes> aliasAttributesList, AliasAttributes aliasAttributes) {
-        for (AliasAttributes aliasAttributes2 : aliasAttributesList) {
-            if (aliasAttributes2.getAlias().equals(aliasAttributes.getAlias())
-                    && aliasAttributes2.getCommand().equals(aliasAttributes.getCommand())) {
-                return true;
-            }
-        }
-        return false;
+        return aliasAttributesList.stream().anyMatch(aliasAttributes2 -> {
+            return aliasAttributes2.getAlias().equals(aliasAttributes.getAlias())
+                    && aliasAttributes2.getCommand().equals(aliasAttributes.getCommand());
+        });
     }
 
 }

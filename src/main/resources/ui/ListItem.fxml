@@ -1,22 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
-<fx:root alignment="CENTER_LEFT" styleClass="taskBox" type="HBox" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="CENTER_LEFT" prefHeight="41.0" prefWidth="430.0" style="-fx-background-color: #faebcd;" styleClass="taskBox" type="HBox" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox nodeOrientation="LEFT_TO_RIGHT" HBox.hgrow="ALWAYS">
          <children>
-		 	<Label fx:id="rowIndex" focusTraversable="false" text="Index" />
+		 	<Label fx:id="rowIndex" alignment="CENTER" focusTraversable="false" prefHeight="40.0" prefWidth="60.0" text="Index" textAlignment="CENTER">
+               <font>
+                  <Font name="Hammersmith One" size="16.0" />
+               </font>
+            </Label>
 		 	<VBox VBox.vgrow="ALWAYS">
 		 		<children>
-		 			<Label fx:id="description" focusTraversable="false" text="Description" />
-		    		<Label fx:id="timeAndDate" focusTraversable="false" text="Time and Date" />
+		 			<Label fx:id="description" focusTraversable="false" prefHeight="20.0" prefWidth="380.0" text="Description">
+	                     <font>
+	                        <Font name="Hammersmith One" size="14.0" />
+	                     </font>
+	                     <VBox.margin>
+	                        <Insets left="5.0" />
+	                     </VBox.margin>
+                    </Label>
+		    		<Label fx:id="timeAndDate" focusTraversable="false" prefHeight="20.0" prefWidth="380.0" text="Time and Date" textFill="#575757">
+	                     <font>
+	                        <Font name="Helvetica Light" size="11.0" />
+	                     </font>
+	                     <VBox.margin>
+	                        <Insets left="5.0" />
+	                     </VBox.margin>
+                     </Label>
+                  	 <Line endX="250.0" scaleX="1.5" startX="-15.0" stroke="#434343" strokeLineCap="ROUND" translateX="30.0" />
 		 		</children>
 		 	</VBox>
          </children>

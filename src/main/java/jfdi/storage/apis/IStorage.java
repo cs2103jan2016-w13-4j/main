@@ -1,12 +1,11 @@
 package jfdi.storage.apis;
 
-import java.nio.file.InvalidPathException;
-
 import jfdi.storage.exceptions.FilesReplacedException;
+import jfdi.storage.exceptions.InvalidFilePathException;
 
 /**
- * The Storage interface serves as the facade of the Storage component. It
- * allows the storage folder path to be initialized/changed.
+ * The Storage interface deals with all the file path operations within the
+ * program.
  *
  * @author Thng Kai Yuan
  */
@@ -22,8 +21,10 @@ public interface IStorage {
      * @throws FilesReplacedException
      *             if existing unrecognized data files are found and replaced
      *             (with backups made) in the given storageFolderPath
+     * @throws InvalidFilePathException
+     *             if the given path is invalid
      */
-    void initialize() throws FilesReplacedException;
+    void initialize() throws FilesReplacedException, InvalidFilePathException;
 
     /**
      * This method can only be executed after storage is initialized. It
@@ -33,15 +34,12 @@ public interface IStorage {
      *
      * @param newStorageFolderPath
      *            the path to the directory that contains the JFDI user data
-     * @throws InvalidPathException
+     * @throws InvalidFilePathException
      *             if the given path is invalid
      * @throws FilesReplacedException
      *             if invalid files were replaced in the process
-     * @throws IllegalAccessException
-     *             if the method is called before Storage is initialized
      */
-    void use(String newStorageFolderPath) throws InvalidPathException, FilesReplacedException,
-            IllegalAccessException;
+    void use(String newStorageFolderPath) throws InvalidFilePathException, FilesReplacedException;
 
     /**
      * This method can only be executed after storage is initialized. It saves
@@ -53,17 +51,15 @@ public interface IStorage {
      * @param newStorageFolderPath
      *            the absolute path of the directory that data is to be
      *            transferred to
-     * @throws InvalidPathException
+     * @throws InvalidFilePathException
      *             if the program does not have sufficient permissions to carry
      *             out file operations in newStorageFolderPath
      * @throws FilesReplacedException
      *             if existing files had to be replaced (with backups made) in
      *             the newStorageFolderPath
-     * @throws IllegalAccessException
-     *             if changeDirectory is called before Storage is initialized
      */
-    void changeDirectory(String newStorageFolderPath) throws InvalidPathException,
-            FilesReplacedException, IllegalAccessException;
+    void changeDirectory(String newStorageFolderPath) throws InvalidFilePathException,
+            FilesReplacedException;
 
     /**
      * This method returns the path of the current storage directory.

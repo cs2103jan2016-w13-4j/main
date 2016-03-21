@@ -3,7 +3,7 @@ package jfdi.logic.events;
 /**
  * @author Liu Xinan
  */
-public class RenameTaskFailEvent {
+public class RenameTaskFailedEvent {
 
     public enum Error {
         NON_EXISTENT_ID, NO_CHANGES, UNKNOWN
@@ -13,7 +13,7 @@ public class RenameTaskFailEvent {
     private String description;
     private Error error;
 
-    public RenameTaskFailEvent(int taskId, String description, Error error) {
+    public RenameTaskFailedEvent(int taskId, String description, Error error) {
         this.taskId = taskId;
         this.description = description;
     }

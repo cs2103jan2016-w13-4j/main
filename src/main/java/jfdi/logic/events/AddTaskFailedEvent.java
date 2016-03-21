@@ -3,7 +3,7 @@ package jfdi.logic.events;
 /**
  * @author Liu Xinan
  */
-public class AddTaskFailEvent {
+public class AddTaskFailedEvent {
 
     public enum Error {
         EMPTY_DESCRIPTION, UNKNOWN
@@ -11,7 +11,7 @@ public class AddTaskFailEvent {
 
     private Error error;
 
-    public AddTaskFailEvent(Error error) {
+    public AddTaskFailedEvent(Error error) {
         this.error = error;
     }
 

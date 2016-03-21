@@ -1,6 +1,8 @@
 package jfdi.logic;
 
+import com.google.common.eventbus.EventBus;
 import jfdi.logic.commands.InvalidCommand;
+import jfdi.logic.events.InitializationFailedEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.logic.interfaces.ILogic;
 import jfdi.parser.InputParser;
@@ -9,6 +11,8 @@ import jfdi.storage.apis.AliasAttributes;
 import jfdi.storage.apis.AliasDb;
 import jfdi.storage.apis.MainStorage;
 import jfdi.storage.exceptions.FilesReplacedException;
+import jfdi.storage.exceptions.InvalidFilePathException;
+import jfdi.ui.UI;
 
 /**
  * @author Liu Xinan
@@ -16,6 +20,7 @@ import jfdi.storage.exceptions.FilesReplacedException;
 public class ControlCenter implements ILogic {
 
     private static ControlCenter ourInstance = new ControlCenter();
+    private static EventBus eventBus = UI.getEventBus();
 
     private ControlCenter() {
         initStorage();
@@ -44,7 +49,10 @@ public class ControlCenter implements ILogic {
         try {
             MainStorage.getInstance().initialize();
         } catch (FilesReplacedException e) {
-            e.printStackTrace();
+            eventBus.post(new InitializationFailedEvent(InitializationFailedEvent.Error.FILE_REPLACED,
+                e.getReplacedFilePairs()));
+        } catch (InvalidFilePathException e) {
+            eventBus.post(new InitializationFailedEvent(InitializationFailedEvent.Error.INVALID_PATH));
         }
     }
 

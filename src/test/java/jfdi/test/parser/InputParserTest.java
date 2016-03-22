@@ -34,6 +34,13 @@ public class InputParserTest {
         parser = InputParser.getInstance();
     }
 
+    // ==============================================================
+    // Each of the below test methods represent an equivalence class
+    // representing the command type under test.
+    // Each test method contain tests for valid inputs as well as
+    // boundary cases.
+    // ==============================================================
+
     @Test
     public void testUserInputAdd() {
         String addCommand = "add hello";
@@ -83,6 +90,14 @@ public class InputParserTest {
         } catch (InvalidInputException e) {
             Assert.fail();
         }
+
+        addCommand = "add";
+        try {
+            Command command = parser.parse(addCommand);
+            Assert.assertTrue(command instanceof InvalidCommand);
+        } catch (InvalidInputException e) {
+            Assert.fail();
+        }
     }
 
     @Test
@@ -108,6 +123,21 @@ public class InputParserTest {
         } catch (InvalidInputException e) {
             Assert.fail();
         }
+        listCommand = "list voodoo";
+        try {
+            Command command = parser.parse(listCommand);
+            Assert.assertTrue(command instanceof InvalidCommand);
+        } catch (InvalidInputException e) {
+            Assert.fail();
+        }
+        listCommand = "list 12345";
+        try {
+            Command command = parser.parse(listCommand);
+            Assert.assertTrue(command instanceof InvalidCommand);
+        } catch (InvalidInputException e) {
+            Assert.fail();
+        }
+
     }
 
     @Test

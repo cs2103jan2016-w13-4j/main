@@ -40,6 +40,10 @@ public class ListCommand extends Command {
         }
     }
 
+    public ListType getListType() {
+        return this.listType;
+    }
+
     @Override
     public void execute() {
         ArrayList<TaskAttributes> tasks = new ArrayList<>(TaskDb.getInstance()

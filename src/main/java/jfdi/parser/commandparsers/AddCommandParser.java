@@ -142,6 +142,8 @@ public class AddCommandParser extends AbstractCommandParser {
                     taskDescription = removeEscapeDelimiters(taskDescription);
                 }
                 builder.setDescription(taskDescription);
+            } else {
+                throw new BadTaskDescriptionException(input);
             }
 
         } else {

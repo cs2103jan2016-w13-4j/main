@@ -21,7 +21,9 @@ public class Constants {
     public static final String URL_RALEWAY_PATH = "/ui/fonts/raleway.heavy.ttf";
 
     public static final String CTRL_CMD_PROMPT_TEXT = "(Hey Jim! Please let me know what I can do for you!)";
-    public static final String CTRL_CMD_SHOWLIST = "list";
+    public static final String CTRL_CMD_INCOMPLETE = "list";
+    public static final String CTRL_CMD_COMPLETE = "list complete";
+    public static final String CTRL_CMD_ALL = "list all";
     public static final String CTRL_STATS_NAME1 = "Completed: ";
     public static final String CTRL_STATS_NAME2 = "Due Today: ";
     public static final int OVERLAY_FADE_IN_MILLISECONDS = 200;
@@ -74,10 +76,10 @@ public class Constants {
     public static final String CMD_ERROR_USE_FAIL_REPLACED =
             "The folder %s contains invalid files. Data has been moved to %s instead!";
 
-    public static final String CMD_SUCCESS_ADDED = "Task #%d - %s added! :)";
+    public static final String CMD_SUCCESS_ADDED = "Task #%d - %s - added! :)";
     public static final String CMD_SUCCESS_ALIAS = "Alias - %s - is created for command - %s -! :)";
-    public static final String CMD_SUCCESS_REDONE = "Previous command redone! :)";
-    public static final String CMD_SUCCESS_UNDONE = "Previous command undone! :)";
+    public static final String CMD_SUCCESS_REDONE = "Previous command - %s - redone! :)";
+    public static final String CMD_SUCCESS_UNDONE = "Previous command - %s - undone! :)";
     public static final String CMD_SUCCESS_DELETED = "Task(s) deleted! :)";
     public static final String CMD_SUCCESS_LISTED = "Here is your requested list! :)";
     public static final String CMD_SUCCESS_MARKED = "Task(s) completed! Good job! :)";

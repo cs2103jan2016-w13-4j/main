@@ -40,6 +40,7 @@ import jfdi.logic.events.UnmarkTaskDoneEvent;
 import jfdi.logic.events.UnmarkTaskFailEvent;
 import jfdi.logic.events.UseDirectoryDoneEvent;
 import jfdi.logic.events.UseDirectoryFailedEvent;
+import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.exceptions.FilePathPair;
 import jfdi.ui.Constants;
@@ -108,12 +109,16 @@ public class CommandHandler {
 
     @Subscribe
     public void handleCommandRedoneEvent(CommandRedoneEvent e) {
-        controller.relayFb(Constants.CMD_SUCCESS_REDONE, MsgType.SUCCESS);
+        Class<? extends Command> cmdType = e.getCommandType();
+        controller.displayList(controller.displayStatus);
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_REDONE, cmdType.toString()), MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleCommandUndoneEvent(CommandUndoneEvent e) {
-        controller.relayFb(Constants.CMD_SUCCESS_UNDONE, MsgType.SUCCESS);
+        Class<? extends Command> cmdType = e.getCommandType();
+        controller.displayList(controller.displayStatus);
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_UNDONE, cmdType.toString()), MsgType.SUCCESS);
     }
 
     @Subscribe
@@ -201,6 +206,19 @@ public class CommandHandler {
 
     @Subscribe
     public void handleListDoneEvent(ListDoneEvent e) {
+        switch (e.getListType()) {
+            case ALL:
+                controller.displayStatus = Constants.CTRL_CMD_ALL;
+                break;
+            case COMPLETED:
+                controller.displayStatus = Constants.CTRL_CMD_COMPLETE;
+                break;
+            case INCOMPLETE:
+                controller.displayStatus = Constants.CTRL_CMD_INCOMPLETE;
+                break;
+            default:
+                break;
+        }
 
         controller.importantList.clear();
 
@@ -209,6 +227,7 @@ public class CommandHandler {
             ListItem listItem;
             if (item.isCompleted()) {
                 listItem = new ListItem(count, item, true);
+                listItem.strikeOut();
             } else {
                 listItem = new ListItem(count, item, false);
             }
@@ -229,6 +248,7 @@ public class CommandHandler {
             }
             controller.importantList.get(indexCount).setMarkT();
             controller.importantList.get(indexCount).strikeOut();
+            controller.displayList(controller.displayStatus);
             //logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, num));
         }
         controller.relayFb(String.format(Constants.CMD_SUCCESS_MARKED, indexCount + 1), MsgType.SUCCESS);
@@ -255,7 +275,7 @@ public class CommandHandler {
 
     @Subscribe
     public void handleMoveDirectoryDoneEvent(MoveDirectoryDoneEvent e) {
-        controller.displayList();
+        controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
         controller.relayFb(String.format(Constants.CMD_SUCCESS_MOVED, e.getNewDirectory()), MsgType.SUCCESS);
     }
 
@@ -406,7 +426,10 @@ public class CommandHandler {
             count++;
         }
 
-        System.out.println(e.getKeywords().isEmpty());
+        controller.displayStatus = "Search ";
+        for (String key: e.getKeywords()) {
+            controller.displayStatus += key;
+        }
 
         controller.setHighlights(e.getKeywords());
         controller.relayFb(Constants.CMD_SUCCESS_SEARCH, MsgType.SUCCESS);
@@ -424,7 +447,7 @@ public class CommandHandler {
         TaskAttributes task = e.getTask();
         ListItem listItem = new ListItem(1, task, false);
         controller.importantList.add(listItem);
-
+        controller.displayStatus = Constants.CTRL_CMD_INCOMPLETE;
         controller.relayFb(Constants.CMD_SUCCESS_SURPRISED, MsgType.SUCCESS);
     }
 
@@ -503,7 +526,7 @@ public class CommandHandler {
 
     @Subscribe
     public void handleUseDirectoryDoneEvent(UseDirectoryDoneEvent e) {
-        controller.displayList();
+        controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
         controller.relayFb(String.format(Constants.CMD_SUCCESS_USED, e.getNewDirectory()), MsgType.SUCCESS);
     }
 

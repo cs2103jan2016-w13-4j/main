@@ -64,7 +64,6 @@ public class MainSetUp extends Application {
         scene.setFill(Color.TRANSPARENT);
         primaryStage.setScene(scene);
         scene.getStylesheets().add("https://fonts.googleapis.com/css?family=Hammersmith+One");
-        scene.getStylesheets().add("https://fonts.googleapis.com/css?family=Raleway:900");
         scene.getStylesheets().add("https://fonts.googleapis.com/css?family=Titillium+Web:200");
         primaryStage.show();
         primaryStage.setResizable(false);
@@ -99,7 +98,7 @@ public class MainSetUp extends Application {
 
         //controller.importantList.removeAll(controller.importantList);
 
-        controller.displayList();
+        controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
         ui.displayWelcome();
     }
 

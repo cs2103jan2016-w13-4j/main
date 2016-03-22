@@ -110,10 +110,14 @@ public class ListItem extends VBox {
     }
 
     public void strikeOut() {
-
+        rowIndex.getStyleClass().add("itemBoxDone");
+        description.getStyleClass().add("itemBoxDone");
+        timeAndDate.getStyleClass().add("itemBoxDone");
     }
 
     public void removeStrike() {
-
+        rowIndex.getStyleClass().remove("itemBoxDone");
+        description.getStyleClass().remove("itemBoxDone");
+        timeAndDate.getStyleClass().remove("itemBoxDone");
     }
 }

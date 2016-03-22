@@ -255,6 +255,7 @@ public class CommandHandler {
 
     @Subscribe
     public void handleMoveDirectoryDoneEvent(MoveDirectoryDoneEvent e) {
+        controller.displayList();
         controller.relayFb(String.format(Constants.CMD_SUCCESS_MOVED, e.getNewDirectory()), MsgType.SUCCESS);
     }
 
@@ -502,6 +503,7 @@ public class CommandHandler {
 
     @Subscribe
     public void handleUseDirectoryDoneEvent(UseDirectoryDoneEvent e) {
+        controller.displayList();
         controller.relayFb(String.format(Constants.CMD_SUCCESS_USED, e.getNewDirectory()), MsgType.SUCCESS);
     }
 

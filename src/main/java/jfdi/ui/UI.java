@@ -103,7 +103,6 @@ public class UI implements IUserInterface {
 
     private void showToUser(String string) {
         controller.displayFb(string);
-
         System.out.println(string);
     }
 

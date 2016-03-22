@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import jfdi.common.utilities.JfdiLogger;
 
@@ -29,7 +30,7 @@ public class MainSetUp extends Application {
         this.primaryStage.setTitle("JFDI");
 
         setLogger();
-        loadFonts(); // if any
+        loadFonts();
         initRootLayout();
         initView();
 
@@ -50,8 +51,8 @@ public class MainSetUp extends Application {
 
     private void loadFonts() {
         // Implement when team decides to specific font types that needs to be loaded
-        // Font font1 = Font.loadFont(Main.class.getResourceAsStream(<filepath>), <size>);
-        // Font font2 = Font.loadFont(Main.class.getResourceAsStream(<filepath>), <size>);
+        Font Hammersmith = Font.loadFont(MainSetUp.class.getResourceAsStream(Constants.URL_HAMSMITH_PATH), 14);
+        Font Raleway = Font.loadFont(MainSetUp.class.getResourceAsStream(Constants.URL_RALEWAY_PATH), 24);
     }
 
     private void initRootLayout() throws IOException {

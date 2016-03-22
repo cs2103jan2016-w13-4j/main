@@ -7,18 +7,7 @@
 
 <fx:root type="HBox" alignment="CENTER_LEFT" prefHeight="25.0" prefWidth="200.0" styleClass="listItem" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="statsName" prefHeight="25.0" prefWidth="100.0" text="Label">
-         <font>
-            <Font name="Hammersmith One" size="16.0" />
-         </font>
-         <HBox.margin>
-            <Insets />
-         </HBox.margin>
-      </Label>
-      <Label fx:id="statsNum" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #434343;" text="Label" textFill="#eeeeee">
-         <font>
-            <Font name="Hammersmith One" size="16.0" />
-         </font>
-      </Label>
+      <Label fx:id="statsName" prefHeight="25.0" prefWidth="100.0" text="Label"/>
+      <Label fx:id="statsNum" prefHeight="25.0" prefWidth="100.0"/>
    </children>
 </fx:root>

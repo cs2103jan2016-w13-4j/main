@@ -1,6 +1,6 @@
 package jfdi.parser.commandparsers;
 
-import jfdi.logic.commands.WildcardCommandStub.Builder;
+import jfdi.logic.commands.WildcardCommand.Builder;
 import jfdi.logic.interfaces.Command;
 
 /**

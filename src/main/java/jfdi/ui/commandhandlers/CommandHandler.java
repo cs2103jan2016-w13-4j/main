@@ -59,6 +59,7 @@ public class CommandHandler {
         int index = controller.importantList.size() + 1;
         ListItem listItem = new ListItem(index, task, false);
         controller.importantList.add(listItem);
+        controller.importantList.get(controller.importantList.size()-1).getStyleClass().add("itemBox");
         controller.relayFb(String.format(Constants.CMD_SUCCESS_ADDED, index, task.getDescription()), MsgType.SUCCESS);
         logger.fine(String.format(Constants.LOG_ADDED_SUCCESS, task.getId()));
     }
@@ -227,11 +228,15 @@ public class CommandHandler {
             ListItem listItem;
             if (item.isCompleted()) {
                 listItem = new ListItem(count, item, true);
+                controller.importantList.add(listItem);
+                controller.importantList.get(controller.importantList.size()-1).strikeOut();
                 listItem.strikeOut();
             } else {
                 listItem = new ListItem(count, item, false);
+                controller.importantList.add(listItem);
+                controller.importantList.get(controller.importantList.size()-1).getStyleClass().add("itemBox");
             }
-            controller.importantList.add(listItem);
+
             count++;
         }
         controller.relayFb(Constants.CMD_SUCCESS_LISTED, MsgType.SUCCESS);
@@ -500,6 +505,7 @@ public class CommandHandler {
             }
             controller.importantList.get(indexCount).setMarkF();
             controller.importantList.get(indexCount).removeStrike();
+            controller.displayList(controller.displayStatus);
             //logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, num));
         }
         controller.relayFb(String.format(Constants.CMD_SUCCESS_UNMARKED, indexCount + 1), MsgType.SUCCESS);

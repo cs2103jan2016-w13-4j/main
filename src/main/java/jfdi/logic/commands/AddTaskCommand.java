@@ -33,6 +33,26 @@ public class AddTaskCommand extends Command {
         this.tags = builder.tags.toArray(new String[0]);
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public Optional<LocalDateTime> getStartDateTime() {
+        return startDateTime;
+    }
+
+    public Optional<LocalDateTime> getEndDateTime() {
+        return endDateTime;
+    }
+
+    public Duration[] getReminders() {
+        return reminders;
+    }
+
+    public String[] getTags() {
+        return tags;
+    }
+
     public static class Builder {
 
         String description;

@@ -124,7 +124,7 @@ public class CommandHandler {
 
         int indexCount = -1;
         for (int screenId : deletedIds) {
-            indexCount = screenId;
+            indexCount = screenId - 1;
             controller.importantList.remove(indexCount);
             logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, screenId));
         }

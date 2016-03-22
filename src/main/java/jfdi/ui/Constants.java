@@ -16,9 +16,12 @@ public class Constants {
     public static final String URL_LIST_PATH = "/ui/ListLayout.fxml";
     public static final String URL_HELP_PATH = "/ui/HelpItem.fxml";
     public static final String URL_ITEM_PATH = "/ui/ListItem.fxml";
+    public static final String URL_STATS_PATH = "/ui/StatsItem.fxml";
 
     public static final String CTRL_CMD_PROMPT_TEXT = "(Hey Jim! Please let me know what I can do for you!)";
     public static final String CTRL_CMD_SHOWLIST = "list";
+    public static final String CTRL_STATS_NAME1 = "Completed: ";
+    public static final String CTRL_STATS_NAME2 = "Due Today: ";
     public static final int OVERLAY_FADE_IN_MILLISECONDS = 200;
 
 

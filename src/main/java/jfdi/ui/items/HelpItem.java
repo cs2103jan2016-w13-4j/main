@@ -26,8 +26,6 @@ public class HelpItem extends HBox {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(description);
-        System.out.println(this.description == null);
         description.setText(des);
         command.setText(cmd);
     }

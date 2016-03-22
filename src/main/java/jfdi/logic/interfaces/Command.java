@@ -10,11 +10,12 @@ import java.util.Stack;
  */
 public abstract class Command {
 
-    protected EventBus eventBus = UI.getEventBus();
+    protected static final Stack<Command> undoStack = new Stack<>();
+    protected static final Stack<Command> redoStack = new Stack<>();
 
-    protected static Stack<Command> undoStack = new Stack<>();
-    protected static Stack<Command> redoStack = new Stack<>();
     private static boolean redoing = false;
+
+    protected EventBus eventBus = UI.getEventBus();
 
     /**
      * Executes the command.
@@ -26,7 +27,7 @@ public abstract class Command {
      */
     public abstract void undo();
 
-    protected void setRedoing(boolean redo) {
+    protected static void setRedoing(boolean redo) {
         redoing = redo;
     }
 

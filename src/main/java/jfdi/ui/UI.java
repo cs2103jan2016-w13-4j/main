@@ -8,7 +8,7 @@ import jfdi.ui.commandhandlers.CommandHandler;
 
 public class UI implements IUserInterface {
 
-    private static EventBus eventBus = new EventBus();
+    private static final EventBus eventBus = new EventBus();
     private static UI ourInstance = new UI();
 
     public CommandHandler cmdHandler = new CommandHandler();

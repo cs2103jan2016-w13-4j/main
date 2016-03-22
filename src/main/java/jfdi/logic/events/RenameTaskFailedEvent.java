@@ -16,6 +16,7 @@ public class RenameTaskFailedEvent {
     public RenameTaskFailedEvent(int taskId, String description, Error error) {
         this.taskId = taskId;
         this.description = description;
+        this.error = error;
     }
 
     public int getTaskId() {

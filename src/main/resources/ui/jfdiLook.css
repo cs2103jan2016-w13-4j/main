@@ -2,14 +2,14 @@
 	font-family: Hammersmith;
 	font-weight: normal;
 	font-style: normal;
-	src: url("./fonts/HammersmithOne.ttf");
+	src: url("/ui/fonts/HammersmithOne.ttf");
 }
 
 @font-face {
 	font-family: Raleway;
 	font-weight: normal;
 	font-style: normal;
-	src: url("./fonts/raleway.heavy.ttf");
+	src: url("/ui/fonts/raleway.heavy.ttf");
 }
 
 .list-view .scroll-bar:horizontal .increment-arrow,

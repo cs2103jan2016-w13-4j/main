@@ -17,6 +17,8 @@ public class Constants {
     public static final String URL_HELP_PATH = "/ui/HelpItem.fxml";
     public static final String URL_ITEM_PATH = "/ui/ListItem.fxml";
     public static final String URL_STATS_PATH = "/ui/StatsItem.fxml";
+    public static final String URL_HAMSMITH_PATH = "/ui/fonts/HammersmithOne.ttf";
+    public static final String URL_RALEWAY_PATH = "/ui/fonts/raleway.heavy.ttf";
 
     public static final String CTRL_CMD_PROMPT_TEXT = "(Hey Jim! Please let me know what I can do for you!)";
     public static final String CTRL_CMD_SHOWLIST = "list";

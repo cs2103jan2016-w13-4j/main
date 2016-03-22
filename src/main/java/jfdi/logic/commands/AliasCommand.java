@@ -74,6 +74,7 @@ public class AliasCommand extends Command {
     public void undo() {
         try {
             AliasDb.getInstance().destroy(alias);
+            InputParser.getInstance().setAliases(AliasDb.getInstance().getAll());
 
             pushToRedoStack();
         } catch (InvalidAliasException e) {

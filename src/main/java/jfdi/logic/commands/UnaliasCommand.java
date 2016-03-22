@@ -58,6 +58,7 @@ public class UnaliasCommand extends Command {
         try {
             AliasAttributes oldAlias = new AliasAttributes(alias, command);
             oldAlias.save();
+            InputParser.getInstance().setAliases(AliasDb.getInstance().getAll());
 
             pushToRedoStack();
         } catch (InvalidAliasParametersException | DuplicateAliasException e) {

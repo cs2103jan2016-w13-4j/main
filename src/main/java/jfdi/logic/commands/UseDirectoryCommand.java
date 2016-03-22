@@ -3,6 +3,8 @@ package jfdi.logic.commands;
 import jfdi.logic.events.MoveDirectoryFailedEvent;
 import jfdi.logic.events.UseDirectoryDoneEvent;
 import jfdi.logic.interfaces.Command;
+import jfdi.parser.InputParser;
+import jfdi.storage.apis.AliasDb;
 import jfdi.storage.apis.MainStorage;
 import jfdi.storage.exceptions.FilesReplacedException;
 import jfdi.storage.exceptions.InvalidFilePathException;
@@ -45,6 +47,7 @@ public class UseDirectoryCommand extends Command {
             oldDirectory = storage.getCurrentDirectory();
 
             storage.use(newDirectory);
+            InputParser.getInstance().setAliases(AliasDb.getInstance().getAll());
 
             pushToUndoStack();
             eventBus.post(new UseDirectoryDoneEvent(newDirectory));
@@ -61,6 +64,7 @@ public class UseDirectoryCommand extends Command {
         MainStorage storage = MainStorage.getInstance();
         try {
             storage.use(oldDirectory);
+            InputParser.getInstance().setAliases(AliasDb.getInstance().getAll());
 
             pushToRedoStack();
         } catch (InvalidFilePathException | FilesReplacedException e) {

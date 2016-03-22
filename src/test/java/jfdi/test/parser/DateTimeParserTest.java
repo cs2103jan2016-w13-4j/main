@@ -227,14 +227,13 @@ public class DateTimeParserTest {
     // With time specified
     @Test
     public void testParseExplicitQueries4() {
-        DateTimeObject res = parseDateTime("From 26th.February.2017 11pm to 11pm 28th December 2019");
+        DateTimeObject res = parseDateTime("From 26th.February.2017 9pm to 9.30pm 28th December 2019");
 
         // Check start date time is corrently parsed
-        checkMatchingDateTime(res.getStartDateTime(), 2017, MONTH[2], 26, 23,
+        checkMatchingDateTime(res.getStartDateTime(), 2017, MONTH[2], 26, 21,
             DEFAULT_MINUTES);
         // Check end date time is corrently parsed
-        checkMatchingDateTime(res.getEndDateTime(), 2019, MONTH[12], 28, 23,
-            DEFAULT_MINUTES);
+        checkMatchingDateTime(res.getEndDateTime(), 2019, MONTH[12], 28, 21, 30);
 
         res = parseDateTime("From 25/11 23.12hr to 12:34hrs, 23/12");
 

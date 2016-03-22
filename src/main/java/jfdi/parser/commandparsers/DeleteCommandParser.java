@@ -67,9 +67,6 @@ public class DeleteCommandParser extends AbstractCommandParser {
 
     /**
      * Checks to see if the given input is in a valid Delete format.
-     *
-     * @param input
-     * @return
      */
     private boolean isValidDeleteCommand(String input) {
         return input.trim().matches(Constants.REGEX_DELETE_FORMAT);

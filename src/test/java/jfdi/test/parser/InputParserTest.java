@@ -152,7 +152,7 @@ public class InputParserTest {
         deleteCommand = "delete";
         try {
             Command command = parser.parse(deleteCommand);
-            Assert.assertTrue(command instanceof DeleteTaskCommand);
+            Assert.assertTrue(command instanceof InvalidCommand);
         } catch (InvalidInputException e) {
             Assert.fail();
         }
@@ -220,7 +220,7 @@ public class InputParserTest {
         markCommand = "mark";
         try {
             Command command = parser.parse(markCommand);
-            Assert.assertTrue(command instanceof MarkTaskCommand);
+            Assert.assertTrue(command instanceof InvalidCommand);
         } catch (InvalidInputException e) {
             Assert.fail();
         }
@@ -239,7 +239,7 @@ public class InputParserTest {
         unmarkCommand = "unmark dfsdfsdf";
         try {
             Command command = parser.parse(unmarkCommand);
-            Assert.assertTrue(command instanceof UnmarkTaskCommand);
+            Assert.assertTrue(command instanceof InvalidCommand);
         } catch (InvalidInputException e) {
             Assert.fail();
         }

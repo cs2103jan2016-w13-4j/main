@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import com.google.common.eventbus.Subscribe;
 
 import edu.emory.mathcs.backport.java.util.Collections;
-import jdk.internal.org.objectweb.asm.Handle;
 import jfdi.common.utilities.JfdiLogger;
 import jfdi.logic.events.AddTaskDoneEvent;
 import jfdi.logic.events.AddTaskFailedEvent;
@@ -35,6 +34,7 @@ import jfdi.logic.events.UnmarkTaskFailEvent;
 import jfdi.logic.events.UseDirectoryDoneEvent;
 import jfdi.logic.events.UseDirectoryFailedEvent;
 import jfdi.storage.apis.TaskAttributes;
+import jfdi.storage.exceptions.FilePathPair;
 import jfdi.ui.Constants;
 import jfdi.ui.Constants.MsgType;
 import jfdi.ui.MainController;
@@ -156,10 +156,14 @@ public class CommandHandler {
                 controller.relayFb(Constants.CMD_ERROR_INIT_FAIL_UNKNOWN, MsgType.ERROR);
                 break;
             case INVALID_PATH:
-                controller.relayFb(, MsgType.ERROR);
+                controller.relayFb(String.format(Constants.CMD_ERROR_INIT_FAIL_INVALID, e.getPath()), MsgType.ERROR);
                 break;
             case FILE_REPLACED:
-                controller.relayFb(, MsgType.ERROR);
+                String fb = "";
+                for (FilePathPair item : e.getFilePathPairs()) {
+                    fb += String.format(Constants.CMD_ERROR_INIT_FAIL_REPLACED, item.getOldFilePath(), item.getNewFilePath()) + "\n";
+                }
+                controller.relayFb(fb, MsgType.ERROR);
                 break;
             default:
                 break;
@@ -228,12 +232,28 @@ public class CommandHandler {
 
     @Subscribe
     public void handleMoveDirectoryDoneEvent(MoveDirectoryDoneEvent e) {
-        adsdfa
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_MOVED, e.getNewDirectory()), MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleMoveDirectoryFailEvent(MoveDirectoryFailedEvent e) {
-        asdfad
+        switch (e.getError()) {
+            case UNKNOWN:
+                controller.relayFb(String.format(Constants.CMD_ERROR_MOVE_FAIL_UNKNOWN, e.getNewDirectory()), MsgType.ERROR);
+                break;
+            case INVALID_PATH:
+                controller.relayFb(String.format(Constants.CMD_ERROR_MOVE_FAIL_INVALID, e.getNewDirectory()), MsgType.ERROR);
+                break;
+            case FILE_REPLACED:
+                String fb = "";
+                for (FilePathPair item : e.getFilePathPairs()) {
+                    fb += String.format(Constants.CMD_ERROR_MOVE_FAIL_REPLACED, item.getOldFilePath(), item.getNewFilePath()) + "\n";
+                }
+                controller.relayFb(fb, MsgType.ERROR);
+                break;
+            default:
+                break;
+        }
     }
 
     @Subscribe
@@ -401,12 +421,28 @@ public class CommandHandler {
 
     @Subscribe
     public void handleUseDirectoryDoneEvent(UseDirectoryDoneEvent e) {
-        dfasdfa
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_USED, e.getNewDirectory()), MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleUseDirectoryFailEvent(UseDirectoryFailedEvent e) {
-        dfasdfa
+        switch (e.getError()) {
+            case UNKNOWN:
+                controller.relayFb(String.format(Constants.CMD_ERROR_USE_FAIL_UNKNOWN, e.getNewDirectory()), MsgType.ERROR);
+                break;
+            case INVALID_PATH:
+                controller.relayFb(String.format(Constants.CMD_ERROR_USE_FAIL_INVALID, e.getNewDirectory()), MsgType.ERROR);
+                break;
+            case FILE_REPLACED:
+                String fb = "";
+                for (FilePathPair item : e.getFilePathPairs()) {
+                    fb += String.format(Constants.CMD_ERROR_USE_FAIL_REPLACED, item.getOldFilePath(), item.getNewFilePath()) + "\n";
+                }
+                controller.relayFb(fb, MsgType.ERROR);
+                break;
+            default:
+                break;
+        }
     }
 
     public void setController(MainController controller) {

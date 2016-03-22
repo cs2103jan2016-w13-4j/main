@@ -1,0 +1,12 @@
+.list-cell {
+	-fx-background-color: #434343;
+}
+
+.list-cell:empty {
+	-fx-background-color: #434343;
+}
+
+.listItem #statsName {
+	-fx-background-color: #434343;
+	-fx-text-fill: #eeeeee;
+}

@@ -2,23 +2,14 @@
 	font-family: Hammersmith;
 	font-weight: normal;
 	font-style: normal;
-	src: url("/ui/fonts/HammersmithOne.ttf");
+	src: url("./fonts/HammersmithOne.ttf");
 }
 
 @font-face {
 	font-family: Raleway;
 	font-weight: normal;
 	font-style: normal;
-	src: url("/ui/fonts/raleway.heavy.ttf");
-}
-
-.list-cell {
-	-fx-background-color: #faebcd;
-}
-
-.list-cell:empty {
-    -fx-background-color: #faebcd;
-    -fx-border-color: #faebcd;
+	src: url("./fonts/raleway.heavy.ttf");
 }
 
 .list-view .scroll-bar:horizontal .increment-arrow,
@@ -28,17 +19,17 @@
     -fx-padding:0;
 }
 
-.statsDisplayer {
+.statsItem {
 	-fx-background-color: #434343;
 	-fx-border-color: #434343;
 }
 
-.statsDisplayer.list-cell{
+.statsItem #statsName{
 	-fx-background-color: #434343;
 	-fx-border-color: #434343;
 }
 
-.statsDisplayer.list-cell:empty{
+.statsItem #statsNum{
 	-fx-background-color: #434343;
 	-fx-border-color: #434343;
 }
@@ -52,7 +43,7 @@
 	-fx-padding: 0;
 	-fx-font-family: Hammersmith;
 	-fx-font-size: 16px;
-	-fx-background-color: transparent;
+	-fx-background-color: #434343;
 }
 
 .helpItem #command {
@@ -62,4 +53,12 @@
 
 .helpItem #description {
 	-fx-text-fill: white;
+}
+
+.list-cell {
+	-fx-background-color: #faebcd;
+}
+
+.list-cell:empty {
+	-fx-background-color: #faebcd;
 }

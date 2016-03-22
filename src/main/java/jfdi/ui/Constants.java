@@ -34,8 +34,15 @@ public class Constants {
             "Some stupid error occurred. Cannot create alias for - %s -!";
     public static final String CMD_ERROR_CANT_DELETE_NO_ID = "Some stupid error occurred. Cannot delete task(s)!";
     public static final String CMD_ERROR_CANT_DELETE_UNKNOWN = "Cannot delete task. The ID #%d does not exist!";
+    public static final String CMD_ERROR_INIT_FAIL_UNKNOWN = "Some stupid error occurred. Cannot initialize JFDI!";
+    public static final String CMD_ERROR_INIT_FAIL_INVALID = "The folder %s doesn't work. Choose another one!";
+    public static final String CMD_ERROR_INIT_FAIL_REPLACED = "The folder %s is occupied. File has been moved to %s !";
     public static final String CMD_ERROR_CANT_MARK_NO_ID = "Cannot mark task as completed. The ID #%d does not exist!!";
     public static final String CMD_ERROR_CANT_MARK_UNKNOWN = "Some stupid error occurred. Cannot mark task(s) as done!";
+    public static final String CMD_ERROR_MOVE_FAIL_UNKNOWN = "Some stupid error occurred. Cannot move files to %s!";
+    public static final String CMD_ERROR_MOVE_FAIL_INVALID = "Cannot move to the folder %s . Choose another one!";
+    public static final String CMD_ERROR_MOVE_FAIL_REPLACED =
+            "The folder %s is occupied. File has been moved to %s instead!";
     public static final String CMD_ERROR_CANT_RENAME_UNKNOWN = "Some stupid error occurred. Cannot rename task!";
     public static final String CMD_ERROR_CANT_RENAME_NO_ID = "Cannot rename task. The ID #%d does not exist!";
     public static final String CMD_ERROR_CANT_RENAME_NO_CHANGES = "No difference between new and old name - %s -!";
@@ -47,18 +54,24 @@ public class Constants {
             "Cannot remove alias. The alias - %s - does not exist!";
     public static final String CMD_ERROR_CANT_UNMARK_NO_ID = "Cannot unmark task. The ID #%d does not exist!!";
     public static final String CMD_ERROR_CANT_UNMARK_UNKNOWN = "Some stupid error occurred. Cannot unmark task(s)!";
+    public static final String CMD_ERROR_USE_FAIL_UNKNOWN = "Some stupid error occurred. Cannot use files at %s!";
+    public static final String CMD_ERROR_USE_FAIL_INVALID = "Cannot use the data at %s . Choose another one!";
+    public static final String CMD_ERROR_USE_FAIL_REPLACED =
+            "The folder %s contains invalid files. Data has been moved to %s instead!";
 
     public static final String CMD_SUCCESS_ADDED = "Task #%d - %s added! :)";
     public static final String CMD_SUCCESS_ALIAS = "Alias - %s - is created for command - %s -! :)";
     public static final String CMD_SUCCESS_DELETED = "Task(s) deleted! :)";
     public static final String CMD_SUCCESS_LISTED = "Here is your requested list! :)";
     public static final String CMD_SUCCESS_MARKED = "Task(s) completed! Good job! :)";
+    public static final String CMD_SUCCESS_MOVED = "The location of your files has been moved to %s ! :)";
     public static final String CMD_SUCCESS_RENAMED = "Task #%d renamed to - %s -! :)";
     public static final String CMD_SUCCESS_RESCHEDULED = "Task #%d rescheduled! :)";
     public static final String CMD_SUCCESS_SEARCH = "Here are your search results! :)";
     public static final String CMD_SUCCESS_SHOWDIRECTORY = "Your current directory is : %s ! :)";
     public static final String CMD_SUCCESS_UNALIAS = "Alias - %s - is removed! :)";
     public static final String CMD_SUCCESS_UNMARKED = "Task(s) marked as imcomplete! :)";
+    public static final String CMD_SUCCESS_USED = "You are now using data from %s ! :)";
 
     public static final String CMD_WARNING_DONTKNOW = "Sorry, I do not understand what you mean by \"%s\" :(";
 

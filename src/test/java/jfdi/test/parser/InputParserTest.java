@@ -9,14 +9,14 @@ import jfdi.logic.commands.HelpCommandStub;
 import jfdi.logic.commands.InvalidCommand;
 import jfdi.logic.commands.ListCommand;
 import jfdi.logic.commands.MarkTaskCommand;
-import jfdi.logic.commands.MoveTaskCommandStub;
+import jfdi.logic.commands.MoveDirectoryCommand;
 import jfdi.logic.commands.RenameTaskCommand;
 import jfdi.logic.commands.RescheduleTaskCommand;
 import jfdi.logic.commands.SearchCommand;
 import jfdi.logic.commands.UnaliasCommand;
 import jfdi.logic.commands.UndoCommandStub;
 import jfdi.logic.commands.UnmarkTaskCommand;
-import jfdi.logic.commands.UseTaskCommandStub;
+import jfdi.logic.commands.UseDirectoryCommand;
 import jfdi.logic.commands.WildcardCommandStub;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.InputParser;
@@ -324,7 +324,7 @@ public class InputParserTest {
         moveCommand = "move C:/";
         try {
             Command command = parser.parse(moveCommand);
-            Assert.assertTrue(command instanceof MoveTaskCommandStub);
+            Assert.assertTrue(command instanceof MoveDirectoryCommand);
         } catch (InvalidInputException e) {
             Assert.fail();
         }
@@ -342,7 +342,7 @@ public class InputParserTest {
         useCommand = "use C://";
         try {
             Command command = parser.parse(useCommand);
-            Assert.assertTrue(command instanceof UseTaskCommandStub);
+            Assert.assertTrue(command instanceof UseDirectoryCommand);
         } catch (InvalidInputException e) {
             Assert.fail();
         }

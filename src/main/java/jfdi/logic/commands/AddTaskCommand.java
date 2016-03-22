@@ -141,7 +141,7 @@ public class AddTaskCommand extends Command {
     }
 
     @Override
-    protected void undo() {
+    public void undo() {
         try {
             TaskDb.getInstance().destroy(id);
 

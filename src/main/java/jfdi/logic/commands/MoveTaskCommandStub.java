@@ -29,4 +29,9 @@ public class MoveTaskCommandStub extends Command {
 
     }
 
+    @Override
+    public void undo() {
+        throw new UnsupportedOperationException();
+    }
+
 }

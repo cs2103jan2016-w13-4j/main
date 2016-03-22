@@ -84,7 +84,7 @@ public class MarkTaskCommand extends Command {
     }
 
     @Override
-    protected void undo() {
+    public void undo() {
         markedIds.stream()
             .forEach(id -> {
                 try {

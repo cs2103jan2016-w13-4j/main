@@ -54,7 +54,7 @@ public class UnaliasCommand extends Command {
     }
 
     @Override
-    protected void undo() {
+    public void undo() {
         try {
             AliasAttributes oldAlias = new AliasAttributes(alias, command);
             oldAlias.save();

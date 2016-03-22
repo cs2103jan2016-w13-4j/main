@@ -77,7 +77,7 @@ public class DeleteTaskCommand extends Command {
     }
 
     @Override
-    protected void undo() {
+    public void undo() {
         deletedTasks.stream()
             .forEach(task -> {
                 try {

@@ -85,7 +85,7 @@ public class RescheduleTaskCommand extends Command {
     }
 
     @Override
-    protected void undo() {
+    public void undo() {
         int taskId = UI.getInstance().getTaskId(screenId);
         try {
             TaskAttributes task = TaskDb.getInstance().getById(taskId);

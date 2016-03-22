@@ -29,4 +29,9 @@ public class UseTaskCommandStub extends Command {
 
     }
 
+    @Override
+    public void undo() {
+        throw new UnsupportedOperationException();
+    }
+
 }

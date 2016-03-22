@@ -71,7 +71,7 @@ public class AliasCommand extends Command {
     }
 
     @Override
-    protected void undo() {
+    public void undo() {
         try {
             AliasDb.getInstance().destroy(alias);
 

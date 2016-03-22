@@ -58,7 +58,7 @@ public class MoveDirectoryCommand extends Command {
     }
 
     @Override
-    protected void undo() {
+    public void undo() {
         MainStorage storage = MainStorage.getInstance();
 
         try {

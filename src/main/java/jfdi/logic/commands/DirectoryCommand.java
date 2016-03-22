@@ -25,4 +25,9 @@ public class DirectoryCommand extends Command {
         eventBus.post(new ShowDirectoryEvent(pwd));
     }
 
+    @Override
+    public void undo() {
+        throw new UnsupportedOperationException();
+    }
+
 }

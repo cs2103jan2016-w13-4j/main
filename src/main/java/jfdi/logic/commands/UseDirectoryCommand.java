@@ -57,7 +57,7 @@ public class UseDirectoryCommand extends Command {
     }
 
     @Override
-    protected void undo() {
+    public void undo() {
         MainStorage storage = MainStorage.getInstance();
         try {
             storage.use(oldDirectory);

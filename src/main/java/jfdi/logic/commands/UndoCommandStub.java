@@ -16,4 +16,9 @@ public class UndoCommandStub extends Command {
 
     }
 
+    @Override
+    public void undo() {
+        throw new UnsupportedOperationException();
+    }
+
 }

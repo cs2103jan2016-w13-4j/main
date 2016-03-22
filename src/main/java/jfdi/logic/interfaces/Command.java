@@ -12,8 +12,9 @@ public abstract class Command {
 
     protected EventBus eventBus = UI.getEventBus();
 
-    private static Stack<Command> undoStack = new Stack<>();
-    private static Stack<Command> redoStack = new Stack<>();
+    protected static Stack<Command> undoStack = new Stack<>();
+    protected static Stack<Command> redoStack = new Stack<>();
+    private static boolean redoing = false;
 
     /**
      * Executes the command.
@@ -23,11 +24,19 @@ public abstract class Command {
     /**
      * Undoes the command.
      */
-    protected void undo() {
-        throw new UnsupportedOperationException(this.getClass().getName() + " is not undoable!");
+    public abstract void undo();
+
+    protected void setRedoing(boolean redo) {
+        redoing = redo;
     }
 
     protected void pushToUndoStack() {
+        if (!redoing) {
+            while (!redoStack.empty()) {
+                undoStack.push(redoStack.pop());
+            }
+        }
+
         undoStack.push(this);
     }
 

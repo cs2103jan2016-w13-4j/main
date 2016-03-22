@@ -84,7 +84,7 @@ public class UnmarkTaskCommand extends Command {
     }
 
     @Override
-    protected void undo() {
+    public void undo() {
         unmarkedIds.stream()
             .forEach(id -> {
                 try {

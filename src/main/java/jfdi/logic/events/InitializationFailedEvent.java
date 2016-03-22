@@ -15,14 +15,18 @@ public class InitializationFailedEvent {
 
     private Error error;
     private ArrayList<FilePathPair> filePathPairs;
+    private String path;
 
-    public InitializationFailedEvent(Error error) {
+    public InitializationFailedEvent(Error error, String path) {
         this.error = error;
+        this.path = path;
+        this.filePathPairs = null;
     }
 
     public InitializationFailedEvent(Error error, ArrayList<FilePathPair> filePathPairs) {
         this.error = error;
         this.filePathPairs = filePathPairs;
+        this.path = null;
     }
 
     public Error getError() {
@@ -31,6 +35,10 @@ public class InitializationFailedEvent {
 
     public ArrayList<FilePathPair> getFilePathPairs() {
         return filePathPairs;
+    }
+
+    public String getPath() {
+        return path;
     }
 
 }

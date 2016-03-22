@@ -182,7 +182,7 @@ public class CommandHandler {
                 String fb = "";
                 for (FilePathPair item : e.getFilePathPairs()) {
                     fb += String.format(Constants.CMD_ERROR_INIT_FAIL_REPLACED,
-                            item.getOldFilePath(), item.getNewFilePath()) + "\n";
+                            "\n" + item.getOldFilePath(), item.getNewFilePath());
                 }
                 controller.relayFb(fb, MsgType.ERROR);
                 break;
@@ -270,7 +270,7 @@ public class CommandHandler {
                 String fb = "";
                 for (FilePathPair item : e.getFilePathPairs()) {
                     fb += String.format(Constants.CMD_ERROR_MOVE_FAIL_REPLACED,
-                            item.getOldFilePath(), item.getNewFilePath()) + "\n";
+                            "\n" + item.getOldFilePath(), item.getNewFilePath());
                 }
                 controller.relayFb(fb, MsgType.ERROR);
                 break;
@@ -515,8 +515,8 @@ public class CommandHandler {
             case FILE_REPLACED:
                 String fb = "";
                 for (FilePathPair item : e.getFilePathPairs()) {
-                    fb += String.format(Constants.CMD_ERROR_USE_FAIL_REPLACED, item.getOldFilePath(),
-                            item.getNewFilePath()) + "\n";
+                    fb += String.format(Constants.CMD_ERROR_USE_FAIL_REPLACED, "\n" + item.getOldFilePath(),
+                            item.getNewFilePath());
                 }
                 controller.relayFb(fb, MsgType.ERROR);
                 break;

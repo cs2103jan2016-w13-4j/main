@@ -51,13 +51,15 @@ public class MarkTaskCommand extends Command {
 
     @Override
     public void execute() {
+        UI ui = UI.getInstance();
+
         TaskDb taskdb = TaskDb.getInstance();
         ArrayList<Integer> taskIds = screenIds.stream()
-            .map(screenId -> UI.getInstance().getTaskId(screenId))
+            .map(ui::getTaskId)
             .collect(Collectors.toCollection(ArrayList::new));
 
-        ArrayList<Integer> invalidIds = taskIds.stream()
-            .filter(id -> !taskdb.hasId(id))
+        ArrayList<Integer> invalidIds = screenIds.stream()
+            .filter(id -> !taskdb.hasId(ui.getTaskId(id)))
             .collect(Collectors.toCollection(ArrayList::new));
 
         if (invalidIds.isEmpty()) {
@@ -77,9 +79,9 @@ public class MarkTaskCommand extends Command {
             });
 
             pushToUndoStack();
-            eventBus.post(new MarkTaskDoneEvent(taskIds, markedTasks));
+            eventBus.post(new MarkTaskDoneEvent(screenIds, markedTasks));
         } else {
-            eventBus.post(new MarkTaskFailedEvent(taskIds, invalidIds));
+            eventBus.post(new MarkTaskFailedEvent(screenIds, invalidIds));
         }
     }
 

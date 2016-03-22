@@ -9,7 +9,6 @@ public class RenameTaskDoneEvent {
 
     private TaskAttributes task;
 
-
     public RenameTaskDoneEvent(TaskAttributes task) {
         this.task = task;
     }

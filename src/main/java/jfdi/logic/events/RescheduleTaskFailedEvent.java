@@ -13,20 +13,20 @@ public class RescheduleTaskFailedEvent {
         UNKNOWN
     }
 
-    private int taskId;
+    private int screenId;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private Error error;
 
-    public RescheduleTaskFailedEvent(int taskId, LocalDateTime startDateTime, LocalDateTime endDateTime, Error error) {
-        this.taskId = taskId;
+    public RescheduleTaskFailedEvent(int screenId, LocalDateTime startDateTime, LocalDateTime endDateTime, Error error) {
+        this.screenId = screenId;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.error = error;
     }
 
-    public int getTaskId() {
-        return taskId;
+    public int getScreenId() {
+        return screenId;
     }
 
     public LocalDateTime getStartDateTime() {

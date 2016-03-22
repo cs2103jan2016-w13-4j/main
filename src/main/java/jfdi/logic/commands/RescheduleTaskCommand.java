@@ -60,6 +60,7 @@ public class RescheduleTaskCommand extends Command {
     @Override
     public void execute() {
         int taskId = UI.getInstance().getTaskId(screenId);
+
         try {
             TaskAttributes task = TaskDb.getInstance().getById(taskId);
 
@@ -71,15 +72,15 @@ public class RescheduleTaskCommand extends Command {
             task.save();
 
             pushToUndoStack();
-            eventBus.post(new RescheduleTaskDoneEvent(taskId, startDateTime, endDateTime));
+            eventBus.post(new RescheduleTaskDoneEvent(task));
         } catch (InvalidIdException e) {
-            eventBus.post(new RescheduleTaskFailedEvent(taskId, startDateTime, endDateTime,
+            eventBus.post(new RescheduleTaskFailedEvent(screenId, startDateTime, endDateTime,
                 RescheduleTaskFailedEvent.Error.NON_EXISTENT_ID));
         } catch (InvalidTaskParametersException e) {
             // Should not happen
             assert false;
         } catch (NoAttributesChangedException e) {
-            eventBus.post(new RescheduleTaskFailedEvent(taskId, startDateTime, endDateTime,
+            eventBus.post(new RescheduleTaskFailedEvent(screenId, startDateTime, endDateTime,
                 RescheduleTaskFailedEvent.Error.NO_CHANGES));
         }
     }
@@ -87,6 +88,7 @@ public class RescheduleTaskCommand extends Command {
     @Override
     public void undo() {
         int taskId = UI.getInstance().getTaskId(screenId);
+
         try {
             TaskAttributes task = TaskDb.getInstance().getById(taskId);
 

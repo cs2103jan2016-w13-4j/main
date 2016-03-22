@@ -198,7 +198,7 @@ public class CommandHandler {
 
     @Subscribe
     public void handleMarkTaskDoneEvent(MarkTaskDoneEvent e) {
-        ArrayList<Integer> doneIds = e.getTaskIds();
+        ArrayList<Integer> doneIds = e.getScreenIds();
         Collections.sort(doneIds);
         int indexCount = 0;
         for (Integer num : doneIds) {
@@ -285,7 +285,7 @@ public class CommandHandler {
                 break;
             case NON_EXISTENT_ID:
                 //NEED TO CHANGE TO INDEX SOON????
-                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_RENAME_NO_ID, e.getTaskId()), MsgType.ERROR);
+                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_RENAME_NO_ID, e.getScreenId()), MsgType.ERROR);
                 logger.fine(Constants.LOG_RENAME_FAIL_NOID);
                 break;
             case NO_CHANGES:
@@ -301,15 +301,16 @@ public class CommandHandler {
     @Subscribe
     public void handleRescheduleTaskDoneEvent(RescheduleTaskDoneEvent e) {
         int count = 0;
+        TaskAttributes task = e.getTask();
         for (int i = 0; i < controller.importantList.size(); i++) {
-            if (controller.getIdFromIndex(i) == e.getTaskId()) {
-                controller.importantList.get(i).setTimeDate(e.getStartDateTime(), e.getEndDateTime());
+            if (controller.getIdFromIndex(i) == task.getId()) {
+                controller.importantList.get(i).setTimeDate(task.getStartDateTime(), task.getEndDateTime());
                 count = i;
                 break;
             }
         }
         controller.relayFb(String.format(Constants.CMD_SUCCESS_RESCHEDULED, count + 1), MsgType.SUCCESS);
-        logger.fine(String.format(Constants.LOG_RESCHED_SUCCESS, e.getTaskId()));
+        logger.fine(String.format(Constants.LOG_RESCHED_SUCCESS, task.getId()));
     }
 
     @Subscribe
@@ -322,7 +323,7 @@ public class CommandHandler {
             case NON_EXISTENT_ID:
                 //NEED TO CHANGE TO INDEX SOON????
                 controller.relayFb(String.format(
-                        Constants.CMD_ERROR_CANT_RESCHEDULE_NO_ID, e.getTaskId()), MsgType.ERROR);
+                        Constants.CMD_ERROR_CANT_RESCHEDULE_NO_ID, e.getScreenId()), MsgType.ERROR);
                 logger.fine(Constants.LOG_RESCHE_FAIL_NOID);
                 break;
             case NO_CHANGES:
@@ -390,7 +391,7 @@ public class CommandHandler {
 
     @Subscribe
     public void handleUnmarkTaskDoneEvent(UnmarkTaskDoneEvent e) {
-        ArrayList<Integer> undoneIds = e.getTaskIds();
+        ArrayList<Integer> undoneIds = e.getScreenIds();
         Collections.sort(undoneIds);
         int indexCount = 0;
         for (Integer num : undoneIds) {

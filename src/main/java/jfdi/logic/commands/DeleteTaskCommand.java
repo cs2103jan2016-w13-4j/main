@@ -46,13 +46,15 @@ public class DeleteTaskCommand extends Command {
 
     @Override
     public void execute() {
+        UI ui = UI.getInstance();
+
         TaskDb taskDb = TaskDb.getInstance();
         ArrayList<Integer> taskIds = screenIds.stream()
-            .map(screenId -> UI.getInstance().getTaskId(screenId))
+            .map(ui::getTaskId)
             .collect(Collectors.toCollection(ArrayList::new));
 
-        ArrayList<Integer> invalidIds = taskIds.stream()
-            .filter(id -> !taskDb.hasId(id))
+        ArrayList<Integer> invalidIds = screenIds.stream()
+            .filter(id -> !taskDb.hasId(ui.getTaskId(id)))
             .collect(Collectors.toCollection(ArrayList::new));
 
         if (invalidIds.isEmpty()) {
@@ -60,6 +62,7 @@ public class DeleteTaskCommand extends Command {
             taskIds.forEach(id -> {
                 try {
                     deletedTasks.add(taskDb.getById(id));
+                    logger.info("Deleting task #" + id);
                     TaskDb.getInstance().destroy(id);
                 } catch (InvalidIdException e) {
                     // Should not happen
@@ -68,7 +71,7 @@ public class DeleteTaskCommand extends Command {
             });
 
             pushToUndoStack();
-            eventBus.post(new DeleteTaskDoneEvent(taskIds, deletedTasks));
+            eventBus.post(new DeleteTaskDoneEvent(screenIds, deletedTasks));
         } else {
             eventBus.post(new DeleteTaskFailedEvent(invalidIds));
         }

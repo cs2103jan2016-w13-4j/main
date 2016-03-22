@@ -64,6 +64,7 @@ public class MainSetUp extends Application {
         scene.setFill(Color.TRANSPARENT);
         primaryStage.setScene(scene);
         primaryStage.show();
+        primaryStage.setResizable(false);
         this.scene = scene;
 
     }

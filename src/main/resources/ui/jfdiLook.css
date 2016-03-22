@@ -21,6 +21,21 @@
     -fx-border-color: #faebcd;
 }
 
+.statsDisplayer {
+	-fx-background-color: #434343;
+	-fx-border-color: #434343;
+}
+
+.statsDisplayer.list-cell{
+	-fx-background-color: #434343;
+	-fx-border-color: #434343;
+}
+
+.statsDisplayer.list-cell:empty{
+	-fx-background-color: #434343;
+	-fx-border-color: #434343;
+}
+
 /*
  * ================================================================
  * HelpBox styles

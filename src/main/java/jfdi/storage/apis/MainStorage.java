@@ -125,6 +125,7 @@ public class MainStorage implements IStorage {
         assert storageFolderPath != null;
         FileManager.prepareDirectory(storageFolderPath);
         DatabaseManager.setAllFilePaths(storageFolderPath);
+        DatabaseManager.resetAll();
         DatabaseManager.loadAllDatabases();
     }
 

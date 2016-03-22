@@ -40,4 +40,9 @@ public interface IDatabase {
      */
     void setFilePath(String path);
 
+    /**
+     * Resets the database.
+     */
+    void reset();
+
 }

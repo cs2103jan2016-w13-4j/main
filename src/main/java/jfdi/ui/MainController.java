@@ -192,8 +192,8 @@ public class MainController {
         statsDisplayer.setMouseTransparent(true);
         statsDisplayer.setFocusTraversable(false);
         statsList = FXCollections.observableArrayList();
-        statsList.add(new StatsItem(Constants.CTRL_STATS_NAME1));
-        statsList.add(new StatsItem(Constants.CTRL_STATS_NAME2));
+        //statsList.add(new StatsItem(Constants.CTRL_STATS_NAME1));
+        //statsList.add(new StatsItem(Constants.CTRL_STATS_NAME2));
         statsDisplayer.setItems(statsList);
         completedNum = 0;
         dueTodayNum = 0;

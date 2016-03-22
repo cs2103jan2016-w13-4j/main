@@ -51,8 +51,8 @@ public class MainSetUp extends Application {
 
     private void loadFonts() {
         // Implement when team decides to specific font types that needs to be loaded
-        Font Hammersmith = Font.loadFont(MainSetUp.class.getResourceAsStream(Constants.URL_HAMSMITH_PATH), 14);
-        Font Raleway = Font.loadFont(MainSetUp.class.getResourceAsStream(Constants.URL_RALEWAY_PATH), 24);
+        Font.loadFont(MainSetUp.class.getResourceAsStream(Constants.URL_HAMSMITH_PATH), 14);
+        Font.loadFont(MainSetUp.class.getResourceAsStream(Constants.URL_RALEWAY_PATH), 24);
     }
 
     private void initRootLayout() throws IOException {

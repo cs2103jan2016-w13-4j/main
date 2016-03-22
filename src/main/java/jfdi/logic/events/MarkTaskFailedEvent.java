@@ -11,18 +11,18 @@ public class MarkTaskFailedEvent {
         NON_EXISTENT_ID, UNKNOWN
     }
 
-    private ArrayList<Integer> taskIds;
+    private ArrayList<Integer> screenIds;
     private ArrayList<Integer> invalidIds;
     private Error error;
 
-    public MarkTaskFailedEvent(ArrayList<Integer> taskIds, ArrayList<Integer> invalidIds) {
-        this.taskIds = taskIds;
+    public MarkTaskFailedEvent(ArrayList<Integer> screenIds, ArrayList<Integer> invalidIds) {
+        this.screenIds = screenIds;
         this.invalidIds = invalidIds;
         this.error = Error.NON_EXISTENT_ID;
     }
 
-    public ArrayList<Integer> getTaskIds() {
-        return taskIds;
+    public ArrayList<Integer> getScreenIds() {
+        return screenIds;
     }
 
     public ArrayList<Integer> getInvalidIds() {

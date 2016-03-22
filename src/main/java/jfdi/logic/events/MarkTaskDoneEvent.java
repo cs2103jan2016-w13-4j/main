@@ -9,16 +9,16 @@ import java.util.ArrayList;
  */
 public class MarkTaskDoneEvent {
 
-    private ArrayList<Integer> taskIds;
+    private ArrayList<Integer> screenIds;
     private ArrayList<TaskAttributes> markedTasks;
 
-    public MarkTaskDoneEvent(ArrayList<Integer> taskIds, ArrayList<TaskAttributes> markedTasks) {
-        this.taskIds = taskIds;
+    public MarkTaskDoneEvent(ArrayList<Integer> screenIds, ArrayList<TaskAttributes> markedTasks) {
+        this.screenIds = screenIds;
         this.markedTasks = markedTasks;
     }
 
-    public ArrayList<Integer> getTaskIds() {
-        return taskIds;
+    public ArrayList<Integer> getScreenIds() {
+        return screenIds;
     }
 
     public ArrayList<TaskAttributes> getMarkedTasks() {

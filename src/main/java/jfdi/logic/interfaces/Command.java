@@ -1,14 +1,18 @@
 package jfdi.logic.interfaces;
 
 import com.google.common.eventbus.EventBus;
+import jfdi.common.utilities.JfdiLogger;
 import jfdi.ui.UI;
 
 import java.util.Stack;
+import java.util.logging.Logger;
 
 /**
  * @author Liu Xinan
  */
 public abstract class Command {
+
+    protected static final Logger logger = JfdiLogger.getLogger();
 
     protected static final Stack<Command> undoStack = new Stack<>();
     protected static final Stack<Command> redoStack = new Stack<>();

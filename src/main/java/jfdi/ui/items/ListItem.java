@@ -6,11 +6,11 @@ import java.time.format.DateTimeFormatter;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.ui.Constants;
 
-public class ListItem extends HBox {
+public class ListItem extends VBox {
 
     @FXML
     private Label rowIndex;
@@ -66,10 +66,12 @@ public class ListItem extends HBox {
     }
 
     public void setDescription(String string) {
+        description.setWrapText(true);
         description.setText(string);
     }
 
     public void setTimeDate(LocalDateTime startTime, LocalDateTime endTime) {
+        timeAndDate.setWrapText(true);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy h:mma");
         if (startTime == null) {
             if (endTime == null) {

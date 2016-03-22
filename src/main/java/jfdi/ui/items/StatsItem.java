@@ -10,12 +10,12 @@ import jfdi.ui.Constants;
 
 public class StatsItem extends HBox {
 
+    public String name;
+
     @FXML
     private Label statsName;
     @FXML
     private Label statsNum;
-
-    public String name;
 
     public StatsItem(String name) {
 

@@ -11,9 +11,12 @@ import jfdi.logic.events.AddTaskDoneEvent;
 import jfdi.logic.events.AddTaskFailedEvent;
 import jfdi.logic.events.AliasDoneEvent;
 import jfdi.logic.events.AliasFailedEvent;
+import jfdi.logic.events.CommandRedoneEvent;
+import jfdi.logic.events.CommandUndoneEvent;
 import jfdi.logic.events.DeleteTaskDoneEvent;
 import jfdi.logic.events.DeleteTaskFailedEvent;
 import jfdi.logic.events.ExitCalledEvent;
+import jfdi.logic.events.HelpRequestedEvent;
 import jfdi.logic.events.InitializationFailedEvent;
 import jfdi.logic.events.InvalidCommandEvent;
 import jfdi.logic.events.ListDoneEvent;
@@ -21,14 +24,18 @@ import jfdi.logic.events.MarkTaskDoneEvent;
 import jfdi.logic.events.MarkTaskFailedEvent;
 import jfdi.logic.events.MoveDirectoryDoneEvent;
 import jfdi.logic.events.MoveDirectoryFailedEvent;
+import jfdi.logic.events.NoSurpriseEvent;
+import jfdi.logic.events.RedoFailedEvent;
 import jfdi.logic.events.RenameTaskDoneEvent;
 import jfdi.logic.events.RenameTaskFailedEvent;
 import jfdi.logic.events.RescheduleTaskDoneEvent;
 import jfdi.logic.events.RescheduleTaskFailedEvent;
 import jfdi.logic.events.SearchDoneEvent;
 import jfdi.logic.events.ShowDirectoryEvent;
+import jfdi.logic.events.SurpriseEvent;
 import jfdi.logic.events.UnaliasDoneEvent;
 import jfdi.logic.events.UnaliasFailEvent;
+import jfdi.logic.events.UndoFailedEvent;
 import jfdi.logic.events.UnmarkTaskDoneEvent;
 import jfdi.logic.events.UnmarkTaskFailEvent;
 import jfdi.logic.events.UseDirectoryDoneEvent;
@@ -100,6 +107,16 @@ public class CommandHandler {
     }
 
     @Subscribe
+    public void handleCommandRedoneEvent(CommandRedoneEvent e) {
+        controller.relayFb(Constants.CMD_SUCCESS_REDONE, MsgType.SUCCESS);
+    }
+
+    @Subscribe
+    public void handleCommandUndoneEvent(CommandUndoneEvent e) {
+        controller.relayFb(Constants.CMD_SUCCESS_UNDONE, MsgType.SUCCESS);
+    }
+
+    @Subscribe
     public void handleDeleteTaskDoneEvent(DeleteTaskDoneEvent e) {
         ArrayList<Integer> deletedIds = e.getDeletedIds();
         Collections.sort(deletedIds);
@@ -147,6 +164,11 @@ public class CommandHandler {
         System.out.printf("\nMoriturus te saluto.\n");
         System.exit(0);
         logger.fine(Constants.LOG_USER_EXIT);
+    }
+
+    @Subscribe
+    public void handleHelpRequestEvent(HelpRequestedEvent e) {
+        controller.showHelpDisplay();
     }
 
     @Subscribe
@@ -233,6 +255,7 @@ public class CommandHandler {
 
     @Subscribe
     public void handleMoveDirectoryDoneEvent(MoveDirectoryDoneEvent e) {
+        controller.displayList();
         controller.relayFb(String.format(Constants.CMD_SUCCESS_MOVED, e.getNewDirectory()), MsgType.SUCCESS);
     }
 
@@ -254,6 +277,34 @@ public class CommandHandler {
                             item.getOldFilePath(), item.getNewFilePath()) + "\n";
                 }
                 controller.relayFb(fb, MsgType.ERROR);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Subscribe
+    public void handleNoSurpriseEvent(NoSurpriseEvent e) {
+        switch (e.getError()) {
+            case UNKNOWN:
+                controller.relayFb(Constants.CMD_ERROR_SURP_FAIL_UNKNOWN, MsgType.ERROR);
+                break;
+            case NO_TASKS:
+                controller.relayFb(Constants.CMD_ERROR_SURP_FAIL_NO_TASKS, MsgType.ERROR);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Subscribe
+    public void handleRedoFailedEvent(RedoFailedEvent e) {
+        switch (e.getError()) {
+            case UNKNOWN:
+                controller.relayFb(Constants.CMD_ERROR_REDO_FAIL_UNKNOWN, MsgType.ERROR);
+                break;
+            case NONTHING_TO_REDO:
+                controller.relayFb(Constants.CMD_ERROR_REDO_FAIL_NO_TASKS, MsgType.ERROR);
                 break;
             default:
                 break;
@@ -286,7 +337,7 @@ public class CommandHandler {
             case NON_EXISTENT_ID:
                 //NEED TO CHANGE TO INDEX SOON????
                 controller.relayFb(String.format(Constants.CMD_ERROR_CANT_RENAME_NO_ID, e.getScreenId()),
-                    MsgType.ERROR);
+                        MsgType.ERROR);
                 logger.fine(Constants.LOG_RENAME_FAIL_NOID);
                 break;
             case NO_CHANGES:
@@ -367,6 +418,17 @@ public class CommandHandler {
     }
 
     @Subscribe
+    public void handleSurpriseEvent(SurpriseEvent e) {
+
+        controller.importantList.clear();
+        TaskAttributes task = e.getTask();
+        ListItem listItem = new ListItem(1, task, false);
+        controller.importantList.add(listItem);
+
+        controller.relayFb(Constants.CMD_SUCCESS_SURPRISED, MsgType.SUCCESS);
+    }
+
+    @Subscribe
     public void handleUnaliasDoneEvent(UnaliasDoneEvent e) {
         controller.relayFb(String.format(Constants.CMD_SUCCESS_UNALIAS, e.getAlias()), MsgType.SUCCESS);
     }
@@ -384,6 +446,20 @@ public class CommandHandler {
                 controller.relayFb(String.format(
                         Constants.CMD_ERROR_CANT_UNALIAS_NO_ALIAS, e.getAlias()), MsgType.ERROR);
                 //logger.fine(Constants.LOG_RESCHE_FAIL_NOID);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Subscribe
+    public void handleUndoFailedEvent(UndoFailedEvent e) {
+        switch (e.getError()) {
+            case UNKNOWN:
+                controller.relayFb(Constants.CMD_ERROR_UNDO_FAIL_UNKNOWN, MsgType.ERROR);
+                break;
+            case NONTHING_TO_UNDO:
+                controller.relayFb(Constants.CMD_ERROR_UNDO_FAIL_NO_TASKS, MsgType.ERROR);
                 break;
             default:
                 break;
@@ -427,6 +503,7 @@ public class CommandHandler {
 
     @Subscribe
     public void handleUseDirectoryDoneEvent(UseDirectoryDoneEvent e) {
+        controller.displayList();
         controller.relayFb(String.format(Constants.CMD_SUCCESS_USED, e.getNewDirectory()), MsgType.SUCCESS);
     }
 

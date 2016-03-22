@@ -46,7 +46,14 @@ public class Constants {
     public static final String CMD_ERROR_MOVE_FAIL_INVALID = "Cannot move to the folder %s . Choose another one!";
     public static final String CMD_ERROR_MOVE_FAIL_REPLACED =
             "The folder %s is occupied. File has been moved to %s instead!";
-    public static final String CMD_ERROR_CANT_RENAME_UNKNOWN = "Some stupid error occurred. Cannot rename task!";
+    public static final String CMD_ERROR_SURP_FAIL_UNKNOWN = "I can't even surprise you...I am such a failure! :(";
+    public static final String CMD_ERROR_SURP_FAIL_NO_TASKS =
+            "How can I surprise you if you did not even add any task in me! :(";
+    public static final String CMD_ERROR_REDO_FAIL_UNKNOWN =
+            "Some stupid error occurred. Cannot redo the previous task!";
+    public static final String CMD_ERROR_REDO_FAIL_NO_TASKS = "Cannot find any previous task to redo!";
+    public static final String CMD_ERROR_CANT_RENAME_UNKNOWN =
+            "Some stupid error occurred. Cannot rename task!";
     public static final String CMD_ERROR_CANT_RENAME_NO_ID = "Cannot rename task. The ID #%d does not exist!";
     public static final String CMD_ERROR_CANT_RENAME_NO_CHANGES = "No difference between new and old name - %s -!";
     public static final String CMD_ERROR_CANT_RESCHEDULE_UNKNOWN = "Some error occurred. Cannot reschedule task!";
@@ -55,6 +62,9 @@ public class Constants {
     public static final String CMD_ERROR_CANT_UNALIAS_UNKNOWN = "Some error occurred. Cannot remove alias - %s -!";
     public static final String CMD_ERROR_CANT_UNALIAS_NO_ALIAS =
             "Cannot remove alias. The alias - %s - does not exist!";
+    public static final String CMD_ERROR_UNDO_FAIL_UNKNOWN =
+            "Some stupid error occurred. Cannot undo the previous task!";
+    public static final String CMD_ERROR_UNDO_FAIL_NO_TASKS = "Cannot find any previous task to undo!";
     public static final String CMD_ERROR_CANT_UNMARK_NO_ID = "Cannot unmark task. The ID #%d does not exist!!";
     public static final String CMD_ERROR_CANT_UNMARK_UNKNOWN = "Some stupid error occurred. Cannot unmark task(s)!";
     public static final String CMD_ERROR_USE_FAIL_UNKNOWN = "Some stupid error occurred. Cannot use files at %s!";
@@ -64,6 +74,8 @@ public class Constants {
 
     public static final String CMD_SUCCESS_ADDED = "Task #%d - %s added! :)";
     public static final String CMD_SUCCESS_ALIAS = "Alias - %s - is created for command - %s -! :)";
+    public static final String CMD_SUCCESS_REDONE = "Previous command redone! :)";
+    public static final String CMD_SUCCESS_UNDONE = "Previous command undone! :)";
     public static final String CMD_SUCCESS_DELETED = "Task(s) deleted! :)";
     public static final String CMD_SUCCESS_LISTED = "Here is your requested list! :)";
     public static final String CMD_SUCCESS_MARKED = "Task(s) completed! Good job! :)";
@@ -72,6 +84,7 @@ public class Constants {
     public static final String CMD_SUCCESS_RESCHEDULED = "Task #%d rescheduled! :)";
     public static final String CMD_SUCCESS_SEARCH = "Here are your search results! :)";
     public static final String CMD_SUCCESS_SHOWDIRECTORY = "Your current directory is : %s ! :)";
+    public static final String CMD_SUCCESS_SURPRISED = "SURPRISE!!!TAAAADAAAA!!! :D";
     public static final String CMD_SUCCESS_UNALIAS = "Alias - %s - is removed! :)";
     public static final String CMD_SUCCESS_UNMARKED = "Task(s) marked as imcomplete! :)";
     public static final String CMD_SUCCESS_USED = "You are now using data from %s ! :)";

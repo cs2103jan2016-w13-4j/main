@@ -89,9 +89,6 @@ public class UI implements IUserInterface {
 
     @Override
     public int getTaskId(int onScreenId) {
-        if (onScreenId > controller.importantList.size() || onScreenId < 1) {
-            return -1;
-        }
         return controller.getIdFromIndex(onScreenId - 1);
     }
 
@@ -106,7 +103,6 @@ public class UI implements IUserInterface {
 
     private void showToUser(String string) {
         controller.displayFb(string);
-
         System.out.println(string);
     }
 

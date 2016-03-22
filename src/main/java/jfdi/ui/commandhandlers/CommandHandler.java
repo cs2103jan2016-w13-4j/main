@@ -161,7 +161,8 @@ public class CommandHandler {
             case FILE_REPLACED:
                 String fb = "";
                 for (FilePathPair item : e.getFilePathPairs()) {
-                    fb += String.format(Constants.CMD_ERROR_INIT_FAIL_REPLACED, item.getOldFilePath(), item.getNewFilePath()) + "\n";
+                    fb += String.format(Constants.CMD_ERROR_INIT_FAIL_REPLACED,
+                            item.getOldFilePath(), item.getNewFilePath()) + "\n";
                 }
                 controller.relayFb(fb, MsgType.ERROR);
                 break;
@@ -239,15 +240,18 @@ public class CommandHandler {
     public void handleMoveDirectoryFailEvent(MoveDirectoryFailedEvent e) {
         switch (e.getError()) {
             case UNKNOWN:
-                controller.relayFb(String.format(Constants.CMD_ERROR_MOVE_FAIL_UNKNOWN, e.getNewDirectory()), MsgType.ERROR);
+                controller.relayFb(String.format(Constants.CMD_ERROR_MOVE_FAIL_UNKNOWN,
+                        e.getNewDirectory()), MsgType.ERROR);
                 break;
             case INVALID_PATH:
-                controller.relayFb(String.format(Constants.CMD_ERROR_MOVE_FAIL_INVALID, e.getNewDirectory()), MsgType.ERROR);
+                controller.relayFb(String.format(Constants.CMD_ERROR_MOVE_FAIL_INVALID,
+                        e.getNewDirectory()), MsgType.ERROR);
                 break;
             case FILE_REPLACED:
                 String fb = "";
                 for (FilePathPair item : e.getFilePathPairs()) {
-                    fb += String.format(Constants.CMD_ERROR_MOVE_FAIL_REPLACED, item.getOldFilePath(), item.getNewFilePath()) + "\n";
+                    fb += String.format(Constants.CMD_ERROR_MOVE_FAIL_REPLACED,
+                            item.getOldFilePath(), item.getNewFilePath()) + "\n";
                 }
                 controller.relayFb(fb, MsgType.ERROR);
                 break;
@@ -428,15 +432,18 @@ public class CommandHandler {
     public void handleUseDirectoryFailEvent(UseDirectoryFailedEvent e) {
         switch (e.getError()) {
             case UNKNOWN:
-                controller.relayFb(String.format(Constants.CMD_ERROR_USE_FAIL_UNKNOWN, e.getNewDirectory()), MsgType.ERROR);
+                controller.relayFb(String.format(Constants.CMD_ERROR_USE_FAIL_UNKNOWN,
+                        e.getNewDirectory()), MsgType.ERROR);
                 break;
             case INVALID_PATH:
-                controller.relayFb(String.format(Constants.CMD_ERROR_USE_FAIL_INVALID, e.getNewDirectory()), MsgType.ERROR);
+                controller.relayFb(String.format(Constants.CMD_ERROR_USE_FAIL_INVALID,
+                        e.getNewDirectory()), MsgType.ERROR);
                 break;
             case FILE_REPLACED:
                 String fb = "";
                 for (FilePathPair item : e.getFilePathPairs()) {
-                    fb += String.format(Constants.CMD_ERROR_USE_FAIL_REPLACED, item.getOldFilePath(), item.getNewFilePath()) + "\n";
+                    fb += String.format(Constants.CMD_ERROR_USE_FAIL_REPLACED, item.getOldFilePath(),
+                            item.getNewFilePath()) + "\n";
                 }
                 controller.relayFb(fb, MsgType.ERROR);
                 break;

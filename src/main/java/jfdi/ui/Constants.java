@@ -41,7 +41,8 @@ public class Constants {
     public static final String CMD_ERROR_CANT_MARK_UNKNOWN = "Some stupid error occurred. Cannot mark task(s) as done!";
     public static final String CMD_ERROR_MOVE_FAIL_UNKNOWN = "Some stupid error occurred. Cannot move files to %s!";
     public static final String CMD_ERROR_MOVE_FAIL_INVALID = "Cannot move to the folder %s . Choose another one!";
-    public static final String CMD_ERROR_MOVE_FAIL_REPLACED = "The folder %s is occupied. File has been moved to %s instead!";
+    public static final String CMD_ERROR_MOVE_FAIL_REPLACED =
+            "The folder %s is occupied. File has been moved to %s instead!";
     public static final String CMD_ERROR_CANT_RENAME_UNKNOWN = "Some stupid error occurred. Cannot rename task!";
     public static final String CMD_ERROR_CANT_RENAME_NO_ID = "Cannot rename task. The ID #%d does not exist!";
     public static final String CMD_ERROR_CANT_RENAME_NO_CHANGES = "No difference between new and old name - %s -!";
@@ -55,7 +56,8 @@ public class Constants {
     public static final String CMD_ERROR_CANT_UNMARK_UNKNOWN = "Some stupid error occurred. Cannot unmark task(s)!";
     public static final String CMD_ERROR_USE_FAIL_UNKNOWN = "Some stupid error occurred. Cannot use files at %s!";
     public static final String CMD_ERROR_USE_FAIL_INVALID = "Cannot use the data at %s . Choose another one!";
-    public static final String CMD_ERROR_USE_FAIL_REPLACED = "The folder %s contains invalid files. Data has been moved to %s instead!";
+    public static final String CMD_ERROR_USE_FAIL_REPLACED =
+            "The folder %s contains invalid files. Data has been moved to %s instead!";
 
     public static final String CMD_SUCCESS_ADDED = "Task #%d - %s added! :)";
     public static final String CMD_SUCCESS_ALIAS = "Alias - %s - is created for command - %s -! :)";

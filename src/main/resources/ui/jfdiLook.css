@@ -23,11 +23,16 @@
 	-fx-font-family: "HammersmithOne";
 	-fx-font-size: 14px;
 	-fx-wrap-text: true;
+	-fx-strikethrough: true;
+}
+
+.itemBoxDone #description .text {
+	-fx-strikethrough: true;
 }
 
 .itemBox #timeAndDate {
 	-fx-text-fill: #575757;
-	-fx-font-family: "Helvetica Light";
+	-fx-font-family: "TitilliumWeb";
 	-fx-font-size: 11px;
 	-fx-wrap-text: true;
 }

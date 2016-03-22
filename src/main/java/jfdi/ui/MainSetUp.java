@@ -65,6 +65,7 @@ public class MainSetUp extends Application {
         primaryStage.setScene(scene);
         scene.getStylesheets().add("https://fonts.googleapis.com/css?family=Hammersmith+One");
         scene.getStylesheets().add("https://fonts.googleapis.com/css?family=Raleway:900");
+        scene.getStylesheets().add("https://fonts.googleapis.com/css?family=Titillium+Web:200");
         primaryStage.show();
         primaryStage.setResizable(false);
         this.scene = scene;

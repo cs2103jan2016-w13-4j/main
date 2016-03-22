@@ -23,6 +23,7 @@ public class StatsItem extends HBox {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     Constants.URL_STATS_PATH));
+            loader.setRoot(this);
             loader.setController(this);
             loader.load();
         } catch (IOException e) {

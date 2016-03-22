@@ -23,6 +23,7 @@ public class MarkTaskCommand extends Command {
     private static final Logger LOGGER = JfdiLogger.getLogger();
 
     private ArrayList<Integer> screenIds;
+    private ArrayList<Integer> markedIds;
 
     private MarkTaskCommand(Builder builder) {
         this.screenIds = builder.screenIds;
@@ -61,10 +62,12 @@ public class MarkTaskCommand extends Command {
 
         if (invalidIds.isEmpty()) {
             ArrayList<TaskAttributes> markedTasks = new ArrayList<>();
+            markedIds = new ArrayList<>();
             taskIds.stream().forEach(id -> {
                 try {
                     markedTasks.add(taskdb.getById(id));
                     taskdb.markAsComplete(id);
+                    markedIds.add(id);
                 } catch (NoAttributesChangedException e) {
                     LOGGER.warning("Task " + id + " is already completed.");
                 } catch (InvalidIdException e) {
@@ -72,9 +75,25 @@ public class MarkTaskCommand extends Command {
                     assert false;
                 }
             });
+
+            pushToUndoStack();
             eventBus.post(new MarkTaskDoneEvent(taskIds, markedTasks));
         } else {
             eventBus.post(new MarkTaskFailedEvent(taskIds, invalidIds));
         }
+    }
+
+    @Override
+    public void undo() {
+        markedIds.stream()
+            .forEach(id -> {
+                try {
+                    TaskDb.getInstance().markAsIncomplete(id);
+                } catch (NoAttributesChangedException | InvalidIdException e) {
+                    assert false;
+                }
+            });
+
+        pushToRedoStack();
     }
 }

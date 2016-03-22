@@ -167,7 +167,11 @@
       <property name="ignoreFinal" value="false" />
       <property name="allowedAbbreviationLength" value="3" />
     </module>
-    <module name="ConstantName" />
+    <module name="ConstantName">
+      <property name="applyToProtected" value="false" />
+      <property name="applyToPrivate" value="false" />
+      <property name="applyToPackage" value="false" />
+    </module>
     <module name="NoFinalizer" />
     <module name="SingleLineJavadoc" />
     <module name="JavadocParagraph" />

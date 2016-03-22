@@ -23,6 +23,7 @@ public class UnmarkTaskCommand extends Command {
     private static final Logger LOGGER = JfdiLogger.getLogger();
 
     private ArrayList<Integer> screenIds;
+    private ArrayList<Integer> unmarkedIds;
 
     private UnmarkTaskCommand(Builder builder) {
         this.screenIds = builder.screenIds;
@@ -61,19 +62,39 @@ public class UnmarkTaskCommand extends Command {
 
         if (invalidIds.isEmpty()) {
             ArrayList<TaskAttributes> unmarkedTasks = new ArrayList<>();
+            unmarkedIds = new ArrayList<>();
             taskIds.stream().forEach(id -> {
                 try {
                     unmarkedTasks.add(taskdb.getById(id));
                     taskdb.markAsIncomplete(id);
+
+                    unmarkedIds.add(id);
                 } catch (NoAttributesChangedException e) {
                     LOGGER.warning("Task " + id + " was not completed.");
                 } catch (InvalidIdException e) {
                     assert false;
                 }
             });
+
+            pushToUndoStack();
             eventBus.post(new UnmarkTaskDoneEvent(taskIds, unmarkedTasks));
         } else {
             eventBus.post(new UnmarkTaskFailEvent(taskIds, invalidIds));
         }
     }
+
+    @Override
+    public void undo() {
+        unmarkedIds.stream()
+            .forEach(id -> {
+                try {
+                    TaskDb.getInstance().markAsComplete(id);
+
+                    pushToRedoStack();
+                } catch (NoAttributesChangedException | InvalidIdException e) {
+                    assert false;
+                }
+            });
+    }
+
 }

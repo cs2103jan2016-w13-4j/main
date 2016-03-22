@@ -16,4 +16,9 @@ public class WildcardCommandStub extends Command {
 
     }
 
+    @Override
+    public void undo() {
+        throw new UnsupportedOperationException();
+    }
+
 }

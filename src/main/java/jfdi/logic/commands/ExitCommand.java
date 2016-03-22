@@ -25,4 +25,9 @@ public class ExitCommand extends Command {
         eventBus.post(new ExitCalledEvent());
     }
 
+    @Override
+    public void undo() {
+        throw new UnsupportedOperationException();
+    }
+
 }

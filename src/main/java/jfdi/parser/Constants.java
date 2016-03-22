@@ -40,7 +40,12 @@ public class Constants {
     public static final String REGEX_EXIT = "(?i)^(exit|quit)";
 
     // Task related Regex Strings
-    public static final String REGEX_TAGS = "\\+\\w+";
+    public static final String REGEX_DELETE_FORMAT = REGEX_DELETE
+        + " ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]?)+";
+    public static final String REGEX_MARK_FORMAT = REGEX_MARK
+        + " ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]?)+";
+    public static final String REGEX_UNMARK_FORMAT = REGEX_UNMARK
+        + " ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]?)+";
     // A taskID is simply an integer
     public static final String REGEX_TASKID = "\\b\\d+\\b";
 
@@ -201,8 +206,7 @@ public class Constants {
 
     public static void main(String[] args) {
 
-        System.out.println("by 3 days later afternoon"
-            .matches(REGEX_DATE_TIME_IDENTIFIER));
+        System.out.println("delete 1-10".matches(REGEX_DELETE_FORMAT));
 
     }
 }

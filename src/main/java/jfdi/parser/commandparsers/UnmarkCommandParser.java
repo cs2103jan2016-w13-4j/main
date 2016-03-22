@@ -1,16 +1,22 @@
 package jfdi.parser.commandparsers;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 
 import jfdi.logic.commands.UnmarkTaskCommand;
 import jfdi.logic.commands.UnmarkTaskCommand.Builder;
 import jfdi.logic.interfaces.Command;
+import jfdi.parser.Constants;
+import jfdi.parser.Constants.CommandType;
+import jfdi.parser.exceptions.BadTaskIdException;
 
 /**
  * The MarkCommandParser class is used to parse a given 'Unmark' user input. The
  * 'Unmark' user input is given by the user when there is a need to mark a task
  * (denoted by its taskID) as incomplete. Use this class in tandem with the
- * MarkCommandParser class to mark a task as incomplete to complete.
+ * MarkCommandParser class to mark a task as incomplete to complete. The format
+ * of an Unmark command is given by: {unmark identifier} {task IDs}. Note that
+ * task IDs can be represented as a range i.e. "1-10".
  *
  * @author Leonard Hio
  *
@@ -39,17 +45,33 @@ public class UnmarkCommandParser extends AbstractCommandParser {
      * @param input
      *            the user input, representing an unmark command.
      * @return an UnmarkTaskCommand object, or an InvalidCommand if any
-     *         exceptions are thrown.
+     *         exceptions are thrown, or if the input is not in a valid Unmark
+     *         format.
      *
      */
     @Override
     public Command build(String input) {
+        if (!isValidUnmarkCommand(input)) {
+            return createInvalidCommand(CommandType.unmark, input);
+        }
+        input = removeFirstWord(input);
         Builder unmarkTaskCommandBuilder = new Builder();
-        ArrayList<Integer> taskIds;
-        taskIds = getTaskIds(input);
+        Collection<Integer> taskIds = new HashSet<>();
+        try {
+            taskIds = getTaskIds(input);
+        } catch (BadTaskIdException e) {
+            return createInvalidCommand(CommandType.unmark, input);
+        }
         unmarkTaskCommandBuilder.addTaskIds(taskIds);
         UnmarkTaskCommand unmarkTaskCommand = unmarkTaskCommandBuilder.build();
         return unmarkTaskCommand;
+    }
+
+    /**
+     * Checks to see if the given input is in a valid Unmark format.
+     */
+    private boolean isValidUnmarkCommand(String input) {
+        return input.trim().matches(Constants.REGEX_UNMARK_FORMAT);
     }
 
 }

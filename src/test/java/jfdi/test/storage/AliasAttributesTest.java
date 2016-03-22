@@ -32,7 +32,7 @@ public class AliasAttributesTest {
 
     @After
     public void tearDown() throws Exception {
-        aliasDbInstance.resetProgramStorage();
+        aliasDbInstance.reset();
     }
 
     @Test

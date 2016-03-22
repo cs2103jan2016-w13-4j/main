@@ -49,7 +49,7 @@ public class TaskDbTest {
 
     @After
     public void tearDown() throws Exception {
-        taskDbInstance.resetProgramStorage();
+        taskDbInstance.reset();
     }
 
     @Test

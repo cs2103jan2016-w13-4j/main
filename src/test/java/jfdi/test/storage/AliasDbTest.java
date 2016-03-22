@@ -49,7 +49,7 @@ public class AliasDbTest {
 
     @After
     public void tearDown() throws Exception {
-        aliasDbInstance.resetProgramStorage();
+        aliasDbInstance.reset();
     }
 
     @Test

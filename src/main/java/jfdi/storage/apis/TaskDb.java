@@ -51,7 +51,7 @@ public class TaskDb implements IDatabase {
      */
     private TaskDb() {
         logger = JfdiLogger.getLogger();
-        resetProgramStorage();
+        reset();
     }
 
     /**
@@ -392,7 +392,7 @@ public class TaskDb implements IDatabase {
      * This method resets the program's internal storage of tasks. This method
      * should only be used by the public in tests.
      */
-    public void resetProgramStorage() {
+    public void reset() {
         taskList = new TreeMap<Integer, Task>();
         deletedTaskList = new TreeMap<Integer, Task>();
         nextId = 1;
@@ -472,7 +472,7 @@ public class TaskDb implements IDatabase {
      */
     private void populateTaskList(Task[] taskArray) {
         assert taskArray != null;
-        resetProgramStorage();
+        reset();
         for (Task task : taskArray) {
             task.setId(nextId++);
             taskList.put(task.getId(), task);

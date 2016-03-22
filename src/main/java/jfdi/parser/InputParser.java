@@ -73,6 +73,7 @@ public class InputParser implements IParser {
     @Override
     public void setAliases(Collection<AliasAttributes> aliases) {
         assert aliases != null;
+        this.aliases = new ArrayList<AliasAttributes>();
         this.aliases.addAll(aliases);
         buildAliasMap();
     }

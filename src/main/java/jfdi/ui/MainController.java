@@ -5,6 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashSet;
 
+import com.sun.javafx.scene.control.skin.ListViewSkin;
+import com.sun.javafx.scene.control.skin.VirtualFlow;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -74,6 +77,8 @@ public class MainController {
     private ObservableList<HelpItem> helpList;
     private Timeline overlayTimeline;
     private InputHistory inputHistory;
+    private int firstVisibleId;
+    private int lastVisibleId;
 
     public void initialize() {
 
@@ -306,6 +311,13 @@ public class MainController {
                 if (nextInput != null) {
                     cmdArea.setText(nextInput);
                 }
+            } else if (code == KeyCode.PAGE_DOWN) {
+                setFirstAndLastVisibleIds();
+                listMain.scrollTo(lastVisibleId);
+            } else if (code == KeyCode.PAGE_UP) {
+                setFirstAndLastVisibleIds();
+                int scrollAmount = lastVisibleId - firstVisibleId;
+                listMain.scrollTo(firstVisibleId - scrollAmount);
             } else {
                 return;
             }
@@ -350,4 +362,11 @@ public class MainController {
     /***************************
      *** LEVEL 3 Abstraction ***
      ***************************/
+
+    public void setFirstAndLastVisibleIds() {
+        ListViewSkin<?> listViewSkin = (ListViewSkin<?>) listMain.getSkin();
+        VirtualFlow<?> virtualFlow = (VirtualFlow<?>) listViewSkin.getChildren().get(0);
+        firstVisibleId = virtualFlow.getFirstVisibleCell().getIndex();
+        lastVisibleId = virtualFlow.getLastVisibleCell().getIndex();
+    }
 }

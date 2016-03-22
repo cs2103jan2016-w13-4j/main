@@ -52,7 +52,8 @@ public class ControlCenter implements ILogic {
             eventBus.post(new InitializationFailedEvent(InitializationFailedEvent.Error.FILE_REPLACED,
                 e.getReplacedFilePairs()));
         } catch (InvalidFilePathException e) {
-            eventBus.post(new InitializationFailedEvent(InitializationFailedEvent.Error.INVALID_PATH));
+            eventBus.post(new InitializationFailedEvent(InitializationFailedEvent.Error.INVALID_PATH,
+                e.getPath()));
         }
     }
 

@@ -94,7 +94,7 @@ public class DateTimeParserTest {
         checkMatchingDateTime(res.getEndDateTime(), getCurrentYear(),
             getCurrentMonth(), getCurrentDay() + 1, 18, 32);
 
-        res = parseDateTime("by 3 days later, 2300h");
+        res = parseDateTime("by 3 days later, 1100pm");
 
         // Start date-time should be null
         Assert.assertNull(res.getStartDateTime());
@@ -144,12 +144,12 @@ public class DateTimeParserTest {
     // With time specified
     @Test
     public void testParseExplicitQueries() {
-        DateTimeObject res = parseDateTime("on 26th February, 9.30pm");
+        DateTimeObject res = parseDateTime("on 26th February 17, 9.30pm");
 
         // End date-time should be null
         Assert.assertNull(res.getEndDateTime());
 
-        checkMatchingDateTime(res.getStartDateTime(), 2016, MONTH[2], 26, 21,
+        checkMatchingDateTime(res.getStartDateTime(), 2017, MONTH[2], 26, 21,
             30);
 
         res = parseDateTime("on 22nd july, 21:00h");
@@ -191,7 +191,7 @@ public class DateTimeParserTest {
     // Without time specified
     @Test
     public void testParseExplicitQueries3() {
-        DateTimeObject res = parseDateTime("From 26th February 2017 to 28th December 2019");
+        DateTimeObject res = parseDateTime("From 26th February 17 to 28th December 2019");
 
         // Check start date time is corrently parsed
         checkMatchingDateTime(res.getStartDateTime(), 2017, MONTH[2], 26,
@@ -227,14 +227,13 @@ public class DateTimeParserTest {
     // With time specified
     @Test
     public void testParseExplicitQueries4() {
-        DateTimeObject res = parseDateTime("From 26th.February.2017 11pm to 11pm 28th December 2019");
+        DateTimeObject res = parseDateTime("From 26th.February.2017 9pm to 930pm 28th December 19");
 
         // Check start date time is corrently parsed
-        checkMatchingDateTime(res.getStartDateTime(), 2017, MONTH[2], 26, 23,
+        checkMatchingDateTime(res.getStartDateTime(), 2017, MONTH[2], 26, 21,
             DEFAULT_MINUTES);
         // Check end date time is corrently parsed
-        checkMatchingDateTime(res.getEndDateTime(), 2019, MONTH[12], 28, 23,
-            DEFAULT_MINUTES);
+        checkMatchingDateTime(res.getEndDateTime(), 2019, MONTH[12], 28, 21, 30);
 
         res = parseDateTime("From 25/11 23.12hr to 12:34hrs, 23/12");
 

@@ -83,6 +83,7 @@ public class DateTimeParser {
         TaskType taskType = getTaskType(input);
         System.out.println(taskType);
         input = formatDate(input);
+        input = formatTime(input);
         input = toAmericanTime(input);
         System.out.println(input);
         // This might not be sufficient for event tasks
@@ -177,6 +178,9 @@ public class DateTimeParser {
         input = input.replaceAll(
             Constants.REGEX_DATE_TIME_FORMAT_TIME_FIRST_WITH_NAMED_GROUPS,
             "${time2}, ${date2}");
+        input = input.replaceAll("\\b(?<days>" + Constants.REGEX_DAYS_NUMERIC
+            + ")[-/. ](?<months>" + Constants.REGEX_MONTHS_TEXTUAL + ")[-/. ]"
+            + "(?<year>\\d\\d)\\b", "${days} ${months} 20${year}");
         StringBuilder inputBuilder = new StringBuilder(input);
         Pattern dateFormatPattern = Pattern
             .compile(Constants.REGEX_ABSOLUTE_DATE_DDMMYYYY);
@@ -200,6 +204,12 @@ public class DateTimeParser {
         }
 
         return inputBuilder.toString();
+    }
+
+    private String formatTime(String input) {
+        input = input.replaceAll(
+            "(?i)(0?[1-9]|1[0-2])([0-5][0-9])([ :]?([a|p][m]))", "$1.$2$3");
+        return input;
     }
 
     /**
@@ -312,7 +322,6 @@ public class DateTimeParser {
 
     public static void main(String[] args) throws Exception {
         DateTimeParser parser = DateTimeParser.getInstance();
-        System.out.println(parser.parseDateTime("by 3 days later, 2300hrs")
-            .getStartDateTime());
+        System.out.println(parser.formatDate("by 23rd feb 16"));
     }
 }

@@ -134,6 +134,7 @@ public class AliasDb implements IDatabase {
             if (aliasRecord.getAlias().equals(alias)) {
                 aliasList.remove(aliasRecord);
                 deletedAliasList.add(aliasRecord);
+                persist();
                 return;
             }
         }
@@ -160,6 +161,7 @@ public class AliasDb implements IDatabase {
                     && !isDuplicate(new AliasAttributes(deletedAlias))) {
                 deletedAliasList.remove(i);
                 aliasList.add(deletedAlias);
+                persist();
                 return;
             }
         }

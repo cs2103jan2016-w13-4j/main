@@ -51,9 +51,13 @@ public class MainController {
     @FXML
     public Label overdueLabel;
     @FXML
+    public Label upcomingLabel;
+    @FXML
     public ListView<TaskAttributes> overdueList;
     @FXML
     public ListView<TaskAttributes> upcomingList;
+    @FXML
+    public Label listStatus;
     @FXML
     public ListView<ListItem> listMain;
     @FXML

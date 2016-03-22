@@ -305,11 +305,13 @@ public class MainController {
                 String previousInput = inputHistory.getPrevious();
                 if (previousInput != null) {
                     cmdArea.setText(previousInput);
+                    cmdArea.positionCaret(previousInput.length());
                 }
             } else if (code == KeyCode.DOWN) {
                 String nextInput = inputHistory.getNext();
                 if (nextInput != null) {
                     cmdArea.setText(nextInput);
+                    cmdArea.positionCaret(nextInput.length());
                 }
             } else if (code == KeyCode.PAGE_DOWN) {
                 setFirstAndLastVisibleIds();

@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import jfdi.common.utilities.JfdiLogger;
 
@@ -50,9 +49,9 @@ public class MainSetUp extends Application {
     }
 
     private void loadFonts() {
-        // Implement when team decides to specific font types that needs to be loaded
-        Font.loadFont(MainSetUp.class.getResourceAsStream(Constants.URL_HAMSMITH_PATH), 14);
-        Font.loadFont(MainSetUp.class.getResourceAsStream(Constants.URL_RALEWAY_PATH), 24);
+
+        //Font.loadFont(MainSetUp.class.getResource(Constants.URL_HAMSMITH_PATH).toExternalForm(), 12);
+        //Font.loadFont(MainSetUp.class.getResource(Constants.URL_RALEWAY_PATH).toExternalForm(), 24);
     }
 
     private void initRootLayout() throws IOException {
@@ -64,6 +63,8 @@ public class MainSetUp extends Application {
         Scene scene = new Scene(rootLayout);
         scene.setFill(Color.TRANSPARENT);
         primaryStage.setScene(scene);
+        scene.getStylesheets().add("https://fonts.googleapis.com/css?family=Hammersmith+One");
+        scene.getStylesheets().add("https://fonts.googleapis.com/css?family=Raleway:900");
         primaryStage.show();
         primaryStage.setResizable(false);
         this.scene = scene;

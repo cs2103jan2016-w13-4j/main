@@ -1,37 +1,62 @@
-@font-face {
-	font-family: Hammersmith;
-	font-weight: normal;
-	font-style: normal;
-	src: url("/ui/fonts/HammersmithOne.ttf");
-}
-
-@font-face {
-	font-family: Raleway;
-	font-weight: normal;
-	font-style: normal;
-	src: url("/ui/fonts/raleway.heavy.ttf");
+.dayDate {
+	-fx-background-color: #434343;
+	-fx-text-fill: #eeeeee;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 18px;
 }
 
 .list-cell {
 	-fx-background-color: #434343;
+	-fx-border-color: #434343;
 }
 
 .list-cell:empty {
 	-fx-background-color: #434343;
+	-fx-border-color: #434343;
 }
 
 .listItem #statsName {
 	-fx-background-color: #434343;
+	-fx-border-color: #434343;
 	-fx-text-fill: #eeeeee;
-	-fx-font-family: Hammersmith;
+	-fx-font-family: "HammersmithOne";
 	-fx-font-size: 16px;
 }
 
 .listItem #statsNum {
 	-fx-background-color: #434343;
+	-fx-border-color: #434343;
 	-fx-text-fill: #eeeeee;
-	-fx-font-family: Hammersmith;
+	-fx-font-family: "HammersmithOne";
 	-fx-font-size: 16px;
+}
+
+.overdue {
+	-fx-background-color: #434343;
+	-fx-text-fill: #eeeeee;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 18px;
+}
+
+.overdueList {
+	-fx-background-color: #434343;
+	-fx-text-fill: #eeeeee;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 12px;
+}
+
+.upcoming {
+	-fx-background-color: #434343;
+	-fx-text-fill: #eeeeee;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 18px;
+}
+
+.upcomingList {
+	-fx-background-color: #434343;
+	-fx-text-fill: #eeeeee;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 12px;
 }
 
 .list-view .scroll-bar:horizontal .increment-arrow,

@@ -6,8 +6,6 @@ import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.InvalidIdException;
-import jfdi.storage.exceptions.InvalidTaskParametersException;
-import jfdi.storage.exceptions.NoAttributesChangedException;
 import jfdi.ui.UI;
 
 import java.util.ArrayList;
@@ -81,8 +79,8 @@ public class DeleteTaskCommand extends Command {
         deletedTasks.stream()
             .forEach(task -> {
                 try {
-                    task.save();
-                } catch (InvalidTaskParametersException | InvalidIdException | NoAttributesChangedException e) {
+                    TaskDb.getInstance().undestroy(task.getId());
+                } catch (InvalidIdException e) {
                     assert false;
                 }
             });

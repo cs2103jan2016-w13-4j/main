@@ -5,11 +5,16 @@ import java.util.ArrayList;
 import jfdi.logic.commands.DeleteTaskCommand;
 import jfdi.logic.commands.DeleteTaskCommand.Builder;
 import jfdi.logic.interfaces.Command;
+import jfdi.parser.Constants;
+import jfdi.parser.Constants.CommandType;
+import jfdi.parser.exceptions.BadTaskIdException;
 
 /**
  * The DeleteCommandParser class takes in a user input representing a "Delete"
  * command and parses it into an DeleteCommand object. All delete user commands
- * must be in the format: "{delete identifier} {task ID(s)}"
+ * must be in the format: "{delete identifier} {task ID(s)}". Additionally, task
+ * IDs can be represented as a range i.e. "1-10", and all task IDs are to be
+ * separated by a space and/or a comma.
  *
  * @author Leonard Hio
  *
@@ -43,12 +48,30 @@ public class DeleteCommandParser extends AbstractCommandParser {
      */
     @Override
     public Command build(String input) {
+        if (!isValidDeleteCommand(input)) {
+            return createInvalidCommand(CommandType.delete, input);
+        }
+        input = removeFirstWord(input);
         Builder deleteCommandBuilder = new Builder();
         ArrayList<Integer> taskIds = new ArrayList<>();
-        taskIds.addAll(getTaskIds(input));
+        try {
+            taskIds.addAll(getTaskIds(input));
+        } catch (BadTaskIdException e) {
+            return createInvalidCommand(CommandType.delete, input);
+        }
         deleteCommandBuilder.addIds(taskIds);
         DeleteTaskCommand deleteCommand = deleteCommandBuilder.build();
+        System.out.println(taskIds);
         return deleteCommand;
     }
 
+    /**
+     * Checks to see if the given input is in a valid Delete format.
+     *
+     * @param input
+     * @return
+     */
+    private boolean isValidDeleteCommand(String input) {
+        return input.trim().matches(Constants.REGEX_DELETE_FORMAT);
+    }
 }

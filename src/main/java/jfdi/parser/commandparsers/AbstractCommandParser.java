@@ -2,14 +2,16 @@ package jfdi.parser.commandparsers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Set;
 
 import jfdi.logic.commands.InvalidCommand;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
 import jfdi.parser.Constants.CommandType;
+import jfdi.parser.exceptions.BadTaskIdException;
 
 /**
  * The AbstractCommandParser class is the abstract class that all specific
@@ -65,18 +67,42 @@ public abstract class AbstractCommandParser {
      * @return an ArrayList of task IDs, all Strings. If no task IDs can be
      *         found, an empty ArrayList is returned.
      */
-    protected ArrayList<Integer> getTaskIds(String input) {
-        Pattern pattern = Pattern.compile(Constants.REGEX_TASKID);
-        Matcher matcher = pattern.matcher(input);
-        ArrayList<Integer> taskIds = new ArrayList<>();
+    protected Collection<Integer> getTaskIds(String input)
+        throws BadTaskIdException {
+        Set<Integer> taskIdsForDeletion = new HashSet<Integer>();
+        input = input.replaceAll("(\\d+)[ ]*-[ ]*(\\d+)", "$1-$2");
+        input = input.replaceAll("[ ]+", ",");
+        input = input.replaceAll(",+", ",");
 
-        while (matcher.find()) {
-            String taskId = getTrimmedSubstringInRange(input, matcher.start(),
-                matcher.end());
-            taskIds.add(toInteger(taskId));
+        String[] taskIds = input.split(",");
+        for (String taskId : taskIds) {
+            if (taskId.matches("\\d+")) {
+                taskIdsForDeletion.add(toInteger(taskId));
+            } else if (taskId.matches("\\d+[ ]?-[ ]?\\d+")) {
+                taskIdsForDeletion.addAll(getTaskIdsFromRange(taskId));
+            } else {
+                throw new BadTaskIdException(input);
+            }
         }
 
-        return taskIds;
+        return taskIdsForDeletion;
+    }
+
+    private Collection<? extends Integer> getTaskIdsFromRange(String taskId)
+        throws BadTaskIdException {
+        assert taskId.matches("\\d+[ ]?-[ ]?\\d+");
+        String[] taskIdRangeArray = taskId.split("-");
+        Collection<Integer> taskIdsInRange = new HashSet<>();
+        assert taskIdRangeArray.length == 2;
+        if (toInteger(taskIdRangeArray[0]) > toInteger(taskIdRangeArray[1])) {
+            throw new BadTaskIdException(taskId);
+        } else {
+            for (int i = toInteger(taskIdRangeArray[0]); i <= toInteger(taskIdRangeArray[1]); i++) {
+                taskIdsInRange.add(i);
+            }
+        }
+
+        return taskIdsInRange;
     }
 
     /**

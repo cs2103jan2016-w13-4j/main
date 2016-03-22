@@ -60,7 +60,7 @@ public class CommandHandler {
         int index = controller.importantList.size() + 1;
         ListItem listItem = new ListItem(index, task, false);
         controller.importantList.add(listItem);
-        controller.importantList.get(controller.importantList.size()-1).getStyleClass().add("itemBox");
+        controller.importantList.get(controller.importantList.size() - 1).getStyleClass().add("itemBox");
         controller.relayFb(String.format(Constants.CMD_SUCCESS_ADDED, index, task.getDescription()), MsgType.SUCCESS);
         logger.fine(String.format(Constants.LOG_ADDED_SUCCESS, task.getId()));
     }
@@ -227,12 +227,12 @@ public class CommandHandler {
             if (item.isCompleted()) {
                 listItem = new ListItem(count, item, true);
                 controller.importantList.add(listItem);
-                controller.importantList.get(controller.importantList.size()-1).strikeOut();
+                controller.importantList.get(controller.importantList.size() - 1).strikeOut();
                 listItem.strikeOut();
             } else {
                 listItem = new ListItem(count, item, false);
                 controller.importantList.add(listItem);
-                controller.importantList.get(controller.importantList.size()-1).getStyleClass().add("itemBox");
+                controller.importantList.get(controller.importantList.size() - 1).getStyleClass().add("itemBox");
             }
 
             count++;

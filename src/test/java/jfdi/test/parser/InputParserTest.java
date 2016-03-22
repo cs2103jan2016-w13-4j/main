@@ -5,7 +5,7 @@ import jfdi.logic.commands.AliasCommand;
 import jfdi.logic.commands.DeleteTaskCommand;
 import jfdi.logic.commands.DirectoryCommand;
 import jfdi.logic.commands.ExitCommand;
-import jfdi.logic.commands.HelpCommandStub;
+import jfdi.logic.commands.HelpCommand;
 import jfdi.logic.commands.InvalidCommand;
 import jfdi.logic.commands.ListCommand;
 import jfdi.logic.commands.MarkTaskCommand;
@@ -372,7 +372,7 @@ public class InputParserTest {
         String helpCommand = "help";
         try {
             Command command = parser.parse(helpCommand);
-            Assert.assertTrue(command instanceof HelpCommandStub);
+            Assert.assertTrue(command instanceof HelpCommand);
         } catch (InvalidInputException e) {
             Assert.fail();
         }

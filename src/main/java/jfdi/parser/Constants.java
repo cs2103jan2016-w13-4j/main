@@ -55,11 +55,10 @@ public class Constants {
         + "(jun)(e)?|" + "(jul)(y)?|" + "(aug)(ust)?|" + "(sep)(tember)?|"
         + "(oct)(ober)?|" + "(nov)(ember)?|" + "(dec)(ember)?)";
     public static final String REGEX_YEARS = "((19|20)?\\d\\d)";
-    public static final String REGEX_YEARS_FULL = "((19|20)\\d\\d)";
     public static final String REGEX_DATE_ATTRIBUTES = "((?i)(day)(s)?|"
         + "(week|wk)(s)?|" + "(month|mth)(s)?|" + "(year|yr))(s)?";
     public static final String REGEX_TIME_MILITARY = "(?i)([0-1][0-9]|[2][0-4])[.:]?[0-5][\\d]([h]([r][s]?)?)";
-    public static final String REGEX_TIME_NORMAL = "((?i)0?[1-9]|1[0-2])([.:]([0-5][0-9]))?[ :]?([a|p][m])";
+    public static final String REGEX_TIME_NORMAL = "(?i)(0?[1-9]|1[0-2])([.:]?([0-5][0-9]))?[ :]?([a|p][m])";
     public static final String REGEX_TIME_RELATIVE = "((?i)((this )?(morning|afternoon|evening)|(to)?night|midnight))";
 
     public static final String REGEX_RELATIVE_DATE_1 = "(?i)(tomorrow|yesterday|today|now)";
@@ -77,7 +76,7 @@ public class Constants {
         + REGEX_YEARS + ")?\\b";
     public static final String REGEX_ABSOLUTE_DATE_DDMONTHYYYY = "\\b"
         + REGEX_DAYS_NUMERIC + "[-/. ]" + REGEX_MONTHS_TEXTUAL + "([-/. ]"
-        + REGEX_YEARS_FULL + ")?\\b";
+        + REGEX_YEARS + ")?\\b";
 
     // Formats for date, time, and date-time in Regex (built from date and time
     // related Regex Strings)

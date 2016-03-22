@@ -1,6 +1,6 @@
 package jfdi.parser.commandparsers;
 
-import jfdi.logic.commands.HelpCommandStub.Builder;
+import jfdi.logic.commands.HelpCommand.Builder;
 import jfdi.logic.interfaces.Command;
 
 /**

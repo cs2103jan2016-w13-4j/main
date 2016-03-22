@@ -24,4 +24,5 @@ public class DirectoryCommand extends Command {
         String pwd = MainStorage.getInstance().getCurrentDirectory();
         eventBus.post(new ShowDirectoryEvent(pwd));
     }
+
 }

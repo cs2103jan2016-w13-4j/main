@@ -12,6 +12,7 @@ import jfdi.storage.exceptions.InvalidFilePathException;
  */
 public class MoveDirectoryCommand extends Command {
 
+    private String oldDirectory;
     private String newDirectory;
 
     private MoveDirectoryCommand(Builder builder) {
@@ -39,8 +40,14 @@ public class MoveDirectoryCommand extends Command {
 
     @Override
     public void execute() {
+        MainStorage storage = MainStorage.getInstance();
+
         try {
-            MainStorage.getInstance().changeDirectory(newDirectory);
+            oldDirectory = storage.getCurrentDirectory();
+
+            storage.changeDirectory(newDirectory);
+
+            pushToUndoStack();
             eventBus.post(new MoveDirectoryDoneEvent(newDirectory));
         } catch (FilesReplacedException e) {
             eventBus.post(new MoveDirectoryFailedEvent(newDirectory, MoveDirectoryFailedEvent.Error.FILE_REPLACED,
@@ -50,4 +57,18 @@ public class MoveDirectoryCommand extends Command {
         }
     }
 
+    @Override
+    protected void undo() {
+        MainStorage storage = MainStorage.getInstance();
+
+        try {
+            storage.changeDirectory(oldDirectory);
+
+            pushToRedoStack();
+        } catch (InvalidFilePathException e) {
+            assert false;
+        } catch (FilesReplacedException e) {
+            assert false;
+        }
+    }
 }

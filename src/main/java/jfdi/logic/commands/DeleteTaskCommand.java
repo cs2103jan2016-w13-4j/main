@@ -6,6 +6,8 @@ import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.InvalidIdException;
+import jfdi.storage.exceptions.InvalidTaskParametersException;
+import jfdi.storage.exceptions.NoAttributesChangedException;
 import jfdi.ui.UI;
 
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 public class DeleteTaskCommand extends Command {
 
     private ArrayList<Integer> screenIds;
+    private ArrayList<TaskAttributes> deletedTasks;
 
     private DeleteTaskCommand(Builder builder) {
         this.screenIds = builder.screenIds;
@@ -55,7 +58,7 @@ public class DeleteTaskCommand extends Command {
             .collect(Collectors.toCollection(ArrayList::new));
 
         if (invalidIds.isEmpty()) {
-            ArrayList<TaskAttributes> deletedTasks = new ArrayList<>();
+            deletedTasks = new ArrayList<>();
             taskIds.forEach(id -> {
                 try {
                     deletedTasks.add(taskDb.getById(id));
@@ -65,9 +68,25 @@ public class DeleteTaskCommand extends Command {
                     assert false;
                 }
             });
+
+            pushToUndoStack();
             eventBus.post(new DeleteTaskDoneEvent(taskIds, deletedTasks));
         } else {
             eventBus.post(new DeleteTaskFailedEvent(invalidIds));
         }
+    }
+
+    @Override
+    protected void undo() {
+        deletedTasks.stream()
+            .forEach(task -> {
+                try {
+                    task.save();
+                } catch (InvalidTaskParametersException | InvalidIdException | NoAttributesChangedException e) {
+                    assert false;
+                }
+            });
+
+        pushToRedoStack();
     }
 }

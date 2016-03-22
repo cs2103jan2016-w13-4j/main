@@ -60,6 +60,7 @@ public class Constants {
         + "(week|wk)(s)?|" + "(month|mth)(s)?|" + "(year|yr))(s)?";
     public static final String REGEX_TIME_MILITARY = "(?i)([0-1][0-9]|[2][0-4])[.:]?[0-5][\\d]([h]([r][s]?)?)";
     public static final String REGEX_TIME_NORMAL = "((?i)0?[1-9]|1[0-2])[.:]?([0-5][0-9])?[ :]?([a|p][m])";
+    public static final String REGEX_TIME_RELATIVE = "((?i)((this )?(morning|afternoon|evening)|(to)?night|midnight))";
 
     public static final String REGEX_RELATIVE_DATE_1 = "(?i)(tomorrow|yesterday|today|now)";
     public static final String REGEX_RELATIVE_DATE_2 = "(?i)((next |this )?("
@@ -84,13 +85,15 @@ public class Constants {
         + REGEX_ABSOLUTE_DATE_DDMMYYYY + "|" + REGEX_ABSOLUTE_DATE_DDMONTHYYYY
         + "|" + REGEX_RELATIVE_DATE + ")";
     public static final String REGEX_TIME_FORMAT = "(" + REGEX_TIME_MILITARY
-        + "|" + REGEX_TIME_NORMAL + ")";
+        + "|" + REGEX_TIME_NORMAL + "|" + REGEX_TIME_RELATIVE + ")";
     public static final String REGEX_DATE_TIME_FORMAT_DATE_FIRST = "("
         + REGEX_DATE_FORMAT + ",?[ ]" + REGEX_TIME_FORMAT + ")";
-    public static final String REGEX_DATE_TIME_FORMAT_DATE_FIRST_WITH_NAMED_GROUPS = "((?<date>"
-        + REGEX_DATE_FORMAT + "),?[ ](?<time>" + REGEX_TIME_FORMAT + "))";
+    public static final String REGEX_DATE_TIME_FORMAT_DATE_FIRST_WITH_NAMED_GROUPS = "((?<date1>"
+        + REGEX_DATE_FORMAT + "),?[ ](?<time1>" + REGEX_TIME_FORMAT + "))";
     public static final String REGEX_DATE_TIME_FORMAT_TIME_FIRST = "("
         + REGEX_TIME_FORMAT + ",?[ ]" + REGEX_DATE_FORMAT + ")";
+    public static final String REGEX_DATE_TIME_FORMAT_TIME_FIRST_WITH_NAMED_GROUPS = "((?<time2>"
+        + REGEX_TIME_FORMAT + "),?[ ](?<date2>" + REGEX_DATE_FORMAT + "))";
     public static final String REGEX_DATE_TIME_FORMAT = "(" + REGEX_DATE_FORMAT
         + "|" + REGEX_TIME_FORMAT + "|" + REGEX_DATE_TIME_FORMAT_DATE_FIRST
         + "|" + REGEX_DATE_TIME_FORMAT_TIME_FIRST + ")";
@@ -199,7 +202,8 @@ public class Constants {
 
     public static void main(String[] args) {
 
-        System.out.println("next week".matches(REGEX_DATE_TIME_IDENTIFIER));
+        System.out.println("by 3 days later afternoon"
+            .matches(REGEX_DATE_TIME_IDENTIFIER));
 
     }
 }

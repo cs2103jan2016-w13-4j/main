@@ -173,7 +173,10 @@ public class DateTimeParser {
 
         input = input.replaceAll(
             Constants.REGEX_DATE_TIME_FORMAT_DATE_FIRST_WITH_NAMED_GROUPS,
-            "${time} ${date}");
+            "${time1}, ${date1}");
+        input = input.replaceAll(
+            Constants.REGEX_DATE_TIME_FORMAT_TIME_FIRST_WITH_NAMED_GROUPS,
+            "${time2}, ${date2}");
         StringBuilder inputBuilder = new StringBuilder(input);
         Pattern dateFormatPattern = Pattern
             .compile(Constants.REGEX_ABSOLUTE_DATE_DDMMYYYY);

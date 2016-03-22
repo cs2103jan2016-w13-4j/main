@@ -285,7 +285,8 @@ public class CommandHandler {
                 break;
             case NON_EXISTENT_ID:
                 //NEED TO CHANGE TO INDEX SOON????
-                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_RENAME_NO_ID, e.getScreenId()), MsgType.ERROR);
+                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_RENAME_NO_ID, e.getScreenId()),
+                    MsgType.ERROR);
                 logger.fine(Constants.LOG_RENAME_FAIL_NOID);
                 break;
             case NO_CHANGES:

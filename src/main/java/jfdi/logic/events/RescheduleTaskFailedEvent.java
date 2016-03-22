@@ -18,7 +18,8 @@ public class RescheduleTaskFailedEvent {
     private LocalDateTime endDateTime;
     private Error error;
 
-    public RescheduleTaskFailedEvent(int screenId, LocalDateTime startDateTime, LocalDateTime endDateTime, Error error) {
+    public RescheduleTaskFailedEvent(int screenId, LocalDateTime startDateTime, LocalDateTime endDateTime,
+                                     Error error) {
         this.screenId = screenId;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;

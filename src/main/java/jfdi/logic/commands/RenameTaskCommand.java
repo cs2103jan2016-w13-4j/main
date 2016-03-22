@@ -61,12 +61,14 @@ public class RenameTaskCommand extends Command {
             pushToUndoStack();
             eventBus.post(new RenameTaskDoneEvent(task));
         } catch (InvalidIdException e) {
-            eventBus.post(new RenameTaskFailedEvent(screenId, description, RenameTaskFailedEvent.Error.NON_EXISTENT_ID));
+            eventBus.post(new RenameTaskFailedEvent(screenId, description,
+                RenameTaskFailedEvent.Error.NON_EXISTENT_ID));
         } catch (InvalidTaskParametersException e) {
             // Should not happen
             assert false;
         } catch (NoAttributesChangedException e) {
-            eventBus.post(new RenameTaskFailedEvent(screenId, description, RenameTaskFailedEvent.Error.NO_CHANGES));
+            eventBus.post(new RenameTaskFailedEvent(screenId, description,
+                RenameTaskFailedEvent.Error.NO_CHANGES));
         }
     }
 

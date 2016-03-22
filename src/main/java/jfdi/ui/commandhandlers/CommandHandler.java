@@ -123,7 +123,7 @@ public class CommandHandler {
 
         int indexCount = 0;
         for (Integer num : deletedIds) {
-            while (controller.getIdFromIndex(indexCount) != num) {
+            while (indexCount != num - 1) {
                 indexCount++;
             }
             controller.importantList.remove(indexCount);
@@ -224,7 +224,7 @@ public class CommandHandler {
         Collections.sort(doneIds);
         int indexCount = 0;
         for (Integer num : doneIds) {
-            while (controller.getIdFromIndex(indexCount) != num) {
+            while (indexCount != num - 1) {
                 indexCount++;
             }
             controller.importantList.get(indexCount).setMarkT();
@@ -472,7 +472,7 @@ public class CommandHandler {
         Collections.sort(undoneIds);
         int indexCount = 0;
         for (Integer num : undoneIds) {
-            while (controller.getIdFromIndex(indexCount) != num) {
+            while (indexCount != num - 1) {
                 indexCount++;
             }
             controller.importantList.get(indexCount).setMarkF();

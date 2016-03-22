@@ -1,5 +1,7 @@
 package jfdi.ui.items;
 
-public class StatsItem {
+import javafx.scene.layout.HBox;
+
+public class StatsItem extends HBox{
 
 }

@@ -49,9 +49,11 @@ public class Constants {
     public static final String CMD_ERROR_SURP_FAIL_UNKNOWN = "I can't even surprise you...I am such a failure! :(";
     public static final String CMD_ERROR_SURP_FAIL_NO_TASKS =
             "How can I surprise you if you did not even add any task in me! :(";
-    public static final String CMD_ERROR_REDO_FAIL_UNKNOWN = "Some stupid error occurred. Cannot redo the previous task!";
+    public static final String CMD_ERROR_REDO_FAIL_UNKNOWN =
+            "Some stupid error occurred. Cannot redo the previous task!";
     public static final String CMD_ERROR_REDO_FAIL_NO_TASKS = "Cannot find any previous task to redo!";
-    public static final String CMD_ERROR_CANT_RENAME_UNKNOWN = "Some stupid error occurred. Cannot rename task!";
+    public static final String CMD_ERROR_CANT_RENAME_UNKNOWN =
+            "Some stupid error occurred. Cannot rename task!";
     public static final String CMD_ERROR_CANT_RENAME_NO_ID = "Cannot rename task. The ID #%d does not exist!";
     public static final String CMD_ERROR_CANT_RENAME_NO_CHANGES = "No difference between new and old name - %s -!";
     public static final String CMD_ERROR_CANT_RESCHEDULE_UNKNOWN = "Some error occurred. Cannot reschedule task!";
@@ -60,7 +62,8 @@ public class Constants {
     public static final String CMD_ERROR_CANT_UNALIAS_UNKNOWN = "Some error occurred. Cannot remove alias - %s -!";
     public static final String CMD_ERROR_CANT_UNALIAS_NO_ALIAS =
             "Cannot remove alias. The alias - %s - does not exist!";
-    public static final String CMD_ERROR_UNDO_FAIL_UNKNOWN = "Some stupid error occurred. Cannot undo the previous task!";
+    public static final String CMD_ERROR_UNDO_FAIL_UNKNOWN =
+            "Some stupid error occurred. Cannot undo the previous task!";
     public static final String CMD_ERROR_UNDO_FAIL_NO_TASKS = "Cannot find any previous task to undo!";
     public static final String CMD_ERROR_CANT_UNMARK_NO_ID = "Cannot unmark task. The ID #%d does not exist!!";
     public static final String CMD_ERROR_CANT_UNMARK_UNKNOWN = "Some stupid error occurred. Cannot unmark task(s)!";

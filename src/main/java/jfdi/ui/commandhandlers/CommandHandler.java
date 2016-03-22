@@ -418,14 +418,10 @@ public class CommandHandler {
 
     @Subscribe
     public void handleSurpriseEvent(SurpriseEvent e) {
+
         controller.importantList.clear();
         TaskAttributes task = e.getTask();
-        ListItem listItem;
-        if (task.isCompleted()) {
-            listItem = new ListItem(1, task, true);
-        } else {
-            listItem = new ListItem(1, task, false);
-        }
+        ListItem listItem = new ListItem(1, task, false);
         controller.importantList.add(listItem);
 
         controller.relayFb(Constants.CMD_SUCCESS_SURPRISED, MsgType.SUCCESS);

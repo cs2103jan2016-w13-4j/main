@@ -6,11 +6,11 @@ public class Constants {
     public static final String UI_MESSAGE_INITED = "Initialization Completed!";
     public static final String UI_MESSAGE_GREETING = "J.F.D.I. : Hello Jim! Nice to see you again! :)";
     public static final String UI_MESSAGE_WELCOME = "\nJ.F.D.I. : What can I do for you?";
-    public static final String UI_MESSAGE_USERCMD = "You said: %1$s\n";
-    public static final String UI_MESSAGE_RESPONSE = "J.F.D.I. : %1$s\n";
-    public static final String UI_MESSAGE_WARNING = "Warning: %1$s\n";
-    public static final String UI_MESSAGE_ERROR = "Error: %1$s\n";
-    public static final String UI_MESSAGE_QUIT = "Bye Bye! See you next time! :)\n";
+    public static final String UI_MESSAGE_USERCMD = "\nYou said: %1$s";
+    public static final String UI_MESSAGE_RESPONSE = "\nJ.F.D.I. : %1$s";
+    public static final String UI_MESSAGE_WARNING = "\nWarning: %1$s";
+    public static final String UI_MESSAGE_ERROR = "\nError: %1$s";
+    public static final String UI_MESSAGE_QUIT = "\nBye Bye! See you next time! :)";
 
     public static final String URL_ROOT_PATH = "/ui/RootLayout.fxml";
     public static final String URL_LIST_PATH = "/ui/ListLayout.fxml";

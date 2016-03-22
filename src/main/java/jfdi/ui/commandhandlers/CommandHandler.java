@@ -1,6 +1,7 @@
 package jfdi.ui.commandhandlers;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
@@ -125,15 +126,13 @@ public class CommandHandler {
     @Subscribe
     public void handleDeleteTaskDoneEvent(DeleteTaskDoneEvent e) {
         ArrayList<Integer> deletedIds = e.getDeletedIds();
-        Collections.sort(deletedIds);
+        Collections.sort(deletedIds, Comparator.reverseOrder());
 
-        int indexCount = 0;
-        for (Integer num : deletedIds) {
-            while (indexCount != num - 1) {
-                indexCount++;
-            }
+        int indexCount = -1;
+        for (int screenId : deletedIds) {
+            indexCount = screenId - 1;
             controller.importantList.remove(indexCount);
-            logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, num));
+            logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, screenId));
         }
         controller.relayFb(Constants.CMD_SUCCESS_DELETED, MsgType.SUCCESS);
 
@@ -154,9 +153,8 @@ public class CommandHandler {
                 logger.fine(Constants.LOG_DELETE_FAIL_UNKNOWN);
                 break;
             case NON_EXISTENT_ID:
-                //NEED TO CHANGE TO INDEX SOON????
-                for (Integer num : e.getInvalidIds()) {
-                    controller.relayFb(String.format(Constants.CMD_ERROR_CANT_DELETE_NO_ID, num), MsgType.ERROR);
+                for (Integer screenId : e.getInvalidIds()) {
+                    controller.relayFb(String.format(Constants.CMD_ERROR_CANT_DELETE_NO_ID, screenId), MsgType.ERROR);
                 }
                 logger.fine(Constants.LOG_DELETE_FAIL_NOID);
                 break;
@@ -190,7 +188,7 @@ public class CommandHandler {
                 String fb = "";
                 for (FilePathPair item : e.getFilePathPairs()) {
                     fb += String.format(Constants.CMD_ERROR_INIT_FAIL_REPLACED,
-                            item.getOldFilePath(), item.getNewFilePath()) + "\n";
+                            "\n" + item.getOldFilePath(), item.getNewFilePath());
                 }
                 controller.relayFb(fb, MsgType.ERROR);
                 break;
@@ -245,12 +243,10 @@ public class CommandHandler {
     @Subscribe
     public void handleMarkTaskDoneEvent(MarkTaskDoneEvent e) {
         ArrayList<Integer> doneIds = e.getScreenIds();
-        Collections.sort(doneIds);
-        int indexCount = 0;
-        for (Integer num : doneIds) {
-            while (indexCount != num - 1) {
-                indexCount++;
-            }
+        Collections.sort(doneIds, Comparator.reverseOrder());
+        int indexCount = -1;
+        for (Integer screenId : doneIds) {
+            indexCount = screenId - 1;
             controller.importantList.get(indexCount).setMarkT();
             controller.importantList.get(indexCount).strikeOut();
             controller.displayList(controller.displayStatus);
@@ -268,8 +264,8 @@ public class CommandHandler {
                 break;
             case NON_EXISTENT_ID:
                 //NEED TO CHANGE TO INDEX SOON????
-                for (Integer num : e.getInvalidIds()) {
-                    controller.relayFb(String.format(Constants.CMD_ERROR_CANT_MARK_NO_ID, num), MsgType.ERROR);
+                for (Integer screenId : e.getInvalidIds()) {
+                    controller.relayFb(String.format(Constants.CMD_ERROR_CANT_MARK_NO_ID, screenId), MsgType.ERROR);
                 }
                 //logger.fine(Constants.LOG_DELETE_FAIL_NOID);
                 break;
@@ -299,7 +295,7 @@ public class CommandHandler {
                 String fb = "";
                 for (FilePathPair item : e.getFilePathPairs()) {
                     fb += String.format(Constants.CMD_ERROR_MOVE_FAIL_REPLACED,
-                            item.getOldFilePath(), item.getNewFilePath()) + "\n";
+                            "\n" + item.getOldFilePath(), item.getNewFilePath());
                 }
                 controller.relayFb(fb, MsgType.ERROR);
                 break;
@@ -497,12 +493,10 @@ public class CommandHandler {
     @Subscribe
     public void handleUnmarkTaskDoneEvent(UnmarkTaskDoneEvent e) {
         ArrayList<Integer> undoneIds = e.getScreenIds();
-        Collections.sort(undoneIds);
-        int indexCount = 0;
-        for (Integer num : undoneIds) {
-            while (indexCount != num - 1) {
-                indexCount++;
-            }
+        Collections.sort(undoneIds, Comparator.reverseOrder());
+        int indexCount = -1;
+        for (Integer screenId : undoneIds) {
+            indexCount = screenId - 1;
             controller.importantList.get(indexCount).setMarkF();
             controller.importantList.get(indexCount).removeStrike();
             controller.displayList(controller.displayStatus);
@@ -520,8 +514,8 @@ public class CommandHandler {
                 break;
             case NON_EXISTENT_ID:
                 //NEED TO CHANGE TO INDEX SOON????
-                for (Integer num : e.getInvalidIds()) {
-                    controller.relayFb(String.format(Constants.CMD_ERROR_CANT_UNMARK_NO_ID, num), MsgType.ERROR);
+                for (Integer screenId : e.getInvalidIds()) {
+                    controller.relayFb(String.format(Constants.CMD_ERROR_CANT_UNMARK_NO_ID, screenId), MsgType.ERROR);
                 }
                 //logger.fine(Constants.LOG_DELETE_FAIL_NOID);
                 break;
@@ -550,8 +544,8 @@ public class CommandHandler {
             case FILE_REPLACED:
                 String fb = "";
                 for (FilePathPair item : e.getFilePathPairs()) {
-                    fb += String.format(Constants.CMD_ERROR_USE_FAIL_REPLACED, item.getOldFilePath(),
-                            item.getNewFilePath()) + "\n";
+                    fb += String.format(Constants.CMD_ERROR_USE_FAIL_REPLACED, "\n" + item.getOldFilePath(),
+                            item.getNewFilePath());
                 }
                 controller.relayFb(fb, MsgType.ERROR);
                 break;

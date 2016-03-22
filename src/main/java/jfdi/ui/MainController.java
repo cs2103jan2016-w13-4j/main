@@ -73,6 +73,7 @@ public class MainController {
     public ObservableList<ListItem> importantList;
     private ObservableList<HelpItem> helpList;
     private Timeline overlayTimeline;
+    private InputHistory inputHistory;
 
     public void initialize() {
 
@@ -85,6 +86,7 @@ public class MainController {
         initCmdArea();
         initTimelines();
         initHelpList();
+        initInputHistory();
 
     }
 
@@ -201,7 +203,7 @@ public class MainController {
     private void initCmdArea() {
 
         cmdArea.setPromptText(Constants.CTRL_CMD_PROMPT_TEXT);
-        handleEnterKey();
+        handleKeyPressedEvents();
         disableScrollBarCmd();
     }
 
@@ -269,6 +271,10 @@ public class MainController {
         return fadeOut;
     }
 
+    private void initInputHistory() {
+        inputHistory = new InputHistory();
+    }
+
     /***************************
      *** LEVEL 2 Abstraction ***
      ***************************/
@@ -281,17 +287,30 @@ public class MainController {
     }
 
     @FXML
-    private void handleEnterKey() {
+    private void handleKeyPressedEvents() {
         cmdArea.setOnKeyPressed((keyEvent) -> {
             KeyCode code = keyEvent.getCode();
 
             if (code == KeyCode.ENTER) {
                 String text = cmdArea.getText();
                 ui.processInput(text);
+                inputHistory.addInput(text);
                 cmdArea.clear();
-                // consume the new line left in the command area
-                keyEvent.consume();
+            } else if (code == KeyCode.UP) {
+                String previousInput = inputHistory.getPrevious();
+                if (previousInput != null) {
+                    cmdArea.setText(previousInput);
+                }
+            } else if (code == KeyCode.DOWN) {
+                String nextInput = inputHistory.getNext();
+                if (nextInput != null) {
+                    cmdArea.setText(nextInput);
+                }
+            } else {
+                return;
             }
+
+            keyEvent.consume();
 
             /*
              * Not needed yet! // Tab event is sent to UI whenever tab is hit if

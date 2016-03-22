@@ -196,7 +196,7 @@ public class AliasDb implements IDatabase {
      * This method resets the program's internal storage of aliases. This method
      * should only be used by the public in tests.
      */
-    public void resetProgramStorage() {
+    public void reset() {
         aliasList = new ArrayList<Alias>();
         deletedAliasList = new ArrayList<Alias>();
     }
@@ -241,7 +241,7 @@ public class AliasDb implements IDatabase {
             deletedAliasList = new ArrayList<Alias>();
             return null;
         } else {
-            resetProgramStorage();
+            reset();
         }
 
         String movedTo = FileManager.backupAndRemove(filePath);

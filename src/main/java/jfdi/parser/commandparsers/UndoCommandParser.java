@@ -1,6 +1,6 @@
 package jfdi.parser.commandparsers;
 
-import jfdi.logic.commands.UndoCommandStub.Builder;
+import jfdi.logic.commands.UndoCommand.Builder;
 import jfdi.logic.interfaces.Command;
 
 /**

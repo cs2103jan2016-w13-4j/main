@@ -35,7 +35,7 @@ public class TaskAttributesTest {
 
     @After
     public void tearDown() throws Exception {
-        taskDbInstance.resetProgramStorage();
+        taskDbInstance.reset();
     }
 
     @Test

@@ -5,20 +5,17 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.ext.Font?>
 
-<fx:root type="HBox" prefHeight="35.0" prefWidth="200.0" style="-fx-background-color: #434343;" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="35.0" prefWidth="200.0" styleClass="statsItem"  type="HBox" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" >
    <children>
-      <Label prefHeight="35.0" prefWidth="70.0" style="-fx-background-color: #434343;" textFill="#eeeeee" translateX="10.0">
+      <Label fx:id="statsName" prefHeight="35.0" prefWidth="70.0" style="-fx-background-color: #434343;" textFill="#eeeeee" translateX="10.0" text="blank">
          <font>
             <Font name="Hammersmith One" size="13.0" />
          </font>
-         <HBox.margin>
-            <Insets />
-         </HBox.margin>
       </Label>
-      <Label prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #434343;" textFill="#eeeeee" translateX="10.0">
+      <Label fx:id="statsNum" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #434343;" textFill="#eeeeee" translateX="10.0" text="blank">
          <font>
             <Font name="Hammersmith One" size="16.0" />
          </font>
       </Label>
    </children>
-</HBox>
+</fx:root>

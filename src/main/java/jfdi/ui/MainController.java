@@ -34,6 +34,7 @@ import jfdi.ui.Constants.MsgType;
 import jfdi.ui.commandhandlers.CommandHandler;
 import jfdi.ui.items.HelpItem;
 import jfdi.ui.items.ListItem;
+import jfdi.ui.items.StatsItem;
 
 public class MainController {
 
@@ -46,7 +47,7 @@ public class MainController {
     @FXML
     public Label dayDisplayer;
     @FXML
-    public ListView<String> statsDisplayer;
+    public ListView<StatsItem> statsDisplayer;
     @FXML
     public Label overdueLabel;
     @FXML
@@ -74,6 +75,10 @@ public class MainController {
     public CommandHandler cmdHandler;
     public Stage mainStage;
     public ObservableList<ListItem> importantList;
+    public ObservableList<StatsItem> statsList;
+    public int completedNum;
+    public int dueTodayNum;
+
     private ObservableList<HelpItem> helpList;
     private Timeline overlayTimeline;
     private InputHistory inputHistory;
@@ -186,6 +191,12 @@ public class MainController {
     private void initStatsArea() {
         statsDisplayer.setMouseTransparent(true);
         statsDisplayer.setFocusTraversable(false);
+        statsList = FXCollections.observableArrayList();
+        statsList.add(new StatsItem(Constants.CTRL_STATS_NAME1));
+        statsList.add(new StatsItem(Constants.CTRL_STATS_NAME2));
+        statsDisplayer.setItems(statsList);
+        completedNum = 0;
+        dueTodayNum = 0;
     }
 
     private void initOverdueList() {

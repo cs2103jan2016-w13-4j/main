@@ -1,6 +1,6 @@
 package jfdi.parser.commandparsers;
 
-import jfdi.logic.commands.MoveTaskCommandStub.Builder;
+import jfdi.logic.commands.MoveDirectoryCommand.Builder;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
 
@@ -39,7 +39,7 @@ public class MoveCommandParser extends AbstractCommandParser {
         }
 
         directoryName = getDirectoryName(input);
-        builder.setDirectory(directoryName);
+        builder.setNewDirectory(directoryName);
         return builder.build();
     }
 

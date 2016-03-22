@@ -1,5 +1,11 @@
 package jfdi.logic.commands;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
+
 import jfdi.logic.events.AddTaskDoneEvent;
 import jfdi.logic.events.AddTaskFailedEvent;
 import jfdi.logic.interfaces.Command;
@@ -7,12 +13,6 @@ import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
 
 /**
  * @author Liu Xinan
@@ -31,6 +31,26 @@ public class AddTaskCommand extends Command {
         this.endDateTime = Optional.ofNullable(builder.endDateTime);
         this.reminders = builder.reminders.toArray(new Duration[0]);
         this.tags = builder.tags.toArray(new String[0]);
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Optional<LocalDateTime> getStartDateTime() {
+        return startDateTime;
+    }
+
+    public Optional<LocalDateTime> getEndDateTime() {
+        return endDateTime;
+    }
+
+    public Duration[] getReminders() {
+        return reminders;
+    }
+
+    public String[] getTags() {
+        return tags;
     }
 
     public static class Builder {
@@ -104,7 +124,8 @@ public class AddTaskCommand extends Command {
             task.save();
             eventBus.post(new AddTaskDoneEvent(task));
         } catch (InvalidTaskParametersException e) {
-            eventBus.post(new AddTaskFailedEvent(AddTaskFailedEvent.Error.EMPTY_DESCRIPTION));
+            eventBus.post(new AddTaskFailedEvent(
+                AddTaskFailedEvent.Error.EMPTY_DESCRIPTION));
         } catch (NoAttributesChangedException e) {
             // Should not happen for creating tasks
             assert false;

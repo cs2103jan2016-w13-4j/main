@@ -59,7 +59,7 @@ public class Constants {
     public static final String REGEX_DATE_ATTRIBUTES = "((?i)(day)(s)?|"
         + "(week|wk)(s)?|" + "(month|mth)(s)?|" + "(year|yr))(s)?";
     public static final String REGEX_TIME_MILITARY = "(?i)([0-1][0-9]|[2][0-4])[.:]?[0-5][\\d]([h]([r][s]?)?)";
-    public static final String REGEX_TIME_NORMAL = "((?i)0?[1-9]|1[0-2])[.:]?([0-5][0-9])?[ :]?([a|p][m])";
+    public static final String REGEX_TIME_NORMAL = "((?i)0?[1-9]|1[0-2])([.:]([0-5][0-9]))?[ :]?([a|p][m])";
     public static final String REGEX_TIME_RELATIVE = "((?i)((this )?(morning|afternoon|evening)|(to)?night|midnight))";
 
     public static final String REGEX_RELATIVE_DATE_1 = "(?i)(tomorrow|yesterday|today|now)";

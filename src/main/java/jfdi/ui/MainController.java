@@ -2,7 +2,6 @@ package jfdi.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 
@@ -81,8 +80,6 @@ public class MainController {
     public ObservableList<ListItem> importantList;
     public ObservableList<StatsItem> statsList;
     public String displayStatus;
-    public ArrayList<ListItem> completedList;
-    public ArrayList<ListItem> dueTodayList;
 
     private ObservableList<HelpItem> helpList;
     private Timeline overlayTimeline;
@@ -257,8 +254,6 @@ public class MainController {
         statsDisplayer.setItems(statsList);
         statsList.add(new StatsItem(Constants.CTRL_STATS_NAME1));
         statsList.add(new StatsItem(Constants.CTRL_STATS_NAME2));
-        setCompleteList();
-        setDueTodayList();
     }
 
     private Timeline generateHelpOverlayTimeline(FadeTransition fadeIn) {
@@ -292,22 +287,6 @@ public class MainController {
     /***************************
      *** LEVEL 2 Abstraction ***
      ***************************/
-
-    private void setCompleteList() {
-        completedList = new ArrayList<ListItem>();
-        displayList(Constants.CTRL_CMD_COMPLETE);
-        completedList.addAll(importantList);
-        statsList.get(0).setNum(completedList.size());
-    }
-
-    private void setDueTodayList() {
-        dueTodayList = new ArrayList<ListItem>();
-        displayList(Constants.CTRL_CMD_ALL);
-        for (ListItem item : importantList) {
-            checkDueToday(item);
-        }
-        statsList.get(1).setNum(dueTodayList.size());
-    }
 
     private void handleOverlays(ObservableList<ListItem> tasks) {
         hideOverlays();
@@ -389,46 +368,6 @@ public class MainController {
     /***************************
      *** LEVEL 3 Abstraction ***
      ***************************/
-
-    public void checkDueToday(ListItem item) {
-
-        if (item.getItem().getEndDateTime() != null && !item.getMark()) {
-            if (item.getItem().getEndDateTime().getYear()
-                    == Calendar.getInstance().get(Calendar.YEAR)) {
-                if (item.getItem().getEndDateTime().getMonthValue()
-                        == Calendar.getInstance().get(Calendar.MONTH) + 1) {
-                    if (item.getItem().getEndDateTime().getDayOfMonth()
-                            == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
-                        if (!isInList(item)) {
-                            dueTodayList.add(item);
-                        }
-                    }
-                }
-            }
-        }
-
-        if (item.getItem().getStartDateTime() != null && !item.getMark()) {
-            if (item.getItem().getStartDateTime().getYear()
-                    == Calendar.getInstance().get(Calendar.YEAR)) {
-                if (item.getItem().getStartDateTime().getMonthValue()
-                        == Calendar.getInstance().get(Calendar.MONTH) + 1) {
-                    if (item.getItem().getStartDateTime().getDayOfMonth()
-                            == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
-                        if (!isInList(item)) {
-                            dueTodayList.add(item);
-                        }
-                    }
-                }
-            }
-        }
-
-
-    }
-
-    private boolean isInList(ListItem item) {
-        dueTodayList.contains(item);
-        return false;
-    }
 
     public void setFirstAndLastVisibleIds() {
         ListViewSkin<?> listViewSkin = (ListViewSkin<?>) listMain.getSkin();

@@ -23,7 +23,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
@@ -45,7 +44,8 @@ public class TestMainSetUp extends ApplicationTest {
     Label listStatus;
     ListView<ListItem> listMain;
     TextArea fbArea;
-    TextField cmdArea;
+    TextArea cmdArea;
+
     VBox helpOverLay;
     Stage stage;
     Scene scene;
@@ -105,7 +105,7 @@ public class TestMainSetUp extends ApplicationTest {
         controller.importantList.removeAll(controller.importantList);
 
         File tempDir = Files.createTempDir();
-        controller.displayList("use " + tempDir.toString());
+        controller.displayList("use " + tempDir.getPath());
 
         controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
         ui.displayWelcome();

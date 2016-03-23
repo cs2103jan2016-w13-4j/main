@@ -110,24 +110,10 @@ public class ListItem extends VBox {
     }
 
     public void strikeOut() {
-        this.getStyleClass().add("itemBoxDone");
-        //this.getStyleClass().remove(0);
-        //rowIndex.getStyleClass().remove("itemBox");
-        //description.getStyleClass().remove("itemBox");
-        //timeAndDate.getStyleClass().remove("itemBox");
-        //rowIndex.getStyleClass().add("itemBoxDone");
-        //description.getStyleClass().add("itemBoxDone");
-        //timeAndDate.getStyleClass().add("itemBoxDone");
+        this.getStyleClass().setAll("itemBoxDone");
     }
 
     public void removeStrike() {
-        //        this.getStyleClass()..remove(0);
-        this.getStyleClass().remove("itemBoxDone");
-        this.getStyleClass().add("itemBox");
-        //description.getStyleClass().remove("itemBoxDone");
-        //timeAndDate.getStyleClass().remove("itemBoxDone");
-        //rowIndex.getStyleClass().add("itemBox");
-        //description.getStyleClass().add("itemBox");
-        //timeAndDate.getStyleClass().add("itemBox");
+        this.getStyleClass().setAll("itemBox");
     }
 }

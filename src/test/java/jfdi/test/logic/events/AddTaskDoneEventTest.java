@@ -20,8 +20,8 @@ public class AddTaskDoneEventTest {
 
     @Test
     public void getTask() throws Exception {
-        AddTaskDoneEvent e = new AddTaskDoneEvent(task);
-        assertSame(task, e.getTask());
+        AddTaskDoneEvent event = new AddTaskDoneEvent(task);
+        assertSame(task, event.getTask());
     }
 
 }

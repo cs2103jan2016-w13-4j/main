@@ -3,6 +3,7 @@ package jfdi.test.ui;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
@@ -12,6 +13,8 @@ import org.junit.Test;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
+
+import com.google.common.io.Files;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -98,9 +101,11 @@ public class TestMainSetUp extends ApplicationTest {
 
         // Link Controller with UI, MainSetUp and CommandHandler
         controller.setUi(ui);
-        //controller.setMainApp(this);
 
         controller.importantList.removeAll(controller.importantList);
+
+        File tempDir = Files.createTempDir();
+        controller.displayList("use " + tempDir.toString());
 
         controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
         ui.displayWelcome();

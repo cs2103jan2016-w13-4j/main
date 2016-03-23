@@ -34,19 +34,17 @@ import jfdi.ui.IUserInterface;
 import jfdi.ui.MainController;
 import jfdi.ui.UI;
 import jfdi.ui.items.ListItem;
-import jfdi.ui.items.StatsItem;
 
 public class TestMainSetUp extends ApplicationTest {
 
     /* The widgets of the GUI used for the tests. */
     Label dayDisplayer;
-    ListView<StatsItem> statsDisplayer;
     Label listStatus;
     ListView<ListItem> listMain;
     TextArea fbArea;
     TextArea cmdArea;
-
     VBox helpOverLay;
+
     Stage stage;
     Scene scene;
     Parent rootLayout;
@@ -121,7 +119,6 @@ public class TestMainSetUp extends ApplicationTest {
     public void setUp() {
         /* Retrieve the tested widgets from the GUI. */
         dayDisplayer = find("#dayDisplayer");
-        statsDisplayer = find("#statsDisplayer");
         listStatus = find("#listStatus");
         listMain = find("#listMain");
         fbArea = find("#fbArea");
@@ -144,7 +141,6 @@ public class TestMainSetUp extends ApplicationTest {
         final String errMsg = " %s cannot be retrieved!";
 
         assertNotNull(String.format(errMsg, "dayDisplayer"), dayDisplayer);
-        assertNotNull(String.format(errMsg, "statsDisplayer"), statsDisplayer);
         assertNotNull(String.format(errMsg, "listStatus"), listStatus);
         assertNotNull(String.format(errMsg, "listMain"), listMain);
         assertNotNull(String.format(errMsg, "fbArea"), fbArea);

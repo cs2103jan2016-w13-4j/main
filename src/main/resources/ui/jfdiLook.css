@@ -78,25 +78,21 @@
 	-fx-background-color: #faebcd;
 	-fx-text-fill: #434343;
 	-fx-font-family: "HammersmithOne";
-	-fx-font-size: 28px;
-	-fx-alignment: CENTER;
-	-fx-text-alignment: CENTER;
+	-fx-font-size: 22px;
+	-fx-alignment: #faebcd;
+	-fx-text-alignment: #faebcd;
 }
 
 .fbArea {
 	-fx-font-family: "HammersmithOne";
-	-fx-text-fill: #eeeeee;
 	-fx-font-size: 14px;
 	-fx-wrap-text: true;
-}
-
-.fbArea .text,
-.cmdArea .text {
-	-fx-text-fill: #eeeeee;
+	-fx-text-fill: white;
+	-fx-text-inner-color: white;
 }
 
 .cmdArea {
-	-fx-text-fill: #eeeeee;
+	-fx-text-fill: #434343;
 	-fx-font-family: "HammersmithOne";
 	-fx-font-size: 12px;
 	-fx-wrap-text: true;

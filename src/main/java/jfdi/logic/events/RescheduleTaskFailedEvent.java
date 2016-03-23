@@ -9,6 +9,7 @@ public class RescheduleTaskFailedEvent {
 
     public enum Error {
         NON_EXISTENT_ID,
+        DUPLICATED_TASK,
         NO_CHANGES,
         UNKNOWN
     }

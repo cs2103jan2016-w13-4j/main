@@ -23,6 +23,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
@@ -44,7 +45,7 @@ public class TestMainSetUp extends ApplicationTest {
     Label listStatus;
     ListView<ListItem> listMain;
     TextArea fbArea;
-    TextArea cmdArea;
+    TextField cmdArea;
 
     VBox helpOverLay;
     Stage stage;
@@ -121,7 +122,6 @@ public class TestMainSetUp extends ApplicationTest {
     public void setUp() {
         /* Retrieve the tested widgets from the GUI. */
         dayDisplayer = find("#dayDisplayer");
-        statsDisplayer = find("#statsDisplayer");
         listStatus = find("#listStatus");
         listMain = find("#listMain");
         fbArea = find("#fbArea");
@@ -144,7 +144,6 @@ public class TestMainSetUp extends ApplicationTest {
         final String errMsg = " %s cannot be retrieved!";
 
         assertNotNull(String.format(errMsg, "dayDisplayer"), dayDisplayer);
-        assertNotNull(String.format(errMsg, "statsDisplayer"), statsDisplayer);
         assertNotNull(String.format(errMsg, "listStatus"), listStatus);
         assertNotNull(String.format(errMsg, "listMain"), listMain);
         assertNotNull(String.format(errMsg, "fbArea"), fbArea);

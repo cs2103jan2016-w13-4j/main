@@ -448,6 +448,7 @@ public class CommandHandler {
         TaskAttributes task = e.getTask();
         ListItem listItem = new ListItem(1, task, false);
         controller.importantList.add(listItem);
+        controller.importantList.get(0).getStyleClass().add("itemBox");
         controller.displayStatus = Constants.CTRL_CMD_INCOMPLETE;
         controller.relayFb(Constants.CMD_SUCCESS_SURPRISED, MsgType.SUCCESS);
     }

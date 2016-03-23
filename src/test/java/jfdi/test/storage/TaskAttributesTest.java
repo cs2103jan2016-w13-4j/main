@@ -4,9 +4,6 @@ import static org.junit.Assert.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Duration;
-import java.util.HashSet;
-import java.util.TreeSet;
 
 import jfdi.storage.Constants;
 import jfdi.storage.apis.MainStorage;
@@ -46,8 +43,6 @@ public class TaskAttributesTest {
         taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
         taskAttributes.setStartDateTime(Constants.TEST_TASK_STARTDATETIME);
         taskAttributes.setEndDateTime(Constants.TEST_TASK_ENDDATETIME);
-        taskAttributes.setTags(Constants.TEST_TASK_TAG_1);
-        taskAttributes.setReminders(Constants.TEST_TASK_REMINDER_DURATION_1);
         taskAttributes.setCompleted(true);
 
         // Assert that the getter returns the same attributes
@@ -55,12 +50,6 @@ public class TaskAttributesTest {
         assertEquals(Constants.TEST_TASK_DESCRIPTION_1, taskAttributes.getDescription());
         assertEquals(Constants.TEST_TASK_STARTDATETIME, taskAttributes.getStartDateTime());
         assertEquals(Constants.TEST_TASK_ENDDATETIME, taskAttributes.getEndDateTime());
-        HashSet<String> tags = taskAttributes.getTags();
-        assertEquals(1, tags.size());
-        assertTrue(tags.contains(Constants.TEST_TASK_TAG_1));
-        TreeSet<Duration> reminders = taskAttributes.getReminders();
-        assertEquals(1, reminders.size());
-        assertTrue(reminders.contains(Constants.TEST_TASK_REMINDER_DURATION_1));
         assertEquals(true, taskAttributes.isCompleted());
     }
 
@@ -75,8 +64,6 @@ public class TaskAttributesTest {
         assertEquals(task.getDescription(), taskAttributes.getDescription());
         assertEquals(task.getStartDateTime(), taskAttributes.getStartDateTime());
         assertEquals(task.getEndDateTime(), taskAttributes.getEndDateTime());
-        assertEquals(task.getTags(), taskAttributes.getTags());
-        assertEquals(task.getReminders(), taskAttributes.getReminders());
     }
 
     @Test(expected = InvalidTaskParametersException.class)
@@ -122,8 +109,6 @@ public class TaskAttributesTest {
         taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
         taskAttributes.setStartDateTime(Constants.TEST_TASK_STARTDATETIME);
         taskAttributes.setEndDateTime(Constants.TEST_TASK_ENDDATETIME);
-        taskAttributes.setTags(Constants.TEST_TASK_TAG_1);
-        taskAttributes.setReminders(Constants.TEST_TASK_REMINDER_DURATION_1);
         taskAttributes.save();
 
         // Verify that a task has been created
@@ -135,10 +120,6 @@ public class TaskAttributesTest {
         assertEquals(Constants.TEST_TASK_DESCRIPTION_1, taskAttributes2.getDescription());
         assertEquals(Constants.TEST_TASK_STARTDATETIME, taskAttributes2.getStartDateTime());
         assertEquals(Constants.TEST_TASK_ENDDATETIME, taskAttributes2.getEndDateTime());
-        assertTrue(taskAttributes2.hasTag(Constants.TEST_TASK_TAG_1));
-        TreeSet<Duration> reminders = taskAttributes2.getReminders();
-        assertEquals(1, reminders.size());
-        assertTrue(reminders.contains(Constants.TEST_TASK_REMINDER_DURATION_1));
         assertEquals(false, taskAttributes2.isCompleted());
     }
 
@@ -158,8 +139,6 @@ public class TaskAttributesTest {
         // Add more attributes to it
         taskAttributes.setStartDateTime(Constants.TEST_TASK_STARTDATETIME);
         taskAttributes.setEndDateTime(Constants.TEST_TASK_ENDDATETIME);
-        taskAttributes.setTags(Constants.TEST_TASK_TAG_1);
-        taskAttributes.setReminders(Constants.TEST_TASK_REMINDER_DURATION_1);
         taskAttributes.setCompleted(true);
         taskAttributes.save();
 
@@ -169,10 +148,6 @@ public class TaskAttributesTest {
         assertEquals(Constants.TEST_TASK_DESCRIPTION_1, taskAttributes2.getDescription());
         assertEquals(Constants.TEST_TASK_STARTDATETIME, taskAttributes2.getStartDateTime());
         assertEquals(Constants.TEST_TASK_ENDDATETIME, taskAttributes2.getEndDateTime());
-        assertTrue(taskAttributes2.hasTag(Constants.TEST_TASK_TAG_1));
-        TreeSet<Duration> reminders = taskAttributes2.getReminders();
-        assertEquals(1, reminders.size());
-        assertTrue(reminders.contains(Constants.TEST_TASK_REMINDER_DURATION_1));
         assertEquals(true, taskAttributes2.isCompleted());
     }
 
@@ -188,75 +163,6 @@ public class TaskAttributesTest {
         assertEquals(taskAttributes.getDescription(), taskMirror.getDescription());
         assertEquals(taskAttributes.getStartDateTime(), taskMirror.getStartDateTime());
         assertEquals(taskAttributes.getEndDateTime(), taskMirror.getEndDateTime());
-        assertEquals(taskAttributes.getTags(), taskMirror.getTags());
-        assertEquals(taskAttributes.getReminders(), taskMirror.getReminders());
-    }
-
-    @Test
-    public void testAddTag() {
-        // Generate the new TaskAttributes
-        TaskAttributes taskAttributes = new TaskAttributes();
-        assertTrue(taskAttributes.getTags().isEmpty());
-
-        // Add a new tag
-        taskAttributes.addTag(Constants.TEST_TASK_TAG_1);
-        assertEquals(1, taskAttributes.getTags().size());
-        assertTrue(taskAttributes.getTags().contains(Constants.TEST_TASK_TAG_1));
-
-        // Add the same tag - it should not be doubly-added
-        assertFalse(taskAttributes.addTag(Constants.TEST_TASK_TAG_1));
-        assertEquals(1, taskAttributes.getTags().size());
-
-        // Add a second unique tag
-        taskAttributes.addTag(Constants.TEST_TASK_TAG_2);
-        assertEquals(2, taskAttributes.getTags().size());
-        assertTrue(taskAttributes.getTags().contains(Constants.TEST_TASK_TAG_2));
-    }
-
-    @Test
-    public void testRemoveTag() {
-        // Generate the new TaskAttributes
-        TaskAttributes taskAttributes = new TaskAttributes();
-        taskAttributes.addTag(Constants.TEST_TASK_TAG_1);
-        taskAttributes.addTag(Constants.TEST_TASK_TAG_2);
-        assertEquals(2, taskAttributes.getTags().size());
-
-        // Try removing a non-existent tag - it shouldn't work
-        assertFalse(taskAttributes.removeTag(Constants.TEST_TASK_DESCRIPTION_1));
-        assertEquals(2, taskAttributes.getTags().size());
-
-        // Remove a valid tag
-        assertTrue(taskAttributes.removeTag(Constants.TEST_TASK_TAG_1));
-        assertEquals(1, taskAttributes.getTags().size());
-
-        // Remove the same tag - it shouldn't work
-        assertFalse(taskAttributes.removeTag(Constants.TEST_TASK_TAG_1));
-        assertEquals(1, taskAttributes.getTags().size());
-
-        // Remove the last tag
-        assertTrue(taskAttributes.removeTag(Constants.TEST_TASK_TAG_2));
-        assertEquals(0, taskAttributes.getTags().size());
-    }
-
-    @Test
-    public void testAddReminder() {
-        // Generate the new TaskAttributes
-        TaskAttributes taskAttributes = new TaskAttributes();
-        assertTrue(taskAttributes.getReminders().isEmpty());
-
-        // Add a new reminder
-        taskAttributes.addReminder(Constants.TEST_TASK_REMINDER_DURATION_1);
-        assertEquals(1, taskAttributes.getReminders().size());
-        assertTrue(taskAttributes.getReminders().contains(Constants.TEST_TASK_REMINDER_DURATION_1));
-
-        // Add the same reminder - it should not be doubly-added
-        assertFalse(taskAttributes.addReminder(Constants.TEST_TASK_REMINDER_DURATION_1));
-        assertEquals(1, taskAttributes.getReminders().size());
-
-        // Add a second unique reminder
-        taskAttributes.addReminder(Constants.TEST_TASK_REMINDER_DURATION_2);
-        assertEquals(2, taskAttributes.getReminders().size());
-        assertTrue(taskAttributes.getReminders().contains(Constants.TEST_TASK_REMINDER_DURATION_2));
     }
 
     @Test
@@ -270,8 +176,6 @@ public class TaskAttributesTest {
         taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
         taskAttributes.setStartDateTime(Constants.TEST_TASK_STARTDATETIME);
         taskAttributes.setEndDateTime(Constants.TEST_TASK_ENDDATETIME);
-        taskAttributes.addTag(Constants.TEST_TASK_TAG_1);
-        taskAttributes.addReminder(Constants.TEST_TASK_REMINDER_DURATION_1);
 
         // Make sure they are equivalent
         assertTrue(taskAttributes.equalTo(task));
@@ -281,20 +185,12 @@ public class TaskAttributesTest {
      * @return a new Task with all of the first constants as its attributes
      */
     private Task getSimpleTask() {
-        // Prepare the tags and reminders
-        HashSet<String> tags = new HashSet<String>();
-        tags.add(Constants.TEST_TASK_TAG_1);
-        TreeSet<Duration> reminders = new TreeSet<Duration>();
-        reminders.add(Constants.TEST_TASK_REMINDER_DURATION_1);
-
         // Generate the new Task
         Task task = new Task(
                 1,
                 Constants.TEST_TASK_DESCRIPTION_1,
                 Constants.TEST_TASK_STARTDATETIME,
-                Constants.TEST_TASK_ENDDATETIME,
-                tags,
-                reminders
+                Constants.TEST_TASK_ENDDATETIME
                 );
         return task;
     }

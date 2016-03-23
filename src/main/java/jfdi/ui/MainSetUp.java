@@ -56,28 +56,33 @@ public class MainSetUp extends Application {
 
     private void loadFonts() {
 
-        //Font.loadFont(MainSetUp.class.getResource(Constants.URL_HAMSMITH_PATH).toExternalForm(), 12);
-        //Font.loadFont(MainSetUp.class.getResource(Constants.URL_RALEWAY_PATH).toExternalForm(), 24);
+        // Font.loadFont(MainSetUp.class.getResource(Constants.URL_HAMSMITH_PATH).toExternalForm(),
+        // 12);
+        // Font.loadFont(MainSetUp.class.getResource(Constants.URL_RALEWAY_PATH).toExternalForm(),
+        // 24);
     }
 
     private void initRootLayout() throws IOException {
 
-        rootLayout = (BorderPane) FXMLLoader.load(getClass().getResource(Constants.URL_ROOT_PATH));
-        logger.fine(String.format(Constants.LOG_FXML_PATH, "RootLayout.fxml", Constants.URL_ROOT_PATH));
+        rootLayout = (BorderPane) FXMLLoader.load(getClass().getResource(
+                Constants.URL_ROOT_PATH));
+        logger.fine(String.format(Constants.LOG_FXML_PATH, "RootLayout.fxml",
+                Constants.URL_ROOT_PATH));
 
         // Display scene with root layout
         scene = new Scene(rootLayout);
         scene.setFill(Color.TRANSPARENT);
         primaryStage.setScene(scene);
-        scene.getStylesheets().add("https://fonts.googleapis.com/css?family=Hammersmith+One");
-        scene.getStylesheets().add("https://fonts.googleapis.com/css?family=Titillium+Web:200");
+        scene.getStylesheets().add(
+                "https://fonts.googleapis.com/css?family=Hammersmith+One");
+        scene.getStylesheets().add(
+                "https://fonts.googleapis.com/css?family=Titillium+Web:200");
         primaryStage.show();
         primaryStage.setResizable(false);
-        this.scene = scene;
 
     }
 
-    private void initView() throws IOException {
+    private void initView() throws IOException, InterruptedException {
 
         IUserInterface ui = UI.getInstance();
 
@@ -85,11 +90,11 @@ public class MainSetUp extends Application {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(Constants.URL_LIST_PATH));
         listLayout = (AnchorPane) loader.load();
-        logger.fine(String.format(Constants.LOG_FXML_PATH, "ListLayout.fxml", Constants.URL_LIST_PATH));
+        logger.fine(String.format(Constants.LOG_FXML_PATH, "ListLayout.fxml",
+                Constants.URL_LIST_PATH));
 
         // Initialize Controller
         controller = loader.getController();
-        controller.initialize();
 
         // Link UI with Controller
         ui.setController(controller);
@@ -100,10 +105,10 @@ public class MainSetUp extends Application {
 
         // Link Controller with UI, MainSetUp and CommandHandler
         controller.setUi(ui);
-        controller.setMainApp(this); // REDUNDANT!!!! DELETE
+        controller.setMainApp(this);
 
         //controller.importantList.removeAll(controller.importantList);
-
+        controller.initSideContent();
         controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
         ui.displayWelcome();
     }

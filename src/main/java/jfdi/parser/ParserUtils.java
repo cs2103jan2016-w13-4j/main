@@ -40,17 +40,17 @@ public class ParserUtils {
             return CommandType.alias;
         } else if (input.matches(Constants.REGEX_UNALIAS)) {
             return CommandType.unalias;
-        } else if (input.matches(Constants.REGEX_DIRECTORY)) { // TODO
+        } else if (input.matches(Constants.REGEX_DIRECTORY)) {
             return CommandType.directory;
         } else if (input.matches(Constants.REGEX_MOVE)) {
             return CommandType.move;
         } else if (input.matches(Constants.REGEX_USE)) {
             return CommandType.use;
-        } else if (input.matches(Constants.REGEX_UNDO)) { // TODO
+        } else if (input.matches(Constants.REGEX_UNDO)) {
             return CommandType.undo;
-        } else if (input.matches(Constants.REGEX_HELP)) { // TODO
+        } else if (input.matches(Constants.REGEX_HELP)) {
             return CommandType.help;
-        } else if (input.matches(Constants.REGEX_WILDCARD)) { // TODO
+        } else if (input.matches(Constants.REGEX_WILDCARD)) {
             return CommandType.wildcard;
         } else if (input.matches(Constants.REGEX_EXIT)) {
             return CommandType.exit;

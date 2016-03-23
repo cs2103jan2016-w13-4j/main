@@ -4,7 +4,7 @@ public class Constants {
 
     public static final String UI_MESSAGE_INIT = "Initializing UI...";
     public static final String UI_MESSAGE_INITED = "Initialization Completed!";
-    public static final String UI_MESSAGE_GREETING = "J.F.D.I. : Hello Jim! Nice to see you again! :)";
+    public static final String UI_MESSAGE_GREETING = "J.F.D.I. : Hello there! Nice to see you again! :)";
     public static final String UI_MESSAGE_WELCOME = "\nJ.F.D.I. : What can I do for you?";
     public static final String UI_MESSAGE_USERCMD = "\nYou said: %1$s";
     public static final String UI_MESSAGE_RESPONSE = "\nJ.F.D.I. : %1$s";
@@ -22,7 +22,9 @@ public class Constants {
 
     public static final String CTRL_CMD_PROMPT_TEXT = "(Hey Jim! Please let me know what I can do for you!)";
     public static final String CTRL_CMD_INCOMPLETE = "list";
-    public static final String CTRL_CMD_COMPLETE = "list complete";
+    public static final String CTRL_CMD_COMPLETE = "list completed";
+    public static final String CTRL_CMD_SURPRISE = "surprise!";
+    public static final String CTRL_CMD_SEARCH = "search";
     public static final String CTRL_CMD_ALL = "list all";
     public static final String CTRL_STATS_NAME1 = "Completed: ";
     public static final String CTRL_STATS_NAME2 = "Due Today: ";
@@ -43,6 +45,7 @@ public class Constants {
     public static final String CMD_ERROR_CANT_DELETE_UNKNOWN = "Cannot delete task. The ID #%d does not exist!";
     public static final String CMD_ERROR_INIT_FAIL_UNKNOWN = "Some stupid error occurred. Cannot initialize JFDI!";
     public static final String CMD_ERROR_INIT_FAIL_INVALID = "The folder %s doesn't work. Choose another one!";
+    // replaced should be user command completed and backup files in directory.
     public static final String CMD_ERROR_INIT_FAIL_REPLACED = "The folder %s is occupied. File has been moved to %s !";
     public static final String CMD_ERROR_CANT_MARK_NO_ID = "Cannot mark task as completed. The ID #%d does not exist!!";
     public static final String CMD_ERROR_CANT_MARK_UNKNOWN = "Some stupid error occurred. Cannot mark task(s) as done!";

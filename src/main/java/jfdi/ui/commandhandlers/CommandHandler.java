@@ -238,10 +238,7 @@ public class CommandHandler {
     }
 
     private void refreshDisplay() {
-        appendTaskToDisplayList(new TaskAttributes());
-        controller.importantList.remove(controller.importantList.size()-1);
-        // TODO Auto-generated method stub
-
+        controller.listMain.refresh();
     }
 
     @Subscribe

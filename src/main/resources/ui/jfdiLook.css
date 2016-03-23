@@ -5,6 +5,13 @@
     -fx-padding:0;
 }
 
+.dayDate {
+	-fx-background-color: #434343;
+	-fx-text-fill: #eeeeee;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 16px;
+}
+
 .itemBox{
 		-fx-background-color: #faebcd;
 		-fx-alignment: CENTER_LEFT;
@@ -68,8 +75,8 @@
 }
 
 .listStatus {
-	-fx-background-color: #434343;
-	-fx-text-fill: #eeeeee;
+	-fx-background-color: #faebcd;
+	-fx-text-fill: #434343;
 	-fx-font-family: "HammersmithOne";
 	-fx-font-size: 28px;
 	-fx-alignment: CENTER;
@@ -85,12 +92,6 @@
 
 .fbArea .text,
 .cmdArea .text {
-	-fx-text-fill: #eeeeee;
-}
-
-.fbArea .content,
-.cmdArea .content {
-	-fx-background-color: #434343;
 	-fx-text-fill: #eeeeee;
 }
 

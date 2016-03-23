@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -11,69 +12,82 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="670.0" maxWidth="650.0" prefHeight="670.0" prefWidth="650.0" style="-fx-background-color: #f7c873;" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfdi.ui.MainController">
+<AnchorPane prefHeight="700.0" prefWidth="550.0" style="-fx-background-color: #f7c873;" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfdi.ui.MainController">
    <children>
-      <StackPane maxHeight="670.0" maxWidth="650.0" prefHeight="670.0" prefWidth="650.0" VBox.vgrow="ALWAYS">
+      <StackPane prefHeight="700.0" prefWidth="550.0" VBox.vgrow="ALWAYS">
           <children>
-	          <HBox maxHeight="670.0" maxWidth="650.0" prefHeight="670.0" prefWidth="650.0">
-	              <children>
-				      <VBox layoutX="200.0" prefHeight="670.0" prefWidth="450.0">
-				         <children>
-				            <StackPane prefHeight="65.0" prefWidth="450.0" style="-fx-background-color: #faebcd;">
-				               <children>
-				                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#434343" height="40.0" stroke="#434343" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="10.0" translateZ="5.0" width="400.0">
-				                     <StackPane.margin>
-				                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-				                     </StackPane.margin>
-				                  </Rectangle>
-				                  <Label fx:id="listStatus" prefHeight="40.0" prefWidth="408.0" styleClass="listStatus" stylesheets="@jfdiLook.css" text="Display List" />
-				               </children>
-				            </StackPane>
-				            <ListView fx:id="listMain" prefHeight="600.0" prefWidth="450.0" style="-fx-background-color: faebcd;" stylesheets="@jfdiLook.css">
-				               <VBox.margin>
-				                  <Insets />
-				               </VBox.margin>
-				            </ListView>
-				         </children>
-				      </VBox>
-            	      <VBox fx:id="backDrop" prefHeight="670.0" prefWidth="200.0" style="-fx-background-color: f7c873;">
-            		     <children>
-            			    <Label fx:id="dayDisplayer" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="200.0" styleClass="dayDate" stylesheets="@sideBar.css" textAlignment="CENTER" wrapText="true" />
-            				<ListView fx:id="statsDisplayer" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: #434343;" stylesheets="@sideBar.css">
-            				   <VBox.margin>
-            				      <Insets top="10.0" />
-            				   </VBox.margin>
-            				</ListView>
-                  			<TextArea fx:id="fbArea" blendMode="DARKEN" prefHeight="410.0" prefWidth="200.0" styleClass="fbArea" stylesheets="@jfdiLook.css">
-				               <VBox.margin>
-				                  <Insets left="5.0" right="5.0" top="10.0" />
-				               </VBox.margin>
-                  			</TextArea>
-				            <TextArea fx:id="cmdArea" blendMode="DARKEN" maxHeight="80.0" maxWidth="430.0" prefHeight="70.0" prefWidth="430.0" promptText="(Hey Jim! Please let me know what I can do for you!)" styleClass="cmdArea" stylesheets="@jfdiLook.css">
-				               <VBox.margin>
-				                  <Insets left="5.0" right="5.0" top="10.0" />
-				               </VBox.margin>
-				            </TextArea>
-            	         </children>
-            	      </VBox>
-			       </children>
-			   </HBox>
 			   <VBox fx:id="helpOverlay" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="550.0" prefWidth="500.0" style="-fx-background-color: f7c873;" StackPane.alignment="CENTER">
 	               <children>
 	                  <Label fx:id="helpIcon" focusTraversable="false" prefHeight="45.0" prefWidth="13.0" text="!" textFill="#434343">
-                     <font>
-                        <Font name="Hammersmith One" size="50.0" />
-                     </font>
-                  </Label>
+                         <font>
+                            <Font name="Hammersmith One" size="50.0" />
+                         </font>
+                      </Label>
 	                  <Label fx:id="helpTitle" focusTraversable="false" text="JFDI to the Rescue!">
-                     <font>
-                        <Font name="Hammersmith One" size="40.0" />
-                     </font>
-                  </Label>
-	                  <ListView fx:id="helpContent" focusTraversable="false" maxWidth="-Infinity" prefWidth="400.0" />
-	               </children>
+                         <font>
+                            <Font name="Hammersmith One" size="40.0" />
+                         </font>
+                     </Label>
+	                 <ListView fx:id="helpContent" focusTraversable="false" maxWidth="-Infinity" prefWidth="400.0" />
+	              </children>
                </VBox>
-		   </children>
-      </StackPane>
-   </children>
+			   <VBox maxHeight="700.0" maxWidth="550.0" prefHeight="700.0" prefWidth="550.0" style="-fx-background-color: f7c873;">
+			      <children>
+                     <HBox>
+                        <VBox.margin>
+                           <Insets left="10.0" right="10.0" top="5.0" />
+                        </VBox.margin>
+                        <children>
+      				       <StackPane alignment="CENTER_LEFT" maxHeight="60.0" maxWidth="530.0" prefHeight="60.0" prefWidth="530.0">
+      				          <children>
+      				             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#faebcd" height="40.0" stroke="#faebcd" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="10.0" translateX="-5.0" translateY="7.0" translateZ="5.0" width="340.0">
+      				                <StackPane.margin>
+      				                   <Insets left="5.0" right="10.0" />
+      				                </StackPane.margin>
+      				             </Rectangle>
+      				             <Label fx:id="listStatus" prefHeight="40.0" prefWidth="330.0" styleClass="listStatus" stylesheets="@jfdiLook.css" text="Display List" translateX="1.0" translateY="7.0">
+                                    <StackPane.margin>
+                                       <Insets left="10.0" />
+                                    </StackPane.margin>
+                                 </Label>
+      				          </children>
+      				       </StackPane>
+                           <StackPane>
+                              <HBox.margin>
+                                 <Insets />
+                              </HBox.margin>
+                              <children>
+                                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#434343" height="40.0" stroke="#434343" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="10.0" translateY="7.0" width="150.0" />
+                                 <Label id="dayDisplayer" fx:id="dayDisplayer" prefHeight="40.0" prefWidth="150.0" styleClass="dayDate" textFill="#eeeeee" translateY="5.0" />
+                              </children>
+                           </StackPane>
+                        </children>
+                     </HBox>
+				     <ListView fx:id="listMain" maxHeight="510.0" maxWidth="530.0" prefHeight="510.0" prefWidth="530.0" style="-fx-background-color: faebcd;" stylesheets="@jfdiLook.css">
+				        <VBox.margin>
+				           <Insets left="10.0" />
+				        </VBox.margin>
+				     </ListView>
+                     <VBox maxHeight="130.0" maxWidth="530.0" prefHeight="130.0" prefWidth="530.0" style="-fx-background-color: #434343;">
+                        <children>
+                  	       <TextArea fx:id="fbArea" blendMode="MULTIPLY" maxHeight="60.0" maxWidth="510.0" prefHeight="60.0" prefWidth="510.0" styleClass="fbArea" stylesheets="@jfdiLook.css">
+                              <VBox.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </VBox.margin>
+                  		   </TextArea>
+                           <TextField fx:id="cmdArea" maxWidth="510.0" prefWidth="510.0" promptText="(Hello! What would you like me to do for you?)">
+                              <VBox.margin>
+                                 <Insets left="10.0" right="10.0" />
+                              </VBox.margin>
+                           </TextField>
+                        </children>
+                        <VBox.margin>
+                           <Insets bottom="10.0" left="10.0" top="10.0" />
+                        </VBox.margin>
+                     </VBox>
+			      </children>
+		       </VBox>
+	        </children>
+        </StackPane>
+    </children>
 </AnchorPane>

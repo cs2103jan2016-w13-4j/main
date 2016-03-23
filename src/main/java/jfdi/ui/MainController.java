@@ -22,13 +22,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
-import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import jfdi.storage.apis.TaskAttributes;
 import jfdi.ui.Constants.MsgType;
 import jfdi.ui.commandhandlers.CommandHandler;
 import jfdi.ui.items.HelpItem;
@@ -37,24 +36,7 @@ import jfdi.ui.items.StatsItem;
 
 public class MainController {
 
-    @FXML
-    public VBox backDrop;
-    @FXML
-    public SplitPane leftRightSplit;
-    @FXML
-    public SplitPane upDownSplit;
-    @FXML
     public Label dayDisplayer;
-    @FXML
-    public ListView<StatsItem> statsDisplayer;
-    @FXML
-    public Label overdueLabel;
-    @FXML
-    public Label upcomingLabel;
-    @FXML
-    public ListView<TaskAttributes> overdueList;
-    @FXML
-    public ListView<TaskAttributes> upcomingList;
     @FXML
     public Label listStatus;
     @FXML
@@ -62,7 +44,7 @@ public class MainController {
     @FXML
     public TextArea fbArea;
     @FXML
-    public TextArea cmdArea;
+    public TextField cmdArea;
 
     @FXML
     public VBox helpOverlay;
@@ -93,15 +75,10 @@ public class MainController {
         initImportantList();
         initFbArea();
         initCmdArea();
-    }
-
-    public void initSideContent() {
         initTimelines();
         initHelpList();
         initInputHistory();
-        initStatsArea();
     }
-
 
     public void hideOverlays() {
         //noTaskOverlay.toBack();
@@ -245,15 +222,6 @@ public class MainController {
         helpIcon.setText(Constants.HELP_OVERLAY_ICON);
         helpTitle.setText(Constants.HELP_OVERLAY_TITLE);
         helpContent.setItems(helpList);
-    }
-
-    private void initStatsArea() {
-        statsDisplayer.setMouseTransparent(true);
-        statsDisplayer.setFocusTraversable(false);
-        statsList = FXCollections.observableArrayList();
-        statsDisplayer.setItems(statsList);
-        statsList.add(new StatsItem(Constants.CTRL_STATS_NAME1));
-        statsList.add(new StatsItem(Constants.CTRL_STATS_NAME2));
     }
 
     private Timeline generateHelpOverlayTimeline(FadeTransition fadeIn) {

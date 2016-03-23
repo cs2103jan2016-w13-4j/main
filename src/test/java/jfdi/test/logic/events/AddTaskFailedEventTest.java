@@ -13,7 +13,7 @@ public class AddTaskFailedEventTest {
 
     @Test
     public void getError() throws Exception {
-        AddTaskFailedEvent e = new AddTaskFailedEvent(AddTaskFailedEvent.Error.EMPTY_DESCRIPTION);
-        assertEquals(AddTaskFailedEvent.Error.EMPTY_DESCRIPTION, e.getError());
+        AddTaskFailedEvent event = new AddTaskFailedEvent(AddTaskFailedEvent.Error.EMPTY_DESCRIPTION);
+        assertEquals(AddTaskFailedEvent.Error.EMPTY_DESCRIPTION, event.getError());
     }
 }

@@ -55,6 +55,7 @@ public class UseDirectoryCommand extends Command {
             pushToUndoStack();
             eventBus.post(new UseDirectoryDoneEvent(newDirectory));
         } catch (FilesReplacedException e) {
+            eventBus.post(new UseDirectoryDoneEvent(newDirectory));
             eventBus.post(new FilesReplacedEvent(newDirectory, e.getReplacedFilePairs()));
         } catch (InvalidFilePathException e) {
             eventBus.post(new MoveDirectoryFailedEvent(newDirectory, MoveDirectoryFailedEvent.Error.INVALID_PATH));

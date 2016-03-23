@@ -6,7 +6,6 @@ import jfdi.logic.commands.ListCommand;
 import jfdi.logic.commands.ListCommand.ListType;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.commandparsers.AbstractCommandParser;
-import jfdi.parser.commandparsers.AddCommandParser;
 import jfdi.parser.commandparsers.ListCommandParser;
 
 import org.junit.Assert;
@@ -14,7 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ListCommandParserTest {
-    AbstractCommandParser parser = AddCommandParser.getInstance();
+    AbstractCommandParser parser = ListCommandParser.getInstance();
 
     @Before
     public void init() {
@@ -91,6 +90,28 @@ public class ListCommandParserTest {
         // Boundary case: symbols
         cmd = parser.build("LiSt *&(*&(*@$*^$");
         Assert.assertTrue(cmd instanceof InvalidCommand);
+
+        // Boundary case: null
+        cmd = parser.build("LiSt *&(*&(*@$*^$");
+        Assert.assertTrue(cmd instanceof InvalidCommand);
+
+        // Boundary case: symbols
+        cmd = parser.build("LiSt *&(*&(*@$*^$");
+        Assert.assertTrue(cmd instanceof InvalidCommand);
+
+        // Boundary case: empty string
+        try {
+            cmd = parser.build("");
+        } catch (AssertionError e) {
+            Assert.assertTrue(true);
+        }
+
+        // Boundary case: null
+        try {
+            cmd = parser.build(null);
+        } catch (AssertionError e) {
+            Assert.assertTrue(true);
+        }
     }
 
     private ListCommand validateAndReturnListCommand(Command cmd) {

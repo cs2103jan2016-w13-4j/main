@@ -51,6 +51,8 @@ public class AddCommandParser extends AbstractCommandParser {
      * @return the AddTaskCommand object encapsulating the details of the add command.
      */
     public Command build(String input) {
+        assert isValidInput(input);
+
         String originalInput = input;
         Builder addCommandBuilder = new Builder();
         try {

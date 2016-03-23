@@ -41,7 +41,7 @@ public class Constants {
 
     // Task related Regex Strings
     public static final String REGEX_DELETE_FORMAT = REGEX_DELETE
-        + " ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]?)+";
+        + " ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]*)+";
     public static final String REGEX_MARK_FORMAT = REGEX_MARK
         + " ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]?)+";
     public static final String REGEX_UNMARK_FORMAT = REGEX_UNMARK
@@ -205,7 +205,7 @@ public class Constants {
         REGEX_WILDCARD, REGEX_EXIT};
 
     public static void main(String[] args) {
-
+        assert false;
         System.out.println("delete 1-10".matches(REGEX_DELETE_FORMAT));
 
     }

@@ -158,4 +158,17 @@ public abstract class AbstractCommandParser {
 
         return invalidCommandBuilder.build();
     }
+
+    /**
+     * This method checks if the given input is valid. A valid input is one that
+     * is (1) not empty, and (2) not made of whitespaces only.
+     *
+     * @param input
+     *            the input which validity is to be checked
+     * @return true if the input is valid; false otherwise
+     */
+    protected boolean isValidInput(String input) {
+        return input != null && !input.isEmpty() && !input.trim().isEmpty();
+    }
+
 }

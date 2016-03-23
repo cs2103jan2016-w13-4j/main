@@ -1,31 +1,20 @@
 package jfdi.logic.events;
 
-import java.time.LocalDateTime;
+import jfdi.storage.apis.TaskAttributes;
 
 /**
  * @author Liu Xinan
  */
 public class RescheduleTaskDoneEvent {
 
-    private int taskId;
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
+    private TaskAttributes task;
 
-    public RescheduleTaskDoneEvent(int taskId, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        this.taskId = taskId;
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
+    public RescheduleTaskDoneEvent(TaskAttributes task) {
+        this.task = task;
     }
 
-    public int getTaskId() {
-        return taskId;
+    public TaskAttributes getTask() {
+        return task;
     }
 
-    public LocalDateTime getStartDateTime() {
-        return startDateTime;
-    }
-
-    public LocalDateTime getEndDateTime() {
-        return endDateTime;
-    }
 }

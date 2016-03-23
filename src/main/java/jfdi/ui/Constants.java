@@ -6,19 +6,26 @@ public class Constants {
     public static final String UI_MESSAGE_INITED = "Initialization Completed!";
     public static final String UI_MESSAGE_GREETING = "J.F.D.I. : Hello Jim! Nice to see you again! :)";
     public static final String UI_MESSAGE_WELCOME = "\nJ.F.D.I. : What can I do for you?";
-    public static final String UI_MESSAGE_USERCMD = "You said: %1$s\n";
-    public static final String UI_MESSAGE_RESPONSE = "J.F.D.I. : %1$s\n";
-    public static final String UI_MESSAGE_WARNING = "Warning: %1$s\n";
-    public static final String UI_MESSAGE_ERROR = "Error: %1$s\n";
-    public static final String UI_MESSAGE_QUIT = "Bye Bye! See you next time! :)\n";
+    public static final String UI_MESSAGE_USERCMD = "\nYou said: %1$s";
+    public static final String UI_MESSAGE_RESPONSE = "\nJ.F.D.I. : %1$s";
+    public static final String UI_MESSAGE_WARNING = "\nWarning: %1$s";
+    public static final String UI_MESSAGE_ERROR = "\nError: %1$s";
+    public static final String UI_MESSAGE_QUIT = "\nBye Bye! See you next time! :)";
 
     public static final String URL_ROOT_PATH = "/ui/RootLayout.fxml";
     public static final String URL_LIST_PATH = "/ui/ListLayout.fxml";
     public static final String URL_HELP_PATH = "/ui/HelpItem.fxml";
     public static final String URL_ITEM_PATH = "/ui/ListItem.fxml";
+    public static final String URL_STATS_PATH = "/ui/StatsItem.fxml";
+    public static final String URL_HAMSMITH_PATH = "/ui/fonts/HammersmithOne.ttf";
+    public static final String URL_RALEWAY_PATH = "/ui/fonts/raleway.heavy.ttf";
 
     public static final String CTRL_CMD_PROMPT_TEXT = "(Hey Jim! Please let me know what I can do for you!)";
-    public static final String CTRL_CMD_SHOWLIST = "list";
+    public static final String CTRL_CMD_INCOMPLETE = "list";
+    public static final String CTRL_CMD_COMPLETE = "list complete";
+    public static final String CTRL_CMD_ALL = "list all";
+    public static final String CTRL_STATS_NAME1 = "Completed: ";
+    public static final String CTRL_STATS_NAME2 = "Due Today: ";
     public static final int OVERLAY_FADE_IN_MILLISECONDS = 200;
 
 
@@ -34,9 +41,23 @@ public class Constants {
             "Some stupid error occurred. Cannot create alias for - %s -!";
     public static final String CMD_ERROR_CANT_DELETE_NO_ID = "Some stupid error occurred. Cannot delete task(s)!";
     public static final String CMD_ERROR_CANT_DELETE_UNKNOWN = "Cannot delete task. The ID #%d does not exist!";
+    public static final String CMD_ERROR_INIT_FAIL_UNKNOWN = "Some stupid error occurred. Cannot initialize JFDI!";
+    public static final String CMD_ERROR_INIT_FAIL_INVALID = "The folder %s doesn't work. Choose another one!";
+    public static final String CMD_ERROR_INIT_FAIL_REPLACED = "The folder %s is occupied. File has been moved to %s !";
     public static final String CMD_ERROR_CANT_MARK_NO_ID = "Cannot mark task as completed. The ID #%d does not exist!!";
     public static final String CMD_ERROR_CANT_MARK_UNKNOWN = "Some stupid error occurred. Cannot mark task(s) as done!";
-    public static final String CMD_ERROR_CANT_RENAME_UNKNOWN = "Some stupid error occurred. Cannot rename task!";
+    public static final String CMD_ERROR_MOVE_FAIL_UNKNOWN = "Some stupid error occurred. Cannot move files to %s!";
+    public static final String CMD_ERROR_MOVE_FAIL_INVALID = "Cannot move to the folder %s . Choose another one!";
+    public static final String CMD_ERROR_MOVE_FAIL_REPLACED =
+            "The folder %s is occupied. File has been moved to %s instead!";
+    public static final String CMD_ERROR_SURP_FAIL_UNKNOWN = "I can't even surprise you...I am such a failure! :(";
+    public static final String CMD_ERROR_SURP_FAIL_NO_TASKS =
+            "How can I surprise you if you did not even add any task in me! :(";
+    public static final String CMD_ERROR_REDO_FAIL_UNKNOWN =
+            "Some stupid error occurred. Cannot redo the previous task!";
+    public static final String CMD_ERROR_REDO_FAIL_NO_TASKS = "Cannot find any previous task to redo!";
+    public static final String CMD_ERROR_CANT_RENAME_UNKNOWN =
+            "Some stupid error occurred. Cannot rename task!";
     public static final String CMD_ERROR_CANT_RENAME_NO_ID = "Cannot rename task. The ID #%d does not exist!";
     public static final String CMD_ERROR_CANT_RENAME_NO_CHANGES = "No difference between new and old name - %s -!";
     public static final String CMD_ERROR_CANT_RESCHEDULE_UNKNOWN = "Some error occurred. Cannot reschedule task!";
@@ -45,20 +66,32 @@ public class Constants {
     public static final String CMD_ERROR_CANT_UNALIAS_UNKNOWN = "Some error occurred. Cannot remove alias - %s -!";
     public static final String CMD_ERROR_CANT_UNALIAS_NO_ALIAS =
             "Cannot remove alias. The alias - %s - does not exist!";
+    public static final String CMD_ERROR_UNDO_FAIL_UNKNOWN =
+            "Some stupid error occurred. Cannot undo the previous task!";
+    public static final String CMD_ERROR_UNDO_FAIL_NO_TASKS = "Cannot find any previous task to undo!";
     public static final String CMD_ERROR_CANT_UNMARK_NO_ID = "Cannot unmark task. The ID #%d does not exist!!";
     public static final String CMD_ERROR_CANT_UNMARK_UNKNOWN = "Some stupid error occurred. Cannot unmark task(s)!";
+    public static final String CMD_ERROR_USE_FAIL_UNKNOWN = "Some stupid error occurred. Cannot use files at %s!";
+    public static final String CMD_ERROR_USE_FAIL_INVALID = "Cannot use the data at %s . Choose another one!";
+    public static final String CMD_ERROR_USE_FAIL_REPLACED =
+            "The folder %s contains invalid files. Data has been moved to %s instead!";
 
-    public static final String CMD_SUCCESS_ADDED = "Task #%d - %s added! :)";
+    public static final String CMD_SUCCESS_ADDED = "Task #%d - %s - added! :)";
     public static final String CMD_SUCCESS_ALIAS = "Alias - %s - is created for command - %s -! :)";
+    public static final String CMD_SUCCESS_REDONE = "Previous command - %s - redone! :)";
+    public static final String CMD_SUCCESS_UNDONE = "Previous command - %s - undone! :)";
     public static final String CMD_SUCCESS_DELETED = "Task(s) deleted! :)";
     public static final String CMD_SUCCESS_LISTED = "Here is your requested list! :)";
     public static final String CMD_SUCCESS_MARKED = "Task(s) completed! Good job! :)";
+    public static final String CMD_SUCCESS_MOVED = "The location of your files has been moved to %s ! :)";
     public static final String CMD_SUCCESS_RENAMED = "Task #%d renamed to - %s -! :)";
     public static final String CMD_SUCCESS_RESCHEDULED = "Task #%d rescheduled! :)";
     public static final String CMD_SUCCESS_SEARCH = "Here are your search results! :)";
     public static final String CMD_SUCCESS_SHOWDIRECTORY = "Your current directory is : %s ! :)";
+    public static final String CMD_SUCCESS_SURPRISED = "SURPRISE!!!TAAAADAAAA!!! :D";
     public static final String CMD_SUCCESS_UNALIAS = "Alias - %s - is removed! :)";
-    public static final String CMD_SUCCESS_UNMARKED = "Task(s) marked as imcomplete! :)";
+    public static final String CMD_SUCCESS_UNMARKED = "Task(s) marked as incomplete! :)";
+    public static final String CMD_SUCCESS_USED = "You are now using data from %s ! :)";
 
     public static final String CMD_WARNING_DONTKNOW = "Sorry, I do not understand what you mean by \"%s\" :(";
 

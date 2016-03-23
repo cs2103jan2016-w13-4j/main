@@ -1,6 +1,6 @@
 package jfdi.parser.commandparsers;
 
-import jfdi.logic.commands.UseTaskCommandStub.Builder;
+import jfdi.logic.commands.UseDirectoryCommand.Builder;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
 import jfdi.parser.Constants.CommandType;
@@ -40,7 +40,7 @@ public class UseCommandParser extends AbstractCommandParser {
         String directoryName = getDirectoryName(input);
 
         Builder builder = new Builder();
-        builder.setDirectory(directoryName);
+        builder.setNewDirectory(directoryName);
 
         return builder.build();
     }

@@ -20,6 +20,9 @@ public class RescheduleTaskCommand extends Command {
     private int screenId;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
+    private LocalDateTime oldStartDateTime;
+    private LocalDateTime oldEndDateTime;
+
 
     private RescheduleTaskCommand(Builder builder) {
         this.screenId = builder.screenId;
@@ -57,22 +60,46 @@ public class RescheduleTaskCommand extends Command {
     @Override
     public void execute() {
         int taskId = UI.getInstance().getTaskId(screenId);
+
         try {
             TaskAttributes task = TaskDb.getInstance().getById(taskId);
+
+            oldStartDateTime = task.getStartDateTime();
+            oldEndDateTime = task.getEndDateTime();
+
             task.setStartDateTime(startDateTime);
             task.setEndDateTime(endDateTime);
             task.save();
-            eventBus.post(new RescheduleTaskDoneEvent(taskId, startDateTime, endDateTime));
+
+            pushToUndoStack();
+            eventBus.post(new RescheduleTaskDoneEvent(task));
         } catch (InvalidIdException e) {
-            eventBus.post(new RescheduleTaskFailedEvent(taskId, startDateTime, endDateTime,
+            eventBus.post(new RescheduleTaskFailedEvent(screenId, startDateTime, endDateTime,
                 RescheduleTaskFailedEvent.Error.NON_EXISTENT_ID));
         } catch (InvalidTaskParametersException e) {
             // Should not happen
             assert false;
         } catch (NoAttributesChangedException e) {
-            eventBus.post(new RescheduleTaskFailedEvent(taskId, startDateTime, endDateTime,
+            eventBus.post(new RescheduleTaskFailedEvent(screenId, startDateTime, endDateTime,
                 RescheduleTaskFailedEvent.Error.NO_CHANGES));
         }
-
     }
+
+    @Override
+    public void undo() {
+        int taskId = UI.getInstance().getTaskId(screenId);
+
+        try {
+            TaskAttributes task = TaskDb.getInstance().getById(taskId);
+
+            task.setStartDateTime(oldStartDateTime);
+            task.setEndDateTime(oldEndDateTime);
+            task.save();
+
+            pushToRedoStack();
+        } catch (InvalidIdException | InvalidTaskParametersException | NoAttributesChangedException e) {
+            assert false;
+        }
+    }
+
 }

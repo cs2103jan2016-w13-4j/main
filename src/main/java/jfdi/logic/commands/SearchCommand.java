@@ -57,4 +57,10 @@ public class SearchCommand extends Command {
         eventBus.post(new SearchDoneEvent(results, keywords));
         System.out.println(results);
     }
+
+    @Override
+    public void undo() {
+        throw new UnsupportedOperationException();
+    }
+
 }

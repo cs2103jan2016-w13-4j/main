@@ -1,25 +1,95 @@
-@font-face {
-	font-family: Hammersmith;
-	font-weight: normal;
-	font-style: normal;
-	src: url("/ui/fonts/HammersmithOne.ttf");
+.list-view .scroll-bar:horizontal .increment-arrow,
+.list-view .scroll-bar:horizontal .decrement-arrow,
+.list-view .scroll-bar:horizontal .increment-button,
+.list-view .scroll-bar:horizontal .decrement-button {
+    -fx-padding:0;
 }
 
-@font-face {
-	font-family: Raleway;
-	font-weight: normal;
-	font-style: normal;
-	src: url("/ui/fonts/raleway.heavy.ttf");
+.itemBox{
+		-fx-background-color: #faebcd;
+		-fx-alignment: CENTER_LEFT;
 }
 
-.list-cell {
+.itemBox #rowIndex {
+	-fx-text-fill: #434343;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 16px;
+	-fx-alignment: CENTER;
+	-fx-text-alignment: CENTER;
+}
+
+.itemBoxDone {
 	-fx-background-color: #faebcd;
+	-fx-alignment: CENTER_LEFT;
 }
 
-.list-cell:empty {
-    -fx-background-color: #faebcd;
-    -fx-border-color: #faebcd;
+.itemBox #description {
+	-fx-text-fill: #434343;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 14px;
+	-fx-wrap-text: true;
 }
+
+
+.itemBox #timeAndDate {
+	-fx-text-fill: #575757;
+	-fx-font-family: "TitilliumWeb";
+	-fx-font-size: 11px;
+	-fx-wrap-text: true;
+}
+
+.itemBoxDone #description .text,
+.itemBoxDone #rowIndex .text,
+.itemBoxDone #timeAndDate .text {
+	-fx-strikethrough: true;
+}
+
+.itemBoxDone #rowIndex {
+	-fx-text-fill: #434343;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 16px;
+	-fx-alignment: CENTER;
+	-fx-text-alignment: CENTER;
+}
+
+.itemBoxDone #description {
+	-fx-text-fill: #434343;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 14px;
+	-fx-wrap-text: true;
+}
+
+
+.itemBoxDone #timeAndDate {
+	-fx-text-fill: #575757;
+	-fx-font-family: "TitilliumWeb";
+	-fx-font-size: 11px;
+	-fx-wrap-text: true;
+}
+
+.listStatus {
+	-fx-background-color: #434343;
+	-fx-text-fill: #eeeeee;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 28px;
+	-fx-alignment: CENTER;
+	-fx-text-alignment: CENTER;
+}
+
+.fbArea {
+	
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 13px;
+	-fx-wrap-text: true;
+}
+
+.cmdArea {
+	
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 12px;
+	-fx-wrap-text: true;
+}
+
 
 /*
  * ================================================================
@@ -28,9 +98,9 @@
  */
 .helpItem {
 	-fx-padding: 0;
-	-fx-font-family: Hammersmith;
+	-fx-font-family: "HammersmithOne";
 	-fx-font-size: 16px;
-	-fx-background-color: transparent;
+	-fx-background-color: #434343;
 }
 
 .helpItem #command {
@@ -40,4 +110,12 @@
 
 .helpItem #description {
 	-fx-text-fill: white;
+}
+
+.list-cell {
+	-fx-background-color: #faebcd;
+}
+
+.list-cell:empty {
+	-fx-background-color: #faebcd;
 }

@@ -14,6 +14,7 @@ public class DeleteTaskDoneEvent {
 
     public DeleteTaskDoneEvent(ArrayList<Integer> deletedIds, ArrayList<TaskAttributes> deletedTasks) {
         this.deletedIds = deletedIds;
+        this.deletedTasks = deletedTasks;
     }
 
     public ArrayList<Integer> getDeletedIds() {

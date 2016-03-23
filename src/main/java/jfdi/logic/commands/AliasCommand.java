@@ -7,6 +7,7 @@ import jfdi.parser.InputParser;
 import jfdi.storage.apis.AliasAttributes;
 import jfdi.storage.apis.AliasDb;
 import jfdi.storage.exceptions.DuplicateAliasException;
+import jfdi.storage.exceptions.InvalidAliasException;
 import jfdi.storage.exceptions.InvalidAliasParametersException;
 
 /**
@@ -56,8 +57,9 @@ public class AliasCommand extends Command {
         AliasAttributes newAlias = new AliasAttributes(alias, command);
         try {
             newAlias.save();
-            InputParser.getInstance()
-                .setAliases(AliasDb.getInstance().getAll());
+            InputParser.getInstance().setAliases(AliasDb.getInstance().getAll());
+
+            pushToUndoStack();
             eventBus.post(new AliasDoneEvent(command, alias));
         } catch (InvalidAliasParametersException e) {
             eventBus.post(new AliasFailedEvent(command, alias,
@@ -67,4 +69,18 @@ public class AliasCommand extends Command {
                 AliasFailedEvent.Error.DUPLICATED_ALIAS));
         }
     }
+
+    @Override
+    public void undo() {
+        try {
+            AliasDb.getInstance().destroy(alias);
+            InputParser.getInstance().setAliases(AliasDb.getInstance().getAll());
+
+            pushToRedoStack();
+        } catch (InvalidAliasException e) {
+            // Should not happen
+            assert false;
+        }
+    }
+
 }

@@ -74,4 +74,11 @@ public class DatabaseManager {
         return filePaths;
     }
 
+    /**
+     * This method resets all databases.
+     */
+    public static void resetAll() {
+        Arrays.stream(Constants.DATABASES).forEach(IDatabase::reset);
+    }
+
 }

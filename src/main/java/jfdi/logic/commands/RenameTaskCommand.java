@@ -17,6 +17,7 @@ public class RenameTaskCommand extends Command {
 
     private int screenId;
     private String description;
+    private String oldDescription;
 
     private RenameTaskCommand(Builder builder) {
         this.screenId = builder.screenId;
@@ -52,17 +53,38 @@ public class RenameTaskCommand extends Command {
         int taskId = UI.getInstance().getTaskId(screenId);
         try {
             TaskAttributes task = TaskDb.getInstance().getById(taskId);
+            oldDescription = task.getDescription();
+
             task.setDescription(description);
             task.save();
+
+            pushToUndoStack();
             eventBus.post(new RenameTaskDoneEvent(task));
         } catch (InvalidIdException e) {
-            eventBus.post(new RenameTaskFailedEvent(taskId, description, RenameTaskFailedEvent.Error.NON_EXISTENT_ID));
+            eventBus.post(new RenameTaskFailedEvent(screenId, description,
+                RenameTaskFailedEvent.Error.NON_EXISTENT_ID));
         } catch (InvalidTaskParametersException e) {
             // Should not happen
             assert false;
         } catch (NoAttributesChangedException e) {
-            eventBus.post(new RenameTaskFailedEvent(taskId, description, RenameTaskFailedEvent.Error.NO_CHANGES));
+            eventBus.post(new RenameTaskFailedEvent(screenId, description,
+                RenameTaskFailedEvent.Error.NO_CHANGES));
         }
     }
 
+    @Override
+    public void undo() {
+        int taskId = UI.getInstance().getTaskId(screenId);
+
+        try {
+            TaskAttributes task = TaskDb.getInstance().getById(taskId);
+
+            task.setDescription(oldDescription);
+            task.save();
+
+            pushToRedoStack();
+        } catch (InvalidIdException | NoAttributesChangedException | InvalidTaskParametersException e) {
+            assert false;
+        }
+    }
 }

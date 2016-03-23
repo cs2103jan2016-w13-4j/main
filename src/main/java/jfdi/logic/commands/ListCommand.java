@@ -67,4 +67,9 @@ public class ListCommand extends Command {
         eventBus.post(new ListDoneEvent(listType, tasks));
     }
 
+    @Override
+    public void undo() {
+        throw new UnsupportedOperationException();
+    }
+
 }

@@ -9,17 +9,18 @@ public class RenameTaskFailedEvent {
         NON_EXISTENT_ID, NO_CHANGES, UNKNOWN
     }
 
-    private int taskId;
+    private int screenId;
     private String description;
     private Error error;
 
-    public RenameTaskFailedEvent(int taskId, String description, Error error) {
-        this.taskId = taskId;
+    public RenameTaskFailedEvent(int screenId, String description, Error error) {
+        this.screenId = screenId;
         this.description = description;
+        this.error = error;
     }
 
-    public int getTaskId() {
-        return taskId;
+    public int getScreenId() {
+        return screenId;
     }
 
     public String getDescription() {

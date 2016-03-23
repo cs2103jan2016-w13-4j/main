@@ -5,19 +5,19 @@ import jfdi.logic.commands.AliasCommand;
 import jfdi.logic.commands.DeleteTaskCommand;
 import jfdi.logic.commands.DirectoryCommand;
 import jfdi.logic.commands.ExitCommand;
-import jfdi.logic.commands.HelpCommandStub;
+import jfdi.logic.commands.HelpCommand;
 import jfdi.logic.commands.InvalidCommand;
 import jfdi.logic.commands.ListCommand;
 import jfdi.logic.commands.MarkTaskCommand;
-import jfdi.logic.commands.MoveTaskCommandStub;
+import jfdi.logic.commands.MoveDirectoryCommand;
 import jfdi.logic.commands.RenameTaskCommand;
 import jfdi.logic.commands.RescheduleTaskCommand;
 import jfdi.logic.commands.SearchCommand;
 import jfdi.logic.commands.UnaliasCommand;
-import jfdi.logic.commands.UndoCommandStub;
+import jfdi.logic.commands.UndoCommand;
 import jfdi.logic.commands.UnmarkTaskCommand;
-import jfdi.logic.commands.UseTaskCommandStub;
-import jfdi.logic.commands.WildcardCommandStub;
+import jfdi.logic.commands.UseDirectoryCommand;
+import jfdi.logic.commands.WildcardCommand;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.InputParser;
 import jfdi.parser.exceptions.InvalidInputException;
@@ -152,7 +152,7 @@ public class InputParserTest {
         deleteCommand = "delete";
         try {
             Command command = parser.parse(deleteCommand);
-            Assert.assertTrue(command instanceof DeleteTaskCommand);
+            Assert.assertTrue(command instanceof InvalidCommand);
         } catch (InvalidInputException e) {
             Assert.fail();
         }
@@ -220,7 +220,7 @@ public class InputParserTest {
         markCommand = "mark";
         try {
             Command command = parser.parse(markCommand);
-            Assert.assertTrue(command instanceof MarkTaskCommand);
+            Assert.assertTrue(command instanceof InvalidCommand);
         } catch (InvalidInputException e) {
             Assert.fail();
         }
@@ -239,7 +239,7 @@ public class InputParserTest {
         unmarkCommand = "unmark dfsdfsdf";
         try {
             Command command = parser.parse(unmarkCommand);
-            Assert.assertTrue(command instanceof UnmarkTaskCommand);
+            Assert.assertTrue(command instanceof InvalidCommand);
         } catch (InvalidInputException e) {
             Assert.fail();
         }
@@ -324,7 +324,7 @@ public class InputParserTest {
         moveCommand = "move C:/";
         try {
             Command command = parser.parse(moveCommand);
-            Assert.assertTrue(command instanceof MoveTaskCommandStub);
+            Assert.assertTrue(command instanceof MoveDirectoryCommand);
         } catch (InvalidInputException e) {
             Assert.fail();
         }
@@ -342,7 +342,7 @@ public class InputParserTest {
         useCommand = "use C://";
         try {
             Command command = parser.parse(useCommand);
-            Assert.assertTrue(command instanceof UseTaskCommandStub);
+            Assert.assertTrue(command instanceof UseDirectoryCommand);
         } catch (InvalidInputException e) {
             Assert.fail();
         }
@@ -353,7 +353,7 @@ public class InputParserTest {
         String undoCommand = "undo";
         try {
             Command command = parser.parse(undoCommand);
-            Assert.assertTrue(command instanceof UndoCommandStub);
+            Assert.assertTrue(command instanceof UndoCommand);
         } catch (InvalidInputException e) {
             Assert.fail();
         }
@@ -372,7 +372,7 @@ public class InputParserTest {
         String helpCommand = "help";
         try {
             Command command = parser.parse(helpCommand);
-            Assert.assertTrue(command instanceof HelpCommandStub);
+            Assert.assertTrue(command instanceof HelpCommand);
         } catch (InvalidInputException e) {
             Assert.fail();
         }
@@ -391,7 +391,7 @@ public class InputParserTest {
         String wildcardCommand = "surprise";
         try {
             Command command = parser.parse(wildcardCommand);
-            Assert.assertTrue(command instanceof WildcardCommandStub);
+            Assert.assertTrue(command instanceof WildcardCommand);
         } catch (InvalidInputException e) {
             Assert.fail();
         }
@@ -399,7 +399,7 @@ public class InputParserTest {
         wildcardCommand = "surprise!!";
         try {
             Command command = parser.parse(wildcardCommand);
-            Assert.assertTrue(command instanceof WildcardCommandStub);
+            Assert.assertTrue(command instanceof WildcardCommand);
         } catch (InvalidInputException e) {
             Assert.fail();
         }
@@ -407,7 +407,7 @@ public class InputParserTest {
         wildcardCommand = "surprise!!!!!!!!!!!!!!";
         try {
             Command command = parser.parse(wildcardCommand);
-            Assert.assertTrue(command instanceof WildcardCommandStub);
+            Assert.assertTrue(command instanceof WildcardCommand);
         } catch (InvalidInputException e) {
             Assert.fail();
         }

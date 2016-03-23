@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 public class DeleteTaskCommand extends Command {
 
     private ArrayList<Integer> screenIds;
+    private ArrayList<TaskAttributes> deletedTasks;
 
     private DeleteTaskCommand(Builder builder) {
         this.screenIds = builder.screenIds;
@@ -45,29 +46,48 @@ public class DeleteTaskCommand extends Command {
 
     @Override
     public void execute() {
+        UI ui = UI.getInstance();
+
         TaskDb taskDb = TaskDb.getInstance();
         ArrayList<Integer> taskIds = screenIds.stream()
-            .map(screenId -> UI.getInstance().getTaskId(screenId))
+            .map(ui::getTaskId)
             .collect(Collectors.toCollection(ArrayList::new));
 
-        ArrayList<Integer> invalidIds = taskIds.stream()
-            .filter(id -> !taskDb.hasId(id))
+        ArrayList<Integer> invalidIds = screenIds.stream()
+            .filter(id -> !taskDb.hasId(ui.getTaskId(id)))
             .collect(Collectors.toCollection(ArrayList::new));
 
         if (invalidIds.isEmpty()) {
-            ArrayList<TaskAttributes> deletedTasks = new ArrayList<>();
+            deletedTasks = new ArrayList<>();
             taskIds.forEach(id -> {
                 try {
                     deletedTasks.add(taskDb.getById(id));
+                    logger.info("Deleting task #" + id);
                     TaskDb.getInstance().destroy(id);
                 } catch (InvalidIdException e) {
                     // Should not happen
                     assert false;
                 }
             });
-            eventBus.post(new DeleteTaskDoneEvent(taskIds, deletedTasks));
+
+            pushToUndoStack();
+            eventBus.post(new DeleteTaskDoneEvent(screenIds, deletedTasks));
         } else {
             eventBus.post(new DeleteTaskFailedEvent(invalidIds));
         }
+    }
+
+    @Override
+    public void undo() {
+        deletedTasks.stream()
+            .forEach(task -> {
+                try {
+                    TaskDb.getInstance().undestroy(task.getId());
+                } catch (InvalidIdException e) {
+                    assert false;
+                }
+            });
+
+        pushToRedoStack();
     }
 }

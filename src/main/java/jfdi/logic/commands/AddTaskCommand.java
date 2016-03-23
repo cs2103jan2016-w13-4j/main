@@ -1,18 +1,19 @@
 package jfdi.logic.commands;
 
+import jfdi.logic.events.AddTaskDoneEvent;
+import jfdi.logic.events.AddTaskFailedEvent;
+import jfdi.logic.interfaces.Command;
+import jfdi.storage.apis.TaskAttributes;
+import jfdi.storage.apis.TaskDb;
+import jfdi.storage.exceptions.InvalidIdException;
+import jfdi.storage.exceptions.InvalidTaskParametersException;
+import jfdi.storage.exceptions.NoAttributesChangedException;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
-
-import jfdi.logic.events.AddTaskDoneEvent;
-import jfdi.logic.events.AddTaskFailedEvent;
-import jfdi.logic.interfaces.Command;
-import jfdi.storage.apis.TaskAttributes;
-import jfdi.storage.exceptions.InvalidIdException;
-import jfdi.storage.exceptions.InvalidTaskParametersException;
-import jfdi.storage.exceptions.NoAttributesChangedException;
 
 /**
  * @author Liu Xinan
@@ -24,6 +25,7 @@ public class AddTaskCommand extends Command {
     private Optional<LocalDateTime> endDateTime;
     private Duration[] reminders;
     private String[] tags;
+    private int id = -1;
 
     private AddTaskCommand(Builder builder) {
         this.description = builder.description;
@@ -122,6 +124,9 @@ public class AddTaskCommand extends Command {
         task.setTags(tags);
         try {
             task.save();
+            this.id = task.getId();
+
+            pushToUndoStack();
             eventBus.post(new AddTaskDoneEvent(task));
         } catch (InvalidTaskParametersException e) {
             eventBus.post(new AddTaskFailedEvent(
@@ -134,4 +139,17 @@ public class AddTaskCommand extends Command {
             assert false;
         }
     }
+
+    @Override
+    public void undo() {
+        try {
+            TaskDb.getInstance().destroy(id);
+
+            pushToRedoStack();
+        } catch (InvalidIdException e) {
+            // Should not happen for creating tasks
+            assert false;
+        }
+    }
+
 }

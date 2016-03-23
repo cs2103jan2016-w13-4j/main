@@ -92,7 +92,7 @@ public class MainStorageTest {
         TestHelper.createValidTaskFile(subdirectoryString);
 
         // There should be no tasks before we switch directory
-        TaskDb.getInstance().resetProgramStorage();
+        TaskDb.getInstance().reset();
         assertEquals(0, TaskDb.getInstance().getAll().size());
 
         // Command under test

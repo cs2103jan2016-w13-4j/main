@@ -5,6 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashSet;
 
+import com.sun.javafx.scene.control.skin.ListViewSkin;
+import com.sun.javafx.scene.control.skin.VirtualFlow;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -31,6 +34,7 @@ import jfdi.ui.Constants.MsgType;
 import jfdi.ui.commandhandlers.CommandHandler;
 import jfdi.ui.items.HelpItem;
 import jfdi.ui.items.ListItem;
+import jfdi.ui.items.StatsItem;
 
 public class MainController {
 
@@ -43,13 +47,17 @@ public class MainController {
     @FXML
     public Label dayDisplayer;
     @FXML
-    public ListView<String> statsDisplayer;
+    public ListView<StatsItem> statsDisplayer;
     @FXML
     public Label overdueLabel;
+    @FXML
+    public Label upcomingLabel;
     @FXML
     public ListView<TaskAttributes> overdueList;
     @FXML
     public ListView<TaskAttributes> upcomingList;
+    @FXML
+    public Label listStatus;
     @FXML
     public ListView<ListItem> listMain;
     @FXML
@@ -71,9 +79,16 @@ public class MainController {
     public CommandHandler cmdHandler;
     public Stage mainStage;
     public ObservableList<ListItem> importantList;
+    public ObservableList<StatsItem> statsList;
+    public String displayStatus;
+    public int completedNum;
+    public int dueTodayNum;
+
     private ObservableList<HelpItem> helpList;
     private Timeline overlayTimeline;
     private InputHistory inputHistory;
+    private int firstVisibleId;
+    private int lastVisibleId;
 
     public void initialize() {
 
@@ -119,8 +134,8 @@ public class MainController {
         fbArea.appendText(warning);
     }
 
-    public void displayList() {
-        ui.relayToLogic(Constants.CTRL_CMD_SHOWLIST);
+    public void displayList(String cmd) {
+        ui.relayToLogic(cmd);
     }
 
     public void setHighlights(HashSet<String> keywords) {
@@ -154,6 +169,9 @@ public class MainController {
     }
 
     public int getIdFromIndex(int index) {
+        if (index < 0 || importantList.size() - 1 < index) {
+            return -1;
+        }
         return importantList.get(index).getItem().getId();
     }
 
@@ -181,6 +199,12 @@ public class MainController {
     private void initStatsArea() {
         statsDisplayer.setMouseTransparent(true);
         statsDisplayer.setFocusTraversable(false);
+        statsList = FXCollections.observableArrayList();
+        statsDisplayer.setItems(statsList);
+        statsList.add(new StatsItem(Constants.CTRL_STATS_NAME1));
+        statsList.add(new StatsItem(Constants.CTRL_STATS_NAME2));
+        completedNum = 0;
+        dueTodayNum = 0;
     }
 
     private void initOverdueList() {
@@ -300,12 +324,21 @@ public class MainController {
                 String previousInput = inputHistory.getPrevious();
                 if (previousInput != null) {
                     cmdArea.setText(previousInput);
+                    cmdArea.positionCaret(previousInput.length());
                 }
             } else if (code == KeyCode.DOWN) {
                 String nextInput = inputHistory.getNext();
                 if (nextInput != null) {
                     cmdArea.setText(nextInput);
+                    cmdArea.positionCaret(nextInput.length());
                 }
+            } else if (code == KeyCode.PAGE_DOWN) {
+                setFirstAndLastVisibleIds();
+                listMain.scrollTo(lastVisibleId);
+            } else if (code == KeyCode.PAGE_UP) {
+                setFirstAndLastVisibleIds();
+                int scrollAmount = lastVisibleId - firstVisibleId;
+                listMain.scrollTo(firstVisibleId - scrollAmount);
             } else {
                 return;
             }
@@ -350,4 +383,11 @@ public class MainController {
     /***************************
      *** LEVEL 3 Abstraction ***
      ***************************/
+
+    public void setFirstAndLastVisibleIds() {
+        ListViewSkin<?> listViewSkin = (ListViewSkin<?>) listMain.getSkin();
+        VirtualFlow<?> virtualFlow = (VirtualFlow<?>) listViewSkin.getChildren().get(0);
+        firstVisibleId = virtualFlow.getFirstVisibleCell().getIndex();
+        lastVisibleId = virtualFlow.getLastVisibleCell().getIndex();
+    }
 }

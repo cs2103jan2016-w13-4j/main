@@ -23,6 +23,7 @@ public class UnmarkTaskCommand extends Command {
     private static final Logger LOGGER = JfdiLogger.getLogger();
 
     private ArrayList<Integer> screenIds;
+    private ArrayList<Integer> unmarkedIds;
 
     private UnmarkTaskCommand(Builder builder) {
         this.screenIds = builder.screenIds;
@@ -50,30 +51,52 @@ public class UnmarkTaskCommand extends Command {
 
     @Override
     public void execute() {
+        UI ui = UI.getInstance();
+
         TaskDb taskdb = TaskDb.getInstance();
         ArrayList<Integer> taskIds = screenIds.stream()
-            .map(screenId -> UI.getInstance().getTaskId(screenId))
+            .map(ui::getTaskId)
             .collect(Collectors.toCollection(ArrayList::new));
 
-        ArrayList<Integer> invalidIds = taskIds.stream()
-            .filter(id -> !taskdb.hasId(id))
+        ArrayList<Integer> invalidIds = screenIds.stream()
+            .filter(id -> !taskdb.hasId(ui.getTaskId(id)))
             .collect(Collectors.toCollection(ArrayList::new));
 
         if (invalidIds.isEmpty()) {
             ArrayList<TaskAttributes> unmarkedTasks = new ArrayList<>();
+            unmarkedIds = new ArrayList<>();
             taskIds.stream().forEach(id -> {
                 try {
                     unmarkedTasks.add(taskdb.getById(id));
                     taskdb.markAsIncomplete(id);
+
+                    unmarkedIds.add(id);
                 } catch (NoAttributesChangedException e) {
                     LOGGER.warning("Task " + id + " was not completed.");
                 } catch (InvalidIdException e) {
                     assert false;
                 }
             });
-            eventBus.post(new UnmarkTaskDoneEvent(taskIds, unmarkedTasks));
+
+            pushToUndoStack();
+            eventBus.post(new UnmarkTaskDoneEvent(screenIds, unmarkedTasks));
         } else {
-            eventBus.post(new UnmarkTaskFailEvent(taskIds, invalidIds));
+            eventBus.post(new UnmarkTaskFailEvent(screenIds, invalidIds));
         }
     }
+
+    @Override
+    public void undo() {
+        unmarkedIds.stream()
+            .forEach(id -> {
+                try {
+                    TaskDb.getInstance().markAsComplete(id);
+
+                    pushToRedoStack();
+                } catch (NoAttributesChangedException | InvalidIdException e) {
+                    assert false;
+                }
+            });
+    }
+
 }

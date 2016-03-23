@@ -9,16 +9,16 @@ import java.util.ArrayList;
  */
 public class UnmarkTaskDoneEvent {
 
-    private ArrayList<Integer> taskIds;
+    private ArrayList<Integer> screenIds;
     private ArrayList<TaskAttributes> unmarkedTasks;
 
-    public UnmarkTaskDoneEvent(ArrayList<Integer> taskIds, ArrayList<TaskAttributes> unmarkedTasks) {
-        this.taskIds = taskIds;
+    public UnmarkTaskDoneEvent(ArrayList<Integer> screenIds, ArrayList<TaskAttributes> unmarkedTasks) {
+        this.screenIds = screenIds;
         this.unmarkedTasks = unmarkedTasks;
     }
 
-    public ArrayList<Integer> getTaskIds() {
-        return taskIds;
+    public ArrayList<Integer> getScreenIds() {
+        return screenIds;
     }
 
     public ArrayList<TaskAttributes> getUnarkedTasks() {

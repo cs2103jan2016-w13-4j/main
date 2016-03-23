@@ -44,4 +44,9 @@ public class InvalidCommand extends Command {
         eventBus.post(new InvalidCommandEvent(inputString, commandType));
     }
 
+    @Override
+    public void undo() {
+        throw new UnsupportedOperationException();
+    }
+
 }

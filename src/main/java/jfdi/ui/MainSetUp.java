@@ -15,6 +15,8 @@ import jfdi.common.utilities.JfdiLogger;
 
 public class MainSetUp extends Application {
 
+    private static MainSetUp ourInstance = new MainSetUp();
+
     private Stage primaryStage;
     private Scene scene;
     private Parent rootLayout;
@@ -29,7 +31,7 @@ public class MainSetUp extends Application {
         this.primaryStage.setTitle("JFDI");
 
         setLogger();
-        loadFonts(); // if any
+        loadFonts();
         initRootLayout();
         initView();
 
@@ -37,6 +39,10 @@ public class MainSetUp extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public static MainSetUp getInstance() {
+        return ourInstance;
     }
 
     /***************************
@@ -49,9 +55,9 @@ public class MainSetUp extends Application {
     }
 
     private void loadFonts() {
-        // Implement when team decides to specific font types that needs to be loaded
-        // Font font1 = Font.loadFont(Main.class.getResourceAsStream(<filepath>), <size>);
-        // Font font2 = Font.loadFont(Main.class.getResourceAsStream(<filepath>), <size>);
+
+        //Font.loadFont(MainSetUp.class.getResource(Constants.URL_HAMSMITH_PATH).toExternalForm(), 12);
+        //Font.loadFont(MainSetUp.class.getResource(Constants.URL_RALEWAY_PATH).toExternalForm(), 24);
     }
 
     private void initRootLayout() throws IOException {
@@ -60,10 +66,13 @@ public class MainSetUp extends Application {
         logger.fine(String.format(Constants.LOG_FXML_PATH, "RootLayout.fxml", Constants.URL_ROOT_PATH));
 
         // Display scene with root layout
-        Scene scene = new Scene(rootLayout);
+        scene = new Scene(rootLayout);
         scene.setFill(Color.TRANSPARENT);
         primaryStage.setScene(scene);
+        scene.getStylesheets().add("https://fonts.googleapis.com/css?family=Hammersmith+One");
+        scene.getStylesheets().add("https://fonts.googleapis.com/css?family=Titillium+Web:200");
         primaryStage.show();
+        primaryStage.setResizable(false);
         this.scene = scene;
 
     }
@@ -91,11 +100,11 @@ public class MainSetUp extends Application {
 
         // Link Controller with UI, MainSetUp and CommandHandler
         controller.setUi(ui);
-        controller.setMainApp(this);
+        controller.setMainApp(this); // REDUNDANT!!!! DELETE
 
         //controller.importantList.removeAll(controller.importantList);
 
-        controller.displayList();
+        controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
         ui.displayWelcome();
     }
 

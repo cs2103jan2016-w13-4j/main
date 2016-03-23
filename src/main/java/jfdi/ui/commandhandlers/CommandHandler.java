@@ -41,6 +41,7 @@ import jfdi.logic.events.UnmarkTaskDoneEvent;
 import jfdi.logic.events.UnmarkTaskFailEvent;
 import jfdi.logic.events.UseDirectoryDoneEvent;
 import jfdi.logic.events.UseDirectoryFailedEvent;
+import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.exceptions.FilePathPair;
 import jfdi.ui.Constants;
@@ -56,9 +57,7 @@ public class CommandHandler {
     @Subscribe
     public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {
         TaskAttributes task = e.getTask();
-        int index = controller.importantList.size() + 1;
-        ListItem listItem = new ListItem(index, task, false);
-        controller.importantList.add(listItem);
+        int index = appendTaskToDisplayList(task);
         controller.relayFb(String.format(Constants.CMD_SUCCESS_ADDED, index, task.getDescription()), MsgType.SUCCESS);
         logger.fine(String.format(Constants.LOG_ADDED_SUCCESS, task.getId()));
     }
@@ -109,12 +108,16 @@ public class CommandHandler {
 
     @Subscribe
     public void handleCommandRedoneEvent(CommandRedoneEvent e) {
-        controller.relayFb(Constants.CMD_SUCCESS_REDONE, MsgType.SUCCESS);
+        Class<? extends Command> cmdType = e.getCommandType();
+        controller.displayList(controller.displayStatus);
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_REDONE, cmdType.toString()), MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleCommandUndoneEvent(CommandUndoneEvent e) {
-        controller.relayFb(Constants.CMD_SUCCESS_UNDONE, MsgType.SUCCESS);
+        Class<? extends Command> cmdType = e.getCommandType();
+        controller.displayList(controller.displayStatus);
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_UNDONE, cmdType.toString()), MsgType.SUCCESS);
     }
 
     @Subscribe
@@ -182,7 +185,7 @@ public class CommandHandler {
                 String fb = "";
                 for (FilePathPair item : e.getFilePathPairs()) {
                     fb += String.format(Constants.CMD_ERROR_INIT_FAIL_REPLACED,
-                            item.getOldFilePath(), item.getNewFilePath()) + "\n";
+                            "\n" + item.getOldFilePath(), item.getNewFilePath());
                 }
                 controller.relayFb(fb, MsgType.ERROR);
                 break;
@@ -199,20 +202,21 @@ public class CommandHandler {
 
     @Subscribe
     public void handleListDoneEvent(ListDoneEvent e) {
-
-        controller.importantList.clear();
-
-        int count = 1;
-        for (TaskAttributes item : e.getItems()) {
-            ListItem listItem;
-            if (item.isCompleted()) {
-                listItem = new ListItem(count, item, true);
-            } else {
-                listItem = new ListItem(count, item, false);
-            }
-            controller.importantList.add(listItem);
-            count++;
+        switch (e.getListType()) {
+            case ALL:
+                controller.displayStatus = Constants.CTRL_CMD_ALL;
+                break;
+            case COMPLETED:
+                controller.displayStatus = Constants.CTRL_CMD_COMPLETE;
+                break;
+            case INCOMPLETE:
+                controller.displayStatus = Constants.CTRL_CMD_INCOMPLETE;
+                break;
+            default:
+                break;
         }
+
+        listTasks(e.getItems());
         controller.relayFb(Constants.CMD_SUCCESS_LISTED, MsgType.SUCCESS);
     }
 
@@ -225,9 +229,19 @@ public class CommandHandler {
             indexCount = screenId - 1;
             controller.importantList.get(indexCount).setMarkT();
             controller.importantList.get(indexCount).strikeOut();
-            //logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, screenId));
+            refreshDisplay();
+
+            //            controller.displayList(controller.displayStatus);
+            //logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, num));
         }
         controller.relayFb(String.format(Constants.CMD_SUCCESS_MARKED, indexCount + 1), MsgType.SUCCESS);
+    }
+
+    private void refreshDisplay() {
+        appendTaskToDisplayList(new TaskAttributes());
+        controller.importantList.remove(controller.importantList.size()-1);
+        // TODO Auto-generated method stub
+
     }
 
     @Subscribe
@@ -251,7 +265,7 @@ public class CommandHandler {
 
     @Subscribe
     public void handleMoveDirectoryDoneEvent(MoveDirectoryDoneEvent e) {
-        controller.displayList();
+        controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
         controller.relayFb(String.format(Constants.CMD_SUCCESS_MOVED, e.getNewDirectory()), MsgType.SUCCESS);
     }
 
@@ -270,7 +284,7 @@ public class CommandHandler {
                 String fb = "";
                 for (FilePathPair item : e.getFilePathPairs()) {
                     fb += String.format(Constants.CMD_ERROR_MOVE_FAIL_REPLACED,
-                            item.getOldFilePath(), item.getNewFilePath()) + "\n";
+                            "\n" + item.getOldFilePath(), item.getNewFilePath());
                 }
                 controller.relayFb(fb, MsgType.ERROR);
                 break;
@@ -388,21 +402,12 @@ public class CommandHandler {
     @Subscribe
     public void handleSearchDoneEvent(SearchDoneEvent e) {
 
-        controller.importantList.clear();
+        listTasks(e.getResults());
 
-        int count = 1;
-        for (TaskAttributes item : e.getResults()) {
-            ListItem listItem;
-            if (item.isCompleted()) {
-                listItem = new ListItem(count, item, true);
-            } else {
-                listItem = new ListItem(count, item, false);
-            }
-            controller.importantList.add(listItem);
-            count++;
+        controller.displayStatus = "Search ";
+        for (String key: e.getKeywords()) {
+            controller.displayStatus += key;
         }
-
-        System.out.println(e.getKeywords().isEmpty());
 
         controller.setHighlights(e.getKeywords());
         controller.relayFb(Constants.CMD_SUCCESS_SEARCH, MsgType.SUCCESS);
@@ -418,9 +423,8 @@ public class CommandHandler {
 
         controller.importantList.clear();
         TaskAttributes task = e.getTask();
-        ListItem listItem = new ListItem(1, task, false);
-        controller.importantList.add(listItem);
-
+        appendTaskToDisplayList(task);
+        controller.displayStatus = Constants.CTRL_CMD_INCOMPLETE;
         controller.relayFb(Constants.CMD_SUCCESS_SURPRISED, MsgType.SUCCESS);
     }
 
@@ -471,7 +475,9 @@ public class CommandHandler {
             indexCount = screenId - 1;
             controller.importantList.get(indexCount).setMarkF();
             controller.importantList.get(indexCount).removeStrike();
-            //logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, screenId));
+            refreshDisplay();
+            //            controller.displayList(controller.displayStatus);
+            //logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, num));
         }
         controller.relayFb(String.format(Constants.CMD_SUCCESS_UNMARKED, indexCount + 1), MsgType.SUCCESS);
     }
@@ -497,7 +503,7 @@ public class CommandHandler {
 
     @Subscribe
     public void handleUseDirectoryDoneEvent(UseDirectoryDoneEvent e) {
-        controller.displayList();
+        controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
         controller.relayFb(String.format(Constants.CMD_SUCCESS_USED, e.getNewDirectory()), MsgType.SUCCESS);
     }
 
@@ -515,8 +521,8 @@ public class CommandHandler {
             case FILE_REPLACED:
                 String fb = "";
                 for (FilePathPair item : e.getFilePathPairs()) {
-                    fb += String.format(Constants.CMD_ERROR_USE_FAIL_REPLACED, item.getOldFilePath(),
-                            item.getNewFilePath()) + "\n";
+                    fb += String.format(Constants.CMD_ERROR_USE_FAIL_REPLACED, "\n" + item.getOldFilePath(),
+                            item.getNewFilePath());
                 }
                 controller.relayFb(fb, MsgType.ERROR);
                 break;
@@ -527,5 +533,41 @@ public class CommandHandler {
 
     public void setController(MainController controller) {
         this.controller = controller;
+    }
+
+    /**
+     * Sets the display list to the given ArrayList of tasks.
+     *
+     * @param tasks
+     *            the ArrayList of tasks to be displayed
+     */
+    private void listTasks(ArrayList<TaskAttributes> tasks) {
+        controller.importantList.clear();
+        for (TaskAttributes task : tasks) {
+            appendTaskToDisplayList(task);
+        }
+    }
+
+    /**
+     * Appends a task to the list of tasks displayed.
+     *
+     * @param task
+     *            the task to be appended
+     * @return the on-screen ID of the task appended
+     */
+    private int appendTaskToDisplayList(TaskAttributes task) {
+        int onScreenId = controller.importantList.size() + 1;
+        ListItem listItem;
+        if (task.isCompleted()) {
+            listItem = new ListItem(onScreenId, task, true);
+            controller.importantList.add(listItem);
+            controller.importantList.get(controller.importantList.size() - 1).strikeOut();
+            listItem.strikeOut();
+        } else {
+            listItem = new ListItem(onScreenId, task, false);
+            controller.importantList.add(listItem);
+            controller.importantList.get(controller.importantList.size() - 1).getStyleClass().add("itemBox");
+        }
+        return onScreenId;
     }
 }

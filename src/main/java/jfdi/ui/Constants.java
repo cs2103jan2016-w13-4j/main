@@ -6,11 +6,11 @@ public class Constants {
     public static final String UI_MESSAGE_INITED = "Initialization Completed!";
     public static final String UI_MESSAGE_GREETING = "J.F.D.I. : Hello Jim! Nice to see you again! :)";
     public static final String UI_MESSAGE_WELCOME = "\nJ.F.D.I. : What can I do for you?";
-    public static final String UI_MESSAGE_USERCMD = "You said: %1$s\n";
-    public static final String UI_MESSAGE_RESPONSE = "J.F.D.I. : %1$s\n";
-    public static final String UI_MESSAGE_WARNING = "Warning: %1$s\n";
-    public static final String UI_MESSAGE_ERROR = "Error: %1$s\n";
-    public static final String UI_MESSAGE_QUIT = "Bye Bye! See you next time! :)\n";
+    public static final String UI_MESSAGE_USERCMD = "\nYou said: %1$s";
+    public static final String UI_MESSAGE_RESPONSE = "\nJ.F.D.I. : %1$s";
+    public static final String UI_MESSAGE_WARNING = "\nWarning: %1$s";
+    public static final String UI_MESSAGE_ERROR = "\nError: %1$s";
+    public static final String UI_MESSAGE_QUIT = "\nBye Bye! See you next time! :)";
 
     public static final String URL_ROOT_PATH = "/ui/RootLayout.fxml";
     public static final String URL_LIST_PATH = "/ui/ListLayout.fxml";
@@ -21,7 +21,9 @@ public class Constants {
     public static final String URL_RALEWAY_PATH = "/ui/fonts/raleway.heavy.ttf";
 
     public static final String CTRL_CMD_PROMPT_TEXT = "(Hey Jim! Please let me know what I can do for you!)";
-    public static final String CTRL_CMD_SHOWLIST = "list";
+    public static final String CTRL_CMD_INCOMPLETE = "list";
+    public static final String CTRL_CMD_COMPLETE = "list complete";
+    public static final String CTRL_CMD_ALL = "list all";
     public static final String CTRL_STATS_NAME1 = "Completed: ";
     public static final String CTRL_STATS_NAME2 = "Due Today: ";
     public static final int OVERLAY_FADE_IN_MILLISECONDS = 200;
@@ -74,10 +76,10 @@ public class Constants {
     public static final String CMD_ERROR_USE_FAIL_REPLACED =
             "The folder %s contains invalid files. Data has been moved to %s instead!";
 
-    public static final String CMD_SUCCESS_ADDED = "Task #%d - %s added! :)";
+    public static final String CMD_SUCCESS_ADDED = "Task #%d - %s - added! :)";
     public static final String CMD_SUCCESS_ALIAS = "Alias - %s - is created for command - %s -! :)";
-    public static final String CMD_SUCCESS_REDONE = "Previous command redone! :)";
-    public static final String CMD_SUCCESS_UNDONE = "Previous command undone! :)";
+    public static final String CMD_SUCCESS_REDONE = "Previous command - %s - redone! :)";
+    public static final String CMD_SUCCESS_UNDONE = "Previous command - %s - undone! :)";
     public static final String CMD_SUCCESS_DELETED = "Task(s) deleted! :)";
     public static final String CMD_SUCCESS_LISTED = "Here is your requested list! :)";
     public static final String CMD_SUCCESS_MARKED = "Task(s) completed! Good job! :)";
@@ -88,7 +90,7 @@ public class Constants {
     public static final String CMD_SUCCESS_SHOWDIRECTORY = "Your current directory is : %s ! :)";
     public static final String CMD_SUCCESS_SURPRISED = "SURPRISE!!!TAAAADAAAA!!! :D";
     public static final String CMD_SUCCESS_UNALIAS = "Alias - %s - is removed! :)";
-    public static final String CMD_SUCCESS_UNMARKED = "Task(s) marked as imcomplete! :)";
+    public static final String CMD_SUCCESS_UNMARKED = "Task(s) marked as incomplete! :)";
     public static final String CMD_SUCCESS_USED = "You are now using data from %s ! :)";
 
     public static final String CMD_WARNING_DONTKNOW = "Sorry, I do not understand what you mean by \"%s\" :(";

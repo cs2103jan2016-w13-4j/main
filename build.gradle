@@ -26,6 +26,8 @@ dependencies {
 
 
   testCompile 'org.mockito:mockito-core:1.+'
+  testCompile 'org.testfx:testfx-core:4.0.+'
+  testCompile 'org.testfx:testfx-junit:4.0.+'
   testCompile 'org.powermock:powermock-mockito-release-full:1.+'
 }
 

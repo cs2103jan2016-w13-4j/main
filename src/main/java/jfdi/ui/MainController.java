@@ -80,6 +80,7 @@ public class MainController {
     public Stage mainStage;
     public ObservableList<ListItem> importantList;
     public ObservableList<StatsItem> statsList;
+    public String displayStatus;
     public int completedNum;
     public int dueTodayNum;
 
@@ -133,8 +134,8 @@ public class MainController {
         fbArea.appendText(warning);
     }
 
-    public void displayList() {
-        ui.relayToLogic(Constants.CTRL_CMD_SHOWLIST);
+    public void displayList(String cmd) {
+        ui.relayToLogic(cmd);
     }
 
     public void setHighlights(HashSet<String> keywords) {

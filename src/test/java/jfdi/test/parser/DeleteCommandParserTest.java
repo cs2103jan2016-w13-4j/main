@@ -11,6 +11,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
+
 public class DeleteCommandParserTest {
 
     AbstractCommandParser parser = DeleteCommandParser.getInstance();
@@ -43,9 +45,9 @@ public class DeleteCommandParserTest {
         deleteCommand = validateAndReturnDeleteCommand(command);
         validateDeleteType(deleteCommand, 1, 2, 3);
 
-        command = parser.build("deLETE 1, 2-9");
+        command = parser.build("deLETE 1, 2-9, 20, 43");
         deleteCommand = validateAndReturnDeleteCommand(command);
-        validateDeleteType(deleteCommand, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+        validateDeleteType(deleteCommand, 1, 2, 3, 4, 5, 6, 7, 8, 9, 20, 43);
 
         command = parser.build("Delete 1-3 2-9");
         deleteCommand = validateAndReturnDeleteCommand(command);
@@ -63,6 +65,13 @@ public class DeleteCommandParserTest {
 
         command = parser.build("Delete 11-9");
         Assert.assertTrue(command instanceof InvalidCommand);
+
+        // Boundary case: wrong command
+        try {
+            command = parser.build("List 1-8");
+        } catch (AssertionError e) {
+            Assert.assertTrue(true);
+        }
 
         // Boundary case: empty string
         try {
@@ -90,7 +99,8 @@ public class DeleteCommandParserTest {
         int... screenIds) {
         int[] screenIdsInDeleteCommand = deleteCommand.getScreenIds().stream()
             .mapToInt(i -> i).toArray();
+        Arrays.sort(screenIds);
+        Arrays.sort(screenIdsInDeleteCommand);
         Assert.assertArrayEquals(screenIds, screenIdsInDeleteCommand);
     }
-
 }

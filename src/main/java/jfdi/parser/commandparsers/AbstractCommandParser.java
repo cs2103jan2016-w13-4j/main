@@ -11,6 +11,7 @@ import jfdi.logic.commands.InvalidCommand;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
 import jfdi.parser.Constants.CommandType;
+import jfdi.parser.ParserUtils;
 import jfdi.parser.exceptions.BadTaskIdException;
 
 /**
@@ -160,6 +161,18 @@ public abstract class AbstractCommandParser {
     }
 
     /**
+     * This method returns the first word of the input String.
+     *
+     * @param input
+     *            a String from which the first word is to be returned.
+     * @return the first word of the input String.
+     */
+    public String getFirstWord(String input) {
+        assert isValidInput(input);
+        return input.trim().split(Constants.REGEX_WHITESPACE)[0];
+    }
+
+    /**
      * This method checks if the given input is valid. A valid input is one that
      * is (1) not empty, and (2) not made of whitespaces only.
      *
@@ -171,4 +184,8 @@ public abstract class AbstractCommandParser {
         return input != null && !input.isEmpty() && !input.trim().isEmpty();
     }
 
+    protected boolean matchesCommandType(String input, CommandType commandType) {
+        return ParserUtils.getCommandType(getFirstWord(input)).equals(
+            commandType);
+    }
 }

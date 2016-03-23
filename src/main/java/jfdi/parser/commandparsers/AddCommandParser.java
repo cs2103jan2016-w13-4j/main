@@ -153,10 +153,6 @@ public class AddCommandParser extends AbstractCommandParser {
         }
     }
 
-    private String getFirstWord(String input) {
-        return input.split(Constants.REGEX_WHITESPACE)[0];
-    }
-
     /**
      * This method checks to see if the given input is a task description,
      * wrapped with the description escape delimiters.

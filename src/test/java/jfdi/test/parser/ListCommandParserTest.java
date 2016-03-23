@@ -99,6 +99,13 @@ public class ListCommandParserTest {
         cmd = parser.build("LiSt *&(*&(*@$*^$");
         Assert.assertTrue(cmd instanceof InvalidCommand);
 
+        // Boundary case: wrong command
+        try {
+            cmd = parser.build("delete 1-9");
+        } catch (AssertionError e) {
+            Assert.assertTrue(true);
+        }
+
         // Boundary case: empty string
         try {
             cmd = parser.build("");

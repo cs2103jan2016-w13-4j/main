@@ -36,7 +36,8 @@ public class ListCommandParser extends AbstractCommandParser {
      * @return the ListCommand object encapsulating the details of the list command.
      */
     public Command build(String input) {
-        assert isValidInput(input);
+        assert isValidInput(input)
+            && matchesCommandType(input, CommandType.list);
 
         ListCommand.Builder builder = new ListCommand.Builder();
         ListType listType = null;

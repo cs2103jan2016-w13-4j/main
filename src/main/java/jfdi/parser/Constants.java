@@ -43,9 +43,9 @@ public class Constants {
     public static final String REGEX_DELETE_FORMAT = REGEX_DELETE
         + " ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]*)+";
     public static final String REGEX_MARK_FORMAT = REGEX_MARK
-        + " ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]?)+";
+        + " ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]*)+";
     public static final String REGEX_UNMARK_FORMAT = REGEX_UNMARK
-        + " ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]?)+";
+        + " ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]*)+";
     // A taskID is simply an integer
     public static final String REGEX_TASKID = "\\b\\d+\\b";
 

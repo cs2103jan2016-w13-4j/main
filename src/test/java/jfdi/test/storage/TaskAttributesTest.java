@@ -11,6 +11,7 @@ import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
 import jfdi.storage.entities.Task;
 import jfdi.storage.exceptions.InvalidIdException;
+import jfdi.storage.exceptions.DuplicateTaskException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
 
@@ -82,6 +83,21 @@ public class TaskAttributesTest {
 
         // Call a second save with no changes
         // This should throw an exception
+        taskAttributes.save();
+    }
+
+    @Test(expected = DuplicateTaskException.class)
+    public void testSaveDuplicateTasks() throws Exception {
+        // Save the first Task
+        TaskAttributes taskAttributes = new TaskAttributes();
+        taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        taskAttributes.setStartDateTime(Constants.TEST_TASK_STARTDATETIME);
+        taskAttributes.setEndDateTime(Constants.TEST_TASK_ENDDATETIME);
+        taskAttributes.save();
+
+        // Save another identical Task
+        // This should trigger the exception
+        taskAttributes.setId(null);
         taskAttributes.save();
     }
 

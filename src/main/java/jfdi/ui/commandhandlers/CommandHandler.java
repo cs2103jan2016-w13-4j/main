@@ -57,10 +57,7 @@ public class CommandHandler {
     @Subscribe
     public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {
         TaskAttributes task = e.getTask();
-        int index = controller.importantList.size() + 1;
-        ListItem listItem = new ListItem(index, task, false);
-        controller.importantList.add(listItem);
-        controller.importantList.get(controller.importantList.size() - 1).getStyleClass().add("itemBox");
+        int index = appendTaskToDisplayList(task);
         controller.relayFb(String.format(Constants.CMD_SUCCESS_ADDED, index, task.getDescription()), MsgType.SUCCESS);
         logger.fine(String.format(Constants.LOG_ADDED_SUCCESS, task.getId()));
     }
@@ -219,24 +216,7 @@ public class CommandHandler {
                 break;
         }
 
-        controller.importantList.clear();
-
-        int count = 1;
-        for (TaskAttributes item : e.getItems()) {
-            ListItem listItem;
-            if (item.isCompleted()) {
-                listItem = new ListItem(count, item, true);
-                controller.importantList.add(listItem);
-                controller.importantList.get(controller.importantList.size() - 1).strikeOut();
-                listItem.strikeOut();
-            } else {
-                listItem = new ListItem(count, item, false);
-                controller.importantList.add(listItem);
-                controller.importantList.get(controller.importantList.size() - 1).getStyleClass().add("itemBox");
-            }
-
-            count++;
-        }
+        listTasks(e.getItems());
         controller.relayFb(Constants.CMD_SUCCESS_LISTED, MsgType.SUCCESS);
     }
 
@@ -413,19 +393,7 @@ public class CommandHandler {
     @Subscribe
     public void handleSearchDoneEvent(SearchDoneEvent e) {
 
-        controller.importantList.clear();
-
-        int count = 1;
-        for (TaskAttributes item : e.getResults()) {
-            ListItem listItem;
-            if (item.isCompleted()) {
-                listItem = new ListItem(count, item, true);
-            } else {
-                listItem = new ListItem(count, item, false);
-            }
-            controller.importantList.add(listItem);
-            count++;
-        }
+        listTasks(e.getResults());
 
         controller.displayStatus = "Search ";
         for (String key: e.getKeywords()) {
@@ -446,9 +414,7 @@ public class CommandHandler {
 
         controller.importantList.clear();
         TaskAttributes task = e.getTask();
-        ListItem listItem = new ListItem(1, task, false);
-        controller.importantList.add(listItem);
-        controller.importantList.get(0).getStyleClass().add("itemBox");
+        appendTaskToDisplayList(task);
         controller.displayStatus = Constants.CTRL_CMD_INCOMPLETE;
         controller.relayFb(Constants.CMD_SUCCESS_SURPRISED, MsgType.SUCCESS);
     }
@@ -557,5 +523,41 @@ public class CommandHandler {
 
     public void setController(MainController controller) {
         this.controller = controller;
+    }
+
+    /**
+     * Sets the display list to the given ArrayList of tasks.
+     *
+     * @param tasks
+     *            the ArrayList of tasks to be displayed
+     */
+    private void listTasks(ArrayList<TaskAttributes> tasks) {
+        controller.importantList.clear();
+        for (TaskAttributes task : tasks) {
+            appendTaskToDisplayList(task);
+        }
+    }
+
+    /**
+     * Appends a task to the list of tasks displayed.
+     *
+     * @param task
+     *            the task to be appended
+     * @return the on-screen ID of the task appended
+     */
+    private int appendTaskToDisplayList(TaskAttributes task) {
+        int onScreenId = controller.importantList.size() + 1;
+        ListItem listItem;
+        if (task.isCompleted()) {
+            listItem = new ListItem(onScreenId, task, true);
+            controller.importantList.add(listItem);
+            controller.importantList.get(controller.importantList.size() - 1).strikeOut();
+            listItem.strikeOut();
+        } else {
+            listItem = new ListItem(onScreenId, task, false);
+            controller.importantList.add(listItem);
+            controller.importantList.get(controller.importantList.size() - 1).getStyleClass().add("itemBox");
+        }
+        return onScreenId;
     }
 }

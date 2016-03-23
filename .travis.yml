@@ -21,6 +21,11 @@ after_success:
 after_failure:
   - for i in *.png; do curl --upload-file $i https://transfer.sh/$i; done
 
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
+
 notifications:
   email: false
   slack:

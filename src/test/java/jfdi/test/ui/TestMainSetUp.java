@@ -79,7 +79,7 @@ public class TestMainSetUp extends ApplicationTest {
         stage.toFront();
     }
 
-    private void initView() throws IOException {
+    private void initView() throws IOException, InterruptedException {
 
         IUserInterface ui = UI.getInstance();
 

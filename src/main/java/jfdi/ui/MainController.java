@@ -2,6 +2,7 @@ package jfdi.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 
@@ -81,8 +82,8 @@ public class MainController {
     public ObservableList<ListItem> importantList;
     public ObservableList<StatsItem> statsList;
     public String displayStatus;
-    public int completedNum;
-    public int dueTodayNum;
+    public ArrayList<ListItem> completedList;
+    public ArrayList<ListItem> dueTodayList;
 
     private ObservableList<HelpItem> helpList;
     private Timeline overlayTimeline;
@@ -94,16 +95,19 @@ public class MainController {
 
         initDate();
         initImportantList();
-        initStatsArea();
-        initOverdueList();
-        initUpcomingList();
         initFbArea();
         initCmdArea();
+    }
+
+    public void initSideContent() {
         initTimelines();
         initHelpList();
         initInputHistory();
-
+        initStatsArea();
+        initOverdueList();
+        initUpcomingList();
     }
+
 
     public void hideOverlays() {
         //noTaskOverlay.toBack();
@@ -196,28 +200,6 @@ public class MainController {
 
     }
 
-    private void initStatsArea() {
-        statsDisplayer.setMouseTransparent(true);
-        statsDisplayer.setFocusTraversable(false);
-        statsList = FXCollections.observableArrayList();
-        statsDisplayer.setItems(statsList);
-        statsList.add(new StatsItem(Constants.CTRL_STATS_NAME1));
-        statsList.add(new StatsItem(Constants.CTRL_STATS_NAME2));
-        completedNum = 0;
-        dueTodayNum = 0;
-    }
-
-    private void initOverdueList() {
-        overdueList.setMouseTransparent(true);
-        overdueList.setFocusTraversable(false);
-    }
-
-    private void initUpcomingList() {
-        upcomingList.setMouseTransparent(true);
-        upcomingList.setFocusTraversable(false);
-
-    }
-
     private void initFbArea() {
         fbArea.setMouseTransparent(true);
         fbArea.setFocusTraversable(false);
@@ -271,6 +253,36 @@ public class MainController {
         helpContent.setItems(helpList);
     }
 
+    private void initStatsArea() {
+        statsDisplayer.setMouseTransparent(true);
+        statsDisplayer.setFocusTraversable(false);
+        statsList = FXCollections.observableArrayList();
+        statsDisplayer.setItems(statsList);
+        statsList.add(new StatsItem(Constants.CTRL_STATS_NAME1));
+        statsList.add(new StatsItem(Constants.CTRL_STATS_NAME2));
+        setCompleteList();
+        setDueTodayList();
+    }
+
+    private void initOverdueList() {
+        overdueList.setMouseTransparent(true);
+        overdueList.setFocusTraversable(false);
+
+        //look at end date first; if null end date then check start date
+    }
+
+    private void initUpcomingList() {
+        upcomingList.setMouseTransparent(true);
+        upcomingList.setFocusTraversable(false);
+
+        // look at start date first; if null start date then check end date
+        // disregard task before NOW timeDate
+        // disregard completed tasks
+        // create a thread to loop every 5mins and update the list
+        // use stream to increase readability
+
+    }
+
     private Timeline generateHelpOverlayTimeline(FadeTransition fadeIn) {
         return new Timeline(new KeyFrame(new Duration(1), new EventHandler<ActionEvent>() {
             @Override
@@ -302,6 +314,22 @@ public class MainController {
     /***************************
      *** LEVEL 2 Abstraction ***
      ***************************/
+
+    private void setCompleteList() {
+        completedList = new ArrayList<ListItem>();
+        displayList(Constants.CTRL_CMD_COMPLETE);
+        completedList.addAll(importantList);
+        statsList.get(0).setNum(completedList.size());
+    }
+
+    private void setDueTodayList() {
+        dueTodayList = new ArrayList<ListItem>();
+        displayList(Constants.CTRL_CMD_ALL);
+        for (ListItem item : importantList) {
+            checkDueToday(item);
+        }
+        statsList.get(1).setNum(dueTodayList.size());
+    }
 
     private void handleOverlays(ObservableList<ListItem> tasks) {
         hideOverlays();
@@ -383,6 +411,40 @@ public class MainController {
     /***************************
      *** LEVEL 3 Abstraction ***
      ***************************/
+
+    public void checkDueToday(ListItem item) {
+
+        if (item.getItem().getEndDateTime() != null && !item.getMark()) {
+            if (item.getItem().getEndDateTime().getYear() == Calendar.getInstance().get(Calendar.YEAR)) {
+                if (item.getItem().getEndDateTime().getMonthValue() == Calendar.getInstance().get(Calendar.MONTH) + 1) {
+                    if (item.getItem().getEndDateTime().getDayOfMonth() == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
+                        if (!isInList(item)) {
+                            dueTodayList.add(item);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (item.getItem().getStartDateTime() != null && !item.getMark()) {
+            if (item.getItem().getStartDateTime().getYear() == Calendar.getInstance().get(Calendar.YEAR)) {
+                if (item.getItem().getStartDateTime().getMonthValue() == Calendar.getInstance().get(Calendar.MONTH) + 1) {
+                    if (item.getItem().getStartDateTime().getDayOfMonth() == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
+                        if (!isInList(item)) {
+                            dueTodayList.add(item);
+                        }
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    private boolean isInList(ListItem item) {
+        dueTodayList.contains(item);
+        return false;
+    }
 
     public void setFirstAndLastVisibleIds() {
         ListViewSkin<?> listViewSkin = (ListViewSkin<?>) listMain.getSkin();

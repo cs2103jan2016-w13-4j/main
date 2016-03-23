@@ -556,8 +556,16 @@ public class CommandHandler {
      * @return the on-screen ID of the task appended
      */
     private int appendTaskToDisplayList(TaskAttributes task) {
+
         int onScreenId = controller.importantList.size() + 1;
         ListItem listItem;
+
+        if (controller.displayStatus.equals(Constants.CTRL_CMD_COMPLETE)
+                || controller.displayStatus.equals(Constants.CTRL_CMD_SURPRISE)
+                || controller.displayStatus.contains(Constants.CTRL_CMD_SEARCH)) {
+            controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
+        }
+
         if (task.isCompleted()) {
             listItem = new ListItem(onScreenId, task, true);
             controller.importantList.add(listItem);
@@ -568,6 +576,8 @@ public class CommandHandler {
             controller.importantList.add(listItem);
             controller.importantList.get(controller.importantList.size() - 1).getStyleClass().add("itemBox");
         }
+
+        controller.checkDueToday(listItem);
         return onScreenId;
     }
 }

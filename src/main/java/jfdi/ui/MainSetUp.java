@@ -73,11 +73,10 @@ public class MainSetUp extends Application {
         scene.getStylesheets().add("https://fonts.googleapis.com/css?family=Titillium+Web:200");
         primaryStage.show();
         primaryStage.setResizable(false);
-        this.scene = scene;
 
     }
 
-    private void initView() throws IOException {
+    private void initView() throws IOException, InterruptedException {
 
         IUserInterface ui = UI.getInstance();
 
@@ -89,7 +88,6 @@ public class MainSetUp extends Application {
 
         // Initialize Controller
         controller = loader.getController();
-        controller.initialize();
 
         // Link UI with Controller
         ui.setController(controller);
@@ -100,10 +98,10 @@ public class MainSetUp extends Application {
 
         // Link Controller with UI, MainSetUp and CommandHandler
         controller.setUi(ui);
-        controller.setMainApp(this); // REDUNDANT!!!! DELETE
+        controller.setMainApp(this);
 
         //controller.importantList.removeAll(controller.importantList);
-
+        controller.initSideContent();
         controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
         ui.displayWelcome();
     }

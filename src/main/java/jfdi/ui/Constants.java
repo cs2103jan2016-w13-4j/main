@@ -22,7 +22,9 @@ public class Constants {
 
     public static final String CTRL_CMD_PROMPT_TEXT = "(Hey Jim! Please let me know what I can do for you!)";
     public static final String CTRL_CMD_INCOMPLETE = "list";
-    public static final String CTRL_CMD_COMPLETE = "list complete";
+    public static final String CTRL_CMD_COMPLETE = "list completed";
+    public static final String CTRL_CMD_SURPRISE = "surprise!";
+    public static final String CTRL_CMD_SEARCH = "search";
     public static final String CTRL_CMD_ALL = "list all";
     public static final String CTRL_STATS_NAME1 = "Completed: ";
     public static final String CTRL_STATS_NAME2 = "Due Today: ";
@@ -43,6 +45,7 @@ public class Constants {
     public static final String CMD_ERROR_CANT_DELETE_UNKNOWN = "Cannot delete task. The ID #%d does not exist!";
     public static final String CMD_ERROR_INIT_FAIL_UNKNOWN = "Some stupid error occurred. Cannot initialize JFDI!";
     public static final String CMD_ERROR_INIT_FAIL_INVALID = "The folder %s doesn't work. Choose another one!";
+    // replaced should be user command completed and backup files in directory.
     public static final String CMD_ERROR_INIT_FAIL_REPLACED = "The folder %s is occupied. File has been moved to %s !";
     public static final String CMD_ERROR_CANT_MARK_NO_ID = "Cannot mark task as completed. The ID #%d does not exist!!";
     public static final String CMD_ERROR_CANT_MARK_UNKNOWN = "Some stupid error occurred. Cannot mark task(s) as done!";

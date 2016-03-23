@@ -57,9 +57,9 @@ public class CommandHandler {
     @Subscribe
     public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {
         TaskAttributes task = e.getTask();
-        int index = appendTaskToDisplayList(task);
+        appendTaskToDisplayList(task);
         controller.relayFb(
-                String.format(Constants.CMD_SUCCESS_ADDED, index,
+                String.format(Constants.CMD_SUCCESS_ADDED,
                         task.getDescription()), MsgType.SUCCESS);
         logger.fine(String.format(Constants.LOG_ADDED_SUCCESS, task.getId()));
     }
@@ -613,18 +613,16 @@ public class CommandHandler {
      *
      * @param task
      *            the task to be appended
-     * @return the on-screen ID of the task appended
+     * @return the on-screen ID of the task appended, or null if the task does
+     *         not match the context of the UI
      */
-    private int appendTaskToDisplayList(TaskAttributes task) {
+    private Integer appendTaskToDisplayList(TaskAttributes task) {
+        if (!taskMatchesContext(task)) {
+            return null;
+        }
 
         int onScreenId = controller.importantList.size() + 1;
         ListItem listItem;
-
-        if (controller.displayStatus.equals(Constants.CTRL_CMD_COMPLETE)
-                || controller.displayStatus.equals(Constants.CTRL_CMD_SURPRISE)
-                || controller.displayStatus.contains(Constants.CTRL_CMD_SEARCH)) {
-            controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
-        }
 
         if (task.isCompleted()) {
             listItem = new ListItem(onScreenId, task, true);
@@ -639,5 +637,22 @@ public class CommandHandler {
         }
 
         return onScreenId;
+    }
+
+    private boolean taskMatchesContext(TaskAttributes task) {
+        // Any task matches the "list all" context
+        if (controller.displayStatus.equals(Constants.CTRL_CMD_ALL)) {
+            return true;
+        // No tasks will match the "search" or "surprise" context
+        } else if (controller.displayStatus.equals(Constants.CTRL_CMD_SEARCH)
+                || controller.displayStatus.equals(Constants.CTRL_CMD_SURPRISE)) {
+            return false;
+        }
+
+        if (task.isCompleted()) {
+            return controller.displayStatus.equals(Constants.CTRL_CMD_COMPLETE);
+        } else {
+            return controller.displayStatus.equals(Constants.CTRL_CMD_INCOMPLETE);
+        }
     }
 }

@@ -79,7 +79,7 @@ public class Constants {
     public static final String CMD_ERROR_USE_FAIL_REPLACED =
             "The folder %s contains invalid files. Data has been moved to %s instead!";
 
-    public static final String CMD_SUCCESS_ADDED = "Task #%d - %s - added! :)";
+    public static final String CMD_SUCCESS_ADDED = "Task - %s - added! :)";
     public static final String CMD_SUCCESS_ALIAS = "Alias - %s - is created for command - %s -! :)";
     public static final String CMD_SUCCESS_REDONE = "Previous command - %s - redone! :)";
     public static final String CMD_SUCCESS_UNDONE = "Previous command - %s - undone! :)";

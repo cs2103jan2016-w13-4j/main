@@ -165,6 +165,6 @@ public class TestMainSetUp extends ApplicationTest {
 
         assertEquals("The feedback message does not match the intended result.",
                 fbArea.getText(), "\nJ.F.D.I. : " + String.format(
-                        Constants.CMD_SUCCESS_ADDED, controller.importantList.size(), "hello"));
+                        Constants.CMD_SUCCESS_ADDED, "hello"));
     }
 }

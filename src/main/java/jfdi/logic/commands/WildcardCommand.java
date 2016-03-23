@@ -8,6 +8,7 @@ import jfdi.storage.apis.TaskDb;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * @author Xinan
@@ -26,12 +27,13 @@ public class WildcardCommand extends Command {
 
     @Override
     public void execute() {
-        ArrayList<TaskAttributes> allTasks = new ArrayList<>(TaskDb.getInstance().getAll());
+        ArrayList<TaskAttributes> incompleteTasks = TaskDb.getInstance().getAll().stream()
+                .filter(task -> !task.isCompleted()).collect(Collectors.toCollection(ArrayList::new));
 
         SecureRandom random = new SecureRandom();
 
-        if (!allTasks.isEmpty()) {
-            TaskAttributes lucky = allTasks.get(random.nextInt(allTasks.size()));
+        if (!incompleteTasks.isEmpty()) {
+            TaskAttributes lucky = incompleteTasks.get(random.nextInt(incompleteTasks.size()));
             eventBus.post(new SurpriseEvent(lucky));
         } else {
             eventBus.post(new NoSurpriseEvent(NoSurpriseEvent.Error.NO_TASKS));

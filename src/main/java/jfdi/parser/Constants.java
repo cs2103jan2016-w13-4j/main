@@ -67,7 +67,7 @@ public class Constants {
     public static final String REGEX_TIME_RELATIVE = "((?i)((this )?(morning|afternoon|evening)|(to)?night|midnight))";
 
     public static final String REGEX_RELATIVE_DATE_1 = "(?i)(tomorrow|yesterday|today|now)";
-    public static final String REGEX_RELATIVE_DATE_2 = "(?i)((next |this )?("
+    public static final String REGEX_RELATIVE_DATE_2 = "(?i)((next |this |last )?("
         + REGEX_DATE_ATTRIBUTES + "|" + REGEX_DAYS_TEXTUAL + "))";
     public static final String REGEX_RELATIVE_DATE_3 = "((\\d+ )"
         + REGEX_DATE_ATTRIBUTES + " (?i)(later|before|after))";
@@ -205,8 +205,6 @@ public class Constants {
         REGEX_WILDCARD, REGEX_EXIT};
 
     public static void main(String[] args) {
-
-        System.out.println("delete 1-10".matches(REGEX_DELETE_FORMAT));
 
     }
 }

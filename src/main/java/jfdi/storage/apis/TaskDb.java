@@ -3,7 +3,6 @@ package jfdi.storage.apis;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeMap;
@@ -197,26 +196,6 @@ public class TaskDb implements IDatabase {
     }
 
     /**
-     * This method returns an ArrayList of TaskAttributes that correspond to
-     * Tasks containing the specified tag in storage.
-     *
-     * @param tag
-     *            the search tag
-     * @return an ArrayList of TaskAttributes corresponding to Tasks that
-     *         contains the specified tag
-     */
-    public ArrayList<TaskAttributes> getByTag(String tag) {
-        assert tag != null;
-        ArrayList<TaskAttributes> taskAttributesList = new ArrayList<TaskAttributes>();
-        for (TaskAttributes taskAttributes : getAll()) {
-            if (taskAttributes.hasTag(tag)) {
-                taskAttributesList.add(taskAttributes);
-            }
-        }
-        return taskAttributesList;
-    }
-
-    /**
      * This method checks if a task (given by its ID) exists in the database.
      *
      * @param id
@@ -318,66 +297,6 @@ public class TaskDb implements IDatabase {
         assert id != null;
         Task task = deletedTaskList.remove(id);
         taskList.put(task.getId(), task);
-    }
-
-    /**
-     * This method adds the given reminder to a task with the given id.
-     *
-     * @param id
-     *            the id of the task that we want to add the reminder to
-     * @param reminder
-     *            the reminder that we want to add to the task
-     * @throws NoAttributesChangedException
-     *             if no attributes have been changed
-     * @throws InvalidIdException
-     *             if the given id is invalid
-     */
-    public void addReminderById(Integer id, Duration reminder) throws InvalidIdException,
-            NoAttributesChangedException {
-        assert id != null && reminder != null;
-        TaskAttributes taskAttributes = getById(id);
-        taskAttributes.addReminder(reminder);
-        update(taskAttributes);
-    }
-
-    /**
-     * This method adds the given tag to a task with the given id.
-     *
-     * @param id
-     *            the id of the task that we want to add the tag to
-     * @param tag
-     *            the tag that we want to add to the task
-     * @throws NoAttributesChangedException
-     *             if no attributes have been changed
-     * @throws InvalidIdException
-     *             if the given id is invalid
-     */
-    public void addTagById(Integer id, String tag) throws NoAttributesChangedException,
-    InvalidIdException {
-        assert id != null && tag != null;
-        TaskAttributes taskAttributes = getById(id);
-        taskAttributes.addTag(tag);
-        update(taskAttributes);
-    }
-
-    /**
-     * This method removes the given tag from a task with the given id.
-     *
-     * @param id
-     *            the id of the task that we want to remove the tag from
-     * @param tag
-     *            the tag that we want to remove from the task
-     * @throws NoAttributesChangedException
-     *             if no attributes have been changed
-     * @throws InvalidIdException
-     *             if the given id is invalid
-     */
-    public void removeTagById(Integer id, String tag) throws NoAttributesChangedException,
-    InvalidIdException {
-        assert id != null && tag != null;
-        TaskAttributes taskAttributes = getById(id);
-        taskAttributes.removeTag(tag);
-        update(taskAttributes);
     }
 
     /**

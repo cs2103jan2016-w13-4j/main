@@ -1,11 +1,8 @@
 package jfdi.storage.apis;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.TreeSet;
 
 import jfdi.storage.Constants;
 import jfdi.storage.entities.Task;
@@ -26,27 +23,16 @@ public class TaskAttributes {
     private String description = null;
     private LocalDateTime startDateTime = null;
     private LocalDateTime endDateTime = null;
-    private HashSet<String> tags = new HashSet<String>();
-    private TreeSet<Duration> reminders = new TreeSet<Duration>();
     private boolean isCompleted = false;
 
     public TaskAttributes() {}
 
-    @SuppressWarnings("unchecked")
     public TaskAttributes(Task task) {
         this.id = task.getId();
         this.description = task.getDescription();
         this.startDateTime = task.getStartDateTime();
         this.endDateTime = task.getEndDateTime();
         this.isCompleted = task.isCompleted();
-
-        // We don't want to expose the mutable attributes so we clone them
-        if (task.getTags() instanceof HashSet<?>) {
-            this.tags = (HashSet<String>) task.getTags().clone();
-        }
-        if (task.getReminders() instanceof TreeSet<?>) {
-            this.reminders = (TreeSet<Duration>) task.getReminders().clone();
-        }
     }
 
     public Integer getId() {
@@ -84,50 +70,6 @@ public class TaskAttributes {
         this.endDateTime = endDateTime;
     }
 
-    public HashSet<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(String... tags) {
-        this.tags = new HashSet<String>();
-        for (String tag : tags) {
-            assert tag != null;
-            this.tags.add(tag);
-        }
-    }
-
-    public boolean addTag(String tag) {
-        HashSet<String> tags = this.getTags();
-        return tags.add(tag);
-    }
-
-    public boolean removeTag(String tag) {
-        HashSet<String> tags = this.getTags();
-        return tags.remove(tag);
-    }
-
-    public boolean hasTag(String tag) {
-        HashSet<String> tags = this.getTags();
-        return tags.contains(tag);
-    }
-
-    public TreeSet<Duration> getReminders() {
-        return reminders;
-    }
-
-    public void setReminders(Duration... reminders) {
-        this.reminders = new TreeSet<Duration>();
-        for (Duration reminder : reminders) {
-            assert reminder != null;
-            this.reminders.add(reminder);
-        }
-    }
-
-    public boolean addReminder(Duration reminder) {
-        TreeSet<Duration> reminders = this.getReminders();
-        return reminders.add(reminder);
-    }
-
     public boolean isCompleted() {
         return isCompleted;
     }
@@ -163,7 +105,7 @@ public class TaskAttributes {
      * @return the corresponding Task entity
      */
     public Task toEntity() {
-        return new Task(id, description, startDateTime, endDateTime, tags, reminders);
+        return new Task(id, description, startDateTime, endDateTime);
     }
 
     /**
@@ -216,8 +158,6 @@ public class TaskAttributes {
                 && Objects.equals(this.description, task.getDescription())
                 && Objects.equals(this.startDateTime, task.getStartDateTime())
                 && Objects.equals(this.endDateTime, task.getEndDateTime())
-                && Objects.equals(this.tags, task.getTags())
-                && Objects.equals(this.reminders, task.getReminders())
                 && this.isCompleted == task.isCompleted();
     }
 

@@ -90,7 +90,7 @@ public class Constants {
     public static final String CMD_SUCCESS_SHOWDIRECTORY = "Your current directory is : %s ! :)";
     public static final String CMD_SUCCESS_SURPRISED = "SURPRISE!!!TAAAADAAAA!!! :D";
     public static final String CMD_SUCCESS_UNALIAS = "Alias - %s - is removed! :)";
-    public static final String CMD_SUCCESS_UNMARKED = "Task(s) marked as imcomplete! :)";
+    public static final String CMD_SUCCESS_UNMARKED = "Task(s) marked as incomplete! :)";
     public static final String CMD_SUCCESS_USED = "You are now using data from %s ! :)";
 
     public static final String CMD_WARNING_DONTKNOW = "Sorry, I do not understand what you mean by \"%s\" :(";

@@ -229,10 +229,19 @@ public class CommandHandler {
             indexCount = screenId - 1;
             controller.importantList.get(indexCount).setMarkT();
             controller.importantList.get(indexCount).strikeOut();
-            controller.displayList(controller.displayStatus);
+            refreshDisplay();
+
+            //            controller.displayList(controller.displayStatus);
             //logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, num));
         }
         controller.relayFb(String.format(Constants.CMD_SUCCESS_MARKED, indexCount + 1), MsgType.SUCCESS);
+    }
+
+    private void refreshDisplay() {
+        appendTaskToDisplayList(new TaskAttributes());
+        controller.importantList.remove(controller.importantList.size()-1);
+        // TODO Auto-generated method stub
+
     }
 
     @Subscribe
@@ -466,7 +475,8 @@ public class CommandHandler {
             indexCount = screenId - 1;
             controller.importantList.get(indexCount).setMarkF();
             controller.importantList.get(indexCount).removeStrike();
-            controller.displayList(controller.displayStatus);
+            refreshDisplay();
+            //            controller.displayList(controller.displayStatus);
             //logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, num));
         }
         controller.relayFb(String.format(Constants.CMD_SUCCESS_UNMARKED, indexCount + 1), MsgType.SUCCESS);

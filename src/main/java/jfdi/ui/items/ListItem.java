@@ -121,9 +121,9 @@ public class ListItem extends VBox {
     }
 
     public void removeStrike() {
+        //        this.getStyleClass()..remove(0);
+        this.getStyleClass().remove("itemBoxDone");
         this.getStyleClass().add("itemBox");
-        this.getStyleClass().remove(0);
-        //rowIndex.getStyleClass().remove("itemBoxDone");
         //description.getStyleClass().remove("itemBoxDone");
         //timeAndDate.getStyleClass().remove("itemBoxDone");
         //rowIndex.getStyleClass().add("itemBox");

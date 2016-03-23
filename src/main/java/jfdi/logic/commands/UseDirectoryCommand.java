@@ -1,5 +1,6 @@
 package jfdi.logic.commands;
 
+import jfdi.logic.events.FilesReplacedEvent;
 import jfdi.logic.events.MoveDirectoryFailedEvent;
 import jfdi.logic.events.UseDirectoryDoneEvent;
 import jfdi.logic.interfaces.Command;
@@ -8,6 +9,8 @@ import jfdi.storage.apis.AliasDb;
 import jfdi.storage.apis.MainStorage;
 import jfdi.storage.exceptions.FilesReplacedException;
 import jfdi.storage.exceptions.InvalidFilePathException;
+
+import java.util.Optional;
 
 /**
  * @author Xinan
@@ -52,8 +55,7 @@ public class UseDirectoryCommand extends Command {
             pushToUndoStack();
             eventBus.post(new UseDirectoryDoneEvent(newDirectory));
         } catch (FilesReplacedException e) {
-            eventBus.post(new MoveDirectoryFailedEvent(newDirectory, MoveDirectoryFailedEvent.Error.FILE_REPLACED,
-                e.getReplacedFilePairs()));
+            eventBus.post(new FilesReplacedEvent(newDirectory, e.getReplacedFilePairs()));
         } catch (InvalidFilePathException e) {
             eventBus.post(new MoveDirectoryFailedEvent(newDirectory, MoveDirectoryFailedEvent.Error.INVALID_PATH));
         }

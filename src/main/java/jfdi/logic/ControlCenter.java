@@ -2,6 +2,7 @@ package jfdi.logic;
 
 import com.google.common.eventbus.EventBus;
 import jfdi.logic.commands.InvalidCommand;
+import jfdi.logic.events.FilesReplacedEvent;
 import jfdi.logic.events.InitializationFailedEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.logic.interfaces.ILogic;
@@ -49,8 +50,7 @@ public class ControlCenter implements ILogic {
         try {
             MainStorage.getInstance().initialize();
         } catch (FilesReplacedException e) {
-            eventBus.post(new InitializationFailedEvent(InitializationFailedEvent.Error.FILE_REPLACED,
-                e.getReplacedFilePairs()));
+            eventBus.post(new FilesReplacedEvent(e.getReplacedFilePairs()));
         } catch (InvalidFilePathException e) {
             eventBus.post(new InitializationFailedEvent(InitializationFailedEvent.Error.INVALID_PATH,
                 e.getPath()));

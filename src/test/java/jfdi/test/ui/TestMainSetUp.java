@@ -35,7 +35,7 @@ import jfdi.ui.items.ListItem;
 import jfdi.ui.items.SideItem;
 import jfdi.ui.items.StatsItem;
 
-public class TestMainSetUp extends ApplicationTest{
+public class TestMainSetUp extends ApplicationTest {
 
     /* The widgets of the GUI used for the tests. */
     Label dayDisplayer;
@@ -154,13 +154,17 @@ public class TestMainSetUp extends ApplicationTest{
         //assertNotNull(String.format(errMsg, "helpOverLay"), helpOverLay);
     }
 
+    /*
+     * Test a simple "add hello" command and check if the feedback displayed matches the expected lines.
+     */
     @Test
     public void testAddTask() {
-        clickOn(cmdArea).type(KeyCode.BACK_SPACE).type(KeyCode.A).type(KeyCode.D).type(KeyCode.D).type(KeyCode.SPACE).type(KeyCode.H).
-        type(KeyCode.E).type(KeyCode.L).type(KeyCode.L).type(KeyCode.O).type(KeyCode.ENTER);
+        clickOn(cmdArea).type(KeyCode.BACK_SPACE).type(KeyCode.A).type(KeyCode.D).type(KeyCode.D).type(KeyCode.SPACE)
+        .type(KeyCode.H).type(KeyCode.E).type(KeyCode.L).type(KeyCode.L).type(KeyCode.O).type(KeyCode.ENTER);
         WaitForAsyncUtils.waitForFxEvents();
 
         assertEquals("The feedback message does not match the intended result.",
-                fbArea.getText(), "\nJ.F.D.I. : " + String.format(Constants.CMD_SUCCESS_ADDED, controller.importantList.size(), "hello"));
+                fbArea.getText(), "\nJ.F.D.I. : " + String.format(
+                        Constants.CMD_SUCCESS_ADDED, controller.importantList.size(), "hello"));
     }
 }

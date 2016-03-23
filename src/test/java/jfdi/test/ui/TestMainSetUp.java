@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 
 import org.junit.After;
 import org.junit.Before;
@@ -30,6 +29,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import jfdi.storage.apis.MainStorage;
 import jfdi.ui.Constants;
 import jfdi.ui.IUserInterface;
 import jfdi.ui.MainController;
@@ -51,6 +51,9 @@ public class TestMainSetUp extends ApplicationTest {
     Parent rootLayout;
     AnchorPane listLayout;
     MainController controller;
+
+    /* The original storage path - to revert after the tests */
+    private String originalStorageDirectory = null;
 
     /* This operation comes from ApplicationTest and loads the GUI to test. */
     @Override
@@ -78,7 +81,7 @@ public class TestMainSetUp extends ApplicationTest {
         stage.toFront();
     }
 
-    private void initView() throws IOException, InterruptedException {
+    private void initView() throws Exception {
 
         IUserInterface ui = UI.getInstance();
 
@@ -104,7 +107,8 @@ public class TestMainSetUp extends ApplicationTest {
         controller.importantList.removeAll(controller.importantList);
 
         File tempDir = Files.createTempDir();
-        controller.displayList("use " + tempDir.getPath());
+        originalStorageDirectory = MainStorage.getInstance().getCurrentDirectory();
+        MainStorage.getInstance().use(tempDir.getAbsolutePath());
 
         controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
         ui.displayWelcome();
@@ -130,11 +134,12 @@ public class TestMainSetUp extends ApplicationTest {
 
     /* To clear the ongoing events */
     @After
-    public void tearDown() throws TimeoutException {
+    public void tearDown() throws Exception {
         /* Close the window. It will be re-opened at the next test. */
         FxToolkit.hideStage();
         release(new KeyCode[] {});
         release(new MouseButton[] {});
+        MainStorage.getInstance().use(originalStorageDirectory);
     }
 
     @Test

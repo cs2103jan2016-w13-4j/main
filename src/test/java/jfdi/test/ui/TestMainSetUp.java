@@ -23,6 +23,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
@@ -42,7 +43,7 @@ public class TestMainSetUp extends ApplicationTest {
     Label listStatus;
     ListView<ListItem> listMain;
     TextArea fbArea;
-    TextArea cmdArea;
+    TextField cmdArea;
     VBox helpOverLay;
 
     Stage stage;

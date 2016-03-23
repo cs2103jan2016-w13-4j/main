@@ -10,6 +10,7 @@
 	-fx-text-fill: #eeeeee;
 	-fx-font-family: "HammersmithOne";
 	-fx-font-size: 16px;
+	-fx-text-alignment: CENTER;
 }
 
 .itemBox{
@@ -80,7 +81,7 @@
 	-fx-font-family: "HammersmithOne";
 	-fx-font-size: 22px;
 	-fx-alignment: #faebcd;
-	-fx-text-alignment: #faebcd;
+	-fx-text-alignment: CENTER;
 }
 
 .fbArea {

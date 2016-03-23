@@ -1,4 +1,5 @@
 //@@author A0121621Y
+
 package jfdi.storage.serializer;
 
 import com.google.gson.Gson;

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import jfdi.common.utilities.JfdiLogger;
 import jfdi.logic.interfaces.Command;
@@ -43,6 +44,7 @@ public class InputParser implements IParser {
     private static final String SOURCECLASS = InputParser.class.getName();
     private Collection<AliasAttributes> aliases = new ArrayList<AliasAttributes>();
     private HashMap<String, String> aliasMap = new HashMap<>();
+    private String currentInput = "";
 
     public static InputParser getInstance() {
         LOGGER.entering(SOURCECLASS, "getInstance");
@@ -60,6 +62,7 @@ public class InputParser implements IParser {
                 input));
             throw new InvalidInputException(input);
         }
+        currentInput = input;
         input = trimInput(input);
         // input is guaranteed to be at least one word long
         String unaliasedInput = unalias(input);
@@ -119,8 +122,9 @@ public class InputParser implements IParser {
         String firstWord = getFirstWord(input);
         Set<String> aliasSet = aliasMap.keySet();
         for (String str : aliasSet) {
-            if (firstWord.matches("^" + str)) {
-                return input.replaceAll("^" + str, aliasMap.get(str));
+            if (firstWord.matches("^" + Pattern.quote(str))) {
+                return input.replaceAll("^" + Pattern.quote(str),
+                    aliasMap.get(str));
             }
         }
         return input;
@@ -172,17 +176,20 @@ public class InputParser implements IParser {
                 return UseCommandParser.getInstance().build(input);
             case undo:
                 return isSingleWord(input) ? UndoCommandParser.getInstance()
-                    .build(input) : AddCommandParser.getInstance().build(input);
+                    .build(input) : AddCommandParser.getInstance().build(
+                    currentInput);
             case help:
                 return isSingleWord(input) ? HelpCommandParser.getInstance()
-                    .build(input) : AddCommandParser.getInstance().build(input);
+                    .build(input) : AddCommandParser.getInstance().build(
+                    currentInput);
             case wildcard:
                 return isSingleWord(input) ? WildcardCommandParser
                     .getInstance().build(input) : AddCommandParser
-                    .getInstance().build(input);
+                    .getInstance().build(currentInput);
             case exit:
                 return isSingleWord(input) ? ExitCommandParser.getInstance()
-                    .build(input) : AddCommandParser.getInstance().build(input);
+                    .build(input) : AddCommandParser.getInstance().build(
+                    currentInput);
             default:
                 return AddCommandParser.getInstance().build(input);
         }

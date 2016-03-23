@@ -32,7 +32,6 @@ import jfdi.ui.IUserInterface;
 import jfdi.ui.MainController;
 import jfdi.ui.UI;
 import jfdi.ui.items.ListItem;
-import jfdi.ui.items.SideItem;
 import jfdi.ui.items.StatsItem;
 
 public class TestMainSetUp extends ApplicationTest {
@@ -40,8 +39,6 @@ public class TestMainSetUp extends ApplicationTest {
     /* The widgets of the GUI used for the tests. */
     Label dayDisplayer;
     ListView<StatsItem> statsDisplayer;
-    ListView<SideItem> overdueList;
-    ListView<SideItem> upcomingList;
     Label listStatus;
     ListView<ListItem> listMain;
     TextArea fbArea;
@@ -120,8 +117,6 @@ public class TestMainSetUp extends ApplicationTest {
         /* Retrieve the tested widgets from the GUI. */
         dayDisplayer = find("#dayDisplayer");
         statsDisplayer = find("#statsDisplayer");
-        overdueList = find("#overdueList");
-        upcomingList = find("#upcomingList");
         listStatus = find("#listStatus");
         listMain = find("#listMain");
         fbArea = find("#fbArea");
@@ -145,8 +140,6 @@ public class TestMainSetUp extends ApplicationTest {
 
         assertNotNull(String.format(errMsg, "dayDisplayer"), dayDisplayer);
         assertNotNull(String.format(errMsg, "statsDisplayer"), statsDisplayer);
-        assertNotNull(String.format(errMsg, "overdueList"), overdueList);
-        assertNotNull(String.format(errMsg, "upcomingList"), upcomingList);
         assertNotNull(String.format(errMsg, "listStatus"), listStatus);
         assertNotNull(String.format(errMsg, "listMain"), listMain);
         assertNotNull(String.format(errMsg, "fbArea"), fbArea);

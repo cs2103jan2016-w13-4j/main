@@ -77,14 +77,25 @@
 }
 
 .fbArea {
-	
 	-fx-font-family: "HammersmithOne";
-	-fx-font-size: 13px;
+	-fx-text-fill: #eeeeee;
+	-fx-font-size: 14px;
 	-fx-wrap-text: true;
 }
 
+.fbArea .text,
+.cmdArea .text {
+	-fx-text-fill: #eeeeee;
+}
+
+.fbArea .content,
+.cmdArea .content {
+	-fx-background-color: #434343;
+	-fx-text-fill: #eeeeee;
+}
+
 .cmdArea {
-	
+	-fx-text-fill: #eeeeee;
 	-fx-font-family: "HammersmithOne";
 	-fx-font-size: 12px;
 	-fx-wrap-text: true;

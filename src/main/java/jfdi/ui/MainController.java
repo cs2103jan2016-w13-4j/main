@@ -25,7 +25,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -64,7 +63,7 @@ public class MainController {
     @FXML
     public TextArea fbArea;
     @FXML
-    public TextField cmdArea;
+    public TextArea cmdArea;
 
     @FXML
     public VBox helpOverlay;
@@ -104,8 +103,6 @@ public class MainController {
         initHelpList();
         initInputHistory();
         initStatsArea();
-        initOverdueList();
-        initUpcomingList();
     }
 
 
@@ -262,25 +259,6 @@ public class MainController {
         statsList.add(new StatsItem(Constants.CTRL_STATS_NAME2));
         setCompleteList();
         setDueTodayList();
-    }
-
-    private void initOverdueList() {
-        overdueList.setMouseTransparent(true);
-        overdueList.setFocusTraversable(false);
-
-        //look at end date first; if null end date then check start date
-    }
-
-    private void initUpcomingList() {
-        upcomingList.setMouseTransparent(true);
-        upcomingList.setFocusTraversable(false);
-
-        // look at start date first; if null start date then check end date
-        // disregard task before NOW timeDate
-        // disregard completed tasks
-        // create a thread to loop every 5mins and update the list
-        // use stream to increase readability
-
     }
 
     private Timeline generateHelpOverlayTimeline(FadeTransition fadeIn) {

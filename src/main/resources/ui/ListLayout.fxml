@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -12,34 +11,12 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="670.0" maxWidth="650.0" prefHeight="670.0" prefWidth="650.0" style="-fx-background-color: #f7c873;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfdi.ui.MainController">
+<AnchorPane maxHeight="670.0" maxWidth="650.0" prefHeight="670.0" prefWidth="650.0" style="-fx-background-color: #f7c873;" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfdi.ui.MainController">
    <children>
       <StackPane maxHeight="670.0" maxWidth="650.0" prefHeight="670.0" prefWidth="650.0" VBox.vgrow="ALWAYS">
           <children>
 	          <HBox maxHeight="670.0" maxWidth="650.0" prefHeight="670.0" prefWidth="650.0">
 	              <children>
-				      <VBox fx:id="backDrop" prefHeight="670.0" prefWidth="200.0" style="-fx-background-color: f7c873;">
-				         <children>
-				            <Label fx:id="dayDisplayer" alignment="CENTER" contentDisplay="CENTER" prefHeight="68.0" prefWidth="200.0" styleClass="dayDate" stylesheets="@sideBar.css" textAlignment="CENTER" wrapText="true" />
-				            <ListView fx:id="statsDisplayer" prefHeight="70.0" prefWidth="200.0" style="-fx-background-color: #434343;" stylesheets="@sideBar.css">
-				               <VBox.margin>
-				                  <Insets top="4.0" />
-				               </VBox.margin>
-				            </ListView>
-				            <Label fx:id="overdueLabel" alignment="CENTER" layoutX="0.0" layoutY="139.0" prefHeight="30.0" prefWidth="200.0" styleClass="overdue" stylesheets="@sideBar.css" text="Overdue">
-				               <VBox.margin>
-				                  <Insets top="4.0" />
-				               </VBox.margin>
-				            </Label>
-				            <ListView fx:id="overdueList" prefHeight="230.0" prefWidth="200.0" style="-fx-background-color: #434343;" styleClass="overduelist" stylesheets="@sideBar.css" />
-				            <Label fx:id="upcomingLabel" alignment="CENTER" layoutX="0.0" layoutY="405.0" prefHeight="30.0" prefWidth="200.0" styleClass="upcoming" stylesheets="@sideBar.css" text="Upcoming">
-				               <VBox.margin>
-				                  <Insets top="4.0" />
-				               </VBox.margin>
-				            </Label>
-				            <ListView fx:id="upcomingList" prefHeight="230.0" prefWidth="195.0" styleClass="upcomingList" stylesheets="@sideBar.css" />
-				         </children>
-				      </VBox>
 				      <VBox layoutX="200.0" prefHeight="670.0" prefWidth="450.0">
 				         <children>
 				            <StackPane prefHeight="65.0" prefWidth="450.0" style="-fx-background-color: #faebcd;">
@@ -49,32 +26,50 @@
 				                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 				                     </StackPane.margin>
 				                  </Rectangle>
-				                  <Label fx:id="listStatus" prefHeight="40.0" prefWidth="408.0" styleClass="listStatus" text="Display List" stylesheets="@jfdiLook.css"/>
+				                  <Label fx:id="listStatus" prefHeight="40.0" prefWidth="408.0" styleClass="listStatus" stylesheets="@jfdiLook.css" text="Display List" />
 				               </children>
 				            </StackPane>
-				            <ListView fx:id="listMain" prefHeight="500.0" prefWidth="450.0" style="-fx-background-color: faebcd;" stylesheets="@jfdiLook.css">
+				            <ListView fx:id="listMain" prefHeight="600.0" prefWidth="450.0" style="-fx-background-color: faebcd;" stylesheets="@jfdiLook.css">
 				               <VBox.margin>
 				                  <Insets />
 				               </VBox.margin>
 				            </ListView>
-				            <TextArea fx:id="fbArea" styleClass="fbArea" blendMode="MULTIPLY" prefHeight="50.0" prefWidth="430.0" stylesheets="@jfdiLook.css">
-				               <VBox.margin>
-				                  <Insets bottom="5.0" left="10.0" right="10.0" top="7.0" />
-				               </VBox.margin>
-				            </TextArea>
-				            <TextField fx:id="cmdArea" styleClass="cmdArea" blendMode="SRC_ATOP" maxHeight="35.0" maxWidth="430.0" prefHeight="25.0" prefWidth="430.0" promptText="(Hey Jim! Please let me know what I can do for you!)" stylesheets="@jfdiLook.css">
-				               <VBox.margin>
-				                  <Insets left="10.0" right="10.0" top="5.0" />
-				               </VBox.margin>
-				            </TextField>
 				         </children>
 				      </VBox>
+            	      <VBox fx:id="backDrop" prefHeight="670.0" prefWidth="200.0" style="-fx-background-color: f7c873;">
+            		     <children>
+            			    <Label fx:id="dayDisplayer" alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="200.0" styleClass="dayDate" stylesheets="@sideBar.css" textAlignment="CENTER" wrapText="true" />
+            				<ListView fx:id="statsDisplayer" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: #434343;" stylesheets="@sideBar.css">
+            				   <VBox.margin>
+            				      <Insets top="10.0" />
+            				   </VBox.margin>
+            				</ListView>
+                  			<TextArea fx:id="fbArea" blendMode="DARKEN" prefHeight="410.0" prefWidth="200.0" styleClass="fbArea" stylesheets="@jfdiLook.css">
+				               <VBox.margin>
+				                  <Insets left="5.0" right="5.0" top="10.0" />
+				               </VBox.margin>
+                  			</TextArea>
+				            <TextArea fx:id="cmdArea" blendMode="DARKEN" maxHeight="80.0" maxWidth="430.0" prefHeight="70.0" prefWidth="430.0" promptText="(Hey Jim! Please let me know what I can do for you!)" styleClass="cmdArea" stylesheets="@jfdiLook.css">
+				               <VBox.margin>
+				                  <Insets left="5.0" right="5.0" top="10.0" />
+				               </VBox.margin>
+				            </TextArea>
+            	         </children>
+            	      </VBox>
 			       </children>
 			   </HBox>
-			   <VBox fx:id="helpOverlay" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="550.0" prefWidth="500.0" StackPane.alignment="CENTER">
+			   <VBox fx:id="helpOverlay" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="550.0" prefWidth="500.0" style="-fx-background-color: f7c873;" StackPane.alignment="CENTER">
 	               <children>
-	                  <Label fx:id="helpIcon" focusTraversable="false" text="Help Icon" />
-	                  <Label fx:id="helpTitle" focusTraversable="false" text="Help title" />
+	                  <Label fx:id="helpIcon" focusTraversable="false" prefHeight="45.0" prefWidth="13.0" text="!" textFill="#434343">
+                     <font>
+                        <Font name="Hammersmith One" size="50.0" />
+                     </font>
+                  </Label>
+	                  <Label fx:id="helpTitle" focusTraversable="false" text="JFDI to the Rescue!">
+                     <font>
+                        <Font name="Hammersmith One" size="40.0" />
+                     </font>
+                  </Label>
 	                  <ListView fx:id="helpContent" focusTraversable="false" maxWidth="-Infinity" prefWidth="400.0" />
 	               </children>
                </VBox>

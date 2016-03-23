@@ -237,6 +237,7 @@ public class CommandHandler {
         controller.relayFb(String.format(Constants.CMD_SUCCESS_MARKED, indexCount + 1), MsgType.SUCCESS);
     }
 
+
     private void refreshDisplay() {
         controller.listMain.refresh();
     }

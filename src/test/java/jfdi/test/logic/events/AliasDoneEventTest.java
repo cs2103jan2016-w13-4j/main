@@ -16,13 +16,13 @@ public class AliasDoneEventTest {
 
     @Test
     public void getCommand() throws Exception {
-        AliasDoneEvent e = new AliasDoneEvent(COMMAND, ALIAS);
-        assertEquals(COMMAND, e.getCommand());
+        AliasDoneEvent event = new AliasDoneEvent(COMMAND, ALIAS);
+        assertEquals(COMMAND, event.getCommand());
     }
 
     @Test
     public void getAlias() throws Exception {
-        AliasDoneEvent e = new AliasDoneEvent(COMMAND, ALIAS);
-        assertEquals(ALIAS, e.getAlias());
+        AliasDoneEvent event = new AliasDoneEvent(COMMAND, ALIAS);
+        assertEquals(ALIAS, event.getAlias());
     }
 }

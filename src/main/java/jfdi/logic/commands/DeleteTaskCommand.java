@@ -70,8 +70,8 @@ public class DeleteTaskCommand extends Command {
                 } catch (InvalidIdException e) {
                     // Should not happen
                 assert false;
-            }
-        })  ;
+                }
+            });
 
             pushToUndoStack();
             eventBus.post(new DeleteTaskDoneEvent(screenIds, deletedTasks));

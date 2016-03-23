@@ -120,8 +120,6 @@ public class AddTaskCommand extends Command {
         task.setDescription(description);
         startDateTime.ifPresent(start -> task.setStartDateTime(start));
         endDateTime.ifPresent(end -> task.setEndDateTime(end));
-        task.setReminders(reminders);
-        task.setTags(tags);
         try {
             task.save();
             this.id = task.getId();

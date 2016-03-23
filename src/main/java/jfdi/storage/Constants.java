@@ -2,7 +2,6 @@ package jfdi.storage;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 import jfdi.storage.apis.AliasDb;
@@ -82,11 +81,7 @@ public class Constants {
     // Tasks
     public static final String TEST_TASK_DESCRIPTION_1 = "my favourite description";
     public static final String TEST_TASK_DESCRIPTION_2 = "my favourite description too";
-    public static final String TEST_TASK_TAG_1 = "tagged";
-    public static final String TEST_TASK_TAG_2 = "tagged2";
     public static final LocalDateTime TEST_TASK_STARTDATETIME = LocalDateTime.MIN;
     public static final LocalDateTime TEST_TASK_ENDDATETIME = LocalDateTime.MAX;
-    public static final Duration TEST_TASK_REMINDER_DURATION_1 = Duration.ZERO.plusDays(1);
-    public static final Duration TEST_TASK_REMINDER_DURATION_2 = Duration.ZERO.plusDays(2);
 
 }

@@ -10,6 +10,7 @@
 	-fx-text-fill: #eeeeee;
 	-fx-font-family: "HammersmithOne";
 	-fx-font-size: 16px;
+	-fx-alignment: CENTER;
 	-fx-text-alignment: CENTER;
 }
 

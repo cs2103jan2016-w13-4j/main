@@ -13,6 +13,7 @@ import jfdi.storage.Constants;
 import jfdi.storage.FileManager;
 import jfdi.storage.IDatabase;
 import jfdi.storage.entities.Task;
+import jfdi.storage.exceptions.DuplicateTaskException;
 import jfdi.storage.exceptions.FilePathPair;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
@@ -75,15 +76,36 @@ public class TaskDb implements IDatabase {
      *             if the operation does not change any existing attributes
      * @throws InvalidIdException
      *             if the ID contained in the taskAttributes does not exist
+     * @throws DuplicateTaskException
+     *             if a task with the same attributes already exist
      */
     public void createOrUpdate(TaskAttributes taskAttributes) throws NoAttributesChangedException,
-            InvalidIdException {
+            InvalidIdException, DuplicateTaskException {
         assert taskAttributes != null;
+        validateIsNotDuplicateTask(taskAttributes);
         Integer taskId = taskAttributes.getId();
         if (taskId != null) {
             update(taskAttributes);
         } else {
             create(taskAttributes);
+        }
+    }
+
+    /**
+     * This method validates that the given task attributes do not already exist
+     * in the database. A TaskAttributes is not considered a duplicate if the
+     * matching task is itself.
+     *
+     * @param taskAttributes
+     *            the task attributes to be validated against existing tasks
+     * @throws DuplicateTaskException
+     *             if a task with similar attributes already exist in the
+     *             database
+     */
+    private void validateIsNotDuplicateTask(TaskAttributes taskAttributes) throws DuplicateTaskException {
+        if (taskList.values().stream()
+                .anyMatch(task -> taskAttributes.similarTo(task) && !taskAttributes.equalTo(task))) {
+            throw new DuplicateTaskException(taskAttributes);
         }
     }
 
@@ -276,8 +298,10 @@ public class TaskDb implements IDatabase {
      *            the task to be recovered
      * @throws InvalidIdException
      *             if the specified ID does not exist in the deleted list
+     * @throws DuplicateTaskException
+     *             if a task with similar attributes already exists in the database
      */
-    public void undestroy(Integer id) throws InvalidIdException {
+    public void undestroy(Integer id) throws InvalidIdException, DuplicateTaskException {
         assert id != null;
         if (!deletedTaskList.containsKey(id)) {
             throw new InvalidIdException(id);
@@ -292,9 +316,13 @@ public class TaskDb implements IDatabase {
      *
      * @param id
      *            the ID of the task that is to be moved
+     * @throws DuplicateTaskException
+     *             if a task with similar attributes already exists in the database
      */
-    private void undelete(Integer id) {
+    private void undelete(Integer id) throws DuplicateTaskException {
         assert id != null;
+        TaskAttributes taskAttributes = new TaskAttributes(deletedTaskList.get(id));
+        validateIsNotDuplicateTask(taskAttributes);
         Task task = deletedTaskList.remove(id);
         taskList.put(task.getId(), task);
     }

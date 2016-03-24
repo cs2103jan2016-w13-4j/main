@@ -45,6 +45,7 @@ import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.exceptions.FilePathPair;
 import jfdi.ui.Constants;
+import jfdi.ui.Constants.ListStatus;
 import jfdi.ui.Constants.MsgType;
 import jfdi.ui.MainController;
 import jfdi.ui.items.ListItem;
@@ -118,7 +119,8 @@ public class CommandHandler {
     @Subscribe
     public void handleCommandRedoneEvent(CommandRedoneEvent e) {
         Class<? extends Command> cmdType = e.getCommandType();
-        controller.displayList(controller.displayStatus);
+        controller.transListCmd();
+        controller.switchTabSkin();
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_REDONE, cmdType.toString()),
                 MsgType.SUCCESS);
@@ -127,7 +129,8 @@ public class CommandHandler {
     @Subscribe
     public void handleCommandUndoneEvent(CommandUndoneEvent e) {
         Class<? extends Command> cmdType = e.getCommandType();
-        controller.displayList(controller.displayStatus);
+        controller.transListCmd();
+        controller.switchTabSkin();
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_UNDONE, cmdType.toString()),
                 MsgType.SUCCESS);
@@ -225,18 +228,19 @@ public class CommandHandler {
     public void handleListDoneEvent(ListDoneEvent e) {
         switch (e.getListType()) {
             case ALL:
-                controller.displayStatus = Constants.CTRL_CMD_ALL;
+                controller.displayStatus = ListStatus.ALL;
                 break;
             case COMPLETED:
-                controller.displayStatus = Constants.CTRL_CMD_COMPLETE;
+                controller.displayStatus = ListStatus.COMPLETE;
                 break;
             case INCOMPLETE:
-                controller.displayStatus = Constants.CTRL_CMD_INCOMPLETE;
+                controller.displayStatus = ListStatus.INCOMPLETE;
                 break;
             default:
                 break;
         }
 
+        controller.switchTabSkin();
         listTasks(e.getItems());
         controller.relayFb(Constants.CMD_SUCCESS_LISTED, MsgType.SUCCESS);
     }
@@ -289,7 +293,9 @@ public class CommandHandler {
 
     @Subscribe
     public void handleMoveDirectoryDoneEvent(MoveDirectoryDoneEvent e) {
-        controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
+        controller.displayStatus = ListStatus.INCOMPLETE;
+        controller.transListCmd();
+        controller.switchTabSkin();
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_MOVED, e.getNewDirectory()),
                 MsgType.SUCCESS);
@@ -447,9 +453,9 @@ public class CommandHandler {
 
         listTasks(e.getResults());
 
-        controller.displayStatus = "Search ";
+        controller.displayStatus = ListStatus.SEARCH;
         for (String key : e.getKeywords()) {
-            controller.displayStatus += key;
+            controller.searchCmd += (key + " ");
         }
 
         controller.setHighlights(e.getKeywords());
@@ -469,7 +475,8 @@ public class CommandHandler {
         controller.importantList.clear();
         TaskAttributes task = e.getTask();
         appendTaskToDisplayList(task);
-        controller.displayStatus = Constants.CTRL_CMD_INCOMPLETE;
+        controller.displayStatus = ListStatus.SURPRISE;
+        controller.switchTabSkin();
         controller.relayFb(Constants.CMD_SUCCESS_SURPRISED, MsgType.SUCCESS);
     }
 
@@ -559,7 +566,9 @@ public class CommandHandler {
 
     @Subscribe
     public void handleUseDirectoryDoneEvent(UseDirectoryDoneEvent e) {
-        controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
+        controller.displayStatus = ListStatus.INCOMPLETE;
+        controller.transListCmd();
+        controller.switchTabSkin();
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_USED, e.getNewDirectory()),
                 MsgType.SUCCESS);
@@ -643,7 +652,7 @@ public class CommandHandler {
         // Any task matches the "list all" context
         if (controller.displayStatus.equals(Constants.CTRL_CMD_ALL)) {
             return true;
-        // No tasks will match the "search" or "surprise" context
+            // No tasks will match the "search" or "surprise" context
         } else if (controller.displayStatus.equals(Constants.CTRL_CMD_SEARCH)
                 || controller.displayStatus.equals(Constants.CTRL_CMD_SURPRISE)) {
             return false;

@@ -22,14 +22,17 @@ public class Constants {
 
     public static final String CTRL_CMD_PROMPT_TEXT = "(Hello! Please let me know what I can do for you!)";
     public static final String CTRL_CMD_INCOMPLETE = "list";
+    public static final String CTRL_CMD_OVERDUE = "list overdue";
+    public static final String CTRL_CMD_UPCOMING = "list upcoming";
+    public static final String CTRL_CMD_ALL = "list all";
     public static final String CTRL_CMD_COMPLETE = "list completed";
     public static final String CTRL_CMD_SURPRISE = "surprise!";
     public static final String CTRL_CMD_SEARCH = "search";
-    public static final String CTRL_CMD_ALL = "list all";
-    public static final String CTRL_STATS_NAME1 = "Completed: ";
-    public static final String CTRL_STATS_NAME2 = "Due Today: ";
     public static final int OVERLAY_FADE_IN_MILLISECONDS = 200;
 
+    public enum ListStatus {
+        INCOMPLETE, OVERDUE, UPCOMING, ALL, COMPLETE, SEARCH, SURPRISE
+    }
 
     public enum MsgType {
         SUCCESS, WARNING, ERROR, EXIT

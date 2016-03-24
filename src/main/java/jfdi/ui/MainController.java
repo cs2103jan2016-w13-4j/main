@@ -29,6 +29,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import jfdi.ui.Constants.ListStatus;
 import jfdi.ui.Constants.MsgType;
 import jfdi.ui.commandhandlers.CommandHandler;
 import jfdi.ui.items.HelpItem;
@@ -87,7 +88,8 @@ public class MainController {
     public CommandHandler cmdHandler;
     public Stage mainStage;
     public ObservableList<ListItem> importantList;
-    public String displayStatus;
+    public ListStatus displayStatus;
+    public String searchCmd = "search ";
 
     private ObservableList<HelpItem> helpList;
     private Timeline overlayTimeline;
@@ -131,11 +133,6 @@ public class MainController {
         fbArea.clear();
     }
 
-    public void displayWarning(String warning) {
-        clearFb();
-        fbArea.appendText(warning);
-    }
-
     public void displayList(String cmd) {
         ui.relayToLogic(cmd);
     }
@@ -153,6 +150,69 @@ public class MainController {
         overlayTimeline.play();
     }
 
+    public void switchTabSkin() {
+        setAllTabsOff();
+        switch (displayStatus) {
+            case INCOMPLETE:
+                incompleteBox.getStyleClass().setAll("tabOn");
+                incompleteTab.getStyleClass().setAll("incompleteTabOn");
+                break;
+            case OVERDUE:
+                overdueBox.getStyleClass().setAll("tabOn");
+                overdueTab.getStyleClass().setAll("overdueTabOn");
+                break;
+            case UPCOMING:
+                upcomingBox.getStyleClass().setAll("tabOn");
+                upcomingTab.getStyleClass().setAll("upcomingTabOn");
+                break;
+            case ALL:
+                allBox.getStyleClass().setAll("tabOn");
+                allTab.getStyleClass().setAll("allTabOn");
+                break;
+            case COMPLETE:
+                completedBox.getStyleClass().setAll("tabOn");
+                completedTab.getStyleClass().setAll("completedTabOn");
+                break;
+            case SEARCH:
+                searchBox.getStyleClass().setAll("tabOn");
+                searchTab.getStyleClass().setAll("searchTabOn");
+                break;
+            case SURPRISE:
+                surpriseBox.getStyleClass().setAll("tabOn");
+                surpriseTab.getStyleClass().setAll("surpriseTabOn");
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void transListCmd() {
+        switch (displayStatus) {
+            case INCOMPLETE:
+                displayList(Constants.CTRL_CMD_INCOMPLETE);
+                break;
+            case OVERDUE:
+                displayList(Constants.CTRL_CMD_OVERDUE);
+                break;
+            case UPCOMING:
+                displayList(Constants.CTRL_CMD_UPCOMING);
+                break;
+            case ALL:
+                displayList(Constants.CTRL_CMD_ALL);
+                break;
+            case COMPLETE:
+                displayList(Constants.CTRL_CMD_COMPLETE);
+                break;
+            case SEARCH:
+                displayList(Constants.CTRL_CMD_SEARCH);
+                break;
+            case SURPRISE:
+                displayList(searchCmd);
+                break;
+            default:
+                break;
+        }
+    }
 
     public void setMainApp(MainSetUp main) {
         this.main = main;
@@ -283,6 +343,23 @@ public class MainController {
     /***************************
      *** LEVEL 2 Abstraction ***
      ***************************/
+
+    private void setAllTabsOff() {
+        incompleteBox.getStyleClass().setAll("tabOff");
+        incompleteTab.getStyleClass().setAll("incompleteTab");
+        overdueBox.getStyleClass().setAll("tabOff");
+        overdueTab.getStyleClass().setAll("overdueTab");
+        upcomingBox.getStyleClass().setAll("tabOff");
+        upcomingTab.getStyleClass().setAll("upcomingTab");
+        allBox.getStyleClass().setAll("tabOff");
+        allTab.getStyleClass().setAll("allTab");
+        completedBox.getStyleClass().setAll("tabOff");
+        completedTab.getStyleClass().setAll("completedTab");
+        searchBox.getStyleClass().setAll("tabOff");
+        searchTab.getStyleClass().setAll("searchTab");
+        surpriseBox.getStyleClass().setAll("tabOff");
+        surpriseTab.getStyleClass().setAll("surpriseTab");
+    }
 
     private void handleOverlays(ObservableList<ListItem> tasks) {
         hideOverlays();

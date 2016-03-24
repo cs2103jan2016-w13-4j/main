@@ -60,7 +60,7 @@ public class ListCommandParser extends AbstractCommandParser {
      */
     private ListType getListType(String input) throws InvalidInputException {
         input = removeFirstWord(input);
-        if (input.isEmpty()) {
+        if (input.isEmpty() || input.matches("(?i)Incomplete")) {
             return ListType.INCOMPLETE;
         } else if (input.matches("(?i)Completed")) {
             return ListType.COMPLETED;

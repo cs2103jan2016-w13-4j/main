@@ -50,6 +50,7 @@
                                     <Insets left="15.0" />
                                  </padding>
                               </Label>
+                              <Label fx:id="incompleteCount" styleClass="incompleteCount" text="100" />
                            </children>
                         </StackPane>
                         <StackPane layoutX="35.0" layoutY="10.0">
@@ -63,6 +64,7 @@
                                     <Insets left="15.0" />
                                  </padding>
                               </Label>
+                              <Label fx:id="overdueCount" styleClass="overdueCount" text="100" />
                            </children>
                            <VBox.margin>
                               <Insets left="10.0" top="15.0" />
@@ -76,6 +78,7 @@
                                     <Insets left="15.0" />
                                  </padding>
                               </Label>
+                              <Label fx:id="upcomingCount" styleClass="upcomingCount" text="100" />
                            </children>
                            <VBox.margin>
                               <Insets left="10.0" top="15.0" />

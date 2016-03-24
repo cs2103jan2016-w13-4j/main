@@ -49,6 +49,15 @@
 	-fx-text-fill: #434343;
 }
 
+.incompleteTab,
+.overdueTab,
+.upcomingTab {
+	-fx-background-color: #434343;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 16px;
+	-fx-text-fill: #434343;
+}
+
 .dayDate {
 	-fx-background-color: #434343;
 	-fx-text-fill: #eeeeee;
@@ -68,7 +77,10 @@
 	-fx-text-alignment: CENTER;
 }
 
-.itemBox{
+.itemBox,
+.itemBoxDone,
+.itemBoxOverdue,
+.itemBoxUpcoming {
 		-fx-background-color: #faebcd;
 		-fx-alignment: CENTER_LEFT;
 }
@@ -79,11 +91,6 @@
 	-fx-font-size: 16px;
 	-fx-alignment: CENTER;
 	-fx-text-alignment: CENTER;
-}
-
-.itemBoxDone {
-	-fx-background-color: #faebcd;
-	-fx-alignment: CENTER_LEFT;
 }
 
 .itemBox #description {
@@ -125,6 +132,52 @@
 
 .itemBoxDone #timeAndDate {
 	-fx-text-fill: #575757;
+	-fx-font-family: "TitilliumWeb";
+	-fx-font-size: 11px;
+	-fx-wrap-text: true;
+}
+
+.itemBoxOverdue #rowIndex {
+	-fx-text-fill: #943939;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 16px;
+	-fx-alignment: CENTER;
+	-fx-text-alignment: CENTER;
+}
+
+.itemBoxOverdue #description {
+	-fx-text-fill: #943939;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 14px;
+	-fx-wrap-text: true;
+}
+
+
+.itemBoxOverdue #timeAndDate {
+	-fx-text-fill: #943939;
+	-fx-font-family: "TitilliumWeb";
+	-fx-font-size: 11px;
+	-fx-wrap-text: true;
+}
+
+.itemBoxUpcoming #rowIndex {
+	-fx-text-fill: #E18237;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 16px;
+	-fx-alignment: CENTER;
+	-fx-text-alignment: CENTER;
+}
+
+.itemBoxUpcoming #description {
+	-fx-text-fill: #E18237;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 14px;
+	-fx-wrap-text: true;
+}
+
+
+.itemBoxUpcoming #timeAndDate {
+	-fx-text-fill: #E18237;
 	-fx-font-family: "TitilliumWeb";
 	-fx-font-size: 11px;
 	-fx-wrap-text: true;

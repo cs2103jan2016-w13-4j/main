@@ -68,6 +68,12 @@ public class MainController {
     @FXML
     public Label dayDisplayer;
     @FXML
+    public Label incompleteCount;
+    @FXML
+    public Label overdueCount;
+    @FXML
+    public Label upcomingCount;
+    @FXML
     public ListView<ListItem> listMain;
     @FXML
     public TextArea fbArea;

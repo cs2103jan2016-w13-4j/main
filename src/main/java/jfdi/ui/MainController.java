@@ -391,7 +391,12 @@ public class MainController {
      ***************************/
 
     public void setFirstAndLastVisibleIds() {
-        ListViewSkin<?> listViewSkin = (ListViewSkin<?>) listMain.getSkin();
+        ListViewSkin<?> listViewSkin = null;
+        if (displayStatus.equals(ListStatus.HELP)) {
+            listViewSkin = (ListViewSkin<?>) helpContent.getSkin();
+        } else {
+            listViewSkin = (ListViewSkin<?>) listMain.getSkin();
+        }
         VirtualFlow<?> virtualFlow = (VirtualFlow<?>) listViewSkin.getChildren().get(0);
         firstVisibleId = virtualFlow.getFirstVisibleCell().getIndex();
         lastVisibleId = virtualFlow.getLastVisibleCell().getIndex();

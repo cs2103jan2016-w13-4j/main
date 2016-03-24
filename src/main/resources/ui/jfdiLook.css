@@ -5,11 +5,65 @@
     -fx-padding:0;
 }
 
+.tabOn {
+	-fx-arc-height: 5.0;
+	-fx-arc-width: 5.0;
+	-fx-fill: #faebcd;
+	-fx-stroke: #faebcd; 
+	-fx-stroke-line-cap: round ; 
+	-fx-stroke-line-join: round ; 
+	-fx-stroke-width: 10.0;
+}
+
+.tabOff {
+	-fx-arc-height: 5.0;
+	-fx-arc-width: 5.0;
+	-fx-fill: #434343;
+	-fx-stroke: #434343; 
+	-fx-stroke-line-cap: round ; 
+	-fx-stroke-line-join: round ; 
+	-fx-stroke-width: 10.0;
+}
+
+.incompleteTab,
+.overdueTab,
+.upcomingTab,
+.allTab,
+.completedTab,
+.searchTab,
+.surpriseTab {
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 16px;
+	-fx-text-fill: #eeeeee;
+}
+
+.incompleteTabOn,
+.overdueTabOn,
+.upcomingTabOn,
+.allTabOn,
+.completedTabOn,
+.searchTabOn,
+.surpriseTabOn {
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 16px;
+	-fx-text-fill: #434343;
+}
+
 .dayDate {
 	-fx-background-color: #434343;
 	-fx-text-fill: #eeeeee;
 	-fx-font-family: "HammersmithOne";
 	-fx-font-size: 16px;
+	-fx-alignment: CENTER;
+	-fx-text-alignment: CENTER;
+}
+
+
+.listStatus {
+	-fx-background-color: #faebcd;
+	-fx-text-fill: #434343;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 22px;
 	-fx-alignment: CENTER;
 	-fx-text-alignment: CENTER;
 }
@@ -74,15 +128,6 @@
 	-fx-font-family: "TitilliumWeb";
 	-fx-font-size: 11px;
 	-fx-wrap-text: true;
-}
-
-.listStatus {
-	-fx-background-color: #faebcd;
-	-fx-text-fill: #434343;
-	-fx-font-family: "HammersmithOne";
-	-fx-font-size: 22px;
-	-fx-alignment: CENTER;
-	-fx-text-alignment: CENTER;
 }
 
 .fbArea {

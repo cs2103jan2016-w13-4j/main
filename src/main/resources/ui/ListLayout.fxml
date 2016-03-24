@@ -40,11 +40,8 @@
                               <Insets left="10.0" top="90.0" />
                            </VBox.margin>
                            <children>
-                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#faebcd" height="40.0" stroke="#faebcd" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="10.0" width="120.0" />
-                              <Label fx:id="ALL" maxWidth="120.0" prefWidth="120.0" style="-fx-text-fill: #434343;" text="Incomplete" textFill="#eeeeee">
-                                 <font>
-                                    <Font name="Hammersmith One" size="16.0" />
-                                 </font>
+                              <Rectangle fx:id="incompleteBox" height="40.0" width="120.0" styleClass="tabOff" stylesheets="@jfdiLook.css"/>
+                              <Label fx:id="incompleteTab" maxWidth="120.0" prefWidth="120.0" styleClass="incompleteTab" text="Incomplete" stylesheets="@jfdiLook.css">
                                  <StackPane.margin>
                                     <Insets />
                                  </StackPane.margin>
@@ -56,11 +53,8 @@
                         </StackPane>
                         <StackPane layoutX="35.0" layoutY="10.0">
                            <children>
-                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#434343" height="40.0" stroke="#434343" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="10.0" width="120.0" />
-                              <Label fx:id="INCOMPLETE" maxWidth="120.0" prefWidth="120.0" text="Overdue" textFill="#eeeeee">
-                                 <font>
-                                    <Font name="Hammersmith One" size="16.0" />
-                                 </font>
+                              <Rectangle fx:id="overdueBox" height="40.0" width="120.0" styleClass="tabOff" stylesheets="@jfdiLook.css"/>
+                              <Label id="overdueTab" fx:id="overdueTab" maxWidth="120.0" prefWidth="120.0" styleClass="overdueTab" text="Overdue" stylesheets="@jfdiLook.css">
                                  <StackPane.margin>
                                     <Insets />
                                  </StackPane.margin>
@@ -75,11 +69,8 @@
                         </StackPane>
                         <StackPane layoutX="35.0" layoutY="90.0">
                            <children>
-                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#434343" height="40.0" stroke="#434343" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="10.0" width="120.0" />
-                              <Label fx:id="COMPLETE" maxWidth="120.0" prefWidth="120.0" text="Upcoming" textFill="#eeeeee">
-                                 <font>
-                                    <Font name="Hammersmith One" size="16.0" />
-                                 </font>
+                              <Rectangle fx:id="upcomingBox" height="40.0" width="120.0" styleClass="tabOff" stylesheets="@jfdiLook.css"/>
+                              <Label id="upcomingTab" fx:id="upcomingTab" maxWidth="120.0" prefWidth="120.0" styleClass="upcomingTab" text="Upcoming" stylesheets="@jfdiLook.css">
                                  <padding>
                                     <Insets left="15.0" />
                                  </padding>
@@ -91,11 +82,8 @@
                         </StackPane>
                         <StackPane layoutX="35.0" layoutY="145.0">
                            <children>
-                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#434343" height="40.0" stroke="#434343" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="10.0" width="120.0" />
-                              <Label fx:id="OVERDUE" maxWidth="120.0" prefWidth="120.0" text="All" textFill="#eeeeee">
-                                 <font>
-                                    <Font name="Hammersmith One" size="16.0" />
-                                 </font>
+                              <Rectangle fx:id="allBox" height="40.0" width="120.0" styleClass="tabOff" stylesheets="@jfdiLook.css"/>
+                              <Label id="allTab" fx:id="allTab" maxWidth="120.0" prefWidth="120.0" styleClass="allTab" text="All" stylesheets="@jfdiLook.css">
                                  <padding>
                                     <Insets left="15.0" />
                                  </padding>
@@ -107,11 +95,8 @@
                         </StackPane>
                         <StackPane layoutX="35.0" layoutY="200.0">
                            <children>
-                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#434343" height="40.0" stroke="#434343" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="10.0" width="120.0" />
-                              <Label fx:id="UPCOMING" maxWidth="120.0" prefWidth="120.0" text="Completed" textFill="#eeeeee">
-                                 <font>
-                                    <Font name="Hammersmith One" size="16.0" />
-                                 </font>
+                              <Rectangle fx:id="completedBox" height="40.0" width="120.0" styleClass="tabOff" stylesheets="@jfdiLook.css"/>
+                              <Label id="completedTab" fx:id="completedTab" maxWidth="120.0" prefWidth="120.0" styleClass="completedTab" text="Completed" stylesheets="@jfdiLook.css">
                                  <padding>
                                     <Insets left="15.0" />
                                  </padding>
@@ -123,11 +108,8 @@
                         </StackPane>
                         <StackPane layoutX="35.0" layoutY="255.0">
                            <children>
-                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#434343" height="40.0" stroke="#434343" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="10.0" width="120.0" />
-                              <Label fx:id="SEARCH" maxWidth="120.0" prefWidth="120.0" text="Search" textAlignment="CENTER" textFill="#eeeeee">
-                                 <font>
-                                    <Font name="Hammersmith One" size="16.0" />
-                                 </font>
+                              <Rectangle fx:id="searchBox" height="40.0" width="120.0" styleClass="tabOff" stylesheets="@jfdiLook.css"/>
+                              <Label id="searchTab" fx:id="searchTab" maxWidth="120.0" prefWidth="120.0" styleClass="searchTab" text="Search" stylesheets="@jfdiLook.css">
                                  <StackPane.margin>
                                     <Insets />
                                  </StackPane.margin>
@@ -142,15 +124,8 @@
                         </StackPane>
                         <StackPane layoutX="25.0" layoutY="390.0">
                            <children>
-                              <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#434343" height="40.0" stroke="#434343" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="10.0" width="120.0">
-                                 <StackPane.margin>
-                                    <Insets />
-                                 </StackPane.margin>
-                              </Rectangle>
-                              <Label fx:id="SURPRISE" maxWidth="120.0" prefWidth="120.0" text="Surprise!" textAlignment="CENTER" textFill="#eeeeee">
-                                 <font>
-                                    <Font name="Hammersmith One" size="16.0" />
-                                 </font>
+                              <Rectangle fx:id="surpriseBox" height="40.0" width="120.0" styleClass="tabOff" stylesheets="@jfdiLook.css"/>
+                              <Label id="surpriseTab" fx:id="surpriseTab" maxWidth="120.0" prefWidth="120.0" styleClass="surpriseTab" text="Surprise!" stylesheets="@jfdiLook.css">
                                  <StackPane.margin>
                                     <Insets />
                                  </StackPane.margin>
@@ -165,7 +140,7 @@
                         </StackPane>
                      </children>
                   </VBox>
-      			   <VBox maxHeight="690.0" maxWidth="550.0" prefHeight="690.0" prefWidth="550.0" style="-fx-background-color: f7c873;">
+      			   <VBox maxHeight="690.0" maxWidth="550.0" prefHeight="690.0" prefWidth="550.0" style="-fx-background-color: #f7c873;">
       			      <children>
                            <HBox>
                               <VBox.margin>

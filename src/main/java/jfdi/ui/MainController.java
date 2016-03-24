@@ -26,6 +26,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import jfdi.ui.Constants.MsgType;
@@ -36,6 +37,35 @@ import jfdi.ui.items.StatsItem;
 
 public class MainController {
 
+    @FXML
+    public Rectangle incompleteBox;
+    @FXML
+    public Rectangle overdueBox;
+    @FXML
+    public Rectangle upcomingBox;
+    @FXML
+    public Rectangle allBox;
+    @FXML
+    public Rectangle completedBox;
+    @FXML
+    public Rectangle searchBox;
+    @FXML
+    public Rectangle surpriseBox;
+    @FXML
+    public Label incompleteTab;
+    @FXML
+    public Label overdueTab;
+    @FXML
+    public Label upcomingTab;
+    @FXML
+    public Label allTab;
+    @FXML
+    public Label completedTab;
+    @FXML
+    public Label searchTab;
+    @FXML
+    public Label surpriseTab;
+    @FXML
     public Label dayDisplayer;
     @FXML
     public Label listStatus;

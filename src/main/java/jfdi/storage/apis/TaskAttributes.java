@@ -101,15 +101,28 @@ public class TaskAttributes {
         TaskDb.getInstance().createOrUpdate(this);
     }
 
+    /**
+     * Checks if the TaskAttributes is overdue.
+     *
+     * @return a boolean indicating if the TaskAttributes is overdue
+     */
     public boolean isOverdue() {
         return !isCompleted() && getStartElseEndDate().isBefore(LocalDateTime.now());
     }
 
+    /**
+     * Checks if the TaskAttributes is upcoming.
+     *
+     * @return a boolean indicating if the TaskAttributes is upcoming
+     */
     public boolean isUpcoming() {
         return !isCompleted() && !isOverdue()
                 && getStartElseEndDate().isBefore(Constants.LOCALDATETIME_UPCOMING);
     }
 
+    /**
+     * @return the start date-time if it is not null, otherwise the end date-time
+     */
     private LocalDateTime getStartElseEndDate() {
         if (getStartDateTime() != null) {
             return getStartDateTime();

@@ -650,18 +650,18 @@ public class CommandHandler {
 
     private boolean taskMatchesContext(TaskAttributes task) {
         // Any task matches the "list all" context
-        if (controller.displayStatus.equals(Constants.CTRL_CMD_ALL)) {
+        if (controller.displayStatus.equals(ListStatus.ALL)) {
             return true;
             // No tasks will match the "search" or "surprise" context
-        } else if (controller.displayStatus.equals(Constants.CTRL_CMD_SEARCH)
-                || controller.displayStatus.equals(Constants.CTRL_CMD_SURPRISE)) {
+        } else if (controller.displayStatus.equals(ListStatus.SEARCH)
+                || controller.displayStatus.equals(ListStatus.SURPRISE)) {
             return false;
         }
 
         if (task.isCompleted()) {
-            return controller.displayStatus.equals(Constants.CTRL_CMD_COMPLETE);
+            return controller.displayStatus.equals(ListStatus.COMPLETE);
         } else {
-            return controller.displayStatus.equals(Constants.CTRL_CMD_INCOMPLETE);
+            return controller.displayStatus.equals(ListStatus.INCOMPLETE);
         }
     }
 }

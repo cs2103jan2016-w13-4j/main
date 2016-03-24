@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.logging.Logger;
 
-import javafx.collections.transformation.SortedList;
-
 import com.google.common.eventbus.Subscribe;
 
 import edu.emory.mathcs.backport.java.util.Collections;

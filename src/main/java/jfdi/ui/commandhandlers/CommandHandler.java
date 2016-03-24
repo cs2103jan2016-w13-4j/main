@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.logging.Logger;
 
+import javafx.collections.transformation.SortedList;
+
 import com.google.common.eventbus.Subscribe;
 
 import edu.emory.mathcs.backport.java.util.Collections;
@@ -60,6 +62,9 @@ public class CommandHandler {
     public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {
         TaskAttributes task = e.getTask();
         appendTaskToDisplayList(task, true);
+        if (shouldSort()) {
+            sortDisplayList();
+        }
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_ADDED,
                         task.getDescription()), MsgType.SUCCESS);
@@ -423,6 +428,9 @@ public class CommandHandler {
                 break;
             }
         }
+        if (shouldSort()) {
+            sortDisplayList();
+        }
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_RESCHEDULED, count + 1),
                 MsgType.SUCCESS);
@@ -647,6 +655,18 @@ public class CommandHandler {
             controller.importantList.get(controller.importantList.size() - 1)
             .getStyleClass().add("itemBox");
         }
+    }
+
+    private void sortDisplayList() {
+        ArrayList<TaskAttributes> taskList = new ArrayList<TaskAttributes>();
+        controller.importantList.forEach(listItem -> taskList.add(listItem.getItem()));
+        Collections.sort(taskList);
+        listTasks(taskList, false);
+    }
+
+    private boolean shouldSort() {
+        return controller.displayStatus.equals(ListStatus.OVERDUE)
+                || controller.displayStatus.equals(ListStatus.UPCOMING);
     }
 
     private boolean isSameContext(TaskAttributes task) {

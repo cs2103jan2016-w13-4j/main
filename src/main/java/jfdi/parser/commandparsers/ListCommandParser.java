@@ -68,6 +68,10 @@ public class ListCommandParser extends AbstractCommandParser {
             return ListType.ALL;
         } else if (input.matches("(?i)Alias(es)?")) {
             return ListType.ALIASES;
+        } else if (input.matches("(?i)Overdue")) {
+            return ListType.OVERDUE;
+        } else if (input.matches("(?i)Upcoming")) {
+            return ListType.UPCOMING;
         } else {
             throw new InvalidInputException(input);
         }

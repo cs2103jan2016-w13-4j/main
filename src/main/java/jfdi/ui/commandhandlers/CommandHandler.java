@@ -455,7 +455,7 @@ public class CommandHandler {
 
         controller.displayStatus = ListStatus.SEARCH;
         for (String key : e.getKeywords()) {
-            controller.searchCmd += (key + " ");
+            controller.searchCmd += key + " ";
         }
 
         controller.setHighlights(e.getKeywords());

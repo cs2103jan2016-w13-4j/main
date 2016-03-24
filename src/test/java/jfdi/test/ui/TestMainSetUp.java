@@ -40,7 +40,6 @@ public class TestMainSetUp extends ApplicationTest {
 
     /* The widgets of the GUI used for the tests. */
     Label dayDisplayer;
-    Label listStatus;
     ListView<ListItem> listMain;
     TextArea fbArea;
     TextField cmdArea;
@@ -124,7 +123,6 @@ public class TestMainSetUp extends ApplicationTest {
     public void setUp() {
         /* Retrieve the tested widgets from the GUI. */
         dayDisplayer = find("#dayDisplayer");
-        listStatus = find("#listStatus");
         listMain = find("#listMain");
         fbArea = find("#fbArea");
         cmdArea = find("#cmdArea");
@@ -147,7 +145,6 @@ public class TestMainSetUp extends ApplicationTest {
         final String errMsg = " %s cannot be retrieved!";
 
         assertNotNull(String.format(errMsg, "dayDisplayer"), dayDisplayer);
-        assertNotNull(String.format(errMsg, "listStatus"), listStatus);
         assertNotNull(String.format(errMsg, "listMain"), listMain);
         assertNotNull(String.format(errMsg, "fbArea"), fbArea);
         assertNotNull(String.format(errMsg, "cmdArea"), cmdArea);

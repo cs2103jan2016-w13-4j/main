@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -11,7 +12,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-<?import java.net.*?>
 
 <AnchorPane maxHeight="690.0" maxWidth="670.0" prefHeight="690.0" prefWidth="670.0" style="-fx-background-color: #f7c873;" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfdi.ui.MainController">
    <children>
@@ -41,7 +41,7 @@
                               <Insets left="10.0" top="90.0" />
                            </VBox.margin>
                            <children>
-                              <Rectangle fx:id="incompleteBox" height="40.0" width="120.0" styleClass="tabOff"/>
+                              <Rectangle fx:id="incompleteBox" height="40.0" styleClass="tabOff" width="120.0" />
                               <Label fx:id="incompleteTab" maxWidth="120.0" prefWidth="120.0" styleClass="incompleteTab" text="Incomplete">
                                  <StackPane.margin>
                                     <Insets />
@@ -54,7 +54,7 @@
                         </StackPane>
                         <StackPane layoutX="35.0" layoutY="10.0">
                            <children>
-                              <Rectangle fx:id="overdueBox" height="40.0" width="120.0" styleClass="tabOff"/>
+                              <Rectangle fx:id="overdueBox" height="40.0" styleClass="tabOff" width="120.0" />
                               <Label id="overdueTab" fx:id="overdueTab" maxWidth="120.0" prefWidth="120.0" styleClass="overdueTab" text="Overdue">
                                  <StackPane.margin>
                                     <Insets />
@@ -70,7 +70,7 @@
                         </StackPane>
                         <StackPane layoutX="35.0" layoutY="90.0">
                            <children>
-                              <Rectangle fx:id="upcomingBox" height="40.0" width="120.0" styleClass="tabOff"/>
+                              <Rectangle fx:id="upcomingBox" height="40.0" styleClass="tabOff" width="120.0" />
                               <Label id="upcomingTab" fx:id="upcomingTab" maxWidth="120.0" prefWidth="120.0" styleClass="upcomingTab" text="Upcoming">
                                  <padding>
                                     <Insets left="15.0" />
@@ -83,7 +83,7 @@
                         </StackPane>
                         <StackPane layoutX="35.0" layoutY="145.0">
                            <children>
-                              <Rectangle fx:id="allBox" height="40.0" width="120.0" styleClass="tabOff"/>
+                              <Rectangle fx:id="allBox" height="40.0" styleClass="tabOff" width="120.0" />
                               <Label id="allTab" fx:id="allTab" maxWidth="120.0" prefWidth="120.0" styleClass="allTab" text="All">
                                  <padding>
                                     <Insets left="15.0" />
@@ -96,7 +96,7 @@
                         </StackPane>
                         <StackPane layoutX="35.0" layoutY="200.0">
                            <children>
-                              <Rectangle fx:id="completedBox" height="40.0" width="120.0" styleClass="tabOff"/>
+                              <Rectangle fx:id="completedBox" height="40.0" styleClass="tabOff" width="120.0" />
                               <Label id="completedTab" fx:id="completedTab" maxWidth="120.0" prefWidth="120.0" styleClass="completedTab" text="Completed">
                                  <padding>
                                     <Insets left="15.0" />
@@ -109,7 +109,7 @@
                         </StackPane>
                         <StackPane layoutX="35.0" layoutY="255.0">
                            <children>
-                              <Rectangle fx:id="searchBox" height="40.0" width="120.0" styleClass="tabOff"/>
+                              <Rectangle fx:id="searchBox" height="40.0" styleClass="tabOff" width="120.0" />
                               <Label id="searchTab" fx:id="searchTab" maxWidth="120.0" prefWidth="120.0" styleClass="searchTab" text="Search">
                                  <StackPane.margin>
                                     <Insets />
@@ -125,7 +125,7 @@
                         </StackPane>
                         <StackPane layoutX="25.0" layoutY="390.0">
                            <children>
-                              <Rectangle fx:id="surpriseBox" height="40.0" width="120.0" styleClass="tabOff"/>
+                              <Rectangle fx:id="surpriseBox" height="40.0" styleClass="tabOff" width="120.0" />
                               <Label id="surpriseTab" fx:id="surpriseTab" maxWidth="120.0" prefWidth="120.0" styleClass="surpriseTab" text="Surprise!">
                                  <StackPane.margin>
                                     <Insets />
@@ -177,6 +177,9 @@
       				        <VBox.margin>
       				           <Insets right="5.0" />
       				        </VBox.margin>
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
       				     </ListView>
                            <VBox maxHeight="120.0" maxWidth="530.0" prefHeight="120.0" prefWidth="530.0" style="-fx-background-color: #434343;">
                               <children>

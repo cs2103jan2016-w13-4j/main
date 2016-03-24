@@ -63,21 +63,23 @@ public class UI implements IUserInterface {
 
     @Override
     public void displayFeedback(String fb, MsgType type) {
+        controller.clearFb();
+        appendFeedback(fb, type);
+    }
+
+    @Override
+    public void appendFeedback(String fb, MsgType type) {
         switch (type) {
             case SUCCESS:
-                controller.clearFb();
                 showToUser(String.format(Constants.UI_MESSAGE_RESPONSE, fb));
                 break;
             case WARNING:
-                controller.clearFb();
                 showToUser(String.format(Constants.UI_MESSAGE_WARNING, fb));
                 break;
             case ERROR:
-                controller.clearFb();
                 showToUser(String.format(Constants.UI_MESSAGE_ERROR, fb));
                 break;
             case EXIT:
-                controller.clearFb();
                 showToUser(Constants.UI_MESSAGE_QUIT);
                 break;
             default:

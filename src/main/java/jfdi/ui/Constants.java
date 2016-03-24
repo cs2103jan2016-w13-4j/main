@@ -47,7 +47,7 @@ public class Constants {
     public static final String CMD_ERROR_INIT_FAIL_UNKNOWN = "Some stupid error occurred. Cannot initialize JFDI!";
     public static final String CMD_ERROR_INIT_FAIL_INVALID = "The folder %s doesn't work. Choose another one!";
     // replaced should be user command completed and backup files in directory.
-    public static final String CMD_ERROR_INIT_FAIL_REPLACED = "The folder %s is occupied. File has been moved to %s !";
+    public static final String CMD_ERROR_INIT_FAIL_REPLACED = "Your file %s was moved to %s.";
     public static final String CMD_ERROR_CANT_MARK_NO_ID = "Cannot mark task as completed. The ID #%d does not exist!!";
     public static final String CMD_ERROR_CANT_MARK_UNKNOWN = "Some stupid error occurred. Cannot mark task(s) as done!";
     public static final String CMD_ERROR_MOVE_FAIL_UNKNOWN = "Some stupid error occurred. Cannot move files to %s!";

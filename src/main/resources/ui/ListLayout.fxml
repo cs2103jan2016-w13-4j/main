@@ -10,12 +10,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="690.0" maxWidth="670.0" prefHeight="690.0" prefWidth="670.0" style="-fx-background-color: #f7c873;" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfdi.ui.MainController">
+<AnchorPane maxHeight="690.0" maxWidth="680.0" prefHeight="690.0" prefWidth="680.0" style="-fx-background-color: #f7c873;" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfdi.ui.MainController">
    <children>
-      <StackPane maxWidth="670.0" prefHeight="690.0" prefWidth="670.0" VBox.vgrow="ALWAYS">
+      <StackPane maxWidth="680.0" prefHeight="690.0" prefWidth="680.0" VBox.vgrow="ALWAYS">
           <children>
 			   <VBox fx:id="helpOverlay" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="550.0" prefWidth="500.0" style="-fx-background-color: f7c873;" StackPane.alignment="CENTER">
 	               <children>
@@ -32,85 +33,130 @@
 	                 <ListView fx:id="helpContent" focusTraversable="false" maxWidth="-Infinity" prefWidth="400.0" />
 	              </children>
                </VBox>
-            <HBox maxWidth="670.0" prefWidth="670.0">
+            <HBox maxHeight="690.0" maxWidth="680.0" prefHeight="690.0" prefWidth="680.0">
                <children>
-                  <VBox maxHeight="690.0" maxWidth="130.0" minWidth="130.0" prefHeight="690.0" prefWidth="116.0" style="-fx-background-color: #f7c873;">
+                  <VBox maxHeight="690.0" maxWidth="140.0" prefHeight="690.0" prefWidth="140.0" style="-fx-background-color: #f7c873;">
                      <children>
-                        <StackPane>
+                        <StackPane maxWidth="140.0" prefWidth="140.0">
                            <VBox.margin>
-                              <Insets left="10.0" top="90.0" />
+                              <Insets top="90.0" />
                            </VBox.margin>
                            <children>
-                              <Rectangle fx:id="incompleteBox" height="40.0" styleClass="tabOff" width="120.0" />
-                              <Label fx:id="incompleteTab" maxWidth="120.0" prefWidth="120.0" styleClass="incompleteTab" text="Incomplete">
+                              <Rectangle fx:id="incompleteBox" height="40.0" styleClass="tabOff" translateX="10.0" width="140.0">
+                                 <StackPane.margin>
+                                    <Insets />
+                                 </StackPane.margin></Rectangle>
+                              <HBox>
                                  <StackPane.margin>
                                     <Insets />
                                  </StackPane.margin>
-                                 <padding>
-                                    <Insets left="15.0" />
-                                 </padding>
-                              </Label>
+                                 <children>
+                                    <StackPane>
+                                       <children>
+                                          <Circle fill="#f7c873" radius="12.0" stroke="#f7c873" strokeType="INSIDE" translateX="20.0" />
+                                          <Label fx:id="incompleteCount" text="1" textFill="#434343" translateX="20.0">
+                                             <font>
+                                                <Font name="Hammersmith One" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </StackPane>
+                                    <Label fx:id="incompleteTab" maxWidth="120.0" prefWidth="120.0" styleClass="incompleteTab" text="Incomplete" translateX="15.0" translateY="15.0">
+                                       <padding>
+                                          <Insets left="15.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </HBox>
                            </children>
                         </StackPane>
                         <StackPane layoutX="35.0" layoutY="10.0">
                            <children>
-                              <Rectangle fx:id="overdueBox" height="40.0" styleClass="tabOff" width="120.0" />
-                              <Label id="overdueTab" fx:id="overdueTab" maxWidth="120.0" prefWidth="120.0" styleClass="overdueTab" text="Overdue">
+                              <Rectangle fx:id="overdueBox" height="40.0" styleClass="tabOff" translateX="10.0" width="140.0" />
+                              <HBox>
                                  <StackPane.margin>
                                     <Insets />
                                  </StackPane.margin>
-                                 <padding>
-                                    <Insets left="15.0" />
-                                 </padding>
-                              </Label>
+                                 <children>
+                                    <StackPane>
+                                       <children>
+                                          <Circle fill="#f7c873" radius="12.0" stroke="#f7c873" strokeType="INSIDE" translateX="20.0" />
+                                          <Label fx:id="overdueCount" text="1" textFill="#434343" translateX="20.0">
+                                             <font>
+                                                <Font name="Hammersmith One" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </StackPane>
+                                    <Label id="overdueTab" fx:id="overdueTab" maxWidth="120.0" prefWidth="120.0" styleClass="overdueTab" text="Overdue" translateX="15.0" translateY="15.0">
+                                       <padding>
+                                          <Insets left="15.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </HBox>
                            </children>
                            <VBox.margin>
-                              <Insets left="10.0" top="15.0" />
+                              <Insets top="15.0" />
                            </VBox.margin>
                         </StackPane>
                         <StackPane layoutX="35.0" layoutY="90.0">
                            <children>
-                              <Rectangle fx:id="upcomingBox" height="40.0" styleClass="tabOff" width="120.0" />
-                              <Label id="upcomingTab" fx:id="upcomingTab" maxWidth="120.0" prefWidth="120.0" styleClass="upcomingTab" text="Upcoming">
-                                 <padding>
-                                    <Insets left="15.0" />
-                                 </padding>
-                              </Label>
+                              <Rectangle fx:id="upcomingBox" height="40.0" styleClass="tabOff" translateX="10.0" width="140.0" />
+                              <HBox>
+                                 <children>
+                                    <StackPane>
+                                       <children>
+                                          <Circle fill="#f7c873" radius="12.0" stroke="#f7c873" strokeType="INSIDE" translateX="20.0" />
+                                          <Label fx:id="upcomingCount" text="1" textFill="#434343" translateX="20.0">
+                                             <font>
+                                                <Font name="Hammersmith One" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </StackPane>
+                                    <Label id="upcomingTab" fx:id="upcomingTab" maxWidth="120.0" prefWidth="120.0" styleClass="upcomingTab" text="Upcoming" translateX="15.0" translateY="15.0">
+                                       <padding>
+                                          <Insets left="15.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </HBox>
                            </children>
                            <VBox.margin>
-                              <Insets left="10.0" top="15.0" />
+                              <Insets top="15.0" />
                            </VBox.margin>
                         </StackPane>
                         <StackPane layoutX="35.0" layoutY="145.0">
                            <children>
-                              <Rectangle fx:id="allBox" height="40.0" styleClass="tabOff" width="120.0" />
-                              <Label id="allTab" fx:id="allTab" maxWidth="120.0" prefWidth="120.0" styleClass="allTab" text="All">
+                              <Rectangle fx:id="allBox" height="40.0" styleClass="tabOff" translateX="10.0" width="140.0" />
+                              <Label id="allTab" fx:id="allTab" maxWidth="120.0" prefWidth="120.0" styleClass="allTab" text="All" translateX="15.0">
                                  <padding>
                                     <Insets left="15.0" />
                                  </padding>
                               </Label>
                            </children>
                            <VBox.margin>
-                              <Insets left="10.0" top="15.0" />
+                              <Insets top="15.0" />
                            </VBox.margin>
                         </StackPane>
                         <StackPane layoutX="35.0" layoutY="200.0">
                            <children>
-                              <Rectangle fx:id="completedBox" height="40.0" styleClass="tabOff" width="120.0" />
-                              <Label id="completedTab" fx:id="completedTab" maxWidth="120.0" prefWidth="120.0" styleClass="completedTab" text="Completed">
+                              <Rectangle fx:id="completedBox" height="40.0" styleClass="tabOff" translateX="10.0" width="140.0" />
+                              <Label id="completedTab" fx:id="completedTab" maxWidth="120.0" prefWidth="120.0" styleClass="completedTab" text="Completed" translateX="15.0">
                                  <padding>
                                     <Insets left="15.0" />
                                  </padding>
                               </Label>
                            </children>
                            <VBox.margin>
-                              <Insets left="10.0" top="15.0" />
+                              <Insets top="15.0" />
                            </VBox.margin>
                         </StackPane>
                         <StackPane layoutX="35.0" layoutY="255.0">
                            <children>
-                              <Rectangle fx:id="searchBox" height="40.0" styleClass="tabOff" width="120.0" />
-                              <Label id="searchTab" fx:id="searchTab" maxWidth="120.0" prefWidth="120.0" styleClass="searchTab" text="Search">
+                              <Rectangle fx:id="searchBox" height="40.0" styleClass="tabOff" translateX="10.0" width="140.0" />
+                              <Label id="searchTab" fx:id="searchTab" maxWidth="120.0" prefWidth="120.0" styleClass="searchTab" text="Search" translateX="15.0">
                                  <StackPane.margin>
                                     <Insets />
                                  </StackPane.margin>
@@ -120,13 +166,13 @@
                               </Label>
                            </children>
                            <VBox.margin>
-                              <Insets left="10.0" top="15.0" />
+                              <Insets top="15.0" />
                            </VBox.margin>
                         </StackPane>
                         <StackPane layoutX="25.0" layoutY="390.0">
                            <children>
-                              <Rectangle fx:id="surpriseBox" height="40.0" styleClass="tabOff" width="120.0" />
-                              <Label id="surpriseTab" fx:id="surpriseTab" maxWidth="120.0" prefWidth="120.0" styleClass="surpriseTab" text="Surprise!">
+                              <Rectangle fx:id="surpriseBox" height="40.0" styleClass="tabOff" translateX="10.0" width="140.0" />
+                              <Label id="surpriseTab" fx:id="surpriseTab" maxWidth="120.0" prefWidth="120.0" styleClass="surpriseTab" text="Surprise!" translateX="15.0">
                                  <StackPane.margin>
                                     <Insets />
                                  </StackPane.margin>
@@ -136,12 +182,15 @@
                               </Label>
                            </children>
                            <VBox.margin>
-                              <Insets left="10.0" top="15.0" />
+                              <Insets top="15.0" />
                            </VBox.margin>
                         </StackPane>
                      </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
                   </VBox>
-      			   <VBox maxHeight="690.0" maxWidth="550.0" prefHeight="690.0" prefWidth="550.0" style="-fx-background-color: #f7c873;">
+      			   <VBox maxHeight="690.0" maxWidth="540.0" prefHeight="690.0" prefWidth="540.0" style="-fx-background-color: #f7c873;">
       			      <children>
                            <HBox>
                               <VBox.margin>

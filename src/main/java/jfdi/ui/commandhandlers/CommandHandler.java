@@ -45,6 +45,7 @@ import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.exceptions.FilePathPair;
 import jfdi.ui.Constants;
+import jfdi.ui.Constants.ListStatus;
 import jfdi.ui.Constants.MsgType;
 import jfdi.ui.MainController;
 import jfdi.ui.items.ListItem;
@@ -57,7 +58,7 @@ public class CommandHandler {
     @Subscribe
     public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {
         TaskAttributes task = e.getTask();
-        appendTaskToDisplayList(task);
+        appendTaskToDisplayList(task, true);
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_ADDED,
                         task.getDescription()), MsgType.SUCCESS);
@@ -118,7 +119,8 @@ public class CommandHandler {
     @Subscribe
     public void handleCommandRedoneEvent(CommandRedoneEvent e) {
         Class<? extends Command> cmdType = e.getCommandType();
-        controller.displayList(controller.displayStatus);
+        controller.transListCmd();
+        controller.switchTabSkin();
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_REDONE, cmdType.toString()),
                 MsgType.SUCCESS);
@@ -127,7 +129,8 @@ public class CommandHandler {
     @Subscribe
     public void handleCommandUndoneEvent(CommandUndoneEvent e) {
         Class<? extends Command> cmdType = e.getCommandType();
-        controller.displayList(controller.displayStatus);
+        controller.transListCmd();
+        controller.switchTabSkin();
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_UNDONE, cmdType.toString()),
                 MsgType.SUCCESS);
@@ -225,19 +228,20 @@ public class CommandHandler {
     public void handleListDoneEvent(ListDoneEvent e) {
         switch (e.getListType()) {
             case ALL:
-                controller.displayStatus = Constants.CTRL_CMD_ALL;
+                controller.displayStatus = ListStatus.ALL;
                 break;
             case COMPLETED:
-                controller.displayStatus = Constants.CTRL_CMD_COMPLETE;
+                controller.displayStatus = ListStatus.COMPLETE;
                 break;
             case INCOMPLETE:
-                controller.displayStatus = Constants.CTRL_CMD_INCOMPLETE;
+                controller.displayStatus = ListStatus.INCOMPLETE;
                 break;
             default:
                 break;
         }
 
-        listTasks(e.getItems());
+        controller.switchTabSkin();
+        listTasks(e.getItems(), false);
         controller.relayFb(Constants.CMD_SUCCESS_LISTED, MsgType.SUCCESS);
     }
 
@@ -289,7 +293,9 @@ public class CommandHandler {
 
     @Subscribe
     public void handleMoveDirectoryDoneEvent(MoveDirectoryDoneEvent e) {
-        controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
+        controller.displayStatus = ListStatus.INCOMPLETE;
+        controller.transListCmd();
+        controller.switchTabSkin();
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_MOVED, e.getNewDirectory()),
                 MsgType.SUCCESS);
@@ -445,13 +451,16 @@ public class CommandHandler {
     @Subscribe
     public void handleSearchDoneEvent(SearchDoneEvent e) {
 
-        listTasks(e.getResults());
+        listTasks(e.getResults(), false);
 
-        controller.displayStatus = "Search ";
+        controller.displayStatus = ListStatus.SEARCH;
+        controller.switchTabSkin();
+
         for (String key : e.getKeywords()) {
-            controller.displayStatus += key;
+            controller.searchCmd += key + " ";
         }
 
+        controller.switchTabSkin();
         controller.setHighlights(e.getKeywords());
         controller.relayFb(Constants.CMD_SUCCESS_SEARCH, MsgType.SUCCESS);
     }
@@ -468,8 +477,9 @@ public class CommandHandler {
 
         controller.importantList.clear();
         TaskAttributes task = e.getTask();
-        appendTaskToDisplayList(task);
-        controller.displayStatus = Constants.CTRL_CMD_INCOMPLETE;
+        appendTaskToDisplayList(task, false);
+        controller.displayStatus = ListStatus.SURPRISE;
+        controller.switchTabSkin();
         controller.relayFb(Constants.CMD_SUCCESS_SURPRISED, MsgType.SUCCESS);
     }
 
@@ -559,7 +569,9 @@ public class CommandHandler {
 
     @Subscribe
     public void handleUseDirectoryDoneEvent(UseDirectoryDoneEvent e) {
-        controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
+        controller.displayStatus = ListStatus.INCOMPLETE;
+        controller.transListCmd();
+        controller.switchTabSkin();
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_USED, e.getNewDirectory()),
                 MsgType.SUCCESS);
@@ -596,15 +608,15 @@ public class CommandHandler {
     }
 
     /**
-     * Sets the display list to the given ArrayList of tasks.
+     * Sets the display list to the given ArrayList of tasks which match the context.
      *
      * @param tasks
      *            the ArrayList of tasks to be displayed
      */
-    private void listTasks(ArrayList<TaskAttributes> tasks) {
+    private void listTasks(ArrayList<TaskAttributes> tasks, boolean shouldCheckContext) {
         controller.importantList.clear();
         for (TaskAttributes task : tasks) {
-            appendTaskToDisplayList(task);
+            appendTaskToDisplayList(task, shouldCheckContext);
         }
     }
 
@@ -613,12 +625,10 @@ public class CommandHandler {
      *
      * @param task
      *            the task to be appended
-     * @return the on-screen ID of the task appended, or null if the task does
-     *         not match the context of the UI
      */
-    private Integer appendTaskToDisplayList(TaskAttributes task) {
-        if (!taskMatchesContext(task)) {
-            return null;
+    private void appendTaskToDisplayList(TaskAttributes task, boolean shouldCheckContext) {
+        if (shouldCheckContext && !isSameContext(task)) {
+            return;
         }
 
         int onScreenId = controller.importantList.size() + 1;
@@ -635,24 +645,27 @@ public class CommandHandler {
             controller.importantList.get(controller.importantList.size() - 1)
             .getStyleClass().add("itemBox");
         }
-
-        return onScreenId;
     }
 
-    private boolean taskMatchesContext(TaskAttributes task) {
-        // Any task matches the "list all" context
-        if (controller.displayStatus.equals(Constants.CTRL_CMD_ALL)) {
-            return true;
-        // No tasks will match the "search" or "surprise" context
-        } else if (controller.displayStatus.equals(Constants.CTRL_CMD_SEARCH)
-                || controller.displayStatus.equals(Constants.CTRL_CMD_SURPRISE)) {
-            return false;
-        }
-
-        if (task.isCompleted()) {
-            return controller.displayStatus.equals(Constants.CTRL_CMD_COMPLETE);
-        } else {
-            return controller.displayStatus.equals(Constants.CTRL_CMD_INCOMPLETE);
+    private boolean isSameContext(TaskAttributes task) {
+        switch (controller.displayStatus) {
+            case ALL:
+                return true;
+            case SEARCH:
+                return false;
+            case SURPRISE:
+                return false;
+            case COMPLETE:
+                return task.isCompleted();
+            case INCOMPLETE:
+                return !task.isCompleted();
+            case OVERDUE:
+                return task.isOverdue();
+            case UPCOMING:
+                return task.isUpcoming();
+            default:
+                assert false;
+                return false;
         }
     }
 }

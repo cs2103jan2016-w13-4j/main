@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -12,9 +13,9 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="690.0" prefHeight="690.0" prefWidth="550.0" style="-fx-background-color: #f7c873;" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfdi.ui.MainController">
+<AnchorPane maxHeight="690.0" maxWidth="670.0" prefHeight="690.0" prefWidth="670.0" style="-fx-background-color: #f7c873;" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfdi.ui.MainController">
    <children>
-      <StackPane prefHeight="690.0" prefWidth="550.0" VBox.vgrow="ALWAYS">
+      <StackPane maxWidth="670.0" prefHeight="690.0" prefWidth="670.0" VBox.vgrow="ALWAYS">
           <children>
 			   <VBox fx:id="helpOverlay" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="550.0" prefWidth="500.0" style="-fx-background-color: f7c873;" StackPane.alignment="CENTER">
 	               <children>
@@ -31,63 +32,192 @@
 	                 <ListView fx:id="helpContent" focusTraversable="false" maxWidth="-Infinity" prefWidth="400.0" />
 	              </children>
                </VBox>
-			   <VBox maxHeight="690.0" maxWidth="550.0" prefHeight="690.0" prefWidth="550.0" style="-fx-background-color: f7c873;">
-			      <children>
-                     <HBox>
-                        <VBox.margin>
-                           <Insets left="10.0" right="10.0" top="5.0" />
-                        </VBox.margin>
-                        <children>
-      				       <StackPane alignment="CENTER_LEFT" maxHeight="50.0" maxWidth="530.0" prefHeight="50.0" prefWidth="530.0">
-      				          <children>
-      				             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#faebcd" height="40.0" stroke="#faebcd" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="10.0" translateX="-5.0" translateY="7.0" translateZ="5.0" width="340.0">
-      				                <StackPane.margin>
-      				                   <Insets left="5.0" right="10.0" />
-      				                </StackPane.margin>
-      				             </Rectangle>
-      				             <Label id="listStatus" fx:id="listStatus" prefHeight="40.0" prefWidth="330.0" styleClass="listStatus" stylesheets="@jfdiLook.css" text="Display List" translateX="1.0" translateY="4.0">
-                                    <StackPane.margin>
-                                       <Insets left="10.0" />
-                                    </StackPane.margin>
-                                 </Label>
-      				          </children>
-      				       </StackPane>
-                           <StackPane>
-                              <HBox.margin>
-                                 <Insets />
-                              </HBox.margin>
+            <HBox maxWidth="670.0" prefWidth="670.0">
+               <children>
+                  <VBox maxHeight="690.0" maxWidth="130.0" minWidth="130.0" prefHeight="690.0" prefWidth="116.0" style="-fx-background-color: #f7c873;">
+                     <children>
+                        <StackPane>
+                           <VBox.margin>
+                              <Insets left="10.0" top="90.0" />
+                           </VBox.margin>
+                           <children>
+                              <Rectangle fx:id="incompleteBox" height="40.0" styleClass="tabOff" width="120.0" />
+                              <Label fx:id="incompleteTab" maxWidth="120.0" prefWidth="120.0" styleClass="incompleteTab" text="Incomplete">
+                                 <StackPane.margin>
+                                    <Insets />
+                                 </StackPane.margin>
+                                 <padding>
+                                    <Insets left="15.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="incompleteCount" styleClass="incompleteCount" text="10" textOverrun="CLIP" translateX="-55.0" translateY="-23.0">
+                                 <StackPane.margin>
+                                    <Insets left="10.0" />
+                                 </StackPane.margin></Label>
+                           </children>
+                        </StackPane>
+                        <StackPane layoutX="35.0" layoutY="10.0">
+                           <children>
+                              <Rectangle fx:id="overdueBox" height="40.0" styleClass="tabOff" width="120.0" />
+                              <Label id="overdueTab" fx:id="overdueTab" maxWidth="120.0" prefWidth="120.0" styleClass="overdueTab" text="Overdue">
+                                 <StackPane.margin>
+                                    <Insets />
+                                 </StackPane.margin>
+                                 <padding>
+                                    <Insets left="15.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="overdueCount" styleClass="overdueCount" text="10" translateX="-55.0" translateY="-23.0">
+                                 <StackPane.margin>
+                                    <Insets left="10.0" />
+                                 </StackPane.margin></Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets left="10.0" top="15.0" />
+                           </VBox.margin>
+                        </StackPane>
+                        <StackPane layoutX="35.0" layoutY="90.0">
+                           <children>
+                              <Rectangle fx:id="upcomingBox" height="40.0" styleClass="tabOff" width="120.0" />
+                              <Label id="upcomingTab" fx:id="upcomingTab" maxWidth="120.0" prefWidth="120.0" styleClass="upcomingTab" text="Upcoming">
+                                 <padding>
+                                    <Insets left="15.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="upcomingCount" styleClass="upcomingCount" text="10" translateX="-55.0" translateY="-23.0">
+                                 <StackPane.margin>
+                                    <Insets left="10.0" />
+                                 </StackPane.margin></Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets left="10.0" top="15.0" />
+                           </VBox.margin>
+                        </StackPane>
+                        <StackPane layoutX="35.0" layoutY="145.0">
+                           <children>
+                              <Rectangle fx:id="allBox" height="40.0" styleClass="tabOff" width="120.0" />
+                              <Label id="allTab" fx:id="allTab" maxWidth="120.0" prefWidth="120.0" styleClass="allTab" text="All">
+                                 <padding>
+                                    <Insets left="15.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets left="10.0" top="15.0" />
+                           </VBox.margin>
+                        </StackPane>
+                        <StackPane layoutX="35.0" layoutY="200.0">
+                           <children>
+                              <Rectangle fx:id="completedBox" height="40.0" styleClass="tabOff" width="120.0" />
+                              <Label id="completedTab" fx:id="completedTab" maxWidth="120.0" prefWidth="120.0" styleClass="completedTab" text="Completed">
+                                 <padding>
+                                    <Insets left="15.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets left="10.0" top="15.0" />
+                           </VBox.margin>
+                        </StackPane>
+                        <StackPane layoutX="35.0" layoutY="255.0">
+                           <children>
+                              <Rectangle fx:id="searchBox" height="40.0" styleClass="tabOff" width="120.0" />
+                              <Label id="searchTab" fx:id="searchTab" maxWidth="120.0" prefWidth="120.0" styleClass="searchTab" text="Search">
+                                 <StackPane.margin>
+                                    <Insets />
+                                 </StackPane.margin>
+                                 <padding>
+                                    <Insets left="15.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets left="10.0" top="15.0" />
+                           </VBox.margin>
+                        </StackPane>
+                        <StackPane layoutX="25.0" layoutY="390.0">
+                           <children>
+                              <Rectangle fx:id="surpriseBox" height="40.0" styleClass="tabOff" width="120.0" />
+                              <Label id="surpriseTab" fx:id="surpriseTab" maxWidth="120.0" prefWidth="120.0" styleClass="surpriseTab" text="Surprise!">
+                                 <StackPane.margin>
+                                    <Insets />
+                                 </StackPane.margin>
+                                 <padding>
+                                    <Insets left="15.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets left="10.0" top="15.0" />
+                           </VBox.margin>
+                        </StackPane>
+                     </children>
+                  </VBox>
+      			   <VBox maxHeight="690.0" maxWidth="550.0" prefHeight="690.0" prefWidth="550.0" style="-fx-background-color: #f7c873;">
+      			      <children>
+                           <HBox>
+                              <VBox.margin>
+                                 <Insets left="10.0" right="10.0" top="5.0" />
+                              </VBox.margin>
                               <children>
-                                 <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#434343" height="40.0" stroke="#434343" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="10.0" translateY="7.0" width="150.0" />
-                                 <Label id="dayDisplayer" fx:id="dayDisplayer" prefHeight="40.0" prefWidth="150.0" styleClass="dayDate" stylesheets="@jfdiLook.css" textFill="#eeeeee" translateY="4.0" />
+            				       <StackPane alignment="CENTER_LEFT" maxHeight="50.0" maxWidth="530.0" prefHeight="50.0" prefWidth="530.0">
+            				          <children>
+            				             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#faebcd" height="40.0" stroke="#faebcd" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="10.0" translateX="-10.0" translateY="7.0" translateZ="5.0" width="340.0">
+            				                <StackPane.margin>
+            				                   <Insets right="10.0" />
+            				                </StackPane.margin>
+            				             </Rectangle>
+            				             <Label prefHeight="30.0" prefWidth="330.0" styleClass="listStatus" text="Just &quot;Faithfully&quot; Do It" translateX="-5.0" translateY="4.0">
+                                          <StackPane.margin>
+                                             <Insets left="10.0" />
+                                          </StackPane.margin>
+                                       </Label>
+            				          </children>
+            				       </StackPane>
+                                 <StackPane>
+                                    <HBox.margin>
+                                       <Insets />
+                                    </HBox.margin>
+                                    <children>
+                                       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#434343" height="40.0" stroke="#434343" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="10.0" translateY="7.0" width="150.0" />
+                                       <Label id="dayDisplayer" fx:id="dayDisplayer" prefHeight="40.0" prefWidth="150.0" styleClass="dayDate" textFill="#eeeeee" translateY="4.0" />
+                                    </children>
+                                 </StackPane>
                               </children>
-                           </StackPane>
-                        </children>
-                     </HBox>
-				     <ListView fx:id="listMain" maxHeight="500.0" maxWidth="530.0" prefHeight="500.0" prefWidth="530.0" style="-fx-background-color: faebcd;" stylesheets="@jfdiLook.css">
-				        <VBox.margin>
-				           <Insets left="10.0" right="10.0" />
-				        </VBox.margin>
-				     </ListView>
-                     <VBox maxHeight="120.0" maxWidth="530.0" prefHeight="120.0" prefWidth="530.0" style="-fx-background-color: #434343;">
-                        <children>
-                  	       <TextArea id="fbArea" fx:id="fbArea" blendMode="COLOR_BURN" maxHeight="60.0" maxWidth="510.0" prefHeight="60.0" prefWidth="510.0" styleClass="fbArea" stylesheets="@jfdiLook.css" text="lalalalla">
+                           </HBox>
+      				     <ListView fx:id="listMain" maxHeight="510.0" maxWidth="530.0" prefHeight="510.0" prefWidth="530.0" style="-fx-background-color: #faebcd;">
+      				        <VBox.margin>
+      				           <Insets right="5.0" />
+      				        </VBox.margin>
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
+      				     </ListView>
+                           <VBox maxHeight="120.0" maxWidth="530.0" prefHeight="120.0" prefWidth="530.0" style="-fx-background-color: #434343;">
+                              <children>
+                        	       <TextArea id="fbArea" fx:id="fbArea" blendMode="SRC_ATOP" maxHeight="60.0" maxWidth="510.0" prefHeight="60.0" prefWidth="510.0" styleClass="fbArea">
+                                    <VBox.margin>
+                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </VBox.margin>
+                        		   </TextArea>
+                                 <TextField id="cmdArea" fx:id="cmdArea" maxWidth="510.0" prefWidth="510.0" styleClass="cmdArea">
+                                    <VBox.margin>
+                                       <Insets left="10.0" right="10.0" />
+                                    </VBox.margin>
+                                 </TextField>
+                              </children>
                               <VBox.margin>
-                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 <Insets bottom="10.0" />
                               </VBox.margin>
-                  		   </TextArea>
-                           <TextField id="cmdArea" fx:id="cmdArea" maxWidth="510.0" prefWidth="510.0" promptText="(Hello! What would you like me to do for you?)" styleClass="cmdArea" stylesheets="@jfdiLook.css">
-                              <VBox.margin>
-                                 <Insets left="10.0" right="10.0" />
-                              </VBox.margin>
-                           </TextField>
-                        </children>
-                        <VBox.margin>
-                           <Insets bottom="10.0" left="10.0" top="5.0" />
-                        </VBox.margin>
-                     </VBox>
-			      </children>
-		       </VBox>
+                           </VBox>
+      			      </children>
+      		       </VBox>
+               </children>
+            </HBox>
 	        </children>
         </StackPane>
     </children>
+    <stylesheets>
+  		<URL value="@jfdiLook.css" />
+	</stylesheets>
 </AnchorPane>

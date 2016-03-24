@@ -5,6 +5,61 @@
     -fx-padding:0;
 }
 
+.tabOn {
+	-fx-arc-height: 5.0;
+	-fx-arc-width: 5.0;
+	-fx-fill: #faebcd;
+	-fx-stroke: #faebcd; 
+	-fx-stroke-line-cap: round ; 
+	-fx-stroke-line-join: round ; 
+	-fx-stroke-width: 10.0;
+}
+
+.tabOff {
+	-fx-arc-height: 5.0;
+	-fx-arc-width: 5.0;
+	-fx-fill: #434343;
+	-fx-stroke: #434343; 
+	-fx-stroke-line-cap: round ; 
+	-fx-stroke-line-join: round ; 
+	-fx-stroke-width: 10.0;
+}
+
+.incompleteTab,
+.overdueTab,
+.upcomingTab,
+.allTab,
+.completedTab,
+.searchTab,
+.surpriseTab {
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 16px;
+	-fx-text-fill: #eeeeee;
+}
+
+.incompleteTabOn,
+.overdueTabOn,
+.upcomingTabOn,
+.allTabOn,
+.completedTabOn,
+.searchTabOn,
+.surpriseTabOn {
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 16px;
+	-fx-text-fill: #434343;
+}
+
+.incompleteCount,
+.overdueCount,
+.upcomingCount {
+	-fx-background-color: #943939;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 14px;
+	-fx-text-fill: #eeeeee;
+	-fx-label-padding: 5.0px 10.0px 5.0px 10.0px;
+    -fx-background-radius: 40px;
+}
+
 .dayDate {
 	-fx-background-color: #434343;
 	-fx-text-fill: #eeeeee;
@@ -14,7 +69,20 @@
 	-fx-text-alignment: CENTER;
 }
 
-.itemBox{
+
+.listStatus {
+	-fx-background-color: #faebcd;
+	-fx-text-fill: #434343;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 22px;
+	-fx-alignment: CENTER;
+	-fx-text-alignment: CENTER;
+}
+
+.itemBox,
+.itemBoxDone,
+.itemBoxOverdue,
+.itemBoxUpcoming {
 		-fx-background-color: #faebcd;
 		-fx-alignment: CENTER_LEFT;
 }
@@ -25,11 +93,6 @@
 	-fx-font-size: 16px;
 	-fx-alignment: CENTER;
 	-fx-text-alignment: CENTER;
-}
-
-.itemBoxDone {
-	-fx-background-color: #faebcd;
-	-fx-alignment: CENTER_LEFT;
 }
 
 .itemBox #description {
@@ -76,21 +139,64 @@
 	-fx-wrap-text: true;
 }
 
-.listStatus {
-	-fx-background-color: #faebcd;
-	-fx-text-fill: #434343;
+.itemBoxOverdue #rowIndex {
+	-fx-text-fill: #943939;
 	-fx-font-family: "HammersmithOne";
-	-fx-font-size: 22px;
+	-fx-font-size: 16px;
 	-fx-alignment: CENTER;
 	-fx-text-alignment: CENTER;
+}
+
+.itemBoxOverdue #description {
+	-fx-text-fill: #943939;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 14px;
+	-fx-wrap-text: true;
+}
+
+
+.itemBoxOverdue #timeAndDate {
+	-fx-text-fill: #943939;
+	-fx-font-family: "TitilliumWeb";
+	-fx-font-size: 11px;
+	-fx-wrap-text: true;
+}
+
+.itemBoxUpcoming #rowIndex {
+	-fx-text-fill: #E18237;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 16px;
+	-fx-alignment: CENTER;
+	-fx-text-alignment: CENTER;
+}
+
+.itemBoxUpcoming #description {
+	-fx-text-fill: #E18237;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 14px;
+	-fx-wrap-text: true;
+}
+
+
+.itemBoxUpcoming #timeAndDate {
+	-fx-text-fill: #E18237;
+	-fx-font-family: "TitilliumWeb";
+	-fx-font-size: 11px;
+	-fx-wrap-text: true;
 }
 
 .fbArea {
 	-fx-font-family: "HammersmithOne";
 	-fx-font-size: 14px;
 	-fx-wrap-text: true;
-	-fx-text-fill: white;
-	-fx-text-inner-color: white;
+	-fx-text-fill: #eeeeee;
+	-fx-text-inner-color: #eeeeee;
+}
+
+.fbArea, .fbArea .viewport, .fbArea .content {
+    -fx-background-color: transparent;
+    -fx-text-fill: #eeeeee;
+    -fx-text-inner-color: #eeeeee;
 }
 
 .cmdArea {

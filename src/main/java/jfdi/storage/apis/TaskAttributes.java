@@ -101,6 +101,22 @@ public class TaskAttributes {
         TaskDb.getInstance().createOrUpdate(this);
     }
 
+    public boolean isOverdue() {
+        return !isCompleted() && getStartElseEndDate().isBefore(LocalDateTime.now());
+    }
+
+    public boolean isUpcoming() {
+        return !isCompleted() && !isOverdue()
+                && getStartElseEndDate().isBefore(Constants.LOCALDATETIME_UPCOMING);
+    }
+
+    private LocalDateTime getStartElseEndDate() {
+        if (getStartDateTime() != null) {
+            return getStartDateTime();
+        }
+        return getEndDateTime();
+    }
+
     /**
      * Converts the current TaskAttributes to its corresponding Task entity.
      *

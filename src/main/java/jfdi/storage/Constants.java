@@ -61,6 +61,9 @@ public class Constants {
     // All database instances
     public static final IDatabase[] DATABASES = {TaskDb.getInstance(), AliasDb.getInstance()};
 
+    // The date-time till which upcoming tasks shall be included
+    public static final LocalDateTime LOCALDATETIME_UPCOMING = LocalDateTime.now().plusWeeks(1);
+
 
     /**
      * Test-specific constants

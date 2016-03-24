@@ -244,6 +244,12 @@ public class CommandHandler {
             case INCOMPLETE:
                 switchContext(ListStatus.INCOMPLETE, false);
                 break;
+            case OVERDUE:
+                switchContext(ListStatus.OVERDUE, false);
+                break;
+            case UPCOMING:
+                switchContext(ListStatus.UPCOMING, false);
+                break;
             default:
                 break;
         }

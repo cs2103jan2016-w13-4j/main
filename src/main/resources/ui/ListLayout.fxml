@@ -54,7 +54,11 @@
                                     <StackPane>
                                        <children>
                                           <Circle fill="#f7c873" radius="12.0" stroke="#f7c873" strokeType="INSIDE" translateX="20.0" />
-                                          <Label fx:id="incompleteCount" styleClass="incompleteCount" text="1" translateX="20.0"/>
+                                          <Label fx:id="incompleteCount" text="1" textFill="#434343" translateX="20.0">
+                                             <font>
+                                                <Font name="Hammersmith One" size="14.0" />
+                                             </font>
+                                          </Label>
                                        </children>
                                     </StackPane>
                                     <Label fx:id="incompleteTab" maxWidth="120.0" prefWidth="120.0" styleClass="incompleteTab" text="Incomplete" translateX="15.0" translateY="15.0">
@@ -77,7 +81,11 @@
                                     <StackPane>
                                        <children>
                                           <Circle fill="#f7c873" radius="12.0" stroke="#f7c873" strokeType="INSIDE" translateX="20.0" />
-                                          <Label fx:id="overdueCount" styleClass="overdueCount" text="1" translateX="20.0"/>
+                                          <Label fx:id="overdueCount" text="1" textFill="#434343" translateX="20.0">
+                                             <font>
+                                                <Font name="Hammersmith One" size="14.0" />
+                                             </font>
+                                          </Label>
                                        </children>
                                     </StackPane>
                                     <Label id="overdueTab" fx:id="overdueTab" maxWidth="120.0" prefWidth="120.0" styleClass="overdueTab" text="Overdue" translateX="15.0" translateY="15.0">
@@ -100,7 +108,11 @@
                                     <StackPane>
                                        <children>
                                           <Circle fill="#f7c873" radius="12.0" stroke="#f7c873" strokeType="INSIDE" translateX="20.0" />
-                                          <Label fx:id="upcomingCount" text="1" styleClass="upcomingCount" translateX="20.0"/>
+                                          <Label fx:id="upcomingCount" text="1" textFill="#434343" translateX="20.0">
+                                             <font>
+                                                <Font name="Hammersmith One" size="14.0" />
+                                             </font>
+                                          </Label>
                                        </children>
                                     </StackPane>
                                     <Label id="upcomingTab" fx:id="upcomingTab" maxWidth="120.0" prefWidth="120.0" styleClass="upcomingTab" text="Upcoming" translateX="15.0" translateY="15.0">

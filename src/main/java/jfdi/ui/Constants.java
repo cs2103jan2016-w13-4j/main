@@ -31,7 +31,7 @@ public class Constants {
     public static final int OVERLAY_FADE_IN_MILLISECONDS = 200;
 
     public enum ListStatus {
-        INCOMPLETE, OVERDUE, UPCOMING, ALL, COMPLETE, SEARCH, SURPRISE
+        INCOMPLETE, OVERDUE, UPCOMING, ALL, COMPLETE, SEARCH, SURPRISE, HELP
     }
 
     public enum MsgType {

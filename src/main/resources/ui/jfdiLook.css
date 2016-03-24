@@ -31,7 +31,8 @@
 .allTab,
 .completedTab,
 .searchTab,
-.surpriseTab {
+.surpriseTab,
+.helpTab {
 	-fx-font-family: "HammersmithOne";
 	-fx-font-size: 16px;
 	-fx-text-fill: #eeeeee;
@@ -43,7 +44,8 @@
 .allTabOn,
 .completedTabOn,
 .searchTabOn,
-.surpriseTabOn {
+.surpriseTabOn,
+.helpTabOn {
 	-fx-font-family: "HammersmithOne";
 	-fx-font-size: 16px;
 	-fx-text-fill: #434343;

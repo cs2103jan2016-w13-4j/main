@@ -42,6 +42,8 @@ public class MainController {
     @FXML
     public Rectangle surpriseBox;
     @FXML
+    public Rectangle helpBox;
+    @FXML
     public Label incompleteTab;
     @FXML
     public Label overdueTab;
@@ -56,13 +58,15 @@ public class MainController {
     @FXML
     public Label surpriseTab;
     @FXML
-    public Label dayDisplayer;
+    public Label helpTab;
     @FXML
     public Label incompleteCount;
     @FXML
     public Label overdueCount;
     @FXML
     public Label upcomingCount;
+    @FXML
+    public Label dayDisplayer;
     @FXML
     public ListView<ListItem> listMain;
     @FXML
@@ -128,7 +132,7 @@ public class MainController {
 
     public void showHelpDisplay() {
         helpContent.toFront();
-        helpContent.setOpacity(0.94);
+        helpContent.setOpacity(1);
     }
 
     public void switchTabSkin() {
@@ -162,6 +166,10 @@ public class MainController {
                 surpriseBox.getStyleClass().setAll("tabOn");
                 surpriseTab.getStyleClass().setAll("surpriseTabOn");
                 break;
+            case HELP:
+                surpriseBox.getStyleClass().setAll("tabOn");
+                surpriseTab.getStyleClass().setAll("helpTabOn");
+                break;
             default:
                 break;
         }
@@ -190,6 +198,8 @@ public class MainController {
             case SURPRISE:
                 displayList(searchCmd);
                 break;
+            case HELP:
+                hideOverlays();
             default:
                 break;
         }

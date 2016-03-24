@@ -108,6 +108,7 @@ public class MainSetUp extends Application {
         controller.setMainApp(this);
 
         //controller.importantList.removeAll(controller.importantList);
+        controller.hideOverlays();
         controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
         ui.displayWelcome();
     }

@@ -138,7 +138,7 @@
                         <StackPane layoutX="20.0" layoutY="470.0">
                            <children>
                               <Rectangle fx:id="helpBox" height="35.0" styleClass="tabOff" width="120.0" />
-                              <Label id="surpriseTab" fx:id="helpTap" maxWidth="120.0" prefWidth="120.0" styleClass="surpriseTab" text="Help">
+                              <Label id="helpTab" fx:id="helpTab" maxWidth="120.0" prefWidth="120.0" styleClass="helpTab" text="Help">
                                  <StackPane.margin>
                                     <Insets />
                                  </StackPane.margin>

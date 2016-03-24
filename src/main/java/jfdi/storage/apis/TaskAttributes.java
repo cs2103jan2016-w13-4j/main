@@ -18,7 +18,7 @@ import jfdi.storage.exceptions.NoAttributesChangedException;
  * @author Thng Kai Yuan
  *
  */
-public class TaskAttributes {
+public class TaskAttributes implements Comparable<TaskAttributes> {
 
     // Attributes of a Task
     private Integer id = null;
@@ -190,6 +190,31 @@ public class TaskAttributes {
                 && Objects.equals(this.startDateTime, task.getStartDateTime())
                 && Objects.equals(this.endDateTime, task.getEndDateTime())
                 && this.isCompleted == task.isCompleted();
+    }
+
+    @Override
+    public int hashCode() {
+        return getStartElseEndDate().hashCode();
+    }
+
+    @Override
+    public int compareTo(TaskAttributes taskAttributes) {
+        assert getStartElseEndDate() != null && taskAttributes.getStartElseEndDate() != null;
+        return getStartElseEndDate().compareTo(taskAttributes.getStartElseEndDate());
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == null || !(object instanceof TaskAttributes)) {
+            return false;
+        }
+        if (object == this) {
+            return true;
+        }
+
+        TaskAttributes taskAttributes = (TaskAttributes) object;
+        assert getStartElseEndDate() != null && taskAttributes.getStartElseEndDate() != null;
+        return this.getStartElseEndDate().equals(taskAttributes.getStartElseEndDate());
     }
 
 }

@@ -8,27 +8,17 @@ import java.util.HashSet;
 import com.sun.javafx.scene.control.skin.ListViewSkin;
 import com.sun.javafx.scene.control.skin.VirtualFlow;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import jfdi.ui.Constants.ListStatus;
 import jfdi.ui.Constants.MsgType;
 import jfdi.ui.commandhandlers.CommandHandler;
@@ -79,13 +69,6 @@ public class MainController {
     public TextArea fbArea;
     @FXML
     public TextField cmdArea;
-
-    @FXML
-    public VBox helpOverlay;
-    @FXML
-    public Label helpIcon;
-    @FXML
-    public Label helpTitle;
     @FXML
     public ListView<HelpItem> helpContent;
 
@@ -98,7 +81,6 @@ public class MainController {
     public String searchCmd = "search ";
 
     private ObservableList<HelpItem> helpList;
-    private Timeline overlayTimeline;
     private InputHistory inputHistory;
     private int firstVisibleId;
     private int lastVisibleId;
@@ -110,16 +92,13 @@ public class MainController {
         initImportantList();
         initFbArea();
         initCmdArea();
-        initTimelines();
         initHelpList();
         initInputHistory();
     }
 
     public void hideOverlays() {
-        //noTaskOverlay.toBack();
-        helpOverlay.toBack();
-        //noTaskOverlay.setOpacity(0);
-        helpOverlay.setOpacity(0);
+        helpContent.toBack();
+        helpContent.setOpacity(0);
     }
 
     public void clearCmdArea() {
@@ -148,12 +127,8 @@ public class MainController {
     }
 
     public void showHelpDisplay() {
-        hideOverlays();
-        FadeTransition fadeIn = initFadeIn(helpOverlay,
-                Constants.OVERLAY_FADE_IN_MILLISECONDS);
-
-        overlayTimeline = generateHelpOverlayTimeline(fadeIn);
-        overlayTimeline.play();
+        helpContent.toFront();
+        helpContent.setOpacity(0.94);
     }
 
     public void switchTabSkin() {
@@ -260,8 +235,6 @@ public class MainController {
         listMain.setFocusTraversable(false);
         importantList = FXCollections.observableArrayList();
         listMain.setItems(importantList);
-        handleOverlays(importantList);
-
     }
 
     private void initFbArea() {
@@ -276,11 +249,6 @@ public class MainController {
         cmdArea.setPromptText(Constants.CTRL_CMD_PROMPT_TEXT);
         handleKeyPressedEvents();
         disableScrollBarCmd();
-    }
-
-    private void initTimelines() {
-        //feedbackTimeline = new Timeline();
-        overlayTimeline = new Timeline();
     }
 
     private void initHelpList() {
@@ -309,37 +277,7 @@ public class MainController {
         helpList.add(new HelpItem(Constants.HELP_MOVE_DIR_DESC, Constants.HELP_MOVE_DIR_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_UP_DOWN_DESC, Constants.HELP_UP_DOWN_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_EXIT_DESC, Constants.HELP_EXIT_COMMAND));
-    }
-
-    private void initHelpOverlay() {
-        helpOverlay.toFront();
-        helpIcon.setText(Constants.HELP_OVERLAY_ICON);
-        helpTitle.setText(Constants.HELP_OVERLAY_TITLE);
         helpContent.setItems(helpList);
-    }
-
-    private Timeline generateHelpOverlayTimeline(FadeTransition fadeIn) {
-        return new Timeline(new KeyFrame(new Duration(1), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                initHelpOverlay();
-                fadeIn.play();
-            }
-        }, new KeyValue(helpOverlay.alignmentProperty(), Pos.CENTER_LEFT)));
-    }
-
-    private FadeTransition initFadeIn(Node node, int duration) {
-        FadeTransition fadeIn = new FadeTransition(new Duration(duration));
-        fadeIn.setNode(node);
-        fadeIn.setToValue(1);
-        return fadeIn;
-    }
-
-    private FadeTransition initFadeOut(Node node, int duration) {
-        FadeTransition fadeOut = new FadeTransition(new Duration(duration));
-        fadeOut.setNode(node);
-        fadeOut.setToValue(0);
-        return fadeOut;
     }
 
     private void initInputHistory() {
@@ -365,13 +303,6 @@ public class MainController {
         searchTab.getStyleClass().setAll("searchTab");
         surpriseBox.getStyleClass().setAll("tabOff");
         surpriseTab.getStyleClass().setAll("surpriseTab");
-    }
-
-    private void handleOverlays(ObservableList<ListItem> tasks) {
-        hideOverlays();
-        //if (tasks.isEmpty()) {
-        //showNoTaskOverlay();
-        //}
     }
 
     @FXML

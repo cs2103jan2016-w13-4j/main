@@ -675,6 +675,8 @@ public class CommandHandler {
                 return false;
             case SURPRISE:
                 return false;
+            case HELP:
+                return false;
             case COMPLETE:
                 return task.isCompleted();
             case INCOMPLETE:

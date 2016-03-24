@@ -1,5 +1,6 @@
 package jfdi.logic.commands;
 
+import jfdi.logic.events.FilesReplacedEvent;
 import jfdi.logic.events.MoveDirectoryDoneEvent;
 import jfdi.logic.events.MoveDirectoryFailedEvent;
 import jfdi.logic.interfaces.Command;
@@ -50,8 +51,8 @@ public class MoveDirectoryCommand extends Command {
             pushToUndoStack();
             eventBus.post(new MoveDirectoryDoneEvent(newDirectory));
         } catch (FilesReplacedException e) {
-            eventBus.post(new MoveDirectoryFailedEvent(newDirectory, MoveDirectoryFailedEvent.Error.FILE_REPLACED,
-                e.getReplacedFilePairs()));
+            eventBus.post(new MoveDirectoryDoneEvent(newDirectory));
+            eventBus.post(new FilesReplacedEvent(newDirectory, e.getReplacedFilePairs()));
         } catch (InvalidFilePathException e) {
             eventBus.post(new MoveDirectoryFailedEvent(newDirectory, MoveDirectoryFailedEvent.Error.INVALID_PATH));
         }
@@ -68,7 +69,7 @@ public class MoveDirectoryCommand extends Command {
         } catch (InvalidFilePathException e) {
             assert false;
         } catch (FilesReplacedException e) {
-            assert false;
+            eventBus.post(new FilesReplacedEvent(oldDirectory, e.getReplacedFilePairs()));
         }
     }
 }

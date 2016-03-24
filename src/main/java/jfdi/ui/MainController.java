@@ -118,6 +118,10 @@ public class MainController {
         ui.displayFeedback(fb, type);
     }
 
+    public void appendFb(String fb, MsgType type) {
+        ui.appendFeedback(fb, type);
+    }
+
     public void clearFb() {
         fbArea.clear();
     }

@@ -8,6 +8,7 @@ import java.util.Objects;
 
 import jfdi.storage.Constants;
 import jfdi.storage.entities.Task;
+import jfdi.storage.exceptions.DuplicateTaskException;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
@@ -94,9 +95,11 @@ public class TaskAttributes implements Comparable<TaskAttributes> {
      * @throws InvalidIdException
      *             if the ID stored in the attributes object is invalid (e.g.
      *             null or does not exist)
+     * @throws DuplicateTaskException
+     *             if a similar task already exists in the database
      */
     public void save() throws InvalidTaskParametersException, NoAttributesChangedException,
-            InvalidIdException {
+            InvalidIdException, DuplicateTaskException {
         validateAttributes();
         TaskDb.getInstance().createOrUpdate(this);
     }
@@ -185,8 +188,20 @@ public class TaskAttributes implements Comparable<TaskAttributes> {
      */
     public boolean equalTo(Task task) {
         assert task != null;
-        return Objects.equals(this.id, task.getId())
-                && Objects.equals(this.description, task.getDescription())
+        return Objects.equals(this.id, task.getId()) && similarTo(task);
+    }
+
+    /**
+     * This method allows one to compare the properties of a TaskAttributes with a Task.
+     *
+     * @param task
+     *            the Task to be compared with
+     * @return a boolean indicating if the existing TaskAttributes has the same
+     *         properties (excluding ID) as the Task compared
+     */
+    public boolean similarTo(Task task) {
+        assert task != null;
+        return Objects.equals(this.description, task.getDescription())
                 && Objects.equals(this.startDateTime, task.getStartDateTime())
                 && Objects.equals(this.endDateTime, task.getEndDateTime())
                 && this.isCompleted == task.isCompleted();

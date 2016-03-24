@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class UseDirectoryFailedEvent {
 
     public enum Error {
-        FILE_REPLACED, INVALID_PATH, UNKNOWN
+        INVALID_PATH, UNKNOWN
     }
 
     private String newDirectory;

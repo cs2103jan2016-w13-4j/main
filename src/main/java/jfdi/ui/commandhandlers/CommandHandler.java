@@ -454,6 +454,7 @@ public class CommandHandler {
         listTasks(e.getResults(), false);
 
         controller.displayStatus = ListStatus.SEARCH;
+        controller.switchTabSkin();
         for (String key : e.getKeywords()) {
             controller.searchCmd += key + " ";
         }

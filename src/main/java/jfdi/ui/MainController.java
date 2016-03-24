@@ -398,8 +398,10 @@ public class MainController {
 
         if (item.getItem().getEndDateTime() != null && !item.getMark()) {
             if (item.getItem().getEndDateTime().getYear() == Calendar.getInstance().get(Calendar.YEAR)) {
-                if (item.getItem().getEndDateTime().getMonthValue() == Calendar.getInstance().get(Calendar.MONTH) + 1) {
-                    if (item.getItem().getEndDateTime().getDayOfMonth() == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
+                if (item.getItem().getEndDateTime().getMonthValue() == Calendar.getInstance().get(
+                        Calendar.MONTH) + 1) {
+                    if (item.getItem().getEndDateTime().getDayOfMonth() == Calendar.getInstance().get(
+                            Calendar.DAY_OF_MONTH)) {
                         if (!isInList(item)) {
                             dueTodayList.add(item);
                         }
@@ -410,8 +412,10 @@ public class MainController {
 
         if (item.getItem().getStartDateTime() != null && !item.getMark()) {
             if (item.getItem().getStartDateTime().getYear() == Calendar.getInstance().get(Calendar.YEAR)) {
-                if (item.getItem().getStartDateTime().getMonthValue() == Calendar.getInstance().get(Calendar.MONTH) + 1) {
-                    if (item.getItem().getStartDateTime().getDayOfMonth() == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
+                if (item.getItem().getStartDateTime().getMonthValue() == Calendar.getInstance().get(
+                        Calendar.MONTH) + 1) {
+                    if (item.getItem().getStartDateTime().getDayOfMonth() == Calendar.getInstance().get(
+                            Calendar.DAY_OF_MONTH)) {
                         if (!isInList(item)) {
                             dueTodayList.add(item);
                         }

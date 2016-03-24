@@ -3,7 +3,6 @@ package jfdi.logic.events;
 import jfdi.storage.exceptions.FilePathPair;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 /**
  * @author Xinan

@@ -8,8 +8,6 @@ import jfdi.storage.apis.MainStorage;
 import jfdi.storage.exceptions.FilesReplacedException;
 import jfdi.storage.exceptions.InvalidFilePathException;
 
-import java.util.Optional;
-
 /**
  * @author Xinan
  */

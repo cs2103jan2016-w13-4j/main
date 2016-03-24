@@ -214,7 +214,7 @@
       		       </VBox>
                </children>
             </HBox>
-	                 <ListView fx:id="helpContent" focusTraversable="false" maxHeight="508.0" maxWidth="530.0" prefHeight="508.0" prefWidth="530.0" styleClass="helpContent" translateX="60.0" translateY="-36.0" />
+	                 <ListView fx:id="helpContent" focusTraversable="false" maxHeight="500.0" maxWidth="530.0" prefHeight="500.0" prefWidth="530.0" styleClass="helpContent" translateX="60.0" translateY="-33.0" />
 	        </children>
         </StackPane>
     </children>

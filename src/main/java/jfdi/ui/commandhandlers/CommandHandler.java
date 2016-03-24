@@ -186,7 +186,9 @@ public class CommandHandler {
 
     @Subscribe
     public void handleHelpRequestEvent(HelpRequestedEvent e) {
+        switchContext(ListStatus.HELP, false);
         controller.showHelpDisplay();
+        controller.relayFb(Constants.CMD_SUCCESS_HELP, MsgType.SUCCESS);
     }
 
     @Subscribe

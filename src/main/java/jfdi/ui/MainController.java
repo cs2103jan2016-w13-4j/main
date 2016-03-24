@@ -167,8 +167,8 @@ public class MainController {
                 surpriseTab.getStyleClass().setAll("surpriseTabOn");
                 break;
             case HELP:
-                surpriseBox.getStyleClass().setAll("tabOn");
-                surpriseTab.getStyleClass().setAll("helpTabOn");
+                helpBox.getStyleClass().setAll("tabOn");
+                helpTab.getStyleClass().setAll("helpTabOn");
                 break;
             default:
                 break;
@@ -200,6 +200,7 @@ public class MainController {
                 break;
             case HELP:
                 hideOverlays();
+                break;
             default:
                 break;
         }
@@ -313,6 +314,8 @@ public class MainController {
         searchTab.getStyleClass().setAll("searchTab");
         surpriseBox.getStyleClass().setAll("tabOff");
         surpriseTab.getStyleClass().setAll("surpriseTab");
+        helpBox.getStyleClass().setAll("tabOff");
+        helpTab.getStyleClass().setAll("helpTab");
     }
 
     @FXML

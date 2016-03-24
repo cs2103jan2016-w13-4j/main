@@ -3,6 +3,7 @@ package jfdi.ui;
 import com.google.common.eventbus.EventBus;
 
 import jfdi.logic.ControlCenter;
+import jfdi.ui.Constants.ListStatus;
 import jfdi.ui.Constants.MsgType;
 import jfdi.ui.commandhandlers.CommandHandler;
 
@@ -45,9 +46,9 @@ public class UI implements IUserInterface {
     @Override
     public void processInput(String input) {
 
-        // if (input.equalsIgnoreCase("QUIT")) {
-        // System.exit(0);
-        // }
+        if (controller.displayStatus.equals(ListStatus.HELP)) {
+            controller.hideOverlays();
+        }
 
         // Clear controller first
         controller.clearCmdArea();

@@ -28,7 +28,6 @@ public class Constants {
     public static final String CTRL_CMD_COMPLETE = "list completed";
     public static final String CTRL_CMD_SURPRISE = "surprise!";
     public static final String CTRL_CMD_SEARCH = "search";
-    public static final int OVERLAY_FADE_IN_MILLISECONDS = 200;
 
     public enum ListStatus {
         INCOMPLETE, OVERDUE, UPCOMING, ALL, COMPLETE, SEARCH, SURPRISE, HELP
@@ -87,6 +86,7 @@ public class Constants {
     public static final String CMD_SUCCESS_REDONE = "Previous command - %s - redone! :)";
     public static final String CMD_SUCCESS_UNDONE = "Previous command - %s - undone! :)";
     public static final String CMD_SUCCESS_DELETED = "Task(s) deleted! :)";
+    public static final String CMD_SUCCESS_HELP = "J.F.D.I TO THE RESCUE!!! :D";
     public static final String CMD_SUCCESS_LISTED = "Here is your requested list! :)";
     public static final String CMD_SUCCESS_MARKED = "Task(s) completed! Good job! :)";
     public static final String CMD_SUCCESS_MOVED = "The location of your files has been moved to %s ! :)";

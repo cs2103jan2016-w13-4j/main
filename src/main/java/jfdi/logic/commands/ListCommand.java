@@ -1,12 +1,12 @@
 package jfdi.logic.commands;
 
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 import jfdi.logic.events.ListDoneEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
-
-import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 /**
  * @author Liu Xinan
@@ -17,7 +17,9 @@ public class ListCommand extends Command {
         ALL,
         COMPLETED,
         INCOMPLETE,
-        ALIASES
+        ALIASES,
+        OVERDUE,
+        UPCOMING
     }
 
     private ListType listType;
@@ -60,6 +62,12 @@ public class ListCommand extends Command {
                     .collect(Collectors.toCollection(ArrayList::new));
                 break;
             case ALIASES:
+                break;
+            case OVERDUE:
+                // TODO:
+                break;
+            case UPCOMING:
+                // TODO:
                 break;
             default:
                 break;

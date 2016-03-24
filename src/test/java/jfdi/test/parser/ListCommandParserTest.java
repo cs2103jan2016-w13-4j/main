@@ -80,6 +80,40 @@ public class ListCommandParserTest {
     }
 
     @Test
+    public void testOverdue() {
+        Command cmd = parser.build("list overdue");
+        ListCommand listCommand = validateAndReturnListCommand(cmd);
+        validateListType(listCommand, ListType.OVERDUE);
+
+        // Boundary case: capitalised list keyword
+        cmd = parser.build("LiSt overDUE");
+        listCommand = validateAndReturnListCommand(cmd);
+        validateListType(listCommand, ListType.OVERDUE);
+
+        // Boundary case: alternative spelling + capitalisation
+        cmd = parser.build("List Overdue");
+        listCommand = validateAndReturnListCommand(cmd);
+        validateListType(listCommand, ListType.OVERDUE);
+    }
+
+    @Test
+    public void testUpcoming() {
+        Command cmd = parser.build("list upcoming");
+        ListCommand listCommand = validateAndReturnListCommand(cmd);
+        validateListType(listCommand, ListType.UPCOMING);
+
+        // Boundary case: capitalised list keyword
+        cmd = parser.build("LiSt upCOMING");
+        listCommand = validateAndReturnListCommand(cmd);
+        validateListType(listCommand, ListType.UPCOMING);
+
+        // Boundary case: alternative spelling + capitalisation
+        cmd = parser.build("List Upcoming");
+        listCommand = validateAndReturnListCommand(cmd);
+        validateListType(listCommand, ListType.UPCOMING);
+    }
+
+    @Test
     public void testInvalid() {
         Command cmd = parser.build("list nonsense");
         Assert.assertTrue(cmd instanceof InvalidCommand);

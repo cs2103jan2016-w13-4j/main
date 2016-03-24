@@ -110,6 +110,9 @@ public class TaskAttributes implements Comparable<TaskAttributes> {
      * @return a boolean indicating if the TaskAttributes is overdue
      */
     public boolean isOverdue() {
+        if (getStartElseEndDate() == null) {
+            return false;
+        }
         return !isCompleted() && getStartElseEndDate().isBefore(LocalDateTime.now());
     }
 
@@ -119,6 +122,9 @@ public class TaskAttributes implements Comparable<TaskAttributes> {
      * @return a boolean indicating if the TaskAttributes is upcoming
      */
     public boolean isUpcoming() {
+        if (getStartElseEndDate() == null) {
+            return false;
+        }
         return !isCompleted() && !isOverdue()
                 && getStartElseEndDate().isBefore(Constants.LOCALDATETIME_UPCOMING);
     }

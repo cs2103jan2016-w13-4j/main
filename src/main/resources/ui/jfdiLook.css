@@ -49,6 +49,14 @@
 	-fx-text-fill: #434343;
 }
 
+.incompleteTabCount,
+.overdueTabCount,
+.upcomingTabCount {
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 14px;
+	-fx-text-fill: #434343;
+}
+
 .dayDate {
 	-fx-background-color: #434343;
 	-fx-text-fill: #eeeeee;

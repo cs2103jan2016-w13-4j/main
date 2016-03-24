@@ -7,7 +7,7 @@
 <?import javafx.scene.shape.Line?>
 
 
-<fx:root prefWidth="530.0" style="-fx-background-color: #faebcd;" styleClass="helpItem" type="VBox" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxWidth="520.0" style="-fx-background-color: #faebcd;" styleClass="helpItem" type="VBox" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="description" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="530.0" text="Description" textAlignment="CENTER">
          <VBox.margin>

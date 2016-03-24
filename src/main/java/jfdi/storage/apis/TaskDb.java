@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeMap;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import jfdi.common.utilities.JfdiLogger;
 import jfdi.storage.Constants;
@@ -161,6 +162,26 @@ public class TaskDb implements IDatabase {
             taskAttributes.add(new TaskAttributes(task));
         }
         return taskAttributes;
+    }
+
+    /**
+     * This method returns a collection of overdue TaskAttributes.
+     *
+     * @return a collection of overdue TaskAttributes
+     */
+    public Collection<TaskAttributes> getOverdue() {
+        return getAll().stream().filter(TaskAttributes::isOverdue)
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    /**
+     * This method returns a collection of upcoming TaskAttributes.
+     *
+     * @return a collection of upcoming TaskAttributes
+     */
+    public Collection<TaskAttributes> getUpcoming() {
+        return getAll().stream().filter(TaskAttributes::isUpcoming)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**

@@ -16,6 +16,7 @@ import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.FilePathPair;
 import jfdi.storage.exceptions.InvalidIdException;
+import jfdi.storage.exceptions.DuplicateTaskException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
 import jfdi.storage.serializer.Serializer;
 
@@ -69,6 +70,21 @@ public class TaskDbTest {
         assertEquals(1, taskDbInstance.getAll().size());
         assertEquals(Constants.TEST_TASK_DESCRIPTION_1,
                 taskDbInstance.getById(taskAttributes.getId()).getDescription());
+    }
+
+    @Test(expected = DuplicateTaskException.class)
+    public void testCreateDuplicate() throws Exception {
+        // Create the first Task
+        TaskAttributes taskAttributes = new TaskAttributes();
+        taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        taskAttributes.setStartDateTime(Constants.TEST_TASK_STARTDATETIME);
+        taskAttributes.setEndDateTime(Constants.TEST_TASK_ENDDATETIME);
+        taskDbInstance.createOrUpdate(taskAttributes);
+
+        // Create another duplicate Task
+        // This should trigger the exception
+        taskAttributes.setId(null);
+        taskDbInstance.createOrUpdate(taskAttributes);
     }
 
     @Test
@@ -138,15 +154,16 @@ public class TaskDbTest {
         taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
         taskAttributes.save();
 
-        // A hack to create another identical task
+        // A hack to create another task
         taskAttributes.setId(null);
+        taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_2);
         taskAttributes.save();
 
         // Check that the stored tasks are as expected
         ArrayList<TaskAttributes> taskAttributesList = new ArrayList<TaskAttributes>(taskDbInstance.getAll());
         assertEquals(2, taskAttributesList.size());
         assertEquals(Constants.TEST_TASK_DESCRIPTION_1, taskAttributesList.get(0).getDescription());
-        assertEquals(Constants.TEST_TASK_DESCRIPTION_1, taskAttributesList.get(1).getDescription());
+        assertEquals(Constants.TEST_TASK_DESCRIPTION_2, taskAttributesList.get(1).getDescription());
     }
 
     @Test
@@ -327,6 +344,28 @@ public class TaskDbTest {
         taskDbInstance.undestroy(Integer.MAX_VALUE);
     }
 
+    @Test(expected = DuplicateTaskException.class)
+    public void testUndestroyDuplicateTask() throws Exception {
+        // Create the first Task
+        TaskAttributes taskAttributes = new TaskAttributes();
+        taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        taskAttributes.setStartDateTime(Constants.TEST_TASK_STARTDATETIME);
+        taskAttributes.setEndDateTime(Constants.TEST_TASK_ENDDATETIME);
+        taskDbInstance.createOrUpdate(taskAttributes);
+        int firstTaskId = taskAttributes.getId();
+
+        // Destroy the first task
+        taskDbInstance.destroy(firstTaskId);
+
+        // Create another duplicate Task
+        taskAttributes.setId(null);
+        taskDbInstance.createOrUpdate(taskAttributes);
+
+        // Undestroy the first task (it becomes a duplicate now)
+        // This should trigger the exception
+        taskDbInstance.undestroy(firstTaskId);
+    }
+
     @Test
     public void testLoad() throws Exception {
         // Create a task
@@ -375,6 +414,7 @@ public class TaskDbTest {
 
         // Create task 2
         taskAttributes.setId(null);
+        taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_2);
         taskAttributes.save();
 
         // Delete the first task

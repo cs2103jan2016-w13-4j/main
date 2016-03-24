@@ -5,6 +5,7 @@ import jfdi.logic.events.RenameTaskFailedEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
+import jfdi.storage.exceptions.DuplicateTaskException;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
@@ -69,6 +70,9 @@ public class RenameTaskCommand extends Command {
         } catch (NoAttributesChangedException e) {
             eventBus.post(new RenameTaskFailedEvent(screenId, description,
                 RenameTaskFailedEvent.Error.NO_CHANGES));
+        } catch (DuplicateTaskException e) {
+            eventBus.post(new RenameTaskFailedEvent(screenId, description,
+                RenameTaskFailedEvent.Error.DUPLICATED_TASK));
         }
     }
 
@@ -83,7 +87,8 @@ public class RenameTaskCommand extends Command {
             task.save();
 
             pushToRedoStack();
-        } catch (InvalidIdException | NoAttributesChangedException | InvalidTaskParametersException e) {
+        } catch (InvalidIdException | NoAttributesChangedException
+            | InvalidTaskParametersException | DuplicateTaskException e) {
             assert false;
         }
     }

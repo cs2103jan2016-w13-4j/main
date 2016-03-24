@@ -6,7 +6,10 @@ package jfdi.logic.events;
 public class RenameTaskFailedEvent {
 
     public enum Error {
-        NON_EXISTENT_ID, NO_CHANGES, UNKNOWN
+        NON_EXISTENT_ID,
+        DUPLICATED_TASK,
+        NO_CHANGES,
+        UNKNOWN
     }
 
     private int screenId;

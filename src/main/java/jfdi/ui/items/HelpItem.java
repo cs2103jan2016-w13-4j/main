@@ -5,10 +5,10 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import jfdi.ui.Constants;
 
-public class HelpItem extends HBox {
+public class HelpItem extends VBox {
 
     @FXML
     private Label description;
@@ -27,9 +27,10 @@ public class HelpItem extends HBox {
             e.printStackTrace();
         }
 
-        description.setWrapText(true);
-        description.setText(des);
-        command.setWrapText(true);
-        command.setText(cmd);
+
+        this.description.setWrapText(true);
+        this.command.setWrapText(true);
+        this.description.setText(des);
+        this.command.setText(cmd);
     }
 }

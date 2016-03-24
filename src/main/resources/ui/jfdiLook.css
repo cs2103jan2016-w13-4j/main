@@ -1,7 +1,11 @@
 .list-view .scroll-bar:horizontal .increment-arrow,
 .list-view .scroll-bar:horizontal .decrement-arrow,
 .list-view .scroll-bar:horizontal .increment-button,
-.list-view .scroll-bar:horizontal .decrement-button {
+.list-view .scroll-bar:horizontal .decrement-button,
+.fbArea .scroll-bar:horizontal .increment-arrow,
+.fbArea .scroll-bar:horizontal .decrement-arrow,
+.fbArea .scroll-bar:horizontal .increment-button,
+.fbArea .scroll-bar:horizontal .decrement-button {
     -fx-padding:0;
 }
 
@@ -220,21 +224,17 @@
 .helpContent .list-cell:empty {
 	-fx-background-color: #faebcd;
 }
- 
-.helpItem {
-	-fx-padding: 0;
-	-fx-font-family: "HammersmithOne";
-	-fx-font-size: 16px;
-}
 
 .helpItem #command {
 	-fx-font-weight: 700;
+	-fx-font-family: "HammersmithOne";
 	-fx-text-fill: #434343;
 	-fx-font-size: 13px;
 	-fx-wrap-text: true;
 }
 
 .helpItem #description {
+	-fx-font-family: "HammersmithOne";
 	-fx-text-fill: #434343;
 	-fx-font-size: 13px;
 	-fx-wrap-text: true;

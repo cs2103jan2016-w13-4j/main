@@ -252,7 +252,6 @@ public class MainController {
         fbArea.setMouseTransparent(true);
         fbArea.setFocusTraversable(false);
         fbArea.setStyle("-fx-text-fill: #eeeeee;");
-        disableScrollBarFb();
     }
 
     private void initCmdArea() {
@@ -342,11 +341,19 @@ public class MainController {
                 }
             } else if (code == KeyCode.PAGE_DOWN) {
                 setFirstAndLastVisibleIds();
-                listMain.scrollTo(lastVisibleId);
+                if (displayStatus.equals(ListStatus.HELP)) {
+                    helpContent.scrollTo(lastVisibleId);
+                } else {
+                    listMain.scrollTo(lastVisibleId);
+                }
             } else if (code == KeyCode.PAGE_UP) {
                 setFirstAndLastVisibleIds();
                 int scrollAmount = lastVisibleId - firstVisibleId;
-                listMain.scrollTo(firstVisibleId - scrollAmount);
+                if (displayStatus.equals(ListStatus.HELP)) {
+                    helpContent.scrollTo(firstVisibleId - scrollAmount);
+                } else {
+                    listMain.scrollTo(firstVisibleId - scrollAmount);
+                }
             } else {
                 return;
             }
@@ -369,19 +376,6 @@ public class MainController {
         cmdArea.textProperty().addListener((observable, oldValue, newValue) -> {
             if (cmdArea.lookup(".scroll-bar") != null) {
                 ScrollBar scrollBarv = (ScrollBar) cmdArea.lookup(".scroll-bar");
-                scrollBarv.setDisable(false);
-                scrollBarv.setId("command-scroll-bar");
-            }
-        });
-    }
-
-    /**
-     * Disable the scroll bar when it appears (Edit if necessary)
-     */
-    private void disableScrollBarFb() {
-        fbArea.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (fbArea.lookup(".scroll-bar") != null) {
-                ScrollBar scrollBarv = (ScrollBar) fbArea.lookup(".scroll-bar");
                 scrollBarv.setDisable(false);
                 scrollBarv.setId("command-scroll-bar");
             }

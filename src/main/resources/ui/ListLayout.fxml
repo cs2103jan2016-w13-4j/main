@@ -50,7 +50,10 @@
                                     <Insets left="15.0" />
                                  </padding>
                               </Label>
-                              <Label fx:id="incompleteCount" styleClass="incompleteCount" text="100" />
+                              <Label fx:id="incompleteCount" styleClass="incompleteCount" text="10" textOverrun="CLIP" translateX="-55.0" translateY="-23.0">
+                                 <StackPane.margin>
+                                    <Insets left="10.0" />
+                                 </StackPane.margin></Label>
                            </children>
                         </StackPane>
                         <StackPane layoutX="35.0" layoutY="10.0">
@@ -64,7 +67,10 @@
                                     <Insets left="15.0" />
                                  </padding>
                               </Label>
-                              <Label fx:id="overdueCount" styleClass="overdueCount" text="100" />
+                              <Label fx:id="overdueCount" styleClass="overdueCount" text="10" translateX="-55.0" translateY="-23.0">
+                                 <StackPane.margin>
+                                    <Insets left="10.0" />
+                                 </StackPane.margin></Label>
                            </children>
                            <VBox.margin>
                               <Insets left="10.0" top="15.0" />
@@ -78,7 +84,10 @@
                                     <Insets left="15.0" />
                                  </padding>
                               </Label>
-                              <Label fx:id="upcomingCount" styleClass="upcomingCount" text="100" />
+                              <Label fx:id="upcomingCount" styleClass="upcomingCount" text="10" translateX="-55.0" translateY="-23.0">
+                                 <StackPane.margin>
+                                    <Insets left="10.0" />
+                                 </StackPane.margin></Label>
                            </children>
                            <VBox.margin>
                               <Insets left="10.0" top="15.0" />

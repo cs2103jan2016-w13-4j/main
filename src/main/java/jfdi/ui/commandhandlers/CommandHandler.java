@@ -452,12 +452,13 @@ public class CommandHandler {
     public void handleSearchDoneEvent(SearchDoneEvent e) {
 
         listTasks(e.getResults());
-
         controller.displayStatus = ListStatus.SEARCH;
+
         for (String key : e.getKeywords()) {
             controller.searchCmd += key + " ";
         }
 
+        controller.switchTabSkin();
         controller.setHighlights(e.getKeywords());
         controller.relayFb(Constants.CMD_SUCCESS_SEARCH, MsgType.SUCCESS);
     }

@@ -49,13 +49,15 @@
 	-fx-text-fill: #434343;
 }
 
-.incompleteTab,
-.overdueTab,
-.upcomingTab {
-	-fx-background-color: #434343;
+.incompleteCount,
+.overdueCount,
+.upcomingCount {
+	-fx-background-color: #943939;
 	-fx-font-family: "HammersmithOne";
-	-fx-font-size: 16px;
-	-fx-text-fill: #434343;
+	-fx-font-size: 14px;
+	-fx-text-fill: #eeeeee;
+	-fx-label-padding: 5.0px 10.0px 5.0px 10.0px;
+    -fx-background-radius: 40px;
 }
 
 .dayDate {

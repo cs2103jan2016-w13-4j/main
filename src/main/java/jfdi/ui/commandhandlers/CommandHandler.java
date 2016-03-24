@@ -119,8 +119,7 @@ public class CommandHandler {
     @Subscribe
     public void handleCommandRedoneEvent(CommandRedoneEvent e) {
         Class<? extends Command> cmdType = e.getCommandType();
-        controller.transListCmd();
-        controller.switchTabSkin();
+        switchContext(controller.displayStatus, true);
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_REDONE, cmdType.toString()),
                 MsgType.SUCCESS);
@@ -129,8 +128,7 @@ public class CommandHandler {
     @Subscribe
     public void handleCommandUndoneEvent(CommandUndoneEvent e) {
         Class<? extends Command> cmdType = e.getCommandType();
-        controller.transListCmd();
-        controller.switchTabSkin();
+        switchContext(controller.displayStatus, true);
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_UNDONE, cmdType.toString()),
                 MsgType.SUCCESS);
@@ -228,19 +226,18 @@ public class CommandHandler {
     public void handleListDoneEvent(ListDoneEvent e) {
         switch (e.getListType()) {
             case ALL:
-                controller.displayStatus = ListStatus.ALL;
+                switchContext(ListStatus.ALL, false);
                 break;
             case COMPLETED:
-                controller.displayStatus = ListStatus.COMPLETE;
+                switchContext(ListStatus.COMPLETE, false);
                 break;
             case INCOMPLETE:
-                controller.displayStatus = ListStatus.INCOMPLETE;
+                switchContext(ListStatus.INCOMPLETE, false);
                 break;
             default:
                 break;
         }
 
-        controller.switchTabSkin();
         listTasks(e.getItems(), false);
         controller.relayFb(Constants.CMD_SUCCESS_LISTED, MsgType.SUCCESS);
     }
@@ -293,9 +290,7 @@ public class CommandHandler {
 
     @Subscribe
     public void handleMoveDirectoryDoneEvent(MoveDirectoryDoneEvent e) {
-        controller.displayStatus = ListStatus.INCOMPLETE;
-        controller.transListCmd();
-        controller.switchTabSkin();
+        switchContext(ListStatus.INCOMPLETE, true);
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_MOVED, e.getNewDirectory()),
                 MsgType.SUCCESS);
@@ -453,14 +448,13 @@ public class CommandHandler {
 
         listTasks(e.getResults(), false);
 
-        controller.displayStatus = ListStatus.SEARCH;
-        controller.switchTabSkin();
+        switchContext(ListStatus.SEARCH, false);
 
         for (String key : e.getKeywords()) {
             controller.searchCmd += key + " ";
         }
 
-        controller.switchTabSkin();
+        //controller.switchTabSkin();
         controller.setHighlights(e.getKeywords());
         controller.relayFb(Constants.CMD_SUCCESS_SEARCH, MsgType.SUCCESS);
     }
@@ -478,8 +472,8 @@ public class CommandHandler {
         controller.importantList.clear();
         TaskAttributes task = e.getTask();
         appendTaskToDisplayList(task, false);
-        controller.displayStatus = ListStatus.SURPRISE;
-        controller.switchTabSkin();
+        switchContext(ListStatus.ALL, false);
+        switchContext(ListStatus.SURPRISE, false);
         controller.relayFb(Constants.CMD_SUCCESS_SURPRISED, MsgType.SUCCESS);
     }
 
@@ -569,9 +563,7 @@ public class CommandHandler {
 
     @Subscribe
     public void handleUseDirectoryDoneEvent(UseDirectoryDoneEvent e) {
-        controller.displayStatus = ListStatus.INCOMPLETE;
-        controller.transListCmd();
-        controller.switchTabSkin();
+        switchContext(ListStatus.INCOMPLETE, true);
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_USED, e.getNewDirectory()),
                 MsgType.SUCCESS);
@@ -667,5 +659,13 @@ public class CommandHandler {
                 assert false;
                 return false;
         }
+    }
+
+    private void switchContext(ListStatus status, Boolean isListing) {
+        controller.displayStatus = status;
+        if (isListing) {
+            controller.transListCmd();
+        }
+        controller.switchTabSkin();
     }
 }

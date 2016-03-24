@@ -33,7 +33,6 @@ import jfdi.ui.Constants.MsgType;
 import jfdi.ui.commandhandlers.CommandHandler;
 import jfdi.ui.items.HelpItem;
 import jfdi.ui.items.ListItem;
-import jfdi.ui.items.StatsItem;
 
 public class MainController {
 
@@ -68,8 +67,6 @@ public class MainController {
     @FXML
     public Label dayDisplayer;
     @FXML
-    public Label listStatus;
-    @FXML
     public ListView<ListItem> listMain;
     @FXML
     public TextArea fbArea;
@@ -90,7 +87,6 @@ public class MainController {
     public CommandHandler cmdHandler;
     public Stage mainStage;
     public ObservableList<ListItem> importantList;
-    public ObservableList<StatsItem> statsList;
     public String displayStatus;
 
     private ObservableList<HelpItem> helpList;
@@ -100,6 +96,7 @@ public class MainController {
     private int lastVisibleId;
 
     public void initialize() {
+
 
         initDate();
         initImportantList();

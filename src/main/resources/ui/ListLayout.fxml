@@ -17,21 +17,6 @@
    <children>
       <StackPane maxWidth="670.0" prefHeight="690.0" prefWidth="670.0" VBox.vgrow="ALWAYS">
           <children>
-			   <VBox fx:id="helpOverlay" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="550.0" prefWidth="500.0" style="-fx-background-color: f7c873;" StackPane.alignment="CENTER">
-	               <children>
-	                  <Label fx:id="helpIcon" focusTraversable="false" prefHeight="45.0" prefWidth="13.0" text="!" textFill="#434343">
-                         <font>
-                            <Font name="Hammersmith One" size="50.0" />
-                         </font>
-                      </Label>
-	                  <Label fx:id="helpTitle" focusTraversable="false" text="JFDI to the Rescue!">
-                         <font>
-                            <Font name="Hammersmith One" size="40.0" />
-                         </font>
-                     </Label>
-	                 <ListView fx:id="helpContent" focusTraversable="false" maxWidth="-Infinity" prefWidth="400.0" />
-	              </children>
-               </VBox>
             <HBox maxWidth="670.0" prefWidth="670.0">
                <children>
                   <VBox maxHeight="690.0" maxWidth="130.0" minWidth="130.0" prefHeight="690.0" prefWidth="116.0" style="-fx-background-color: #f7c873;">
@@ -214,6 +199,19 @@
       		       </VBox>
                </children>
             </HBox>
+			   <VBox fx:id="helpOverlay" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" opacity="0.94" prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: #434343;" StackPane.alignment="CENTER">
+	               <children>
+	                  <Label fx:id="helpTitle" focusTraversable="false" text="JFDI to the Rescue!" textFill="#faebcd" translateY="-5.0">
+                         <font>
+                            <Font name="Hammersmith One" size="40.0" />
+                         </font>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                     </Label>
+	                 <ListView fx:id="helpContent" focusTraversable="false" maxWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: #f7c873;" />
+	              </children>
+               </VBox>
 	        </children>
         </StackPane>
     </children>

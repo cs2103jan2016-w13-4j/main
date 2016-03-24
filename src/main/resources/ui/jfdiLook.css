@@ -216,16 +216,16 @@
 	-fx-padding: 0;
 	-fx-font-family: "HammersmithOne";
 	-fx-font-size: 16px;
-	-fx-background-color: #434343;
+	-fx-background-color: transparent;
 }
 
 .helpItem #command {
 	-fx-font-weight: 700;
-	-fx-text-fill: white;
+	-fx-text-fill: #434343;
 }
 
 .helpItem #description {
-	-fx-text-fill: white;
+	-fx-text-fill: #434343;
 }
 
 .list-cell {

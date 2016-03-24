@@ -37,6 +37,7 @@ public class Constants {
 
     public static final String CMD_ERROR_CANT_ADD_UNKNOWN = "Some stupid error occurred. Cannot add task!";
     public static final String CMD_ERROR_CANT_ADD_EMPTY = "Cannot add an empty task!";
+    public static final String CMD_ERROR_CANT_ADD_DUPLICATE = "Save the trouble. This task already exists in your list :)";
     public static final String CMD_ERROR_CANT_ALIAS_INVALID = "- %s - is an invalid alias for - %s -";
     public static final String CMD_ERROR_CANT_ALIAS_DUPLICATED = " - %s - is an duplicated alias.";
     public static final String CMD_ERROR_CANT_ALIAS_UNKNOWN =
@@ -63,9 +64,11 @@ public class Constants {
             "Some stupid error occurred. Cannot rename task!";
     public static final String CMD_ERROR_CANT_RENAME_NO_ID = "Cannot rename task. The ID #%d does not exist!";
     public static final String CMD_ERROR_CANT_RENAME_NO_CHANGES = "No difference between new and old name - %s -!";
+    public static final String CMD_ERROR_CANT_RENAME_DUPLICATE = "Save the trouble. This task already exists in your list :)";
     public static final String CMD_ERROR_CANT_RESCHEDULE_UNKNOWN = "Some error occurred. Cannot reschedule task!";
     public static final String CMD_ERROR_CANT_RESCHEDULE_NO_ID = "Cannot reschedule task. The ID #%d does not exist!";
     public static final String CMD_ERROR_CANT_RESCHEDULE_NO_CHANGES = "No difference between new and old schedule - ";
+    public static final String CMD_ERROR_CANT_RESCHEDULE_DUPLICATE = "Save the trouble. This task already exists in your list :)";
     public static final String CMD_ERROR_CANT_UNALIAS_UNKNOWN = "Some error occurred. Cannot remove alias - %s -!";
     public static final String CMD_ERROR_CANT_UNALIAS_NO_ALIAS =
             "Cannot remove alias. The alias - %s - does not exist!";
@@ -105,6 +108,7 @@ public class Constants {
     public static final String LOG_ADDED_SUCCESS = "Displayed successful add event for task #%d.";
     public static final String LOG_ADD_FAIL_UNKNOWN = "Unknown error detected for adding.";
     public static final String LOG_ADD_FAIL_EMPTY = "An task failed to add due to empty description.";
+    public static final String LOG_ADD_FAIL_DUPLICATE = "A duplicate task was not added.";
     public static final String LOG_DELETED_SUCCESS = "Displayed successful delete event for task #%d.";
     public static final String LOG_UI_LIST = "The current list of task to be displayed is : ";
     public static final String LOG_LOGIC_LIST = "The list of task received from Logic is : ";
@@ -115,10 +119,12 @@ public class Constants {
     public static final String LOG_RENAME_FAIL_UNKNOWN = "Unknown error detected for renaming.";
     public static final String LOG_RENAME_FAIL_NOID = "An non-existent ID was queried for rename.";
     public static final String LOG_RENAME_FAIL_NOCHANGE = "A renaming with no change was queried.";
+    public static final String LOG_RENAME_FAIL_DUPLICATE = "A task was not renamed as a duplicate task exists.";
     public static final String LOG_RESCHED_SUCCESS = "Displayed successful reschedule event for task #%d.";
     public static final String LOG_RESCHE_FAIL_UNKNOWN = "Unknown error detected for reschduling.";
     public static final String LOG_RESCHE_FAIL_NOID = "An non-existent ID was queried for reschedule.";
     public static final String LOG_RESCHE_FAIL_NOCHANGE = "A rescheduling with no change was queried.";
+    public static final String LOG_RESCHE_FAIL_DUPLICATE = "A task was not rescheduled as a duplicate task exists.";
 
     public static final String HELP_OVERLAY_TITLE = "JFDI TO THE RESCUE!";
     public static final String HELP_OVERLAY_ICON = "\uf05a"; // SUB IN ACTUAL ADDRESS

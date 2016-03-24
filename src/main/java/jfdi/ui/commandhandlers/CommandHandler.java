@@ -78,6 +78,11 @@ public class CommandHandler {
                     MsgType.ERROR);
                 logger.fine(String.format(Constants.LOG_ADD_FAIL_EMPTY));
                 break;
+            case DUPLICATED_TASK:
+                controller.relayFb(Constants.CMD_ERROR_CANT_ADD_DUPLICATE,
+                    MsgType.ERROR);
+                logger.fine(String.format(Constants.LOG_ADD_FAIL_DUPLICATE));
+                break;
             default:
                 break;
         }
@@ -393,6 +398,11 @@ public class CommandHandler {
                         e.getDescription()), MsgType.ERROR);
                 logger.fine(Constants.LOG_RENAME_FAIL_NOCHANGE);
                 break;
+            case DUPLICATED_TASK:
+                controller.relayFb(Constants.CMD_ERROR_CANT_RENAME_DUPLICATE,
+                    MsgType.ERROR);
+                logger.fine(String.format(Constants.LOG_RENAME_FAIL_DUPLICATE));
+                break;
             default:
                 break;
         }
@@ -437,6 +447,11 @@ public class CommandHandler {
                         + e.getStartDateTime() + " - to - "
                         + e.getEndDateTime() + " -!", MsgType.ERROR);
                 logger.fine(Constants.LOG_RESCHE_FAIL_NOCHANGE);
+                break;
+            case DUPLICATED_TASK:
+                controller.relayFb(Constants.CMD_ERROR_CANT_RESCHEDULE_DUPLICATE,
+                    MsgType.ERROR);
+                logger.fine(String.format(Constants.LOG_RESCHE_FAIL_DUPLICATE));
                 break;
             default:
                 break;

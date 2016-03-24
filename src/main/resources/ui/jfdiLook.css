@@ -89,8 +89,14 @@
 	-fx-font-family: "HammersmithOne";
 	-fx-font-size: 14px;
 	-fx-wrap-text: true;
-	-fx-text-fill: white;
-	-fx-text-inner-color: white;
+	-fx-text-fill: #eeeeee;
+	-fx-text-inner-color: #eeeeee;
+}
+
+.fbArea, .fbArea .viewport, .fbArea .content {
+    -fx-background-color: transparent;
+    -fx-text-fill: #eeeeee;
+    -fx-text-inner-color: #eeeeee;
 }
 
 .cmdArea {

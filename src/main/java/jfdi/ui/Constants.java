@@ -20,7 +20,7 @@ public class Constants {
     public static final String URL_HAMSMITH_PATH = "/ui/fonts/HammersmithOne.ttf";
     public static final String URL_RALEWAY_PATH = "/ui/fonts/raleway.heavy.ttf";
 
-    public static final String CTRL_CMD_PROMPT_TEXT = "(Hey Jim! Please let me know what I can do for you!)";
+    public static final String CTRL_CMD_PROMPT_TEXT = "(Hello! Please let me know what I can do for you!)";
     public static final String CTRL_CMD_INCOMPLETE = "list";
     public static final String CTRL_CMD_COMPLETE = "list completed";
     public static final String CTRL_CMD_SURPRISE = "surprise!";

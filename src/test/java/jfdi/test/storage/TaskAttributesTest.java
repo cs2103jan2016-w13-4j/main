@@ -297,6 +297,12 @@ public class TaskAttributesTest {
         task6.setCompleted(true);
         assertFalse(task6.isOverdue());
         assertFalse(task6.isUpcoming());
+
+        // A floating task should not be upcoming/overdue
+        TaskAttributes task7 = new TaskAttributes();
+        task7.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        assertFalse(task7.isOverdue());
+        assertFalse(task7.isUpcoming());
     }
 
     @Test

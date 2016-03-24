@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
-<fx:root alignment="CENTER_LEFT" prefWidth="350.0" styleClass="helpItem" type="HBox" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="CENTER_LEFT" prefWidth="500.0" style="-fx-background-color: #f7c873;" styleClass="helpItem" type="HBox" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="description" focusTraversable="false" text="Description" />
-      <HBox alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" HBox.hgrow="ALWAYS">
+      <Label fx:id="description" focusTraversable="false" prefHeight="20.0" prefWidth="300.0" text="Description" textFill="#434343" wrapText="true">
+         <font>
+            <Font name="Hammersmith One" size="13.0" />
+         </font></Label>
+      <HBox alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="200.0" style="-fx-background-color: #f7c873;" HBox.hgrow="ALWAYS">
          <children>
-            <Label fx:id="command" alignment="CENTER_RIGHT" focusTraversable="false" nodeOrientation="LEFT_TO_RIGHT" text="Command" HBox.hgrow="ALWAYS" />
+            <Label fx:id="command" alignment="CENTER_RIGHT" focusTraversable="false" nodeOrientation="LEFT_TO_RIGHT" text="Command" textFill="#434343" wrapText="true" HBox.hgrow="ALWAYS">
+               <font>
+                  <Font name="Hammersmith One" size="13.0" />
+               </font></Label>
          </children>
       </HBox>
    </children>

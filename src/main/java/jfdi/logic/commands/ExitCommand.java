@@ -27,7 +27,7 @@ public class ExitCommand extends Command {
 
     @Override
     public void undo() {
-        throw new UnsupportedOperationException();
+        assert false;
     }
 
 }

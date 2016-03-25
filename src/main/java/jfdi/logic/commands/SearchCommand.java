@@ -60,7 +60,7 @@ public class SearchCommand extends Command {
 
     @Override
     public void undo() {
-        throw new UnsupportedOperationException();
+        assert false;
     }
 
 }

@@ -175,7 +175,7 @@ public class Constants {
     public static final String HELP_MOVE_DIR_DESC = "Move existing program data to another directory";
     public static final String HELP_MOVE_DIR_COMMAND = "move <new directory>";
     public static final String HELP_UP_DOWN_DESC = "Scroll through your previous commands";
-    public static final String HELP_UP_DOWN_COMMAND = "\u25b2 / \u25bC";
+    public static final String HELP_UP_DOWN_COMMAND = "\u25b2" + " / " + "\u25bC";
     public static final String HELP_PAGE_UP_DOWN_DESC = "Scroll through your task list and help list";
     public static final String HELP_PAGE_UP_DOWN_COMMAND = "page up / page down";
     public static final String HELP_EXIT_DESC = "GET OUT OF JFDI";

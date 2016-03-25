@@ -45,7 +45,7 @@ public class UnmarkCommandParserTest {
         unmarkCommand = validateAndReturnUnmarkCommand(command);
         validateUnmarkType(unmarkCommand, 1, 2, 3);
 
-        command = parser.build("mARk 1, 2-9, 20, 43");
+        command = parser.build("unmARk 1, 2-9, 20, 43");
         unmarkCommand = validateAndReturnUnmarkCommand(command);
         validateUnmarkType(unmarkCommand, 1, 2, 3, 4, 5, 6, 7, 8, 9, 20, 43);
 

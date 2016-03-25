@@ -5,16 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashSet;
 
-<<<<<<< HEAD
-import javafx.animation.FadeTransition;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
-=======
-import com.sun.javafx.scene.control.skin.ListViewSkin;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
-
->>>>>>> master
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -102,7 +92,6 @@ public class MainController {
 
     public void initialize() {
 
-
         initDate();
         initImportantList();
         initFbArea();
@@ -112,15 +101,8 @@ public class MainController {
     }
 
     public void hideOverlays() {
-<<<<<<< HEAD
-        // noTaskOverlay.toBack();
-        helpOverlay.toBack();
-        // noTaskOverlay.setOpacity(0);
-        helpOverlay.setOpacity(0);
-=======
         helpContent.toBack();
         helpContent.setOpacity(0);
->>>>>>> master
     }
 
     public void clearCmdArea() {
@@ -153,16 +135,6 @@ public class MainController {
     }
 
     public void showHelpDisplay() {
-<<<<<<< HEAD
-        hideOverlays();
-        FadeTransition fadeIn = initFadeIn(helpOverlay,
-            Constants.OVERLAY_FADE_IN_MILLISECONDS);
-
-        overlayTimeline = generateHelpOverlayTimeline(fadeIn);
-        overlayTimeline.play();
-    }
-
-=======
         helpContent.toFront();
         helpContent.setOpacity(1);
     }
@@ -238,7 +210,6 @@ public class MainController {
         }
     }
 
->>>>>>> master
     public void setMainApp(MainSetUp main) {
         this.main = main;
     }
@@ -292,12 +263,6 @@ public class MainController {
         disableScrollBarCmd();
     }
 
-<<<<<<< HEAD
-    private void initTimelines() {
-        // feedbackTimeline = new Timeline();
-        overlayTimeline = new Timeline();
-    }
-
     private void initHelpList() {
         helpList = FXCollections.observableArrayList();
         helpList.add(new HelpItem(Constants.HELP_ADD_FLOATING_DESC,
@@ -328,8 +293,6 @@ public class MainController {
             Constants.HELP_DELETE_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_SEARCH_DESC,
             Constants.HELP_SEARCH_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_REMINDER_DESC,
-            Constants.HELP_REMINDER_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_UNDO_DESC,
             Constants.HELP_UNDO_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_CREATE_ALIAS_DESC,
@@ -348,81 +311,9 @@ public class MainController {
             Constants.HELP_UP_DOWN_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_EXIT_DESC,
             Constants.HELP_EXIT_COMMAND));
-    }
-
-    private void initHelpOverlay() {
-        helpOverlay.toFront();
-        helpIcon.setText(Constants.HELP_OVERLAY_ICON);
-        helpTitle.setText(Constants.HELP_OVERLAY_TITLE);
         helpContent.setItems(helpList);
     }
 
-    private void initStatsArea() {
-        statsDisplayer.setMouseTransparent(true);
-        statsDisplayer.setFocusTraversable(false);
-        statsList = FXCollections.observableArrayList();
-        statsDisplayer.setItems(statsList);
-        statsList.add(new StatsItem(Constants.CTRL_STATS_NAME1));
-        statsList.add(new StatsItem(Constants.CTRL_STATS_NAME2));
-        setCompleteList();
-        setDueTodayList();
-    }
-
-    private Timeline generateHelpOverlayTimeline(FadeTransition fadeIn) {
-        return new Timeline(new KeyFrame(new Duration(1),
-            new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    initHelpOverlay();
-                    fadeIn.play();
-                }
-            }, new KeyValue(helpOverlay.alignmentProperty(), Pos.CENTER_LEFT)));
-    }
-
-    private FadeTransition initFadeIn(Node node, int duration) {
-        FadeTransition fadeIn = new FadeTransition(new Duration(duration));
-        fadeIn.setNode(node);
-        fadeIn.setToValue(1);
-        return fadeIn;
-    }
-
-    private FadeTransition initFadeOut(Node node, int duration) {
-        FadeTransition fadeOut = new FadeTransition(new Duration(duration));
-        fadeOut.setNode(node);
-        fadeOut.setToValue(0);
-        return fadeOut;
-    }
-
-=======
-    private void initHelpList() {
-        helpList = FXCollections.observableArrayList();
-        helpList.add(new HelpItem(Constants.HELP_ADD_FLOATING_DESC, Constants.HELP_ADD_FLOATING_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_ADD_POINT_DESC, Constants.HELP_ADD_POINT_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_ADD_DEADLINE_DESC, Constants.HELP_ADD_DEADLINE_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_ADD_EVENT_DESC, Constants.HELP_ADD_EVENT_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_LIST_INCOMPLETE_DESC, Constants.HELP_LIST_INCOMPLETE_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_LIST_COMPLETE_DESC, Constants.HELP_LIST_COMPLETE_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_LIST_ALL_DESC, Constants.HELP_LIST_ALL_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_RENAME_DESC, Constants.HELP_RENAME_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_RESCH_DESC, Constants.HELP_RESCH_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_REMOVE_TIME_DESC, Constants.HELP_REMOVE_TIME_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_DONE_DESC, Constants.HELP_DONE_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_UNDONE_DESC, Constants.HELP_UNDONE_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_DELETE_DESC, Constants.HELP_DELETE_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_SEARCH_DESC, Constants.HELP_SEARCH_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_UNDO_DESC, Constants.HELP_UNDO_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_CREATE_ALIAS_DESC, Constants.HELP_CREATE_ALIAS_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_DELETE_ALIAS_DESC, Constants.HELP_DELETE_ALIAS_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_WILDCARD_DESC, Constants.HELP_WILDCARD_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_CHECK_DIR_DESC, Constants.HELP_CHECK_DIR_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_USE_DIR_DESC, Constants.HELP_USE_DIR_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_MOVE_DIR_DESC, Constants.HELP_MOVE_DIR_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_UP_DOWN_DESC, Constants.HELP_UP_DOWN_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_EXIT_DESC, Constants.HELP_EXIT_COMMAND));
-        helpContent.setItems(helpList);
-    }
-
->>>>>>> master
     private void initInputHistory() {
         inputHistory = new InputHistory();
     }
@@ -431,29 +322,6 @@ public class MainController {
      *** LEVEL 2 Abstraction ***
      ***************************/
 
-<<<<<<< HEAD
-    private void setCompleteList() {
-        completedList = new ArrayList<ListItem>();
-        displayList(Constants.CTRL_CMD_COMPLETE);
-        completedList.addAll(importantList);
-        statsList.get(0).setNum(completedList.size());
-    }
-
-    private void setDueTodayList() {
-        dueTodayList = new ArrayList<ListItem>();
-        displayList(Constants.CTRL_CMD_ALL);
-        for (ListItem item : importantList) {
-            checkDueToday(item);
-        }
-        statsList.get(1).setNum(dueTodayList.size());
-    }
-
-    private void handleOverlays(ObservableList<ListItem> tasks) {
-        hideOverlays();
-        // if (tasks.isEmpty()) {
-        // showNoTaskOverlay();
-        // }
-=======
     private void setAllTabsOff() {
         incompleteBox.getStyleClass().setAll("tabOff");
         incompleteTab.getStyleClass().setAll("incompleteTab");
@@ -471,7 +339,6 @@ public class MainController {
         surpriseTab.getStyleClass().setAll("surpriseTab");
         helpBox.getStyleClass().setAll("tabOff");
         helpTab.getStyleClass().setAll("helpTab");
->>>>>>> master
     }
 
     @FXML
@@ -530,62 +397,10 @@ public class MainController {
             });
     }
 
-<<<<<<< HEAD
-    /**
-     * Disable the scroll bar when it appears (Edit if necessary)
-     */
-    private void disableScrollBarFb() {
-        fbArea.textProperty().addListener(
-            (observable, oldValue, newValue) -> {
-                if (fbArea.lookup(".scroll-bar") != null) {
-                    ScrollBar scrollBarv = (ScrollBar) fbArea
-                        .lookup(".scroll-bar");
-                    scrollBarv.setDisable(false);
-                    scrollBarv.setId("command-scroll-bar");
-                }
-            });
-    }
-
-=======
->>>>>>> master
     /***************************
      *** LEVEL 3 Abstraction ***
      ***************************/
 
-<<<<<<< HEAD
-    public void checkDueToday(ListItem item) {
-
-        if (item.getItem().getEndDateTime() != null && !item.getMark()) {
-            if (item.getItem().getEndDateTime().getYear() == Calendar
-                .getInstance().get(Calendar.YEAR)) {
-                if (item.getItem().getEndDateTime().getMonthValue() == Calendar
-                    .getInstance().get(Calendar.MONTH) + 1) {
-                    if (item.getItem().getEndDateTime().getDayOfMonth() == Calendar
-                        .getInstance().get(Calendar.DAY_OF_MONTH)) {
-                        if (!isInList(item)) {
-                            dueTodayList.add(item);
-                        }
-                    }
-                }
-            }
-        }
-
-        if (item.getItem().getStartDateTime() != null && !item.getMark()) {
-            if (item.getItem().getStartDateTime().getYear() == Calendar
-                .getInstance().get(Calendar.YEAR)) {
-                if (item.getItem().getStartDateTime().getMonthValue() == Calendar
-                    .getInstance().get(Calendar.MONTH) + 1) {
-                    if (item.getItem().getStartDateTime().getDayOfMonth() == Calendar
-                        .getInstance().get(Calendar.DAY_OF_MONTH)) {
-                        if (!isInList(item)) {
-                            dueTodayList.add(item);
-                        }
-                    }
-                }
-            }
-        }
-
-=======
     private void scrollUp() {
         setFirstVisibleId();
         ListView<?> listView = getCurrentListView();
@@ -596,7 +411,6 @@ public class MainController {
         setFirstVisibleId();
         ListView<?> listView = getCurrentListView();
         listView.scrollTo(firstVisibleId + 1);
->>>>>>> master
     }
 
     private ListView<?> getCurrentListView() {
@@ -606,21 +420,15 @@ public class MainController {
         return listMain;
     }
 
-<<<<<<< HEAD
-    public void setFirstAndLastVisibleIds() {
-        ListViewSkin<?> listViewSkin = (ListViewSkin<?>) listMain.getSkin();
+    public void setFirstVisibleId() {
+        ListViewSkin<?> listViewSkin = (ListViewSkin<?>) getCurrentListView()
+            .getSkin();
         VirtualFlow<?> virtualFlow = (VirtualFlow<?>) listViewSkin
             .getChildren().get(0);
-        firstVisibleId = virtualFlow.getFirstVisibleCell().getIndex();
-        lastVisibleId = virtualFlow.getLastVisibleCell().getIndex();
-=======
-    public void setFirstVisibleId() {
-        ListViewSkin<?> listViewSkin = (ListViewSkin<?>) getCurrentListView().getSkin();
-        VirtualFlow<?> virtualFlow = (VirtualFlow<?>) listViewSkin.getChildren().get(0);
-        IndexedCell<?> firstVisibleCell = virtualFlow.getFirstVisibleCellWithinViewPort();
+        IndexedCell<?> firstVisibleCell = virtualFlow
+            .getFirstVisibleCellWithinViewPort();
         if (firstVisibleCell != null) {
             firstVisibleId = firstVisibleCell.getIndex();
         }
->>>>>>> master
     }
 }

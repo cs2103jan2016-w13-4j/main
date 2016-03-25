@@ -2,6 +2,9 @@ package jfdi.ui;
 
 public class Constants {
 
+    public static final char ARROW_UP = 0x25b2;
+    public static final char ARROW_DOWN = 0x25bC;
+
     public static final String UI_MESSAGE_INIT = "Initializing UI...";
     public static final String UI_MESSAGE_INITED = "Initialization Completed!";
     public static final String UI_MESSAGE_GREETING = "J.F.D.I. : Hello there! Nice to see you again! :)";
@@ -175,7 +178,7 @@ public class Constants {
     public static final String HELP_MOVE_DIR_DESC = "Move existing program data to another directory";
     public static final String HELP_MOVE_DIR_COMMAND = "move <new directory>";
     public static final String HELP_UP_DOWN_DESC = "Scroll through your previous commands";
-    public static final String HELP_UP_DOWN_COMMAND = "up arrow (\u25b2) / down arrow (\u25bC)";
+    public static final String HELP_UP_DOWN_COMMAND = "up arrow (" + ARROW_UP + ") / down arrow (" + ARROW_DOWN + ")";
     public static final String HELP_PAGE_UP_DOWN_DESC = "Scroll through your task list and help list";
     public static final String HELP_PAGE_UP_DOWN_COMMAND = "page up / page down";
     public static final String HELP_EXIT_DESC = "GET OUT OF JFDI";

@@ -77,7 +77,7 @@ public class DateTimeParser {
     private DateTimeObject buildDateTimeObject(String input)
         throws BadDateTimeException {
         assert isValidDateTime(input);
-
+        String originalInput = input;
         DateTimeObjectBuilder dateTimeObjectBuilder = new DateTimeObjectBuilder();
 
         TaskType taskType = getTaskType(input);
@@ -88,7 +88,6 @@ public class DateTimeParser {
         System.out.println(input);
         // This might not be sufficient for event tasks
         // TODO: create methods for individual task type
-        boolean isTimeSpecified = checkTimeSpecified(input);
         List<Date> dateList = getDateList(input);
         List<LocalDateTime> dateTimeList = toLocalDateTime(dateList);
 
@@ -99,13 +98,22 @@ public class DateTimeParser {
                 assert dateTimeList.size() == 2;
                 startDateTime = dateTimeList.get(0);
                 endDateTime = dateTimeList.get(1);
-                if (!isTimeSpecified) {
+                String[] splitInput = originalInput.split("\\bto\\b");
+                if (!checkTimeSpecified(originalInput)) {
                     startDateTime = setTime(startDateTime,
                         Constants.TIME_BEGINNING_OF_DAY);
                     endDateTime = setTime(endDateTime,
                         Constants.TIME_END_OF_DAY);
+                } else {
+                    if (!checkTimeSpecified(splitInput[0])) {
+                        startDateTime = setTime(startDateTime,
+                            Constants.TIME_DEFAULT);
+                    }
+                    if (!checkTimeSpecified(splitInput[1])) {
+                        endDateTime = setTime(endDateTime,
+                            Constants.TIME_DEFAULT);
+                    }
                 }
-
                 if (startDateTime.compareTo(endDateTime) > 0) {
                     LOGGER.throwing(SOURCECLASS, "buildDateTimeObject",
                         new BadDateTimeException(input));
@@ -115,7 +123,7 @@ public class DateTimeParser {
             case point:
                 assert dateTimeList.size() == 1;
                 startDateTime = dateTimeList.get(0);
-                if (!isTimeSpecified) {
+                if (!checkTimeSpecified(input)) {
                     startDateTime = setTime(startDateTime,
                         Constants.TIME_DEFAULT);
                     System.out.println(startDateTime.getHour());
@@ -124,7 +132,7 @@ public class DateTimeParser {
             case deadline:
                 assert dateTimeList.size() == 1;
                 endDateTime = dateTimeList.get(0);
-                if (!isTimeSpecified) {
+                if (!checkTimeSpecified(input)) {
                     endDateTime = setTime(endDateTime, Constants.TIME_DEFAULT);
                 }
                 break;
@@ -133,7 +141,6 @@ public class DateTimeParser {
         }
 
         dateTimeObjectBuilder.setTaskType(taskType);
-        dateTimeObjectBuilder.setIsTimeSpecified(isTimeSpecified);
         dateTimeObjectBuilder.setStartDateTime(startDateTime);
         dateTimeObjectBuilder.setEndDateTime(endDateTime);
 

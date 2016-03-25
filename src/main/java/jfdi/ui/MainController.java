@@ -5,9 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashSet;
 
-import com.sun.javafx.scene.control.skin.ListViewSkin;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -25,6 +22,9 @@ import jfdi.ui.Constants.MsgType;
 import jfdi.ui.commandhandlers.CommandHandler;
 import jfdi.ui.items.HelpItem;
 import jfdi.ui.items.ListItem;
+
+import com.sun.javafx.scene.control.skin.ListViewSkin;
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 
 public class MainController {
 
@@ -91,7 +91,6 @@ public class MainController {
     private int firstVisibleId;
 
     public void initialize() {
-
 
         initDate();
         initImportantList();
@@ -267,29 +266,52 @@ public class MainController {
 
     private void initHelpList() {
         helpList = FXCollections.observableArrayList();
-        helpList.add(new HelpItem(Constants.HELP_ADD_FLOATING_DESC, Constants.HELP_ADD_FLOATING_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_ADD_POINT_DESC, Constants.HELP_ADD_POINT_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_ADD_DEADLINE_DESC, Constants.HELP_ADD_DEADLINE_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_ADD_EVENT_DESC, Constants.HELP_ADD_EVENT_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_LIST_INCOMPLETE_DESC, Constants.HELP_LIST_INCOMPLETE_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_LIST_COMPLETE_DESC, Constants.HELP_LIST_COMPLETE_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_LIST_ALL_DESC, Constants.HELP_LIST_ALL_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_RENAME_DESC, Constants.HELP_RENAME_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_RESCH_DESC, Constants.HELP_RESCH_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_REMOVE_TIME_DESC, Constants.HELP_REMOVE_TIME_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_DONE_DESC, Constants.HELP_DONE_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_UNDONE_DESC, Constants.HELP_UNDONE_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_DELETE_DESC, Constants.HELP_DELETE_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_SEARCH_DESC, Constants.HELP_SEARCH_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_UNDO_DESC, Constants.HELP_UNDO_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_CREATE_ALIAS_DESC, Constants.HELP_CREATE_ALIAS_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_DELETE_ALIAS_DESC, Constants.HELP_DELETE_ALIAS_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_WILDCARD_DESC, Constants.HELP_WILDCARD_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_CHECK_DIR_DESC, Constants.HELP_CHECK_DIR_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_USE_DIR_DESC, Constants.HELP_USE_DIR_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_MOVE_DIR_DESC, Constants.HELP_MOVE_DIR_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_UP_DOWN_DESC, Constants.HELP_UP_DOWN_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_EXIT_DESC, Constants.HELP_EXIT_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_ADD_FLOATING_DESC,
+            Constants.HELP_ADD_FLOATING_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_ADD_POINT_DESC,
+            Constants.HELP_ADD_POINT_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_ADD_DEADLINE_DESC,
+            Constants.HELP_ADD_DEADLINE_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_ADD_EVENT_DESC,
+            Constants.HELP_ADD_EVENT_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_LIST_INCOMPLETE_DESC,
+            Constants.HELP_LIST_INCOMPLETE_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_LIST_COMPLETE_DESC,
+            Constants.HELP_LIST_COMPLETE_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_LIST_ALL_DESC,
+            Constants.HELP_LIST_ALL_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_RENAME_DESC,
+            Constants.HELP_RENAME_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_RESCH_DESC,
+            Constants.HELP_RESCH_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_REMOVE_TIME_DESC,
+            Constants.HELP_REMOVE_TIME_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_DONE_DESC,
+            Constants.HELP_DONE_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_UNDONE_DESC,
+            Constants.HELP_UNDONE_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_DELETE_DESC,
+            Constants.HELP_DELETE_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_SEARCH_DESC,
+            Constants.HELP_SEARCH_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_UNDO_DESC,
+            Constants.HELP_UNDO_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_CREATE_ALIAS_DESC,
+            Constants.HELP_CREATE_ALIAS_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_DELETE_ALIAS_DESC,
+            Constants.HELP_DELETE_ALIAS_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_WILDCARD_DESC,
+            Constants.HELP_WILDCARD_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_CHECK_DIR_DESC,
+            Constants.HELP_CHECK_DIR_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_USE_DIR_DESC,
+            Constants.HELP_USE_DIR_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_MOVE_DIR_DESC,
+            Constants.HELP_MOVE_DIR_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_UP_DOWN_DESC,
+            Constants.HELP_UP_DOWN_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_EXIT_DESC,
+            Constants.HELP_EXIT_COMMAND));
         helpContent.setItems(helpList);
     }
 
@@ -365,13 +387,15 @@ public class MainController {
      * Disable the scroll bar when it appears (Edit if necessary)
      */
     private void disableScrollBarCmd() {
-        cmdArea.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (cmdArea.lookup(".scroll-bar") != null) {
-                ScrollBar scrollBarv = (ScrollBar) cmdArea.lookup(".scroll-bar");
-                scrollBarv.setDisable(false);
-                scrollBarv.setId("command-scroll-bar");
-            }
-        });
+        cmdArea.textProperty().addListener(
+            (observable, oldValue, newValue) -> {
+                if (cmdArea.lookup(".scroll-bar") != null) {
+                    ScrollBar scrollBarv = (ScrollBar) cmdArea
+                        .lookup(".scroll-bar");
+                    scrollBarv.setDisable(false);
+                    scrollBarv.setId("command-scroll-bar");
+                }
+            });
     }
 
     /***************************
@@ -398,9 +422,12 @@ public class MainController {
     }
 
     public void setFirstVisibleId() {
-        ListViewSkin<?> listViewSkin = (ListViewSkin<?>) getCurrentListView().getSkin();
-        VirtualFlow<?> virtualFlow = (VirtualFlow<?>) listViewSkin.getChildren().get(0);
-        IndexedCell<?> firstVisibleCell = virtualFlow.getFirstVisibleCellWithinViewPort();
+        ListViewSkin<?> listViewSkin = (ListViewSkin<?>) getCurrentListView()
+            .getSkin();
+        VirtualFlow<?> virtualFlow = (VirtualFlow<?>) listViewSkin
+            .getChildren().get(0);
+        IndexedCell<?> firstVisibleCell = virtualFlow
+            .getFirstVisibleCellWithinViewPort();
         if (firstVisibleCell != null) {
             firstVisibleId = firstVisibleCell.getIndex();
         }

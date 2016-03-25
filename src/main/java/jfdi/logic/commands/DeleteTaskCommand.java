@@ -1,5 +1,9 @@
 package jfdi.logic.commands;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import jfdi.logic.events.DeleteTaskDoneEvent;
 import jfdi.logic.events.DeleteTaskFailedEvent;
 import jfdi.logic.interfaces.Command;
@@ -8,10 +12,6 @@ import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.DuplicateTaskException;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.ui.UI;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.stream.Collectors;
 
 /**
  * @author Liu Xinan
@@ -23,6 +23,10 @@ public class DeleteTaskCommand extends Command {
 
     private DeleteTaskCommand(Builder builder) {
         this.screenIds = builder.screenIds;
+    }
+
+    public ArrayList<Integer> getScreenIds() {
+        return screenIds;
     }
 
     public static class Builder {
@@ -50,8 +54,7 @@ public class DeleteTaskCommand extends Command {
         UI ui = UI.getInstance();
 
         TaskDb taskDb = TaskDb.getInstance();
-        ArrayList<Integer> taskIds = screenIds.stream()
-            .map(ui::getTaskId)
+        ArrayList<Integer> taskIds = screenIds.stream().map(ui::getTaskId)
             .collect(Collectors.toCollection(ArrayList::new));
 
         ArrayList<Integer> invalidIds = screenIds.stream()
@@ -67,7 +70,7 @@ public class DeleteTaskCommand extends Command {
                     TaskDb.getInstance().destroy(id);
                 } catch (InvalidIdException e) {
                     // Should not happen
-                    assert false;
+                assert false;
                 }
             });
 
@@ -80,14 +83,13 @@ public class DeleteTaskCommand extends Command {
 
     @Override
     public void undo() {
-        deletedTasks.stream()
-            .forEach(task -> {
-                try {
-                    TaskDb.getInstance().undestroy(task.getId());
-                } catch (InvalidIdException | DuplicateTaskException e) {
-                    assert false;
-                }
-            });
+        deletedTasks.stream().forEach(task -> {
+            try {
+                TaskDb.getInstance().undestroy(task.getId());
+            } catch (InvalidIdException | DuplicateTaskException e) {
+                assert false;
+            }
+        });
 
         pushToRedoStack();
     }

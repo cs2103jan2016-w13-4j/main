@@ -1,5 +1,10 @@
 package jfdi.logic.commands;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
 import jfdi.common.utilities.JfdiLogger;
 import jfdi.logic.events.MarkTaskDoneEvent;
 import jfdi.logic.events.MarkTaskFailedEvent;
@@ -9,11 +14,6 @@ import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
 import jfdi.ui.UI;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * @author Liu Xinan
@@ -27,6 +27,10 @@ public class MarkTaskCommand extends Command {
 
     private MarkTaskCommand(Builder builder) {
         this.screenIds = builder.screenIds;
+    }
+
+    public ArrayList<Integer> getScreenIds() {
+        return screenIds;
     }
 
     public static class Builder {
@@ -54,8 +58,7 @@ public class MarkTaskCommand extends Command {
         UI ui = UI.getInstance();
 
         TaskDb taskdb = TaskDb.getInstance();
-        ArrayList<Integer> taskIds = screenIds.stream()
-            .map(ui::getTaskId)
+        ArrayList<Integer> taskIds = screenIds.stream().map(ui::getTaskId)
             .collect(Collectors.toCollection(ArrayList::new));
 
         ArrayList<Integer> invalidIds = screenIds.stream()
@@ -74,7 +77,7 @@ public class MarkTaskCommand extends Command {
                     LOGGER.warning("Task " + id + " is already completed.");
                 } catch (InvalidIdException e) {
                     // Should not happen!
-                    assert false;
+                assert false;
                 }
             });
 
@@ -87,14 +90,13 @@ public class MarkTaskCommand extends Command {
 
     @Override
     public void undo() {
-        markedIds.stream()
-            .forEach(id -> {
-                try {
-                    TaskDb.getInstance().markAsIncomplete(id);
-                } catch (NoAttributesChangedException | InvalidIdException e) {
-                    assert false;
-                }
-            });
+        markedIds.stream().forEach(id -> {
+            try {
+                TaskDb.getInstance().markAsIncomplete(id);
+            } catch (NoAttributesChangedException | InvalidIdException e) {
+                assert false;
+            }
+        });
 
         pushToRedoStack();
     }

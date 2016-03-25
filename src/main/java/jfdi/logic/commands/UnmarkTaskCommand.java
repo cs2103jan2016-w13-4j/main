@@ -29,6 +29,10 @@ public class UnmarkTaskCommand extends Command {
         this.screenIds = builder.screenIds;
     }
 
+    public ArrayList<Integer> getScreenIds() {
+        return screenIds;
+    }
+
     public static class Builder {
 
         ArrayList<Integer> screenIds = new ArrayList<>();
@@ -54,8 +58,7 @@ public class UnmarkTaskCommand extends Command {
         UI ui = UI.getInstance();
 
         TaskDb taskdb = TaskDb.getInstance();
-        ArrayList<Integer> taskIds = screenIds.stream()
-            .map(ui::getTaskId)
+        ArrayList<Integer> taskIds = screenIds.stream().map(ui::getTaskId)
             .collect(Collectors.toCollection(ArrayList::new));
 
         ArrayList<Integer> invalidIds = screenIds.stream()
@@ -87,16 +90,15 @@ public class UnmarkTaskCommand extends Command {
 
     @Override
     public void undo() {
-        unmarkedIds.stream()
-            .forEach(id -> {
-                try {
-                    TaskDb.getInstance().markAsComplete(id);
+        unmarkedIds.stream().forEach(id -> {
+            try {
+                TaskDb.getInstance().markAsComplete(id);
 
-                    pushToRedoStack();
-                } catch (NoAttributesChangedException | InvalidIdException e) {
-                    assert false;
-                }
-            });
+                pushToRedoStack();
+            } catch (NoAttributesChangedException | InvalidIdException e) {
+                assert false;
+            }
+        });
     }
 
 }

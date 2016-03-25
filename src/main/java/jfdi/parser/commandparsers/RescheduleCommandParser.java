@@ -146,11 +146,11 @@ public class RescheduleCommandParser extends AbstractCommandParser {
             + Constants.REGEX_DATE_TIME_FORMAT + " to "
             + Constants.REGEX_DATE_TIME_FORMAT + ")")) {
 
-            System.out.println(input);
             if (input.matches("to " + Constants.REGEX_DATE_TIME_FORMAT + " to "
                 + Constants.REGEX_DATE_TIME_FORMAT)) {
                 input = input.replaceAll("^to ", "from ");
             }
+            System.out.println(input);
 
             // If the input explicitly specifies a deadline, event, or point
             // task, then set start/end date time accordingly

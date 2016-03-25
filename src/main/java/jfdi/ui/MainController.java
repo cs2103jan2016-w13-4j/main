@@ -11,6 +11,7 @@ import com.sun.javafx.scene.control.skin.VirtualFlow;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.IndexedCell;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
@@ -397,7 +398,13 @@ public class MainController {
             listViewSkin = (ListViewSkin<?>) listMain.getSkin();
         }
         VirtualFlow<?> virtualFlow = (VirtualFlow<?>) listViewSkin.getChildren().get(0);
-        firstVisibleId = virtualFlow.getFirstVisibleCell().getIndex();
-        lastVisibleId = virtualFlow.getLastVisibleCell().getIndex();
+        IndexedCell<?> firstVisibleCell = virtualFlow.getFirstVisibleCellWithinViewPort();
+        IndexedCell<?> lastVisibleCell = virtualFlow.getLastVisibleCellWithinViewPort();
+        if (firstVisibleCell != null) {
+            firstVisibleId = firstVisibleCell.getIndex();
+        }
+        if (lastVisibleCell != null) {
+            lastVisibleId = lastVisibleCell.getIndex();
+        }
     }
 }

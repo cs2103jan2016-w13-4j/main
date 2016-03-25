@@ -150,6 +150,30 @@ public class DateTimeParserTest {
             expectedDateTime.getYear(), expectedDateTime.getMonth(),
             expectedDateTime.getDayOfMonth(), 23, 00);
 
+        res = parseDateTime("3 hours later");
+
+        // Start date-time should be null
+        Assert.assertNull(res.getEndDateTime());
+
+        // Check end date time is corrently parsed
+        expectedDateTime = getCurrentDatePlus(0, 0, 0, 0, 3, 0);
+        checkMatchingDateTime(res.getStartDateTime(),
+            expectedDateTime.getYear(), expectedDateTime.getMonth(),
+            expectedDateTime.getDayOfMonth(), expectedDateTime.getHour(),
+            expectedDateTime.getMinute());
+
+        res = parseDateTime("in 4 hours");
+
+        // Start date-time should be null
+        Assert.assertNull(res.getEndDateTime());
+
+        // Check end date time is corrently parsed
+        expectedDateTime = getCurrentDatePlus(0, 0, 0, 0, 4, 0);
+        checkMatchingDateTime(res.getStartDateTime(),
+            expectedDateTime.getYear(), expectedDateTime.getMonth(),
+            expectedDateTime.getDayOfMonth(), expectedDateTime.getHour(),
+            expectedDateTime.getMinute());
+
     }
 
     // Relative date time queries
@@ -222,7 +246,7 @@ public class DateTimeParserTest {
         checkMatchingDateTime(res.getStartDateTime(), 2017, MONTH[7], 22,
             DEFAULT_HOUR, DEFAULT_MINUTES);
 
-        res = parseDateTime("on 09-Jan-2022");
+        res = parseDateTime("09-Jan-2022");
 
         // End date-time should be null
         Assert.assertNull(res.getEndDateTime());

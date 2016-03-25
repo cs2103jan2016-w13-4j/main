@@ -180,7 +180,7 @@ public class CommandHandler {
         controller.relayFb(
             String.format(Constants.CMD_SUCCESS_UNDONE, cmdType.toString()),
             MsgType.SUCCESS);
-        controller.updateNotiBubbles();
+        //controller.updateNotiBubbles();
     }
 
     @Subscribe

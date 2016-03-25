@@ -60,9 +60,15 @@ public class MainSetUp extends Application {
 
     private void loadFonts() {
 
-        Font.loadFont(MainSetUp.class.getResource("/ui/fonts/HammersmithOne.ttf").toExternalForm(), 12);
-        Font.loadFont(MainSetUp.class.getResource("/ui/fonts/TitilliumWeb-Light.ttf").toExternalForm(), 24);
-        Font.loadFont(MainSetUp.class.getResource("/ui/fonts/Lucida Console.ttf").toExternalForm(), 24);
+        Font.loadFont(
+            MainSetUp.class.getResource("/ui/fonts/HammersmithOne.ttf")
+                .toExternalForm(), 12);
+        Font.loadFont(
+            MainSetUp.class.getResource("/ui/fonts/TitilliumWeb-Light.ttf")
+                .toExternalForm(), 24);
+        Font.loadFont(
+            MainSetUp.class.getResource("/ui/fonts/Lucida Console.ttf")
+                .toExternalForm(), 24);
     }
 
     private void initRootLayout() throws IOException {
@@ -134,9 +140,11 @@ public class MainSetUp extends Application {
             }
         };
 
-        controller.incompleteCount.textProperty().bind(controller.incompletePlaceHdr);
+        controller.incompleteCount.textProperty().bind(
+            controller.incompletePlaceHdr);
         controller.overdueCount.textProperty().bind(controller.overduePlaceHdr);
-        controller.upcomingCount.textProperty().bind(controller.upcomingPlaceHdr);
+        controller.upcomingCount.textProperty().bind(
+            controller.upcomingPlaceHdr);
 
         Thread thread = new Thread(task);
         thread.setDaemon(true);

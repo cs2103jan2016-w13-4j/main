@@ -68,7 +68,6 @@ public class InputParser implements IParser {
         String unaliasedInput = unalias(input);
         String firstWord = getFirstWord(unaliasedInput);
         CommandType commandType = ParserUtils.getCommandType(firstWord);
-        System.out.println(commandType.toString());
         Command userCommand = getCommand(commandType, unaliasedInput);
         return userCommand;
     }

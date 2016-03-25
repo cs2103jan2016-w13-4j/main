@@ -60,8 +60,8 @@ public class Constants {
         + "(jun)(e)?|" + "(jul)(y)?|" + "(aug)(ust)?|" + "(sep)(tember)?|"
         + "(oct)(ober)?|" + "(nov)(ember)?|" + "(dec)(ember)?)";
     public static final String REGEX_YEARS = "((19|20)?\\d\\d)";
-    public static final String REGEX_DATE_ATTRIBUTES = "((?i)(day)(s)?|"
-        + "(week|wk)(s)?|" + "(month|mth)(s)?|" + "(year|yr))(s)?";
+    public static final String REGEX_DATE_ATTRIBUTES = "(?i)((day|(week|wk)|(month|mth)|(year|yr))(s)?)";
+    public static final String REGEX_TIME_ATTRIBUTES = "(?i)(((sec|second)|(min|minute)|(hr|hour))(s)?)";
     public static final String REGEX_TIME_MILITARY = "(?i)([0-1][0-9]|[2][0-4])[.:]?[0-5][\\d]([h]([r][s]?)?)";
     public static final String REGEX_TIME_NORMAL = "(?i)(0?[1-9]|1[0-2])([.:]?([0-5][0-9]))?[ :]?([a|p][m])";
     public static final String REGEX_TIME_RELATIVE = "((?i)((this )?(morning|afternoon|evening)|(to)?night|midnight))";
@@ -71,12 +71,15 @@ public class Constants {
         + REGEX_DATE_ATTRIBUTES
         + "))|((the )?next |this |last )?"
         + REGEX_DAYS_TEXTUAL + ")";
-    public static final String REGEX_RELATIVE_DATE_3 = "((\\d+ )"
-        + REGEX_DATE_ATTRIBUTES + " (?i)(later|before|after))";
+    public static final String REGEX_RELATIVE_DATE_3 = "((\\d+ )("
+        + REGEX_DATE_ATTRIBUTES + "|" + REGEX_TIME_ATTRIBUTES
+        + ") (?i)(later|before|after))";
+    public static final String REGEX_RELATIVE_DATE_4 = "(?i)in \\d+ "
+        + REGEX_TIME_ATTRIBUTES;
 
     public static final String REGEX_RELATIVE_DATE = "("
         + REGEX_RELATIVE_DATE_1 + "|" + REGEX_RELATIVE_DATE_2 + "|"
-        + REGEX_RELATIVE_DATE_3 + ")";
+        + REGEX_RELATIVE_DATE_3 + "|" + REGEX_RELATIVE_DATE_4 + ")";
 
     public static final String REGEX_ABSOLUTE_DATE_DDMMYYYY = "\\b"
         + REGEX_DAYS_NUMERIC + "[-/.]" + REGEX_MONTHS_NUMERIC + "([-/.]"

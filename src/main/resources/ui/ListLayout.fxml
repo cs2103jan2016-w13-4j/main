@@ -220,12 +220,12 @@
 	                 <ListView fx:id="helpContent" focusTraversable="false" maxHeight="510.0" maxWidth="530.0" prefHeight="500.0" prefWidth="530.0" styleClass="helpContent" translateX="60.0" translateY="-33.0" />
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <ImageView fitHeight="47.0" fitWidth="126.0" layoutX="106.0" layoutY="521.0" pickOnBounds="true" preserveRatio="true" rotate="8.1">
+                  <ImageView fitHeight="45.0" fitWidth="111.0" layoutX="41.0" layoutY="264.0" pickOnBounds="true" preserveRatio="true" rotate="-23.2">
                      <image>
-                        <Image url="@images/9.png" />
+                        <Image url="@images/10.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="49.0" fitWidth="118.0" layoutX="537.0" layoutY="521.0" pickOnBounds="true" preserveRatio="true" rotate="-20.6">
+                  <ImageView fitHeight="49.0" fitWidth="118.0" layoutX="525.0" layoutY="514.0" pickOnBounds="true" preserveRatio="true" rotate="-20.6">
                      <image>
                         <Image url="@images/8.png" />
                      </image>
@@ -235,7 +235,7 @@
                         <Image url="@images/7.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="118.0" layoutX="574.0" layoutY="521.0" pickOnBounds="true" preserveRatio="true" rotate="21.8">
+                  <ImageView fitHeight="47.0" fitWidth="118.0" layoutX="564.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true" rotate="21.8">
                      <image>
                         <Image url="@images/6.png" />
                      </image>

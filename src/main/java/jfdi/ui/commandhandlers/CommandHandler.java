@@ -238,7 +238,7 @@ public class CommandHandler {
     @Subscribe
     public void handleListDoneEvent(ListDoneEvent e) {
 
-        if (!controller.isThread) {
+        if (!controller.isUpdate) {
             switch (e.getListType()) {
                 case ALL:
                     switchContext(ListStatus.ALL, false);
@@ -258,11 +258,11 @@ public class CommandHandler {
                 default:
                     break;
             }
-            
+
             listTasks(e.getItems(), false);
             controller.relayFb(Constants.CMD_SUCCESS_LISTED, MsgType.SUCCESS);
         }
-        
+
         updateBubble(e);
     }
 
@@ -706,18 +706,21 @@ public class CommandHandler {
         }
         controller.switchTabSkin();
     }
-    
+
     private void updateBubble(ListDoneEvent e) {
         Integer count = e.getItems().size();
         switch (e.getListType()) {
             case INCOMPLETE:
                 controller.incompleteCount.setText(count.toString());
+                System.out.println("HERE, incomplete");
                 break;
             case OVERDUE:
                 controller.overdueCount.setText(count.toString());
+                System.out.println("HERE, overdue");
                 break;
             case UPCOMING:
                 controller.upcomingCount.setText(count.toString());
+                System.out.println("HERE, upcoming");
                 break;
             default:
                 break;

@@ -64,6 +64,9 @@ public class TestMainSetUp extends ApplicationTest {
         //loadFonts();
         initRootLayout();
         initView();
+        stage.show();
+        stage.toFront();
+
     }
 
     private void initRootLayout() throws IOException {
@@ -73,11 +76,7 @@ public class TestMainSetUp extends ApplicationTest {
         stage.setScene(scene);
         scene.getStylesheets().add("https://fonts.googleapis.com/css?family=Hammersmith+One");
         scene.getStylesheets().add("https://fonts.googleapis.com/css?family=Titillium+Web:200");
-        stage.show();
         stage.setResizable(false);
-        /* Put the GUI in front of windows. So that the robots will not interact with another
-        window */
-        stage.toFront();
     }
 
     private void initView() throws Exception {
@@ -110,8 +109,30 @@ public class TestMainSetUp extends ApplicationTest {
         MainStorage.getInstance().use(tempDir.getAbsolutePath());
 
         controller.hideOverlays();
+        controller.displayList(Constants.CTRL_CMD_OVERDUE);
+        controller.displayList(Constants.CTRL_CMD_UPCOMING);
         controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
+        initThread();
         ui.displayWelcome();
+    }
+
+    private void initThread() {
+        // separate non-FX thread
+        new Thread() {
+            // runnable for that thread
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(60000);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    controller.updateNotiBubbles();
+                }
+            }
+        }.start();
     }
 
     /* Just a shortcut to retrieve widgets in the GUI. */

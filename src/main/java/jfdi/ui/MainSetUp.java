@@ -114,25 +114,21 @@ public class MainSetUp extends Application {
         initThread();
         ui.displayWelcome();
     }
-    
+
     private void initThread() {
         // separate non-FX thread
         new Thread() {
             // runnable for that thread
             @Override
             public void run() {
-                while(true) {
+                while (true) {
                     try {
-                        Thread.sleep(300000);
+                        Thread.sleep(60000);
                     } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
-                    controller.isThread = true;
-                    controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
-                    controller.displayList(Constants.CTRL_CMD_OVERDUE);
-                    controller.displayList(Constants.CTRL_CMD_UPCOMING);
-                    controller.isThread = false;
+                    controller.updateNotiBubbles();
+                    System.out.println("working!!!!!!!");
                 }
             }
         }.start();

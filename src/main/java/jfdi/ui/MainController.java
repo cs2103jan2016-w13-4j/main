@@ -89,7 +89,7 @@ public class MainController {
     public ListStatus displayStatus;
     public ListStatus beforeHelp;
     public String searchCmd = "search ";
-    public boolean isThread = false;
+    public boolean isUpdate = false;
 
     private ObservableList<HelpItem> helpList;
     private InputHistory inputHistory;
@@ -435,12 +435,14 @@ public class MainController {
     }
 
     public void updateNotiBubbles() {
+        isUpdate = true;
         ListStatus temp = displayStatus;
         displayList(Constants.CTRL_CMD_INCOMPLETE);
         displayList(Constants.CTRL_CMD_OVERDUE);
         displayList(Constants.CTRL_CMD_UPCOMING);
         displayStatus = temp;
-        //transListCmd();
+        transListCmd();
+        isUpdate = false;
     }
 
     /***************************

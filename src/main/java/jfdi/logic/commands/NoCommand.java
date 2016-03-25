@@ -1,17 +1,18 @@
 package jfdi.logic.commands;
 
-import jfdi.logic.ControlCenter;
+import jfdi.logic.events.NoThanksEvent;
 import jfdi.logic.interfaces.Command;
+
+import java.util.Optional;
 
 /**
  * @author Xinan
  */
-public class YesCommand extends Command {
+public class NoCommand extends Command {
 
     @Override
     public void execute() {
-        ControlCenter cc = ControlCenter.getInstance();
-        getLastSuggestion().ifPresent(cc::handleInput);
+        eventBus.post(new NoThanksEvent());
     }
 
     @Override

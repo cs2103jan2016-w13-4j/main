@@ -32,7 +32,7 @@ public class MainSetUp extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         this.primaryStage = primaryStage;
-        this.primaryStage.getIcons().add(new Image("/ui/images/2.png"));
+        this.primaryStage.getIcons().add(new Image("/ui/images/JFDI_sq.png"));
         //this.primaryStage.setTitle("JFDI");
 
         setLogger();

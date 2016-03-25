@@ -82,6 +82,7 @@ public class MainController {
     public Stage mainStage;
     public ObservableList<ListItem> importantList;
     public ListStatus displayStatus;
+    public ListStatus beforeHelp;
     public String searchCmd = "search ";
 
     private ObservableList<HelpItem> helpList;

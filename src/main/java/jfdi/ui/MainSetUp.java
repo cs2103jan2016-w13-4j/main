@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -116,22 +118,33 @@ public class MainSetUp extends Application {
     }
 
     private void initThread() {
-        // separate non-FX thread
-        new Thread() {
-            // runnable for that thread
+
+        Task <Void> task = new Task<Void>() {
             @Override
-            public void run() {
+            public Void call() throws InterruptedException {
                 while (true) {
                     try {
-                        Thread.sleep(60000);
+                        Thread.sleep(5000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    controller.updateNotiBubbles();
-                    System.out.println("working!!!!!!!");
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            controller.updateNotiBubbles();
+                        }
+                    });
                 }
             }
-        }.start();
+        };
+        
+        controller.incompleteCount.textProperty().bind(controller.incompletePlaceHdr);
+        controller.overdueCount.textProperty().bind(controller.overduePlaceHdr);
+        controller.upcomingCount.textProperty().bind(controller.upcomingPlaceHdr);
+
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     /**

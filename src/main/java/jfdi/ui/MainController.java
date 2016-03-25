@@ -10,6 +10,8 @@ import com.sun.javafx.scene.control.skin.ListViewSkin;
 import com.sun.javafx.scene.control.skin.VirtualFlow;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
@@ -90,6 +92,9 @@ public class MainController {
     public ListStatus beforeHelp;
     public String searchCmd = "search ";
     public boolean isUpdate = false;
+    public StringProperty incompletePlaceHdr = new SimpleStringProperty();
+    public StringProperty overduePlaceHdr = new SimpleStringProperty();
+    public StringProperty upcomingPlaceHdr = new SimpleStringProperty();
 
     private ObservableList<HelpItem> helpList;
     private InputHistory inputHistory;

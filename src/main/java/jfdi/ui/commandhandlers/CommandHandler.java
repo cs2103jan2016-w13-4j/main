@@ -711,16 +711,16 @@ public class CommandHandler {
         Integer count = e.getItems().size();
         switch (e.getListType()) {
             case INCOMPLETE:
-                controller.incompleteCount.setText(count.toString());
-                System.out.println("HERE, incomplete");
+                controller.incompletePlaceHdr.set(count.toString());
+                System.out.println("HERE, incomplete " + controller.incompletePlaceHdr);
                 break;
             case OVERDUE:
-                controller.overdueCount.setText(count.toString());
-                System.out.println("HERE, overdue");
+                controller.overduePlaceHdr.set(count.toString());
+                System.out.println("HERE, overdue " + controller.overduePlaceHdr);
                 break;
             case UPCOMING:
-                controller.upcomingCount.setText(count.toString());
-                System.out.println("HERE, upcoming");
+                controller.upcomingPlaceHdr.set(count.toString());
+                System.out.println("HERE, upcoming " + controller.upcomingPlaceHdr);
                 break;
             default:
                 break;

@@ -99,6 +99,7 @@ public class MainController {
     private ObservableList<HelpItem> helpList;
     private InputHistory inputHistory;
     private int firstVisibleId;
+    private int internalCalls = 0;
 
     public void initialize() {
 
@@ -139,6 +140,11 @@ public class MainController {
     }
 
     public void displayList(String cmd) {
+        ui.relayToLogic(cmd);
+    }
+
+    public void executeInternalCommand(String cmd) {
+        triggerInternalCall();
         ui.relayToLogic(cmd);
     }
 
@@ -243,6 +249,18 @@ public class MainController {
             return -1;
         }
         return importantList.get(index).getItem().getId();
+    }
+
+    public boolean isInternalCall() {
+        return internalCalls > 0;
+    }
+
+    public void triggerInternalCall() {
+        internalCalls++;
+    }
+
+    public void completeInternalCall() {
+        internalCalls--;
     }
 
     /***************************
@@ -440,14 +458,9 @@ public class MainController {
     }
 
     public void updateNotiBubbles() {
-        isUpdate = true;
-        ListStatus temp = displayStatus;
-        displayList(Constants.CTRL_CMD_INCOMPLETE);
-        displayList(Constants.CTRL_CMD_OVERDUE);
-        displayList(Constants.CTRL_CMD_UPCOMING);
-        displayStatus = temp;
-        transListCmd();
-        isUpdate = false;
+        executeInternalCommand(Constants.CTRL_CMD_INCOMPLETE);
+        executeInternalCommand(Constants.CTRL_CMD_OVERDUE);
+        executeInternalCommand(Constants.CTRL_CMD_UPCOMING);
     }
 
     /***************************

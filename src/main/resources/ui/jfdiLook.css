@@ -13,9 +13,9 @@
 	-fx-arc-height: 5.0;
 	-fx-arc-width: 5.0;
 	-fx-fill: #faebcd;
-	-fx-stroke: #faebcd; 
-	-fx-stroke-line-cap: round ; 
-	-fx-stroke-line-join: round ; 
+	-fx-stroke: #faebcd;
+	-fx-stroke-line-cap: round ;
+	-fx-stroke-line-join: round ;
 	-fx-stroke-width: 10.0;
 }
 
@@ -23,9 +23,9 @@
 	-fx-arc-height: 5.0;
 	-fx-arc-width: 5.0;
 	-fx-fill: #434343;
-	-fx-stroke: #434343; 
-	-fx-stroke-line-cap: round ; 
-	-fx-stroke-line-join: round ; 
+	-fx-stroke: #434343;
+	-fx-stroke-line-cap: round ;
+	-fx-stroke-line-join: round ;
 	-fx-stroke-width: 10.0;
 }
 
@@ -62,8 +62,8 @@
 	-fx-font-family: "Hammersmith One";
 	-fx-font-size: 14px;
 	-fx-text-fill: #eeeeee;
-	-fx-label-padding: 5.0px 10.0px 5.0px 10.0px;
-    -fx-background-radius: 40px;
+	-fx-label-padding: 1px 10px 1px 10px;
+  -fx-background-radius: 40px;
 }
 
 .dayDate {
@@ -251,10 +251,10 @@
 }
 
 /****************************************************************
- 
-  ScrollBar Skin  
+
+  ScrollBar Skin
   https://farrukhobaid.wordpress.com/2013/01/16/dark-scrollbar-skin-for-javafx/
- 
+
 ****************************************************************/
 .scroll-bar{
  -fx-background-color: rgb(96,96,96);

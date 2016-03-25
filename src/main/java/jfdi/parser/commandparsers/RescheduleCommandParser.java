@@ -41,6 +41,7 @@ public class RescheduleCommandParser extends AbstractCommandParser {
      */
     @Override
     public Command build(String input) {
+        assert isValidInput(input);
         String originalInput = input;
         Builder rescheduleCommandBuilder = new Builder();
         // Remove the reschedule command identifier.
@@ -50,7 +51,7 @@ public class RescheduleCommandParser extends AbstractCommandParser {
             setTaskDateTime(input, rescheduleCommandBuilder);
         } catch (NoTaskIdFoundException | BadDateTimeException e) {
             return createInvalidCommand(Constants.CommandType.reschedule,
-                    originalInput);
+                originalInput);
         }
 
         Command rescheduleCommand = rescheduleCommandBuilder.build();
@@ -72,7 +73,7 @@ public class RescheduleCommandParser extends AbstractCommandParser {
      * @return the input String, without the task ID.
      */
     protected String setAndRemoveTaskId(String input,
-            Builder rescheduleCommandBuilder) throws NoTaskIdFoundException {
+        Builder rescheduleCommandBuilder) throws NoTaskIdFoundException {
         Pattern taskIdPattern = Pattern.compile(Constants.REGEX_TASKID);
         Matcher taskIdMatcher = taskIdPattern.matcher(input);
 
@@ -87,12 +88,12 @@ public class RescheduleCommandParser extends AbstractCommandParser {
             // instance of
             // all task ID instances found.
             String taskId = getTrimmedSubstringInRange(input,
-                    taskIdMatcher.start(), taskIdMatcher.end());
+                taskIdMatcher.start(), taskIdMatcher.end());
             rescheduleCommandBuilder.setId(toInteger(taskId));
 
             // Remove the task ID from the input
             input = getTrimmedSubstringInRange(input, taskIdMatcher.end(),
-                    input.length());
+                input.length());
         }
 
         return input;
@@ -113,25 +114,46 @@ public class RescheduleCommandParser extends AbstractCommandParser {
      * @return the input string.
      */
     private String setTaskDateTime(String input, Builder builder)
-            throws BadDateTimeException {
+        throws BadDateTimeException {
+        System.out.println("setTaskDateTime " + input);
         if (input.isEmpty()) {
             // No date time specified: user does not want any date/time
             // restrictions on task
             return input;
         }
+        DateTimeParser dateTimeParser = DateTimeParser.getInstance();
 
-        if (!isValidDateTime(input)) {
+        // The 'to' keyword needs special attention as it can change either
+        // start or end date time depending on the current task type of the task
+        if (input.matches("(to )?" + Constants.REGEX_DATE_TIME_FORMAT)) {
+            String dateTimeString = getTrimmedSubstringInRange(input, 3,
+                input.length());
+            DateTimeObject dateTimeObject = dateTimeParser
+                .parseDateTime(dateTimeString);
+
+            // Since we are parsing an input that strictly matches
+            // DATE_TIME_FORMAT, dateTimeString should be parsed as a point
+            // task, with only start date time.
+            assert dateTimeObject.getTaskType()
+                .equals(Constants.TaskType.point);
+            assert dateTimeObject.getStartDateTime() != null
+                && dateTimeObject.getEndDateTime() == null;
+            builder.setShiftedDateTime(dateTimeObject.getStartDateTime());
+        } else if (input.matches(Constants.REGEX_POINT_TASK_IDENTIFIER + "|"
+            + Constants.REGEX_DEADLINE_IDENTIFIER + "|"
+            + Constants.REGEX_EVENT_IDENTIFIER)) {
+            System.out.println("Here");
+            // If the input explicitly specifies a deadline or point task, then
+            // set start/end date time accordingly
+            DateTimeObject dateTimeObject = DateTimeParser.getInstance()
+                .parseDateTime(input);
+            System.out.println(dateTimeObject.getStartDateTime());
+            System.out.println(dateTimeObject.getEndDateTime());
+            builder.setStartDateTime(dateTimeObject.getStartDateTime());
+            builder.setEndDateTime(dateTimeObject.getEndDateTime());
+        } else {
             throw new BadDateTimeException(input);
         }
-
-        DateTimeObject dateTime = null;
-        try {
-            dateTime = DateTimeParser.getInstance().parseDateTime(input);
-        } catch (BadDateTimeException e) {
-            throw new BadDateTimeException(e.getInput());
-        }
-        builder.setStartDateTime(dateTime.getStartDateTime());
-        builder.setEndDateTime(dateTime.getEndDateTime());
 
         return input;
     }

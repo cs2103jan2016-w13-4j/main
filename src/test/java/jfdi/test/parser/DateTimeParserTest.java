@@ -192,7 +192,7 @@ public class DateTimeParserTest {
     // Without time specified
     @Test
     public void testParseExplicitQueries3() {
-        DateTimeObject res = parseDateTime("From 26th February 17 to 28th December 2019");
+        DateTimeObject res = parseDateTime("26th February 17 to 28th December 2019");
 
         // Check start date time is corrently parsed
         checkMatchingDateTime(res.getStartDateTime(), 2017, MONTH[2], 26,

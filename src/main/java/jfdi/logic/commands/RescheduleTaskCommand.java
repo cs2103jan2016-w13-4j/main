@@ -1,5 +1,8 @@
 package jfdi.logic.commands;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 import jfdi.logic.events.RescheduleTaskDoneEvent;
 import jfdi.logic.events.RescheduleTaskFailedEvent;
 import jfdi.logic.interfaces.Command;
@@ -10,9 +13,6 @@ import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
 import jfdi.ui.UI;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
 
 /**
  * @author Liu Xinan
@@ -25,7 +25,6 @@ public class RescheduleTaskCommand extends Command {
     private LocalDateTime endDateTime;
     private LocalDateTime oldStartDateTime;
     private LocalDateTime oldEndDateTime;
-
 
     private RescheduleTaskCommand(Builder builder) {
         this.screenId = builder.screenId;
@@ -88,16 +87,19 @@ public class RescheduleTaskCommand extends Command {
             pushToUndoStack();
             eventBus.post(new RescheduleTaskDoneEvent(task));
         } catch (InvalidIdException e) {
-            eventBus.post(new RescheduleTaskFailedEvent(screenId, startDateTime, endDateTime,
+            eventBus.post(new RescheduleTaskFailedEvent(screenId,
+                startDateTime, endDateTime,
                 RescheduleTaskFailedEvent.Error.NON_EXISTENT_ID));
         } catch (InvalidTaskParametersException e) {
             // Should not happen
             assert false;
         } catch (NoAttributesChangedException e) {
-            eventBus.post(new RescheduleTaskFailedEvent(screenId, startDateTime, endDateTime,
+            eventBus.post(new RescheduleTaskFailedEvent(screenId,
+                startDateTime, endDateTime,
                 RescheduleTaskFailedEvent.Error.NO_CHANGES));
         } catch (DuplicateTaskException e) {
-            eventBus.post(new RescheduleTaskFailedEvent(screenId, startDateTime, endDateTime,
+            eventBus.post(new RescheduleTaskFailedEvent(screenId,
+                startDateTime, endDateTime,
                 RescheduleTaskFailedEvent.Error.DUPLICATED_TASK));
         }
     }
@@ -126,21 +128,21 @@ public class RescheduleTaskCommand extends Command {
         LocalDateTime taskEnd = task.getEndDateTime();
 
         // Set floating task to point task
-        if(taskStart == null && taskEnd == null) {
+        if (taskStart == null && taskEnd == null) {
             startDateTime = shiftedDateTime;
             endDateTime = null;
 
-        // Shift point task
+            // Shift point task
         } else if (taskStart != null && taskEnd == null) {
             startDateTime = shiftedDateTime;
             endDateTime = null;
 
-        // Shift deadline task
+            // Shift deadline task
         } else if (taskStart == null && taskEnd != null) {
             startDateTime = null;
             endDateTime = shiftedDateTime;
 
-        // Shift event, preserving duration
+            // Shift event, preserving duration
         } else {
             Duration eventDuration = Duration.between(taskStart, taskEnd);
             startDateTime = shiftedDateTime;

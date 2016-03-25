@@ -33,7 +33,7 @@ public class UseCommandParser extends AbstractCommandParser {
      */
     @Override
     public Command build(String input) {
-        if (!isValidInput(input)) {
+        if (!isValidUseInput(input)) {
             return createInvalidCommand(CommandType.use, input);
         }
 
@@ -45,7 +45,7 @@ public class UseCommandParser extends AbstractCommandParser {
         return builder.build();
     }
 
-    private boolean isValidInput(String input) {
+    private boolean isValidUseInput(String input) {
         return input != null && !input.isEmpty()
             && input.trim().split(Constants.REGEX_WHITESPACE).length == 2;
     }

@@ -41,11 +41,11 @@ public class Constants {
 
     // Task related Regex Strings
     public static final String REGEX_DELETE_FORMAT = REGEX_DELETE
-        + " ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]?)+";
+        + " ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]*)+";
     public static final String REGEX_MARK_FORMAT = REGEX_MARK
-        + " ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]?)+";
+        + " ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]*)+";
     public static final String REGEX_UNMARK_FORMAT = REGEX_UNMARK
-        + " ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]?)+";
+        + " ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]*)+";
     // A taskID is simply an integer
     public static final String REGEX_TASKID = "\\b\\d+\\b";
 
@@ -67,8 +67,10 @@ public class Constants {
     public static final String REGEX_TIME_RELATIVE = "((?i)((this )?(morning|afternoon|evening)|(to)?night|midnight))";
 
     public static final String REGEX_RELATIVE_DATE_1 = "(?i)(tomorrow|yesterday|today|now)";
-    public static final String REGEX_RELATIVE_DATE_2 = "(?i)((next |this |last )?("
-        + REGEX_DATE_ATTRIBUTES + "|" + REGEX_DAYS_TEXTUAL + "))";
+    public static final String REGEX_RELATIVE_DATE_2 = "(?i)((((the )?next |this |last )("
+        + REGEX_DATE_ATTRIBUTES
+        + "))|((the )?next |this |last )"
+        + REGEX_DAYS_TEXTUAL + ")";
     public static final String REGEX_RELATIVE_DATE_3 = "((\\d+ )"
         + REGEX_DATE_ATTRIBUTES + " (?i)(later|before|after))";
 
@@ -205,6 +207,8 @@ public class Constants {
         REGEX_WILDCARD, REGEX_EXIT};
 
     public static void main(String[] args) {
-
+        assert false;
+        System.out.println("delete 1-10".matches(REGEX_DELETE_FORMAT));
+        System.out.println("by day".matches(REGEX_DATE_TIME_IDENTIFIER));
     }
 }

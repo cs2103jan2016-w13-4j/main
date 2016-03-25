@@ -145,6 +145,20 @@ public class AddCommandParserTest {
         addCommand = parser.build("\"\" from 5pm to 6pm");
         Assert.assertTrue(addCommand instanceof InvalidCommand);
 
+        // Boundary case: null
+        try {
+            addCommand = parser.build(null);
+        } catch (AssertionError e) {
+            Assert.assertTrue(true);
+        }
+
+        // Boundary case: Empty string
+        try {
+            addCommand = parser.build("");
+        } catch (AssertionError e) {
+            Assert.assertTrue(true);
+        }
+
     }
 
     private AddTaskCommand validateAndReturnAddCommand(Command cmd) {

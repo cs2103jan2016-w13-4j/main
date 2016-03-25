@@ -51,6 +51,8 @@ public class AddCommandParser extends AbstractCommandParser {
      * @return the AddTaskCommand object encapsulating the details of the add command.
      */
     public Command build(String input) {
+        assert isValidInput(input);
+
         String originalInput = input;
         Builder addCommandBuilder = new Builder();
         try {
@@ -149,10 +151,6 @@ public class AddCommandParser extends AbstractCommandParser {
         } else {
             throw new BadTaskDescriptionException(input);
         }
-    }
-
-    private String getFirstWord(String input) {
-        return input.split(Constants.REGEX_WHITESPACE)[0];
     }
 
     /**

@@ -51,6 +51,9 @@ public class UnmarkCommandParser extends AbstractCommandParser {
      */
     @Override
     public Command build(String input) {
+        assert isValidInput(input)
+            && matchesCommandType(input, CommandType.unmark);
+
         if (!isValidUnmarkCommand(input)) {
             return createInvalidCommand(CommandType.unmark, input);
         }

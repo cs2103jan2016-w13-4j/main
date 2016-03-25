@@ -48,6 +48,9 @@ public class DeleteCommandParser extends AbstractCommandParser {
      */
     @Override
     public Command build(String input) {
+        assert isValidInput(input)
+            && matchesCommandType(input, CommandType.delete);
+
         if (!isValidDeleteCommand(input)) {
             return createInvalidCommand(CommandType.delete, input);
         }
@@ -61,7 +64,6 @@ public class DeleteCommandParser extends AbstractCommandParser {
         }
         deleteCommandBuilder.addIds(taskIds);
         DeleteTaskCommand deleteCommand = deleteCommandBuilder.build();
-        System.out.println(taskIds);
         return deleteCommand;
     }
 

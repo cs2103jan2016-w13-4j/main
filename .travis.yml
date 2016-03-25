@@ -17,7 +17,7 @@ cache:
     - $HOME/.gradle/wrapper/
 
 after_success:
-  - ./gradlew cobertura coveralls
+  - ./gradlew jacocoTestReport coveralls
 
 after_failure:
   - for i in *.png; do curl --upload-file $i https://transfer.sh/$i; done

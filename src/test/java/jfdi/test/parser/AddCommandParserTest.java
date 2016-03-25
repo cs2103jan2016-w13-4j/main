@@ -14,14 +14,14 @@ import jfdi.parser.commandparsers.AddCommandParser;
 import jfdi.parser.exceptions.BadDateTimeException;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
-import org.testng.annotations.BeforeClass;
 
 public class AddCommandParserTest {
-    AbstractCommandParser parser = AddCommandParser.getInstance();
+    private static AbstractCommandParser parser = AddCommandParser.getInstance();
 
     @BeforeClass
-    public void init() {
+    public static void init() {
         parser = AddCommandParser.getInstance();
     }
 

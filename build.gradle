@@ -1,10 +1,10 @@
 plugins {
   id 'checkstyle'
-  id "net.saliman.cobertura" version "2.3.0"
   id 'com.github.kt3k.coveralls' version '2.6.3'
   id 'eclipse'
   id 'findbugs'
   id 'idea'
+  id 'jacoco'
   id 'java'
   id 'pmd'
 }
@@ -28,12 +28,6 @@ dependencies {
   testCompile 'org.mockito:mockito-core:1.+'
   testCompile 'org.testfx:testfx-core:4.0.+'
   testCompile 'org.testfx:testfx-junit:4.0.+'
-  testCompile 'org.powermock:powermock-mockito-release-full:1.+'
-}
-
-cobertura {
-  coverageIgnoreMethodAnnotations = [ "jfdi.CoverageIgnore" ]
-  coverageFormats = ['html', 'xml']
 }
 
 checkstyle {
@@ -43,6 +37,13 @@ checkstyle {
 findbugs {
   effort = "max"
   ignoreFailures = true
+}
+
+jacocoTestReport {
+  reports {
+    xml.enabled true
+    html.enabled true
+  }
 }
 
 tasks.withType(FindBugs) {

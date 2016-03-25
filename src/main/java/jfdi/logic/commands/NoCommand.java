@@ -3,8 +3,6 @@ package jfdi.logic.commands;
 import jfdi.logic.events.NoThanksEvent;
 import jfdi.logic.interfaces.Command;
 
-import java.util.Optional;
-
 /**
  * @author Xinan
  */

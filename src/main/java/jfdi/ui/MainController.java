@@ -110,8 +110,9 @@ public class MainController {
     }
 
     public void displayFb(String fb) {
-        fb.trim();
         fbArea.appendText(fb);
+        String trimmedText = fbArea.getText().trim();
+        fbArea.setText(trimmedText);
     }
 
     public void relayFb(String fb, MsgType type) {

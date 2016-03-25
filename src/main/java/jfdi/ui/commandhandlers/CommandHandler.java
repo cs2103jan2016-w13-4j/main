@@ -68,6 +68,7 @@ public class CommandHandler {
             MsgType.SUCCESS);
         logger.fine(String.format(Constants.LOG_ADDED_SUCCESS, task.getId()));
         controller.updateNotiBubbles();
+        controller.listMain.scrollTo(controller.importantList.size() - 1);
     }
 
     @Subscribe
@@ -291,6 +292,7 @@ public class CommandHandler {
             String.format(Constants.CMD_SUCCESS_MARKED, indexCount + 1),
             MsgType.SUCCESS);
         controller.updateNotiBubbles();
+        controller.listMain.scrollTo(indexCount);
     }
 
     private void refreshDisplay() {
@@ -396,6 +398,7 @@ public class CommandHandler {
                 task.getDescription()), MsgType.SUCCESS);
         logger.fine(String.format(Constants.LOG_RENAMED_SUCCESS, task.getId()));
         controller.updateNotiBubbles();
+        controller.listMain.scrollTo(count);
     }
 
     @Subscribe
@@ -449,6 +452,7 @@ public class CommandHandler {
             MsgType.SUCCESS);
         logger.fine(String.format(Constants.LOG_RESCHED_SUCCESS, task.getId()));
         controller.updateNotiBubbles();
+        controller.listMain.scrollTo(count);
     }
 
     @Subscribe
@@ -582,6 +586,7 @@ public class CommandHandler {
             String.format(Constants.CMD_SUCCESS_UNMARKED, indexCount + 1),
             MsgType.SUCCESS);
         controller.updateNotiBubbles();
+        controller.listMain.scrollTo(indexCount);
     }
 
     @Subscribe

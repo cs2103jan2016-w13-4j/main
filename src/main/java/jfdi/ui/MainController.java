@@ -312,6 +312,8 @@ public class MainController {
                 Constants.HELP_MOVE_DIR_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_UP_DOWN_DESC,
                 Constants.HELP_UP_DOWN_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_PAGE_UP_DOWN_DESC,
+                Constants.HELP_PAGE_UP_DOWN_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_EXIT_DESC,
                 Constants.HELP_EXIT_COMMAND));
         helpContent.setItems(helpList);

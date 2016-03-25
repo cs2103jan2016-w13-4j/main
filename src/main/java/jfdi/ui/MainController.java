@@ -273,6 +273,10 @@ public class MainController {
 
     private void initHelpList() {
         helpList = FXCollections.observableArrayList();
+        helpList.add(new HelpItem(Constants.HELP_PAGE_UP_DOWN_DESC,
+                Constants.HELP_PAGE_UP_DOWN_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_UP_DOWN_DESC,
+                Constants.HELP_UP_DOWN_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_ADD_FLOATING_DESC,
                 Constants.HELP_ADD_FLOATING_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_ADD_POINT_DESC,
@@ -281,12 +285,8 @@ public class MainController {
                 Constants.HELP_ADD_DEADLINE_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_ADD_EVENT_DESC,
                 Constants.HELP_ADD_EVENT_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_LIST_INCOMPLETE_DESC,
-                Constants.HELP_LIST_INCOMPLETE_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_LIST_COMPLETE_DESC,
-                Constants.HELP_LIST_COMPLETE_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_LIST_ALL_DESC,
-                Constants.HELP_LIST_ALL_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_LIST_DESC,
+                Constants.HELP_LIST_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_RENAME_DESC,
                 Constants.HELP_RENAME_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_RESCH_DESC,
@@ -315,10 +315,6 @@ public class MainController {
                 Constants.HELP_USE_DIR_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_MOVE_DIR_DESC,
                 Constants.HELP_MOVE_DIR_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_UP_DOWN_DESC,
-                Constants.HELP_UP_DOWN_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_PAGE_UP_DOWN_DESC,
-                Constants.HELP_PAGE_UP_DOWN_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_EXIT_DESC,
                 Constants.HELP_EXIT_COMMAND));
         helpContent.setItems(helpList);

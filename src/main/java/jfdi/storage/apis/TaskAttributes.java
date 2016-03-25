@@ -214,6 +214,9 @@ public class TaskAttributes implements Comparable<TaskAttributes> {
 
     @Override
     public int hashCode() {
+        if (getStartElseEndDate() == null) {
+            return super.hashCode();
+        }
         return getStartElseEndDate().hashCode();
     }
 

@@ -125,8 +125,7 @@ public class TaskAttributes implements Comparable<TaskAttributes> {
         if (getStartElseEndDate() == null) {
             return false;
         }
-        return !isCompleted() && !isOverdue()
-                && getStartElseEndDate().isBefore(Constants.LOCALDATETIME_UPCOMING);
+        return !isCompleted() && !isOverdue();
     }
 
     /**

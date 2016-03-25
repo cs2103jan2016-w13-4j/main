@@ -119,7 +119,7 @@ public class MainSetUp extends Application {
 
     private void initThread() {
 
-        Task <Void> task = new Task<Void>() {
+        Task<Void> task = new Task<Void>() {
             @Override
             public Void call() throws InterruptedException {
                 while (true) {
@@ -137,7 +137,7 @@ public class MainSetUp extends Application {
                 }
             }
         };
-        
+
         controller.incompleteCount.textProperty().bind(controller.incompletePlaceHdr);
         controller.overdueCount.textProperty().bind(controller.overduePlaceHdr);
         controller.upcomingCount.textProperty().bind(controller.upcomingPlaceHdr);

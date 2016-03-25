@@ -137,7 +137,8 @@ public class Constants {
     public static final String HELP_PAGE_UP_DOWN_DESC = "Scroll the on-screen list";
     public static final String HELP_PAGE_UP_DOWN_COMMAND = "press your keyboard's page up/down button";
     public static final String HELP_UP_DOWN_DESC = "Scroll through your previous commands";
-    public static final String HELP_UP_DOWN_COMMAND = "press your keyboard's up (" + ARROW_UP + ") / down (" + ARROW_DOWN + ") arrow";
+    public static final String HELP_UP_DOWN_COMMAND = "press your keyboard's up (" + ARROW_UP + ") / down ("
+            + ARROW_DOWN + ") arrow";
     public static final String HELP_ADD_FLOATING_DESC = "Add a task with no time or date";
     public static final String HELP_ADD_FLOATING_COMMAND = "add <task description>";
     public static final String HELP_ADD_POINT_DESC = "Add a task to be done AT/ON a particular date and time";

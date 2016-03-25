@@ -1,7 +1,11 @@
 .list-view .scroll-bar:horizontal .increment-arrow,
 .list-view .scroll-bar:horizontal .decrement-arrow,
 .list-view .scroll-bar:horizontal .increment-button,
-.list-view .scroll-bar:horizontal .decrement-button {
+.list-view .scroll-bar:horizontal .decrement-button,
+.fbArea .scroll-bar:horizontal .increment-arrow,
+.fbArea .scroll-bar:horizontal .decrement-arrow,
+.fbArea .scroll-bar:horizontal .increment-button,
+.fbArea .scroll-bar:horizontal .decrement-button {
     -fx-padding:0;
 }
 
@@ -31,7 +35,8 @@
 .allTab,
 .completedTab,
 .searchTab,
-.surpriseTab {
+.surpriseTab,
+.helpTab {
 	-fx-font-family: "HammersmithOne";
 	-fx-font-size: 16px;
 	-fx-text-fill: #eeeeee;
@@ -43,7 +48,8 @@
 .allTabOn,
 .completedTabOn,
 .searchTabOn,
-.surpriseTabOn {
+.surpriseTabOn,
+.helpTabOn {
 	-fx-font-family: "HammersmithOne";
 	-fx-font-size: 16px;
 	-fx-text-fill: #434343;
@@ -209,23 +215,29 @@
 
 /*
  * ================================================================
- * HelpBox styles
+ * HelpOverLay styles
  * ================================================================
  */
-.helpItem {
-	-fx-padding: 0;
-	-fx-font-family: "HammersmithOne";
-	-fx-font-size: 16px;
-	-fx-background-color: #434343;
+
+.helpContent,
+.helpContent .list-cell,
+.helpContent .list-cell:empty {
+	-fx-background-color: #faebcd;
 }
 
 .helpItem #command {
 	-fx-font-weight: 700;
-	-fx-text-fill: white;
+	-fx-font-family: "HammersmithOne";
+	-fx-text-fill: #943939;
+	-fx-font-size: 13px;
+	-fx-wrap-text: true;
 }
 
 .helpItem #description {
-	-fx-text-fill: white;
+	-fx-font-family: "HammersmithOne";
+	-fx-text-fill: #434343;
+	-fx-font-size: 13px;
+	-fx-wrap-text: true;
 }
 
 .list-cell {

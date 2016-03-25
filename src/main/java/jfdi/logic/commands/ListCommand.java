@@ -3,6 +3,8 @@ package jfdi.logic.commands;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Collections;
+
 import jfdi.logic.events.ListDoneEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
@@ -64,10 +66,12 @@ public class ListCommand extends Command {
             case ALIASES:
                 break;
             case OVERDUE:
-                // TODO:
+                tasks = new ArrayList<TaskAttributes>(TaskDb.getInstance().getOverdue());
+                Collections.sort(tasks);
                 break;
             case UPCOMING:
-                // TODO:
+                tasks = new ArrayList<TaskAttributes>(TaskDb.getInstance().getUpcoming());
+                Collections.sort(tasks);
                 break;
             default:
                 break;

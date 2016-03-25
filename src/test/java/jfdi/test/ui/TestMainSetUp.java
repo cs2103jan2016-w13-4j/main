@@ -109,6 +109,7 @@ public class TestMainSetUp extends ApplicationTest {
         originalStorageDirectory = MainStorage.getInstance().getCurrentDirectory();
         MainStorage.getInstance().use(tempDir.getAbsolutePath());
 
+        controller.hideOverlays();
         controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
         ui.displayWelcome();
     }

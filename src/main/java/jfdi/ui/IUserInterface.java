@@ -17,4 +17,6 @@ public interface IUserInterface {
     int getTaskId(int onScreenId);
 
     void displayFeedback(String fb, MsgType type);
+
+    void appendFeedback(String fb, MsgType type);
 }

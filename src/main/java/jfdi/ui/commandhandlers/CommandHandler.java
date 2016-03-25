@@ -17,6 +17,7 @@ import jfdi.logic.events.CommandUndoneEvent;
 import jfdi.logic.events.DeleteTaskDoneEvent;
 import jfdi.logic.events.DeleteTaskFailedEvent;
 import jfdi.logic.events.ExitCalledEvent;
+import jfdi.logic.events.FilesReplacedEvent;
 import jfdi.logic.events.HelpRequestedEvent;
 import jfdi.logic.events.InitializationFailedEvent;
 import jfdi.logic.events.InvalidCommandEvent;
@@ -59,6 +60,9 @@ public class CommandHandler {
     public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {
         TaskAttributes task = e.getTask();
         appendTaskToDisplayList(task, true);
+        if (shouldSort()) {
+            sortDisplayList();
+        }
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_ADDED,
                         task.getDescription()), MsgType.SUCCESS);
@@ -77,6 +81,11 @@ public class CommandHandler {
                 controller.relayFb(Constants.CMD_ERROR_CANT_ADD_EMPTY,
                         MsgType.ERROR);
                 logger.fine(String.format(Constants.LOG_ADD_FAIL_EMPTY));
+                break;
+            case DUPLICATED_TASK:
+                controller.relayFb(Constants.CMD_ERROR_CANT_ADD_DUPLICATE,
+                        MsgType.ERROR);
+                logger.fine(String.format(Constants.LOG_ADD_FAIL_DUPLICATE));
                 break;
             default:
                 break;
@@ -119,8 +128,7 @@ public class CommandHandler {
     @Subscribe
     public void handleCommandRedoneEvent(CommandRedoneEvent e) {
         Class<? extends Command> cmdType = e.getCommandType();
-        controller.transListCmd();
-        controller.switchTabSkin();
+        switchContext(controller.displayStatus, true);
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_REDONE, cmdType.toString()),
                 MsgType.SUCCESS);
@@ -129,8 +137,7 @@ public class CommandHandler {
     @Subscribe
     public void handleCommandUndoneEvent(CommandUndoneEvent e) {
         Class<? extends Command> cmdType = e.getCommandType();
-        controller.transListCmd();
-        controller.switchTabSkin();
+        switchContext(controller.displayStatus, true);
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_UNDONE, cmdType.toString()),
                 MsgType.SUCCESS);
@@ -188,7 +195,19 @@ public class CommandHandler {
 
     @Subscribe
     public void handleHelpRequestEvent(HelpRequestedEvent e) {
+        switchContext(ListStatus.HELP, false);
         controller.showHelpDisplay();
+        controller.relayFb(Constants.CMD_SUCCESS_HELP, MsgType.SUCCESS);
+    }
+
+    @Subscribe
+    public void handleFilesReplacedEvent(FilesReplacedEvent e) {
+        String fb = "";
+        for (FilePathPair item : e.getFilePathPairs()) {
+            fb += String.format(Constants.CMD_ERROR_INIT_FAIL_REPLACED,
+                    "\n" + item.getOldFilePath(), item.getNewFilePath());
+        }
+        controller.appendFb(fb, MsgType.WARNING);
     }
 
     @Subscribe
@@ -202,14 +221,6 @@ public class CommandHandler {
                 controller.relayFb(
                         String.format(Constants.CMD_ERROR_INIT_FAIL_INVALID,
                                 e.getPath()), MsgType.ERROR);
-                break;
-            case FILE_REPLACED:
-                String fb = "";
-                for (FilePathPair item : e.getFilePathPairs()) {
-                    fb += String.format(Constants.CMD_ERROR_INIT_FAIL_REPLACED,
-                            "\n" + item.getOldFilePath(), item.getNewFilePath());
-                }
-                controller.relayFb(fb, MsgType.ERROR);
                 break;
             default:
                 break;
@@ -228,19 +239,24 @@ public class CommandHandler {
     public void handleListDoneEvent(ListDoneEvent e) {
         switch (e.getListType()) {
             case ALL:
-                controller.displayStatus = ListStatus.ALL;
+                switchContext(ListStatus.ALL, false);
                 break;
             case COMPLETED:
-                controller.displayStatus = ListStatus.COMPLETE;
+                switchContext(ListStatus.COMPLETE, false);
                 break;
             case INCOMPLETE:
-                controller.displayStatus = ListStatus.INCOMPLETE;
+                switchContext(ListStatus.INCOMPLETE, false);
+                break;
+            case OVERDUE:
+                switchContext(ListStatus.OVERDUE, false);
+                break;
+            case UPCOMING:
+                switchContext(ListStatus.UPCOMING, false);
                 break;
             default:
                 break;
         }
 
-        controller.switchTabSkin();
         listTasks(e.getItems(), false);
         controller.relayFb(Constants.CMD_SUCCESS_LISTED, MsgType.SUCCESS);
     }
@@ -293,9 +309,7 @@ public class CommandHandler {
 
     @Subscribe
     public void handleMoveDirectoryDoneEvent(MoveDirectoryDoneEvent e) {
-        controller.displayStatus = ListStatus.INCOMPLETE;
-        controller.transListCmd();
-        controller.switchTabSkin();
+        switchContext(ListStatus.INCOMPLETE, true);
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_MOVED, e.getNewDirectory()),
                 MsgType.SUCCESS);
@@ -313,14 +327,6 @@ public class CommandHandler {
                 controller.relayFb(
                         String.format(Constants.CMD_ERROR_MOVE_FAIL_INVALID,
                                 e.getNewDirectory()), MsgType.ERROR);
-                break;
-            case FILE_REPLACED:
-                String fb = "";
-                for (FilePathPair item : e.getFilePathPairs()) {
-                    fb += String.format(Constants.CMD_ERROR_MOVE_FAIL_REPLACED,
-                            "\n" + item.getOldFilePath(), item.getNewFilePath());
-                }
-                controller.relayFb(fb, MsgType.ERROR);
                 break;
             default:
                 break;
@@ -398,6 +404,11 @@ public class CommandHandler {
                                 e.getDescription()), MsgType.ERROR);
                 logger.fine(Constants.LOG_RENAME_FAIL_NOCHANGE);
                 break;
+            case DUPLICATED_TASK:
+                controller.relayFb(Constants.CMD_ERROR_CANT_RENAME_DUPLICATE,
+                        MsgType.ERROR);
+                logger.fine(String.format(Constants.LOG_RENAME_FAIL_DUPLICATE));
+                break;
             default:
                 break;
         }
@@ -414,6 +425,9 @@ public class CommandHandler {
                 count = i;
                 break;
             }
+        }
+        if (shouldSort()) {
+            sortDisplayList();
         }
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_RESCHEDULED, count + 1),
@@ -443,6 +457,11 @@ public class CommandHandler {
                         + e.getEndDateTime() + " -!", MsgType.ERROR);
                 logger.fine(Constants.LOG_RESCHE_FAIL_NOCHANGE);
                 break;
+            case DUPLICATED_TASK:
+                controller.relayFb(Constants.CMD_ERROR_CANT_RESCHEDULE_DUPLICATE,
+                        MsgType.ERROR);
+                logger.fine(String.format(Constants.LOG_RESCHE_FAIL_DUPLICATE));
+                break;
             default:
                 break;
         }
@@ -453,14 +472,13 @@ public class CommandHandler {
 
         listTasks(e.getResults(), false);
 
-        controller.displayStatus = ListStatus.SEARCH;
-        controller.switchTabSkin();
+        switchContext(ListStatus.SEARCH, false);
 
         for (String key : e.getKeywords()) {
             controller.searchCmd += key + " ";
         }
 
-        controller.switchTabSkin();
+        //controller.switchTabSkin();
         controller.setHighlights(e.getKeywords());
         controller.relayFb(Constants.CMD_SUCCESS_SEARCH, MsgType.SUCCESS);
     }
@@ -478,8 +496,8 @@ public class CommandHandler {
         controller.importantList.clear();
         TaskAttributes task = e.getTask();
         appendTaskToDisplayList(task, false);
-        controller.displayStatus = ListStatus.SURPRISE;
-        controller.switchTabSkin();
+        switchContext(ListStatus.ALL, false);
+        switchContext(ListStatus.SURPRISE, false);
         controller.relayFb(Constants.CMD_SUCCESS_SURPRISED, MsgType.SUCCESS);
     }
 
@@ -569,9 +587,7 @@ public class CommandHandler {
 
     @Subscribe
     public void handleUseDirectoryDoneEvent(UseDirectoryDoneEvent e) {
-        controller.displayStatus = ListStatus.INCOMPLETE;
-        controller.transListCmd();
-        controller.switchTabSkin();
+        switchContext(ListStatus.INCOMPLETE, true);
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_USED, e.getNewDirectory()),
                 MsgType.SUCCESS);
@@ -589,14 +605,6 @@ public class CommandHandler {
                 controller.relayFb(
                         String.format(Constants.CMD_ERROR_USE_FAIL_INVALID,
                                 e.getNewDirectory()), MsgType.ERROR);
-                break;
-            case FILE_REPLACED:
-                String fb = "";
-                for (FilePathPair item : e.getFilePathPairs()) {
-                    fb += String.format(Constants.CMD_ERROR_USE_FAIL_REPLACED,
-                            "\n" + item.getOldFilePath(), item.getNewFilePath());
-                }
-                controller.relayFb(fb, MsgType.ERROR);
                 break;
             default:
                 break;
@@ -647,6 +655,18 @@ public class CommandHandler {
         }
     }
 
+    private void sortDisplayList() {
+        ArrayList<TaskAttributes> taskList = new ArrayList<TaskAttributes>();
+        controller.importantList.forEach(listItem -> taskList.add(listItem.getItem()));
+        Collections.sort(taskList);
+        listTasks(taskList, false);
+    }
+
+    private boolean shouldSort() {
+        return controller.displayStatus.equals(ListStatus.OVERDUE)
+                || controller.displayStatus.equals(ListStatus.UPCOMING);
+    }
+
     private boolean isSameContext(TaskAttributes task) {
         switch (controller.displayStatus) {
             case ALL:
@@ -654,6 +674,8 @@ public class CommandHandler {
             case SEARCH:
                 return false;
             case SURPRISE:
+                return false;
+            case HELP:
                 return false;
             case COMPLETE:
                 return task.isCompleted();
@@ -667,5 +689,16 @@ public class CommandHandler {
                 assert false;
                 return false;
         }
+    }
+
+    private void switchContext(ListStatus status, Boolean isListing) {
+        if (status.equals(ListStatus.HELP)) {
+            controller.beforeHelp = controller.displayStatus;
+        }
+        controller.displayStatus = status;
+        if (isListing) {
+            controller.transListCmd();
+        }
+        controller.switchTabSkin();
     }
 }

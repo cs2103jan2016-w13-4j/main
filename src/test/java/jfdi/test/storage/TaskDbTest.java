@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import jfdi.storage.Constants;
@@ -15,6 +16,7 @@ import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.FilePathPair;
 import jfdi.storage.exceptions.InvalidIdException;
+import jfdi.storage.exceptions.DuplicateTaskException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
 import jfdi.storage.serializer.Serializer;
 
@@ -68,6 +70,21 @@ public class TaskDbTest {
         assertEquals(1, taskDbInstance.getAll().size());
         assertEquals(Constants.TEST_TASK_DESCRIPTION_1,
                 taskDbInstance.getById(taskAttributes.getId()).getDescription());
+    }
+
+    @Test(expected = DuplicateTaskException.class)
+    public void testCreateDuplicate() throws Exception {
+        // Create the first Task
+        TaskAttributes taskAttributes = new TaskAttributes();
+        taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        taskAttributes.setStartDateTime(Constants.TEST_TASK_STARTDATETIME);
+        taskAttributes.setEndDateTime(Constants.TEST_TASK_ENDDATETIME);
+        taskDbInstance.createOrUpdate(taskAttributes);
+
+        // Create another duplicate Task
+        // This should trigger the exception
+        taskAttributes.setId(null);
+        taskDbInstance.createOrUpdate(taskAttributes);
     }
 
     @Test
@@ -137,15 +154,83 @@ public class TaskDbTest {
         taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
         taskAttributes.save();
 
-        // A hack to create another identical task
+        // A hack to create another task
         taskAttributes.setId(null);
+        taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_2);
         taskAttributes.save();
 
         // Check that the stored tasks are as expected
         ArrayList<TaskAttributes> taskAttributesList = new ArrayList<TaskAttributes>(taskDbInstance.getAll());
         assertEquals(2, taskAttributesList.size());
         assertEquals(Constants.TEST_TASK_DESCRIPTION_1, taskAttributesList.get(0).getDescription());
-        assertEquals(Constants.TEST_TASK_DESCRIPTION_1, taskAttributesList.get(1).getDescription());
+        assertEquals(Constants.TEST_TASK_DESCRIPTION_2, taskAttributesList.get(1).getDescription());
+    }
+
+    @Test
+    public void testGetOverdueAndGetUpcoming() throws Exception {
+        // Task 1 has start date-time which is overdue
+        TaskAttributes task1 = new TaskAttributes();
+        task1.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task1.setStartDateTime(LocalDateTime.now().minusDays(1));
+        task1.save();
+
+        // Task 2 has start date-time which is upcoming
+        TaskAttributes task2 = new TaskAttributes();
+        task2.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task2.setStartDateTime(LocalDateTime.now().plusDays(1));
+        task2.save();
+
+        // Task 3 has end date-time which is overdue
+        TaskAttributes task3 = new TaskAttributes();
+        task3.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task3.setEndDateTime(LocalDateTime.now().minusDays(1));
+        task3.save();
+
+        // Task 4 has end date-time which is upcoming
+        TaskAttributes task4 = new TaskAttributes();
+        task4.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task4.setEndDateTime(LocalDateTime.now().plusDays(1));
+        task4.save();
+
+        // Task 5 is an event which started 1 day ago (overdue)
+        TaskAttributes task5 = new TaskAttributes();
+        task5.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task5.setStartDateTime(LocalDateTime.now().minusDays(1));
+        task5.setEndDateTime(LocalDateTime.now().plusDays(1));
+        task5.save();
+
+        // Task 6 is an event which will start 1 day later (upcoming)
+        TaskAttributes task6 = new TaskAttributes();
+        task6.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task6.setStartDateTime(LocalDateTime.now().plusDays(1));
+        task6.setEndDateTime(LocalDateTime.now().plusDays(2));
+        task6.save();
+
+        // Set the expected overdue IDs
+        ArrayList<Integer> overdueIds = new ArrayList<Integer>();
+        overdueIds.add(task1.getId());
+        overdueIds.add(task3.getId());
+        overdueIds.add(task5.getId());
+
+        // Set the expected upcoming IDs
+        ArrayList<Integer> upcomingIds = new ArrayList<Integer>();
+        upcomingIds.add(task2.getId());
+        upcomingIds.add(task4.getId());
+        upcomingIds.add(task6.getId());
+
+        // Check that we have the correct set of overdue/upcoming tasks
+        assertTrue(taskDbInstance.getOverdue().stream().allMatch(task -> overdueIds.contains(task.getId())));
+        assertTrue(taskDbInstance.getUpcoming().stream().allMatch(task -> upcomingIds.contains(task.getId())));
+
+        // Mark all tasks as completed
+        for (TaskAttributes task : taskDbInstance.getAll()) {
+            task.setCompleted(true);
+            task.save();
+        }
+
+        // There shouldn't be anymore overdue or upcoming tasks
+        assertEquals(0, taskDbInstance.getOverdue().size());
+        assertEquals(0, taskDbInstance.getUpcoming().size());
     }
 
     @Test
@@ -259,6 +344,28 @@ public class TaskDbTest {
         taskDbInstance.undestroy(Integer.MAX_VALUE);
     }
 
+    @Test(expected = DuplicateTaskException.class)
+    public void testUndestroyDuplicateTask() throws Exception {
+        // Create the first Task
+        TaskAttributes taskAttributes = new TaskAttributes();
+        taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        taskAttributes.setStartDateTime(Constants.TEST_TASK_STARTDATETIME);
+        taskAttributes.setEndDateTime(Constants.TEST_TASK_ENDDATETIME);
+        taskDbInstance.createOrUpdate(taskAttributes);
+        int firstTaskId = taskAttributes.getId();
+
+        // Destroy the first task
+        taskDbInstance.destroy(firstTaskId);
+
+        // Create another duplicate Task
+        taskAttributes.setId(null);
+        taskDbInstance.createOrUpdate(taskAttributes);
+
+        // Undestroy the first task (it becomes a duplicate now)
+        // This should trigger the exception
+        taskDbInstance.undestroy(firstTaskId);
+    }
+
     @Test
     public void testLoad() throws Exception {
         // Create a task
@@ -307,6 +414,7 @@ public class TaskDbTest {
 
         // Create task 2
         taskAttributes.setId(null);
+        taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_2);
         taskAttributes.save();
 
         // Delete the first task

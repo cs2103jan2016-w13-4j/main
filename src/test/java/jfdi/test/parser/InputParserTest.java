@@ -455,4 +455,22 @@ public class InputParserTest {
             Assert.fail();
         }
     }
+
+    @Test
+    public void testInvalid() {
+        String invalidCommand = null;
+        try {
+            Command command = parser.parse(invalidCommand);
+            Assert.fail();
+        } catch (InvalidInputException e) {
+            Assert.assertTrue(true);
+        }
+        invalidCommand = "";
+        try {
+            Command command = parser.parse(invalidCommand);
+            Assert.fail();
+        } catch (InvalidInputException e) {
+            Assert.assertTrue(true);
+        }
+    }
 }

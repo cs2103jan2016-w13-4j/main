@@ -50,6 +50,9 @@ public class MarkCommandParser extends AbstractCommandParser {
      */
     @Override
     public Command build(String input) {
+        assert isValidInput(input)
+            && matchesCommandType(input, CommandType.mark);
+
         if (!isValidMarkCommand(input)) {
             return createInvalidCommand(CommandType.mark, input);
         }

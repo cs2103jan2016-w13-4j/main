@@ -28,10 +28,9 @@ public class Constants {
     public static final String CTRL_CMD_COMPLETE = "list completed";
     public static final String CTRL_CMD_SURPRISE = "surprise!";
     public static final String CTRL_CMD_SEARCH = "search";
-    public static final int OVERLAY_FADE_IN_MILLISECONDS = 200;
 
     public enum ListStatus {
-        INCOMPLETE, OVERDUE, UPCOMING, ALL, COMPLETE, SEARCH, SURPRISE
+        INCOMPLETE, OVERDUE, UPCOMING, ALL, COMPLETE, SEARCH, SURPRISE, HELP
     }
 
     public enum MsgType {
@@ -40,6 +39,7 @@ public class Constants {
 
     public static final String CMD_ERROR_CANT_ADD_UNKNOWN = "Some stupid error occurred. Cannot add task!";
     public static final String CMD_ERROR_CANT_ADD_EMPTY = "Cannot add an empty task!";
+    public static final String CMD_ERROR_CANT_ADD_DUPLICATE = "Save the trouble. This task already exists :)";
     public static final String CMD_ERROR_CANT_ALIAS_INVALID = "- %s - is an invalid alias for - %s -";
     public static final String CMD_ERROR_CANT_ALIAS_DUPLICATED = " - %s - is an duplicated alias.";
     public static final String CMD_ERROR_CANT_ALIAS_UNKNOWN =
@@ -49,7 +49,7 @@ public class Constants {
     public static final String CMD_ERROR_INIT_FAIL_UNKNOWN = "Some stupid error occurred. Cannot initialize JFDI!";
     public static final String CMD_ERROR_INIT_FAIL_INVALID = "The folder %s doesn't work. Choose another one!";
     // replaced should be user command completed and backup files in directory.
-    public static final String CMD_ERROR_INIT_FAIL_REPLACED = "The folder %s is occupied. File has been moved to %s !";
+    public static final String CMD_ERROR_INIT_FAIL_REPLACED = "Your file %s was moved to %s.";
     public static final String CMD_ERROR_CANT_MARK_NO_ID = "Cannot mark task as completed. The ID #%d does not exist!!";
     public static final String CMD_ERROR_CANT_MARK_UNKNOWN = "Some stupid error occurred. Cannot mark task(s) as done!";
     public static final String CMD_ERROR_MOVE_FAIL_UNKNOWN = "Some stupid error occurred. Cannot move files to %s!";
@@ -66,9 +66,11 @@ public class Constants {
             "Some stupid error occurred. Cannot rename task!";
     public static final String CMD_ERROR_CANT_RENAME_NO_ID = "Cannot rename task. The ID #%d does not exist!";
     public static final String CMD_ERROR_CANT_RENAME_NO_CHANGES = "No difference between new and old name - %s -!";
+    public static final String CMD_ERROR_CANT_RENAME_DUPLICATE = "Save the trouble. This task already exists :)";
     public static final String CMD_ERROR_CANT_RESCHEDULE_UNKNOWN = "Some error occurred. Cannot reschedule task!";
     public static final String CMD_ERROR_CANT_RESCHEDULE_NO_ID = "Cannot reschedule task. The ID #%d does not exist!";
     public static final String CMD_ERROR_CANT_RESCHEDULE_NO_CHANGES = "No difference between new and old schedule - ";
+    public static final String CMD_ERROR_CANT_RESCHEDULE_DUPLICATE = "Save the trouble. This task already exists :)";
     public static final String CMD_ERROR_CANT_UNALIAS_UNKNOWN = "Some error occurred. Cannot remove alias - %s -!";
     public static final String CMD_ERROR_CANT_UNALIAS_NO_ALIAS =
             "Cannot remove alias. The alias - %s - does not exist!";
@@ -87,6 +89,7 @@ public class Constants {
     public static final String CMD_SUCCESS_REDONE = "Previous command - %s - redone! :)";
     public static final String CMD_SUCCESS_UNDONE = "Previous command - %s - undone! :)";
     public static final String CMD_SUCCESS_DELETED = "Task(s) deleted! :)";
+    public static final String CMD_SUCCESS_HELP = "J.F.D.I TO THE RESCUE!!! :D";
     public static final String CMD_SUCCESS_LISTED = "Here is your requested list! :)";
     public static final String CMD_SUCCESS_MARKED = "Task(s) completed! Good job! :)";
     public static final String CMD_SUCCESS_MOVED = "The location of your files has been moved to %s ! :)";
@@ -108,6 +111,7 @@ public class Constants {
     public static final String LOG_ADDED_SUCCESS = "Displayed successful add event for task #%d.";
     public static final String LOG_ADD_FAIL_UNKNOWN = "Unknown error detected for adding.";
     public static final String LOG_ADD_FAIL_EMPTY = "An task failed to add due to empty description.";
+    public static final String LOG_ADD_FAIL_DUPLICATE = "A duplicate task was not added.";
     public static final String LOG_DELETED_SUCCESS = "Displayed successful delete event for task #%d.";
     public static final String LOG_UI_LIST = "The current list of task to be displayed is : ";
     public static final String LOG_LOGIC_LIST = "The list of task received from Logic is : ";
@@ -118,10 +122,12 @@ public class Constants {
     public static final String LOG_RENAME_FAIL_UNKNOWN = "Unknown error detected for renaming.";
     public static final String LOG_RENAME_FAIL_NOID = "An non-existent ID was queried for rename.";
     public static final String LOG_RENAME_FAIL_NOCHANGE = "A renaming with no change was queried.";
+    public static final String LOG_RENAME_FAIL_DUPLICATE = "A task was not renamed as a duplicate task exists.";
     public static final String LOG_RESCHED_SUCCESS = "Displayed successful reschedule event for task #%d.";
     public static final String LOG_RESCHE_FAIL_UNKNOWN = "Unknown error detected for reschduling.";
     public static final String LOG_RESCHE_FAIL_NOID = "An non-existent ID was queried for reschedule.";
     public static final String LOG_RESCHE_FAIL_NOCHANGE = "A rescheduling with no change was queried.";
+    public static final String LOG_RESCHE_FAIL_DUPLICATE = "A task was not rescheduled as a duplicate task exists.";
 
     public static final String HELP_OVERLAY_TITLE = "JFDI TO THE RESCUE!";
     public static final String HELP_OVERLAY_ICON = "\uf05a"; // SUB IN ACTUAL ADDRESS
@@ -153,7 +159,6 @@ public class Constants {
     public static final String HELP_DELETE_COMMAND = "delete <task number(s)>";
     public static final String HELP_SEARCH_DESC = "Search through the tasks for specific keywords";
     public static final String HELP_SEARCH_COMMAND = "search <keyword(s)>";
-    public static final String HELP_REMINDER_DESC = "add custom reminders to task with a start date and time";
     public static final String HELP_REMINDER_COMMAND = "remind me <duration> before <task number(s)>";
     public static final String HELP_UNDO_DESC = "Undo previous action";
     public static final String HELP_UNDO_COMMAND = "undo";

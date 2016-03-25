@@ -83,6 +83,7 @@ public class MainController {
     public Stage mainStage;
     public ObservableList<ListItem> importantList;
     public ListStatus displayStatus;
+    public ListStatus beforeHelp;
     public String searchCmd = "search ";
 
     private ObservableList<HelpItem> helpList;
@@ -254,7 +255,6 @@ public class MainController {
     }
 
     private void initFbArea() {
-        fbArea.setMouseTransparent(true);
         fbArea.setFocusTraversable(false);
         fbArea.setStyle("-fx-text-fill: #eeeeee;");
     }

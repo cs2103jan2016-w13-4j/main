@@ -84,7 +84,7 @@ public class CommandHandler {
                 break;
             case DUPLICATED_TASK:
                 controller.relayFb(Constants.CMD_ERROR_CANT_ADD_DUPLICATE,
-                    MsgType.ERROR);
+                        MsgType.ERROR);
                 logger.fine(String.format(Constants.LOG_ADD_FAIL_DUPLICATE));
                 break;
             default:
@@ -205,7 +205,7 @@ public class CommandHandler {
         String fb = "";
         for (FilePathPair item : e.getFilePathPairs()) {
             fb += String.format(Constants.CMD_ERROR_INIT_FAIL_REPLACED,
-                "\n" + item.getOldFilePath(), item.getNewFilePath());
+                    "\n" + item.getOldFilePath(), item.getNewFilePath());
         }
         controller.appendFb(fb, MsgType.WARNING);
     }
@@ -406,7 +406,7 @@ public class CommandHandler {
                 break;
             case DUPLICATED_TASK:
                 controller.relayFb(Constants.CMD_ERROR_CANT_RENAME_DUPLICATE,
-                    MsgType.ERROR);
+                        MsgType.ERROR);
                 logger.fine(String.format(Constants.LOG_RENAME_FAIL_DUPLICATE));
                 break;
             default:
@@ -459,7 +459,7 @@ public class CommandHandler {
                 break;
             case DUPLICATED_TASK:
                 controller.relayFb(Constants.CMD_ERROR_CANT_RESCHEDULE_DUPLICATE,
-                    MsgType.ERROR);
+                        MsgType.ERROR);
                 logger.fine(String.format(Constants.LOG_RESCHE_FAIL_DUPLICATE));
                 break;
             default:
@@ -692,6 +692,9 @@ public class CommandHandler {
     }
 
     private void switchContext(ListStatus status, Boolean isListing) {
+        if (status.equals(ListStatus.HELP)) {
+            controller.beforeHelp = controller.displayStatus;
+        }
         controller.displayStatus = status;
         if (isListing) {
             controller.transListCmd();

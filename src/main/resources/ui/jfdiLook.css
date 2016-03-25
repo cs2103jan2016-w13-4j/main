@@ -197,6 +197,8 @@
 	-fx-wrap-text: true;
 	-fx-text-fill: #eeeeee;
 	-fx-text-inner-color: #eeeeee;
+	-fx-highlight-fill: transparent ;
+	-fx-highlight-text-fill:#eeeeee;
 }
 
 .fbArea, .fbArea .viewport, .fbArea .content {

@@ -20,6 +20,8 @@ import jfdi.ui.UI;
 public class RescheduleTaskCommand extends Command {
 
     private int screenId;
+    private boolean isShiftedDateSpecified;
+    private boolean isShiftedTimeSpecified;
     private LocalDateTime shiftedDateTime;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
@@ -28,6 +30,8 @@ public class RescheduleTaskCommand extends Command {
 
     private RescheduleTaskCommand(Builder builder) {
         this.screenId = builder.screenId;
+        this.isShiftedDateSpecified = builder.isShiftedDateSpecified;
+        this.isShiftedTimeSpecified = builder.isShiftedTimeSpecified;
         this.shiftedDateTime = builder.shiftedDateTime;
         this.startDateTime = builder.startDateTime;
         this.endDateTime = builder.endDateTime;
@@ -36,6 +40,8 @@ public class RescheduleTaskCommand extends Command {
     public static class Builder {
 
         int screenId;
+        boolean isShiftedDateSpecified;
+        boolean isShiftedTimeSpecified;
         LocalDateTime shiftedDateTime;
         LocalDateTime startDateTime;
         LocalDateTime endDateTime;
@@ -43,6 +49,14 @@ public class RescheduleTaskCommand extends Command {
         public Builder setId(int screenId) {
             this.screenId = screenId;
             return this;
+        }
+
+        public void setShiftedDateSpecified(boolean isShiftedDateSpecified) {
+            this.isShiftedDateSpecified = isShiftedDateSpecified;
+        }
+
+        public void setShiftedTimeSpecified(boolean isShiftedTimeSpecified) {
+            this.isShiftedTimeSpecified = isShiftedTimeSpecified;
         }
 
         public Builder setShiftedDateTime(LocalDateTime shiftedDateTime) {
@@ -124,6 +138,7 @@ public class RescheduleTaskCommand extends Command {
 
     private void shiftStartAndEndDateTimes(TaskAttributes task) {
         assert shiftedDateTime != null;
+        assert isShiftedDateSpecified || isShiftedTimeSpecified;
         LocalDateTime taskStart = task.getStartDateTime();
         LocalDateTime taskEnd = task.getEndDateTime();
 
@@ -134,20 +149,42 @@ public class RescheduleTaskCommand extends Command {
 
             // Shift point task
         } else if (taskStart != null && taskEnd == null) {
-            startDateTime = shiftedDateTime;
+            startDateTime = getShiftedDateTime(task.getStartDateTime());
             endDateTime = null;
 
             // Shift deadline task
         } else if (taskStart == null && taskEnd != null) {
             startDateTime = null;
-            endDateTime = shiftedDateTime;
+            endDateTime = getShiftedDateTime(task.getEndDateTime());
 
             // Shift event, preserving duration
         } else {
             Duration eventDuration = Duration.between(taskStart, taskEnd);
-            startDateTime = shiftedDateTime;
+            startDateTime = getShiftedDateTime(task.getStartDateTime());
             endDateTime = startDateTime.plus(eventDuration);
         }
+    }
+
+    private LocalDateTime getShiftedDateTime(LocalDateTime dateTime) {
+        if (isShiftedDateSpecified && isShiftedTimeSpecified) {
+            return shiftedDateTime;
+        } else if (isShiftedDateSpecified && !isShiftedTimeSpecified) {
+            return shiftDate(dateTime);
+        } else if (!isShiftedDateSpecified && isShiftedTimeSpecified) {
+            return shiftTime(dateTime);
+        }
+        assert false;
+        return null;
+    }
+
+    private LocalDateTime shiftTime(LocalDateTime originalDateTime) {
+        assert originalDateTime != null && shiftedDateTime != null;
+        return LocalDateTime.of(originalDateTime.toLocalDate(), shiftedDateTime.toLocalTime());
+    }
+
+    private LocalDateTime shiftDate(LocalDateTime originalDateTime) {
+        assert originalDateTime != null && shiftedDateTime != null;
+        return LocalDateTime.of(shiftedDateTime.toLocalDate(), originalDateTime.toLocalTime());
     }
 
 }

@@ -85,8 +85,7 @@ public class RescheduleCommandParser extends AbstractCommandParser {
         } else {
             assert taskIdMatcher.start() == 0;
             // The task ID for all rename command inputs should be the first
-            // instance of
-            // all task ID instances found.
+            // instance of all task ID instances found.
             String taskId = getTrimmedSubstringInRange(input,
                 taskIdMatcher.start(), taskIdMatcher.end());
             rescheduleCommandBuilder.setId(toInteger(taskId));
@@ -115,7 +114,8 @@ public class RescheduleCommandParser extends AbstractCommandParser {
      */
     private String setTaskDateTime(String input, Builder builder)
         throws BadDateTimeException {
-        System.out.println("setTaskDateTime " + input);
+
+        System.out.println(input);
         if (input.isEmpty()) {
             // No date time specified: user does not want any date/time
             // restrictions on task
@@ -139,16 +139,23 @@ public class RescheduleCommandParser extends AbstractCommandParser {
             assert dateTimeObject.getStartDateTime() != null
                 && dateTimeObject.getEndDateTime() == null;
             builder.setShiftedDateTime(dateTimeObject.getStartDateTime());
+
         } else if (input.matches(Constants.REGEX_POINT_TASK_IDENTIFIER + "|"
             + Constants.REGEX_DEADLINE_IDENTIFIER + "|"
-            + Constants.REGEX_EVENT_IDENTIFIER)) {
-            System.out.println("Here");
-            // If the input explicitly specifies a deadline or point task, then
-            // set start/end date time accordingly
+            + Constants.REGEX_EVENT_IDENTIFIER + "|(to "
+            + Constants.REGEX_DATE_TIME_FORMAT + " to "
+            + Constants.REGEX_DATE_TIME_FORMAT + ")")) {
+
+            System.out.println(input);
+            if (input.matches("to " + Constants.REGEX_DATE_TIME_FORMAT + " to "
+                + Constants.REGEX_DATE_TIME_FORMAT)) {
+                input = input.replaceAll("^to ", "from ");
+            }
+
+            // If the input explicitly specifies a deadline, event, or point
+            // task, then set start/end date time accordingly
             DateTimeObject dateTimeObject = DateTimeParser.getInstance()
                 .parseDateTime(input);
-            System.out.println(dateTimeObject.getStartDateTime());
-            System.out.println(dateTimeObject.getEndDateTime());
             builder.setStartDateTime(dateTimeObject.getStartDateTime());
             builder.setEndDateTime(dateTimeObject.getEndDateTime());
         } else {

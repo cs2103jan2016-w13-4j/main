@@ -208,7 +208,6 @@ public class Constants {
 
     public static void main(String[] args) {
         System.out.println("delete 1-10".matches(REGEX_DELETE_FORMAT));
-        System.out.println("from wednesday to friday"
-            .matches(REGEX_EVENT_IDENTIFIER));
+        System.out.println("5pm".matches(REGEX_DATE_TIME_FORMAT));
     }
 }

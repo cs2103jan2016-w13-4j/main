@@ -111,12 +111,15 @@ public class CommandHandler {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
             controller.completeInternalCall();
+
             return;
         }
 
         controller.relayFb(
             String.format(Constants.CMD_SUCCESS_ALIAS, e.getAlias(),
                 e.getCommand()), MsgType.SUCCESS);
+
+        controller.updateAutoCompleteList();
     }
 
     @Subscribe
@@ -683,6 +686,8 @@ public class CommandHandler {
         controller.relayFb(
             String.format(Constants.CMD_SUCCESS_UNALIAS, e.getAlias()),
             MsgType.SUCCESS);
+
+        controller.updateAutoCompleteList();
     }
 
     @Subscribe

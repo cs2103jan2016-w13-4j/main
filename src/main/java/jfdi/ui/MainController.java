@@ -22,10 +22,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import jfdi.logic.ControlCenter;
 import jfdi.ui.Constants.ListStatus;
 import jfdi.ui.Constants.MsgType;
 import jfdi.ui.commandhandlers.CommandHandler;
@@ -79,7 +79,7 @@ public class MainController {
     @FXML
     public TextArea fbArea;
     @FXML
-    public TextField cmdArea;
+    public AutoCompleteTextField cmdArea;
     @FXML
     public ListView<HelpItem> helpContent;
 
@@ -102,7 +102,6 @@ public class MainController {
     private int internalCalls = 0;
 
     public void initialize() {
-
         initDate();
         initImportantList();
         initFbArea();
@@ -288,10 +287,10 @@ public class MainController {
     }
 
     private void initCmdArea() {
-
         cmdArea.setPromptText(Constants.CTRL_CMD_PROMPT_TEXT);
         handleKeyPressedEvents();
         disableScrollBarCmd();
+        updateAutoCompleteList();
     }
 
     private void initHelpList() {
@@ -382,6 +381,10 @@ public class MainController {
      *** LEVEL 2 Abstraction ***
      ***************************/
 
+    public void updateAutoCompleteList() {
+        cmdArea.setKeywords(ControlCenter.getInstance().getKeywords());
+    }
+
     private void setAllTabsOff() {
         incompleteBox.getStyleClass().setAll("tabOff");
         incompleteTab.getStyleClass().setAll("incompleteTab");
@@ -403,10 +406,12 @@ public class MainController {
 
     @FXML
     private void handleKeyPressedEvents() {
+
         cmdArea.setOnKeyPressed((keyEvent) -> {
             KeyCode code = keyEvent.getCode();
 
             if (code == KeyCode.ENTER) {
+                cmdArea.hidePopup();
                 String text = cmdArea.getText();
                 ui.processInput(text);
                 inputHistory.addInput(text);
@@ -415,18 +420,22 @@ public class MainController {
                 String previousInput = inputHistory.getPrevious();
                 if (previousInput != null) {
                     cmdArea.setText(previousInput);
+                    cmdArea.hidePopup();
                     cmdArea.positionCaret(previousInput.length());
                 }
             } else if (code == KeyCode.DOWN) {
                 String nextInput = inputHistory.getNext();
                 if (nextInput != null) {
                     cmdArea.setText(nextInput);
+                    cmdArea.hidePopup();
                     cmdArea.positionCaret(nextInput.length());
                 }
             } else if (code == KeyCode.PAGE_DOWN) {
                 scrollDown();
             } else if (code == KeyCode.PAGE_UP) {
                 scrollUp();
+            } else if (code == KeyCode.TAB) {
+                cmdArea.selectFirst();
             } else {
                 return;
             }
@@ -439,7 +448,6 @@ public class MainController {
              * space left in the command area keyEvent.consume(); }
              */
         });
-
     }
 
     /**

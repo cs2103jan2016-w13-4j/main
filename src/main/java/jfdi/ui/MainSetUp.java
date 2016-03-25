@@ -124,7 +124,7 @@ public class MainSetUp extends Application {
             public Void call() throws InterruptedException {
                 while (true) {
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(60000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

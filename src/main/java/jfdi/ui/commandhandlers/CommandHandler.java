@@ -60,6 +60,7 @@ public class CommandHandler {
     public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {
         TaskAttributes task = e.getTask();
         appendTaskToDisplayList(task, true);
+        controller.updateNotiBubbles();
         if (shouldSort()) {
             sortDisplayList();
         }
@@ -129,6 +130,7 @@ public class CommandHandler {
     public void handleCommandRedoneEvent(CommandRedoneEvent e) {
         Class<? extends Command> cmdType = e.getCommandType();
         switchContext(controller.displayStatus, true);
+        controller.updateNotiBubbles();
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_REDONE, cmdType.toString()),
                 MsgType.SUCCESS);
@@ -138,6 +140,7 @@ public class CommandHandler {
     public void handleCommandUndoneEvent(CommandUndoneEvent e) {
         Class<? extends Command> cmdType = e.getCommandType();
         switchContext(controller.displayStatus, true);
+        controller.updateNotiBubbles();
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_UNDONE, cmdType.toString()),
                 MsgType.SUCCESS);
@@ -163,6 +166,7 @@ public class CommandHandler {
             }
             indexCount++;
         }
+        controller.updateNotiBubbles();
     }
 
     @Subscribe
@@ -256,7 +260,6 @@ public class CommandHandler {
             default:
                 break;
         }
-
         listTasks(e.getItems(), false);
         controller.relayFb(Constants.CMD_SUCCESS_LISTED, MsgType.SUCCESS);
     }
@@ -275,6 +278,7 @@ public class CommandHandler {
             // controller.displayList(controller.displayStatus);
             // logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, num));
         }
+        controller.updateNotiBubbles();
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_MARKED, indexCount + 1),
                 MsgType.SUCCESS);
@@ -429,6 +433,7 @@ public class CommandHandler {
         if (shouldSort()) {
             sortDisplayList();
         }
+        controller.updateNotiBubbles();
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_RESCHEDULED, count + 1),
                 MsgType.SUCCESS);
@@ -558,6 +563,7 @@ public class CommandHandler {
             // controller.displayList(controller.displayStatus);
             // logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, num));
         }
+        controller.updateNotiBubbles();
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_UNMARKED, indexCount + 1),
                 MsgType.SUCCESS);
@@ -588,6 +594,7 @@ public class CommandHandler {
     @Subscribe
     public void handleUseDirectoryDoneEvent(UseDirectoryDoneEvent e) {
         switchContext(ListStatus.INCOMPLETE, true);
+        controller.updateNotiBubbles();;
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_USED, e.getNewDirectory()),
                 MsgType.SUCCESS);
@@ -626,6 +633,7 @@ public class CommandHandler {
         for (TaskAttributes task : tasks) {
             appendTaskToDisplayList(task, shouldCheckContext);
         }
+        updateListNoti();
     }
 
     /**
@@ -700,5 +708,22 @@ public class CommandHandler {
             controller.transListCmd();
         }
         controller.switchTabSkin();
+    }
+    
+    private void updateListNoti() {
+        Integer count = controller.importantList.size();
+        switch (controller.displayStatus) {
+            case INCOMPLETE:
+                controller.incompleteCount.setText(count.toString());
+                break;
+            case OVERDUE:
+                controller.overdueCount.setText(count.toString());
+                break;
+            case UPCOMING:
+                controller.upcomingCount.setText(count.toString());
+                break;
+            default:
+                break;
+        }
     }
 }

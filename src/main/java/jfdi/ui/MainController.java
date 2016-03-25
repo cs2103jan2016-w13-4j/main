@@ -323,6 +323,42 @@ public class MainController {
         inputHistory = new InputHistory();
     }
 
+    public void initNotiBubbles() {
+        updateNotiBubbles();
+ /*       Service<Void> service = new Service<Void>() {
+            @Override
+            protected Task<Void> createTask() {
+                return new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+                        //Background work
+                        final CountDownLatch latch = new CountDownLatch(1);
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                try{
+                                    while (true) {
+                                        Thread.sleep(300000);
+                                        updateNotiBubbles();
+                                    }
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                } finally {
+                                    latch.countDown();
+                                }
+                            }
+                        });
+                        latch.await();
+                        //Keep with the background work
+                        return null;
+                    }
+                };
+            }
+        };
+        service.start();*/
+    }
+
+
     /***************************
      *** LEVEL 2 Abstraction ***
      ***************************/
@@ -402,6 +438,15 @@ public class MainController {
             });
     }
 
+    public void updateNotiBubbles() {
+        ListStatus temp = displayStatus;
+        displayList(Constants.CTRL_CMD_INCOMPLETE);
+        displayList(Constants.CTRL_CMD_OVERDUE);
+        displayList(Constants.CTRL_CMD_UPCOMING);
+        displayStatus = temp;
+        transListCmd();
+    }
+    
     /***************************
      *** LEVEL 3 Abstraction ***
      ***************************/

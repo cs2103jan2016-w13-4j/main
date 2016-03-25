@@ -15,7 +15,8 @@ import jfdi.storage.exceptions.FilesReplacedException;
 import jfdi.storage.exceptions.InvalidFilePathException;
 import jfdi.ui.UI;
 
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Liu Xinan
@@ -49,6 +50,21 @@ public class ControlCenter implements ILogic {
         if (!(command instanceof InvalidCommand)) {
             Command.setLastSuggestion(Optional.empty());
         }
+    }
+
+    public TreeSet<String> getKeywords() {
+        TreeSet<String> keywords = Arrays.stream(InputParser.getInstance()
+            .getAllCommandRegexes()
+            .replaceAll("\\W+", " ").split("\\s+"))
+            .filter(part -> part.length() > 1)
+            .collect(Collectors.toCollection(TreeSet::new));
+
+        AliasDb.getInstance()
+            .getAll().stream()
+            .map(AliasAttributes::getAlias)
+            .forEach(keywords::add);
+
+        return keywords;
     }
 
     public void setParser(InputParser parser) {

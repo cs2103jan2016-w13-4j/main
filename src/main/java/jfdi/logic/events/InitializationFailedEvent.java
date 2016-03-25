@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class InitializationFailedEvent {
 
     public enum Error {
-        FILE_REPLACED, INVALID_PATH, UNKNOWN
+        INVALID_PATH, UNKNOWN
     }
 
     private Error error;

@@ -1,12 +1,14 @@
 package jfdi.logic.commands;
 
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
+import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Collections;
+
 import jfdi.logic.events.ListDoneEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
-
-import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 /**
  * @author Liu Xinan
@@ -17,7 +19,9 @@ public class ListCommand extends Command {
         ALL,
         COMPLETED,
         INCOMPLETE,
-        ALIASES
+        ALIASES,
+        OVERDUE,
+        UPCOMING
     }
 
     private ListType listType;
@@ -60,6 +64,14 @@ public class ListCommand extends Command {
                     .collect(Collectors.toCollection(ArrayList::new));
                 break;
             case ALIASES:
+                break;
+            case OVERDUE:
+                tasks = new ArrayList<TaskAttributes>(TaskDb.getInstance().getOverdue());
+                Collections.sort(tasks);
+                break;
+            case UPCOMING:
+                tasks = new ArrayList<TaskAttributes>(TaskDb.getInstance().getUpcoming());
+                Collections.sort(tasks);
                 break;
             default:
                 break;

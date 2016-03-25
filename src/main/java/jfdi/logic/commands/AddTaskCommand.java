@@ -5,6 +5,7 @@ import jfdi.logic.events.AddTaskFailedEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
+import jfdi.storage.exceptions.DuplicateTaskException;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
@@ -129,6 +130,9 @@ public class AddTaskCommand extends Command {
         } catch (InvalidTaskParametersException e) {
             eventBus.post(new AddTaskFailedEvent(
                 AddTaskFailedEvent.Error.EMPTY_DESCRIPTION));
+        } catch (DuplicateTaskException e) {
+            eventBus.post(new AddTaskFailedEvent(
+                AddTaskFailedEvent.Error.DUPLICATED_TASK));
         } catch (NoAttributesChangedException e) {
             // Should not happen for creating tasks
             assert false;

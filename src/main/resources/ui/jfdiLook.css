@@ -1,11 +1,94 @@
 .list-view .scroll-bar:horizontal .increment-arrow,
 .list-view .scroll-bar:horizontal .decrement-arrow,
 .list-view .scroll-bar:horizontal .increment-button,
-.list-view .scroll-bar:horizontal .decrement-button {
+.list-view .scroll-bar:horizontal .decrement-button,
+.fbArea .scroll-bar:horizontal .increment-arrow,
+.fbArea .scroll-bar:horizontal .decrement-arrow,
+.fbArea .scroll-bar:horizontal .increment-button,
+.fbArea .scroll-bar:horizontal .decrement-button {
     -fx-padding:0;
 }
 
-.itemBox{
+.tabOn {
+	-fx-arc-height: 5.0;
+	-fx-arc-width: 5.0;
+	-fx-fill: #faebcd;
+	-fx-stroke: #faebcd; 
+	-fx-stroke-line-cap: round ; 
+	-fx-stroke-line-join: round ; 
+	-fx-stroke-width: 10.0;
+}
+
+.tabOff {
+	-fx-arc-height: 5.0;
+	-fx-arc-width: 5.0;
+	-fx-fill: #434343;
+	-fx-stroke: #434343; 
+	-fx-stroke-line-cap: round ; 
+	-fx-stroke-line-join: round ; 
+	-fx-stroke-width: 10.0;
+}
+
+.incompleteTab,
+.overdueTab,
+.upcomingTab,
+.allTab,
+.completedTab,
+.searchTab,
+.surpriseTab,
+.helpTab {
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 16px;
+	-fx-text-fill: #eeeeee;
+}
+
+.incompleteTabOn,
+.overdueTabOn,
+.upcomingTabOn,
+.allTabOn,
+.completedTabOn,
+.searchTabOn,
+.surpriseTabOn,
+.helpTabOn {
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 16px;
+	-fx-text-fill: #434343;
+}
+
+.incompleteCount,
+.overdueCount,
+.upcomingCount {
+	-fx-background-color: #943939;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 14px;
+	-fx-text-fill: #eeeeee;
+	-fx-label-padding: 5.0px 10.0px 5.0px 10.0px;
+    -fx-background-radius: 40px;
+}
+
+.dayDate {
+	-fx-background-color: #434343;
+	-fx-text-fill: #eeeeee;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 16px;
+	-fx-alignment: CENTER;
+	-fx-text-alignment: CENTER;
+}
+
+
+.listStatus {
+	-fx-background-color: #faebcd;
+	-fx-text-fill: #434343;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 22px;
+	-fx-alignment: CENTER;
+	-fx-text-alignment: CENTER;
+}
+
+.itemBox,
+.itemBoxDone,
+.itemBoxOverdue,
+.itemBoxUpcoming {
 		-fx-background-color: #faebcd;
 		-fx-alignment: CENTER_LEFT;
 }
@@ -16,11 +99,6 @@
 	-fx-font-size: 16px;
 	-fx-alignment: CENTER;
 	-fx-text-alignment: CENTER;
-}
-
-.itemBoxDone {
-	-fx-background-color: #faebcd;
-	-fx-alignment: CENTER_LEFT;
 }
 
 .itemBox #description {
@@ -67,35 +145,68 @@
 	-fx-wrap-text: true;
 }
 
-.listStatus {
-	-fx-background-color: #434343;
-	-fx-text-fill: #eeeeee;
+.itemBoxOverdue #rowIndex {
+	-fx-text-fill: #943939;
 	-fx-font-family: "HammersmithOne";
-	-fx-font-size: 28px;
+	-fx-font-size: 16px;
 	-fx-alignment: CENTER;
 	-fx-text-alignment: CENTER;
 }
 
-.fbArea {
+.itemBoxOverdue #description {
+	-fx-text-fill: #943939;
 	-fx-font-family: "HammersmithOne";
-	-fx-text-fill: #eeeeee;
 	-fx-font-size: 14px;
 	-fx-wrap-text: true;
 }
 
-.fbArea .text,
-.cmdArea .text {
-	-fx-text-fill: #eeeeee;
+
+.itemBoxOverdue #timeAndDate {
+	-fx-text-fill: #943939;
+	-fx-font-family: "TitilliumWeb";
+	-fx-font-size: 11px;
+	-fx-wrap-text: true;
 }
 
-.fbArea .content,
-.cmdArea .content {
-	-fx-background-color: #434343;
+.itemBoxUpcoming #rowIndex {
+	-fx-text-fill: #E18237;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 16px;
+	-fx-alignment: CENTER;
+	-fx-text-alignment: CENTER;
+}
+
+.itemBoxUpcoming #description {
+	-fx-text-fill: #E18237;
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 14px;
+	-fx-wrap-text: true;
+}
+
+
+.itemBoxUpcoming #timeAndDate {
+	-fx-text-fill: #E18237;
+	-fx-font-family: "TitilliumWeb";
+	-fx-font-size: 11px;
+	-fx-wrap-text: true;
+}
+
+.fbArea {
+	-fx-font-family: "HammersmithOne";
+	-fx-font-size: 14px;
+	-fx-wrap-text: true;
 	-fx-text-fill: #eeeeee;
+	-fx-text-inner-color: #eeeeee;
+}
+
+.fbArea, .fbArea .viewport, .fbArea .content {
+    -fx-background-color: transparent;
+    -fx-text-fill: #eeeeee;
+    -fx-text-inner-color: #eeeeee;
 }
 
 .cmdArea {
-	-fx-text-fill: #eeeeee;
+	-fx-text-fill: #434343;
 	-fx-font-family: "HammersmithOne";
 	-fx-font-size: 12px;
 	-fx-wrap-text: true;
@@ -104,23 +215,29 @@
 
 /*
  * ================================================================
- * HelpBox styles
+ * HelpOverLay styles
  * ================================================================
  */
-.helpItem {
-	-fx-padding: 0;
-	-fx-font-family: "HammersmithOne";
-	-fx-font-size: 16px;
-	-fx-background-color: #434343;
+
+.helpContent,
+.helpContent .list-cell,
+.helpContent .list-cell:empty {
+	-fx-background-color: #faebcd;
 }
 
 .helpItem #command {
 	-fx-font-weight: 700;
-	-fx-text-fill: white;
+	-fx-font-family: "HammersmithOne";
+	-fx-text-fill: #943939;
+	-fx-font-size: 13px;
+	-fx-wrap-text: true;
 }
 
 .helpItem #description {
-	-fx-text-fill: white;
+	-fx-font-family: "HammersmithOne";
+	-fx-text-fill: #434343;
+	-fx-font-size: 13px;
+	-fx-wrap-text: true;
 }
 
 .list-cell {

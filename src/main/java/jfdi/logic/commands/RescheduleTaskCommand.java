@@ -5,6 +5,7 @@ import jfdi.logic.events.RescheduleTaskFailedEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
+import jfdi.storage.exceptions.DuplicateTaskException;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
@@ -82,6 +83,9 @@ public class RescheduleTaskCommand extends Command {
         } catch (NoAttributesChangedException e) {
             eventBus.post(new RescheduleTaskFailedEvent(screenId, startDateTime, endDateTime,
                 RescheduleTaskFailedEvent.Error.NO_CHANGES));
+        } catch (DuplicateTaskException e) {
+            eventBus.post(new RescheduleTaskFailedEvent(screenId, startDateTime, endDateTime,
+                RescheduleTaskFailedEvent.Error.DUPLICATED_TASK));
         }
     }
 
@@ -97,7 +101,8 @@ public class RescheduleTaskCommand extends Command {
             task.save();
 
             pushToRedoStack();
-        } catch (InvalidIdException | InvalidTaskParametersException | NoAttributesChangedException e) {
+        } catch (InvalidIdException | InvalidTaskParametersException
+            | NoAttributesChangedException | DuplicateTaskException e) {
             assert false;
         }
     }

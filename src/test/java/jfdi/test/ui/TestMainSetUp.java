@@ -3,8 +3,8 @@ package jfdi.test.ui;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 
 import org.junit.After;
 import org.junit.Before;
@@ -12,6 +12,8 @@ import org.junit.Test;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
+
+import com.google.common.io.Files;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -27,28 +29,30 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import jfdi.storage.apis.MainStorage;
 import jfdi.ui.Constants;
 import jfdi.ui.IUserInterface;
 import jfdi.ui.MainController;
 import jfdi.ui.UI;
 import jfdi.ui.items.ListItem;
-import jfdi.ui.items.StatsItem;
 
 public class TestMainSetUp extends ApplicationTest {
 
     /* The widgets of the GUI used for the tests. */
     Label dayDisplayer;
-    ListView<StatsItem> statsDisplayer;
-    Label listStatus;
     ListView<ListItem> listMain;
     TextArea fbArea;
     TextField cmdArea;
     VBox helpOverLay;
+
     Stage stage;
     Scene scene;
     Parent rootLayout;
     AnchorPane listLayout;
     MainController controller;
+
+    /* The original storage path - to revert after the tests */
+    private String originalStorageDirectory = null;
 
     /* This operation comes from ApplicationTest and loads the GUI to test. */
     @Override
@@ -76,7 +80,7 @@ public class TestMainSetUp extends ApplicationTest {
         stage.toFront();
     }
 
-    private void initView() throws IOException, InterruptedException {
+    private void initView() throws Exception {
 
         IUserInterface ui = UI.getInstance();
 
@@ -98,10 +102,14 @@ public class TestMainSetUp extends ApplicationTest {
 
         // Link Controller with UI, MainSetUp and CommandHandler
         controller.setUi(ui);
-        //controller.setMainApp(this);
 
         controller.importantList.removeAll(controller.importantList);
 
+        File tempDir = Files.createTempDir();
+        originalStorageDirectory = MainStorage.getInstance().getCurrentDirectory();
+        MainStorage.getInstance().use(tempDir.getAbsolutePath());
+
+        controller.hideOverlays();
         controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
         ui.displayWelcome();
     }
@@ -116,8 +124,6 @@ public class TestMainSetUp extends ApplicationTest {
     public void setUp() {
         /* Retrieve the tested widgets from the GUI. */
         dayDisplayer = find("#dayDisplayer");
-        statsDisplayer = find("#statsDisplayer");
-        listStatus = find("#listStatus");
         listMain = find("#listMain");
         fbArea = find("#fbArea");
         cmdArea = find("#cmdArea");
@@ -127,11 +133,12 @@ public class TestMainSetUp extends ApplicationTest {
 
     /* To clear the ongoing events */
     @After
-    public void tearDown() throws TimeoutException {
+    public void tearDown() throws Exception {
         /* Close the window. It will be re-opened at the next test. */
         FxToolkit.hideStage();
         release(new KeyCode[] {});
         release(new MouseButton[] {});
+        MainStorage.getInstance().use(originalStorageDirectory);
     }
 
     @Test
@@ -139,8 +146,6 @@ public class TestMainSetUp extends ApplicationTest {
         final String errMsg = " %s cannot be retrieved!";
 
         assertNotNull(String.format(errMsg, "dayDisplayer"), dayDisplayer);
-        assertNotNull(String.format(errMsg, "statsDisplayer"), statsDisplayer);
-        assertNotNull(String.format(errMsg, "listStatus"), listStatus);
         assertNotNull(String.format(errMsg, "listMain"), listMain);
         assertNotNull(String.format(errMsg, "fbArea"), fbArea);
         assertNotNull(String.format(errMsg, "cmdArea"), cmdArea);
@@ -158,6 +163,6 @@ public class TestMainSetUp extends ApplicationTest {
 
         assertEquals("The feedback message does not match the intended result.",
                 fbArea.getText(), "\nJ.F.D.I. : " + String.format(
-                        Constants.CMD_SUCCESS_ADDED, controller.importantList.size(), "hello"));
+                        Constants.CMD_SUCCESS_ADDED, "hello"));
     }
 }

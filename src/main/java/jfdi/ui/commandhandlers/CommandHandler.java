@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.logging.Logger;
 
+import com.google.common.eventbus.Subscribe;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 import jfdi.common.utilities.JfdiLogger;
 import jfdi.logic.events.AddTaskDoneEvent;
 import jfdi.logic.events.AddTaskFailedEvent;
@@ -14,6 +17,7 @@ import jfdi.logic.events.CommandUndoneEvent;
 import jfdi.logic.events.DeleteTaskDoneEvent;
 import jfdi.logic.events.DeleteTaskFailedEvent;
 import jfdi.logic.events.ExitCalledEvent;
+import jfdi.logic.events.FilesReplacedEvent;
 import jfdi.logic.events.HelpRequestedEvent;
 import jfdi.logic.events.InitializationFailedEvent;
 import jfdi.logic.events.InvalidCommandEvent;
@@ -42,13 +46,10 @@ import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.exceptions.FilePathPair;
 import jfdi.ui.Constants;
+import jfdi.ui.Constants.ListStatus;
 import jfdi.ui.Constants.MsgType;
 import jfdi.ui.MainController;
 import jfdi.ui.items.ListItem;
-
-import com.google.common.eventbus.Subscribe;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 public class CommandHandler {
 
@@ -58,10 +59,13 @@ public class CommandHandler {
     @Subscribe
     public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {
         TaskAttributes task = e.getTask();
-        int index = appendTaskToDisplayList(task);
+        appendTaskToDisplayList(task, true);
+        if (shouldSort()) {
+            sortDisplayList();
+        }
         controller.relayFb(
-            String.format(Constants.CMD_SUCCESS_ADDED, index,
-                task.getDescription()), MsgType.SUCCESS);
+                String.format(Constants.CMD_SUCCESS_ADDED,
+                        task.getDescription()), MsgType.SUCCESS);
         logger.fine(String.format(Constants.LOG_ADDED_SUCCESS, task.getId()));
     }
 
@@ -70,13 +74,18 @@ public class CommandHandler {
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_CANT_ADD_UNKNOWN,
-                    MsgType.ERROR);
+                        MsgType.ERROR);
                 logger.fine(String.format(Constants.LOG_ADD_FAIL_UNKNOWN));
                 break;
             case EMPTY_DESCRIPTION:
                 controller.relayFb(Constants.CMD_ERROR_CANT_ADD_EMPTY,
-                    MsgType.ERROR);
+                        MsgType.ERROR);
                 logger.fine(String.format(Constants.LOG_ADD_FAIL_EMPTY));
+                break;
+            case DUPLICATED_TASK:
+                controller.relayFb(Constants.CMD_ERROR_CANT_ADD_DUPLICATE,
+                        MsgType.ERROR);
+                logger.fine(String.format(Constants.LOG_ADD_FAIL_DUPLICATE));
                 break;
             default:
                 break;
@@ -86,8 +95,8 @@ public class CommandHandler {
     @Subscribe
     public void handleAliasDoneEvent(AliasDoneEvent e) {
         controller.relayFb(
-            String.format(Constants.CMD_SUCCESS_ALIAS, e.getAlias(),
-                e.getCommand()), MsgType.SUCCESS);
+                String.format(Constants.CMD_SUCCESS_ALIAS, e.getAlias(),
+                        e.getCommand()), MsgType.SUCCESS);
     }
 
     @Subscribe
@@ -95,20 +104,20 @@ public class CommandHandler {
         switch (e.getError()) {
             case INVALID_PARAMETERS:
                 controller.relayFb(
-                    String.format(Constants.CMD_ERROR_CANT_ALIAS_INVALID,
-                        e.getAlias(), e.getCommand()), MsgType.ERROR);
+                        String.format(Constants.CMD_ERROR_CANT_ALIAS_INVALID,
+                                e.getAlias(), e.getCommand()), MsgType.ERROR);
                 // logger.fine(String.format(format, args));
                 break;
             case DUPLICATED_ALIAS:
                 controller.relayFb(
-                    String.format(Constants.CMD_ERROR_CANT_ALIAS_DUPLICATED,
-                        e.getAlias()), MsgType.ERROR);
+                        String.format(Constants.CMD_ERROR_CANT_ALIAS_DUPLICATED,
+                                e.getAlias()), MsgType.ERROR);
                 // logger.fine(String.format(format, args));
                 break;
             case UNKNOWN:
                 controller.relayFb(
-                    String.format(Constants.CMD_ERROR_CANT_ALIAS_UNKNOWN,
-                        e.getCommand()), MsgType.ERROR);
+                        String.format(Constants.CMD_ERROR_CANT_ALIAS_UNKNOWN,
+                                e.getCommand()), MsgType.ERROR);
                 // logger.fine(String.format(format, args));
                 break;
             default:
@@ -119,19 +128,19 @@ public class CommandHandler {
     @Subscribe
     public void handleCommandRedoneEvent(CommandRedoneEvent e) {
         Class<? extends Command> cmdType = e.getCommandType();
-        controller.displayList(controller.displayStatus);
+        switchContext(controller.displayStatus, true);
         controller.relayFb(
-            String.format(Constants.CMD_SUCCESS_REDONE, cmdType.toString()),
-            MsgType.SUCCESS);
+                String.format(Constants.CMD_SUCCESS_REDONE, cmdType.toString()),
+                MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleCommandUndoneEvent(CommandUndoneEvent e) {
         Class<? extends Command> cmdType = e.getCommandType();
-        controller.displayList(controller.displayStatus);
+        switchContext(controller.displayStatus, true);
         controller.relayFb(
-            String.format(Constants.CMD_SUCCESS_UNDONE, cmdType.toString()),
-            MsgType.SUCCESS);
+                String.format(Constants.CMD_SUCCESS_UNDONE, cmdType.toString()),
+                MsgType.SUCCESS);
     }
 
     @Subscribe
@@ -161,14 +170,14 @@ public class CommandHandler {
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_CANT_DELETE_UNKNOWN,
-                    MsgType.ERROR);
+                        MsgType.ERROR);
                 logger.fine(Constants.LOG_DELETE_FAIL_UNKNOWN);
                 break;
             case NON_EXISTENT_ID:
                 for (Integer screenId : e.getInvalidIds()) {
                     controller.relayFb(String.format(
-                        Constants.CMD_ERROR_CANT_DELETE_NO_ID, screenId),
-                        MsgType.ERROR);
+                            Constants.CMD_ERROR_CANT_DELETE_NO_ID, screenId),
+                            MsgType.ERROR);
                 }
                 logger.fine(Constants.LOG_DELETE_FAIL_NOID);
                 break;
@@ -186,7 +195,19 @@ public class CommandHandler {
 
     @Subscribe
     public void handleHelpRequestEvent(HelpRequestedEvent e) {
+        switchContext(ListStatus.HELP, false);
         controller.showHelpDisplay();
+        controller.relayFb(Constants.CMD_SUCCESS_HELP, MsgType.SUCCESS);
+    }
+
+    @Subscribe
+    public void handleFilesReplacedEvent(FilesReplacedEvent e) {
+        String fb = "";
+        for (FilePathPair item : e.getFilePathPairs()) {
+            fb += String.format(Constants.CMD_ERROR_INIT_FAIL_REPLACED,
+                    "\n" + item.getOldFilePath(), item.getNewFilePath());
+        }
+        controller.appendFb(fb, MsgType.WARNING);
     }
 
     @Subscribe
@@ -194,20 +215,12 @@ public class CommandHandler {
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_INIT_FAIL_UNKNOWN,
-                    MsgType.ERROR);
+                        MsgType.ERROR);
                 break;
             case INVALID_PATH:
                 controller.relayFb(
-                    String.format(Constants.CMD_ERROR_INIT_FAIL_INVALID,
-                        e.getPath()), MsgType.ERROR);
-                break;
-            case FILE_REPLACED:
-                String fb = "";
-                for (FilePathPair item : e.getFilePathPairs()) {
-                    fb += String.format(Constants.CMD_ERROR_INIT_FAIL_REPLACED,
-                        "\n" + item.getOldFilePath(), item.getNewFilePath());
-                }
-                controller.relayFb(fb, MsgType.ERROR);
+                        String.format(Constants.CMD_ERROR_INIT_FAIL_INVALID,
+                                e.getPath()), MsgType.ERROR);
                 break;
             default:
                 break;
@@ -217,8 +230,8 @@ public class CommandHandler {
     @Subscribe
     public void handleInvalidCommandEvent(InvalidCommandEvent e) {
         controller.relayFb(
-            String.format(Constants.CMD_WARNING_DONTKNOW, e.getInputString()),
-            MsgType.WARNING);
+                String.format(Constants.CMD_WARNING_DONTKNOW, e.getInputString()),
+                MsgType.WARNING);
         logger.fine(Constants.LOG_INVALID_COMMAND);
     }
 
@@ -226,19 +239,25 @@ public class CommandHandler {
     public void handleListDoneEvent(ListDoneEvent e) {
         switch (e.getListType()) {
             case ALL:
-                controller.displayStatus = Constants.CTRL_CMD_ALL;
+                switchContext(ListStatus.ALL, false);
                 break;
             case COMPLETED:
-                controller.displayStatus = Constants.CTRL_CMD_COMPLETE;
+                switchContext(ListStatus.COMPLETE, false);
                 break;
             case INCOMPLETE:
-                controller.displayStatus = Constants.CTRL_CMD_INCOMPLETE;
+                switchContext(ListStatus.INCOMPLETE, false);
+                break;
+            case OVERDUE:
+                switchContext(ListStatus.OVERDUE, false);
+                break;
+            case UPCOMING:
+                switchContext(ListStatus.UPCOMING, false);
                 break;
             default:
                 break;
         }
 
-        listTasks(e.getItems());
+        listTasks(e.getItems(), false);
         controller.relayFb(Constants.CMD_SUCCESS_LISTED, MsgType.SUCCESS);
     }
 
@@ -257,8 +276,8 @@ public class CommandHandler {
             // logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, num));
         }
         controller.relayFb(
-            String.format(Constants.CMD_SUCCESS_MARKED, indexCount + 1),
-            MsgType.SUCCESS);
+                String.format(Constants.CMD_SUCCESS_MARKED, indexCount + 1),
+                MsgType.SUCCESS);
     }
 
 
@@ -271,15 +290,15 @@ public class CommandHandler {
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_CANT_MARK_UNKNOWN,
-                    MsgType.ERROR);
+                        MsgType.ERROR);
                 // logger.fine(Constants.LOG_DELETE_FAIL_UNKNOWN);
                 break;
             case NON_EXISTENT_ID:
                 // NEED TO CHANGE TO INDEX SOON????
                 for (Integer screenId : e.getInvalidIds()) {
                     controller.relayFb(String.format(
-                        Constants.CMD_ERROR_CANT_MARK_NO_ID, screenId),
-                        MsgType.ERROR);
+                            Constants.CMD_ERROR_CANT_MARK_NO_ID, screenId),
+                            MsgType.ERROR);
                 }
                 // logger.fine(Constants.LOG_DELETE_FAIL_NOID);
                 break;
@@ -290,10 +309,10 @@ public class CommandHandler {
 
     @Subscribe
     public void handleMoveDirectoryDoneEvent(MoveDirectoryDoneEvent e) {
-        controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
+        switchContext(ListStatus.INCOMPLETE, true);
         controller.relayFb(
-            String.format(Constants.CMD_SUCCESS_MOVED, e.getNewDirectory()),
-            MsgType.SUCCESS);
+                String.format(Constants.CMD_SUCCESS_MOVED, e.getNewDirectory()),
+                MsgType.SUCCESS);
     }
 
     @Subscribe
@@ -301,21 +320,13 @@ public class CommandHandler {
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(
-                    String.format(Constants.CMD_ERROR_MOVE_FAIL_UNKNOWN,
-                        e.getNewDirectory()), MsgType.ERROR);
+                        String.format(Constants.CMD_ERROR_MOVE_FAIL_UNKNOWN,
+                                e.getNewDirectory()), MsgType.ERROR);
                 break;
             case INVALID_PATH:
                 controller.relayFb(
-                    String.format(Constants.CMD_ERROR_MOVE_FAIL_INVALID,
-                        e.getNewDirectory()), MsgType.ERROR);
-                break;
-            case FILE_REPLACED:
-                String fb = "";
-                for (FilePathPair item : e.getFilePathPairs()) {
-                    fb += String.format(Constants.CMD_ERROR_MOVE_FAIL_REPLACED,
-                        "\n" + item.getOldFilePath(), item.getNewFilePath());
-                }
-                controller.relayFb(fb, MsgType.ERROR);
+                        String.format(Constants.CMD_ERROR_MOVE_FAIL_INVALID,
+                                e.getNewDirectory()), MsgType.ERROR);
                 break;
             default:
                 break;
@@ -327,11 +338,11 @@ public class CommandHandler {
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_SURP_FAIL_UNKNOWN,
-                    MsgType.ERROR);
+                        MsgType.ERROR);
                 break;
             case NO_TASKS:
                 controller.relayFb(Constants.CMD_ERROR_SURP_FAIL_NO_TASKS,
-                    MsgType.ERROR);
+                        MsgType.ERROR);
                 break;
             default:
                 break;
@@ -343,11 +354,11 @@ public class CommandHandler {
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_REDO_FAIL_UNKNOWN,
-                    MsgType.ERROR);
+                        MsgType.ERROR);
                 break;
             case NONTHING_TO_REDO:
                 controller.relayFb(Constants.CMD_ERROR_REDO_FAIL_NO_TASKS,
-                    MsgType.ERROR);
+                        MsgType.ERROR);
                 break;
             default:
                 break;
@@ -361,14 +372,14 @@ public class CommandHandler {
         for (int i = 0; i < controller.importantList.size(); i++) {
             if (controller.getIdFromIndex(i) == task.getId()) {
                 controller.importantList.get(i).setDescription(
-                    task.getDescription());
+                        task.getDescription());
                 count = i;
                 break;
             }
         }
         controller.relayFb(
-            String.format(Constants.CMD_SUCCESS_RENAMED, count + 1,
-                task.getDescription()), MsgType.SUCCESS);
+                String.format(Constants.CMD_SUCCESS_RENAMED, count + 1,
+                        task.getDescription()), MsgType.SUCCESS);
         logger.fine(String.format(Constants.LOG_RENAMED_SUCCESS, task.getId()));
     }
 
@@ -377,21 +388,26 @@ public class CommandHandler {
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_CANT_RENAME_UNKNOWN,
-                    MsgType.ERROR);
+                        MsgType.ERROR);
                 logger.fine(Constants.LOG_RENAME_FAIL_UNKNOWN);
                 break;
             case NON_EXISTENT_ID:
                 // NEED TO CHANGE TO INDEX SOON????
                 controller.relayFb(
-                    String.format(Constants.CMD_ERROR_CANT_RENAME_NO_ID,
-                        e.getScreenId()), MsgType.ERROR);
+                        String.format(Constants.CMD_ERROR_CANT_RENAME_NO_ID,
+                                e.getScreenId()), MsgType.ERROR);
                 logger.fine(Constants.LOG_RENAME_FAIL_NOID);
                 break;
             case NO_CHANGES:
                 controller.relayFb(
-                    String.format(Constants.CMD_ERROR_CANT_RENAME_NO_CHANGES,
-                        e.getDescription()), MsgType.ERROR);
+                        String.format(Constants.CMD_ERROR_CANT_RENAME_NO_CHANGES,
+                                e.getDescription()), MsgType.ERROR);
                 logger.fine(Constants.LOG_RENAME_FAIL_NOCHANGE);
+                break;
+            case DUPLICATED_TASK:
+                controller.relayFb(Constants.CMD_ERROR_CANT_RENAME_DUPLICATE,
+                        MsgType.ERROR);
+                logger.fine(String.format(Constants.LOG_RENAME_FAIL_DUPLICATE));
                 break;
             default:
                 break;
@@ -405,14 +421,17 @@ public class CommandHandler {
         for (int i = 0; i < controller.importantList.size(); i++) {
             if (controller.getIdFromIndex(i) == task.getId()) {
                 controller.importantList.get(i).setTimeDate(
-                    task.getStartDateTime(), task.getEndDateTime());
+                        task.getStartDateTime(), task.getEndDateTime());
                 count = i;
                 break;
             }
         }
+        if (shouldSort()) {
+            sortDisplayList();
+        }
         controller.relayFb(
-            String.format(Constants.CMD_SUCCESS_RESCHEDULED, count + 1),
-            MsgType.SUCCESS);
+                String.format(Constants.CMD_SUCCESS_RESCHEDULED, count + 1),
+                MsgType.SUCCESS);
         logger.fine(String.format(Constants.LOG_RESCHED_SUCCESS, task.getId()));
     }
 
@@ -421,22 +440,27 @@ public class CommandHandler {
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_CANT_RESCHEDULE_UNKNOWN,
-                    MsgType.ERROR);
+                        MsgType.ERROR);
                 logger.fine(Constants.LOG_RESCHE_FAIL_UNKNOWN);
                 break;
             case NON_EXISTENT_ID:
                 // NEED TO CHANGE TO INDEX SOON????
                 controller.relayFb(
-                    String.format(Constants.CMD_ERROR_CANT_RESCHEDULE_NO_ID,
-                        e.getScreenId()), MsgType.ERROR);
+                        String.format(Constants.CMD_ERROR_CANT_RESCHEDULE_NO_ID,
+                                e.getScreenId()), MsgType.ERROR);
                 logger.fine(Constants.LOG_RESCHE_FAIL_NOID);
                 break;
             case NO_CHANGES:
                 controller.relayFb(
-                    Constants.CMD_ERROR_CANT_RESCHEDULE_NO_CHANGES
+                        Constants.CMD_ERROR_CANT_RESCHEDULE_NO_CHANGES
                         + e.getStartDateTime() + " - to - "
                         + e.getEndDateTime() + " -!", MsgType.ERROR);
                 logger.fine(Constants.LOG_RESCHE_FAIL_NOCHANGE);
+                break;
+            case DUPLICATED_TASK:
+                controller.relayFb(Constants.CMD_ERROR_CANT_RESCHEDULE_DUPLICATE,
+                        MsgType.ERROR);
+                logger.fine(String.format(Constants.LOG_RESCHE_FAIL_DUPLICATE));
                 break;
             default:
                 break;
@@ -446,13 +470,15 @@ public class CommandHandler {
     @Subscribe
     public void handleSearchDoneEvent(SearchDoneEvent e) {
 
-        listTasks(e.getResults());
+        listTasks(e.getResults(), false);
 
-        controller.displayStatus = "Search ";
+        switchContext(ListStatus.SEARCH, false);
+
         for (String key : e.getKeywords()) {
-            controller.displayStatus += key;
+            controller.searchCmd += key + " ";
         }
 
+        //controller.switchTabSkin();
         controller.setHighlights(e.getKeywords());
         controller.relayFb(Constants.CMD_SUCCESS_SEARCH, MsgType.SUCCESS);
     }
@@ -460,8 +486,8 @@ public class CommandHandler {
     @Subscribe
     public void handleShowDirectoryEvent(ShowDirectoryEvent e) {
         controller.relayFb(
-            String.format(Constants.CMD_SUCCESS_SHOWDIRECTORY, e.getPwd()),
-            MsgType.SUCCESS);
+                String.format(Constants.CMD_SUCCESS_SHOWDIRECTORY, e.getPwd()),
+                MsgType.SUCCESS);
     }
 
     @Subscribe
@@ -469,16 +495,17 @@ public class CommandHandler {
 
         controller.importantList.clear();
         TaskAttributes task = e.getTask();
-        appendTaskToDisplayList(task);
-        controller.displayStatus = Constants.CTRL_CMD_INCOMPLETE;
+        appendTaskToDisplayList(task, false);
+        switchContext(ListStatus.ALL, false);
+        switchContext(ListStatus.SURPRISE, false);
         controller.relayFb(Constants.CMD_SUCCESS_SURPRISED, MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleUnaliasDoneEvent(UnaliasDoneEvent e) {
         controller.relayFb(
-            String.format(Constants.CMD_SUCCESS_UNALIAS, e.getAlias()),
-            MsgType.SUCCESS);
+                String.format(Constants.CMD_SUCCESS_UNALIAS, e.getAlias()),
+                MsgType.SUCCESS);
     }
 
     @Subscribe
@@ -486,15 +513,15 @@ public class CommandHandler {
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(
-                    String.format(Constants.CMD_ERROR_CANT_UNALIAS_UNKNOWN,
-                        e.getAlias()), MsgType.ERROR);
+                        String.format(Constants.CMD_ERROR_CANT_UNALIAS_UNKNOWN,
+                                e.getAlias()), MsgType.ERROR);
                 // logger.fine(Constants.LOG_RESCHE_FAIL_UNKNOWN);
                 break;
             case NON_EXISTENT_ALIAS:
                 // NEED TO CHANGE TO INDEX SOON????
                 controller.relayFb(
-                    String.format(Constants.CMD_ERROR_CANT_UNALIAS_NO_ALIAS,
-                        e.getAlias()), MsgType.ERROR);
+                        String.format(Constants.CMD_ERROR_CANT_UNALIAS_NO_ALIAS,
+                                e.getAlias()), MsgType.ERROR);
                 // logger.fine(Constants.LOG_RESCHE_FAIL_NOID);
                 break;
             default:
@@ -507,11 +534,11 @@ public class CommandHandler {
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_UNDO_FAIL_UNKNOWN,
-                    MsgType.ERROR);
+                        MsgType.ERROR);
                 break;
             case NONTHING_TO_UNDO:
                 controller.relayFb(Constants.CMD_ERROR_UNDO_FAIL_NO_TASKS,
-                    MsgType.ERROR);
+                        MsgType.ERROR);
                 break;
             default:
                 break;
@@ -532,8 +559,8 @@ public class CommandHandler {
             // logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, num));
         }
         controller.relayFb(
-            String.format(Constants.CMD_SUCCESS_UNMARKED, indexCount + 1),
-            MsgType.SUCCESS);
+                String.format(Constants.CMD_SUCCESS_UNMARKED, indexCount + 1),
+                MsgType.SUCCESS);
     }
 
     @Subscribe
@@ -541,15 +568,15 @@ public class CommandHandler {
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_CANT_UNMARK_UNKNOWN,
-                    MsgType.ERROR);
+                        MsgType.ERROR);
                 // logger.fine(Constants.LOG_DELETE_FAIL_UNKNOWN);
                 break;
             case NON_EXISTENT_ID:
                 // NEED TO CHANGE TO INDEX SOON????
                 for (Integer screenId : e.getInvalidIds()) {
                     controller.relayFb(String.format(
-                        Constants.CMD_ERROR_CANT_UNMARK_NO_ID, screenId),
-                        MsgType.ERROR);
+                            Constants.CMD_ERROR_CANT_UNMARK_NO_ID, screenId),
+                            MsgType.ERROR);
                 }
                 // logger.fine(Constants.LOG_DELETE_FAIL_NOID);
                 break;
@@ -560,10 +587,10 @@ public class CommandHandler {
 
     @Subscribe
     public void handleUseDirectoryDoneEvent(UseDirectoryDoneEvent e) {
-        controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
+        switchContext(ListStatus.INCOMPLETE, true);
         controller.relayFb(
-            String.format(Constants.CMD_SUCCESS_USED, e.getNewDirectory()),
-            MsgType.SUCCESS);
+                String.format(Constants.CMD_SUCCESS_USED, e.getNewDirectory()),
+                MsgType.SUCCESS);
     }
 
     @Subscribe
@@ -571,21 +598,13 @@ public class CommandHandler {
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(
-                    String.format(Constants.CMD_ERROR_USE_FAIL_UNKNOWN,
-                        e.getNewDirectory()), MsgType.ERROR);
+                        String.format(Constants.CMD_ERROR_USE_FAIL_UNKNOWN,
+                                e.getNewDirectory()), MsgType.ERROR);
                 break;
             case INVALID_PATH:
                 controller.relayFb(
-                    String.format(Constants.CMD_ERROR_USE_FAIL_INVALID,
-                        e.getNewDirectory()), MsgType.ERROR);
-                break;
-            case FILE_REPLACED:
-                String fb = "";
-                for (FilePathPair item : e.getFilePathPairs()) {
-                    fb += String.format(Constants.CMD_ERROR_USE_FAIL_REPLACED,
-                        "\n" + item.getOldFilePath(), item.getNewFilePath());
-                }
-                controller.relayFb(fb, MsgType.ERROR);
+                        String.format(Constants.CMD_ERROR_USE_FAIL_INVALID,
+                                e.getNewDirectory()), MsgType.ERROR);
                 break;
             default:
                 break;
@@ -597,15 +616,15 @@ public class CommandHandler {
     }
 
     /**
-     * Sets the display list to the given ArrayList of tasks.
+     * Sets the display list to the given ArrayList of tasks which match the context.
      *
      * @param tasks
      *            the ArrayList of tasks to be displayed
      */
-    private void listTasks(ArrayList<TaskAttributes> tasks) {
+    private void listTasks(ArrayList<TaskAttributes> tasks, boolean shouldCheckContext) {
         controller.importantList.clear();
         for (TaskAttributes task : tasks) {
-            appendTaskToDisplayList(task);
+            appendTaskToDisplayList(task, shouldCheckContext);
         }
     }
 
@@ -614,33 +633,72 @@ public class CommandHandler {
      *
      * @param task
      *            the task to be appended
-     * @return the on-screen ID of the task appended
      */
-    private int appendTaskToDisplayList(TaskAttributes task) {
+    private void appendTaskToDisplayList(TaskAttributes task, boolean shouldCheckContext) {
+        if (shouldCheckContext && !isSameContext(task)) {
+            return;
+        }
 
         int onScreenId = controller.importantList.size() + 1;
         ListItem listItem;
 
-        if (controller.displayStatus.equals(Constants.CTRL_CMD_COMPLETE)
-                || controller.displayStatus.equals(Constants.CTRL_CMD_SURPRISE)
-                || controller.displayStatus.contains(Constants.CTRL_CMD_SEARCH)) {
-            controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
-        }
-
         if (task.isCompleted()) {
             listItem = new ListItem(onScreenId, task, true);
             controller.importantList.add(listItem);
-            controller.importantList.get(controller.importantList.size() - 1)
-                .strikeOut();
+            controller.importantList.get(controller.importantList.size() - 1).strikeOut();
             listItem.strikeOut();
         } else {
             listItem = new ListItem(onScreenId, task, false);
             controller.importantList.add(listItem);
             controller.importantList.get(controller.importantList.size() - 1)
-                .getStyleClass().add("itemBox");
+            .getStyleClass().add("itemBox");
         }
+    }
 
-        controller.checkDueToday(listItem);
-        return onScreenId;
+    private void sortDisplayList() {
+        ArrayList<TaskAttributes> taskList = new ArrayList<TaskAttributes>();
+        controller.importantList.forEach(listItem -> taskList.add(listItem.getItem()));
+        Collections.sort(taskList);
+        listTasks(taskList, false);
+    }
+
+    private boolean shouldSort() {
+        return controller.displayStatus.equals(ListStatus.OVERDUE)
+                || controller.displayStatus.equals(ListStatus.UPCOMING);
+    }
+
+    private boolean isSameContext(TaskAttributes task) {
+        switch (controller.displayStatus) {
+            case ALL:
+                return true;
+            case SEARCH:
+                return false;
+            case SURPRISE:
+                return false;
+            case HELP:
+                return false;
+            case COMPLETE:
+                return task.isCompleted();
+            case INCOMPLETE:
+                return !task.isCompleted();
+            case OVERDUE:
+                return task.isOverdue();
+            case UPCOMING:
+                return task.isUpcoming();
+            default:
+                assert false;
+                return false;
+        }
+    }
+
+    private void switchContext(ListStatus status, Boolean isListing) {
+        if (status.equals(ListStatus.HELP)) {
+            controller.beforeHelp = controller.displayStatus;
+        }
+        controller.displayStatus = status;
+        if (isListing) {
+            controller.transListCmd();
+        }
+        controller.switchTabSkin();
     }
 }

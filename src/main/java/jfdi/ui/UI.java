@@ -3,6 +3,7 @@ package jfdi.ui;
 import com.google.common.eventbus.EventBus;
 
 import jfdi.logic.ControlCenter;
+import jfdi.ui.Constants.ListStatus;
 import jfdi.ui.Constants.MsgType;
 import jfdi.ui.commandhandlers.CommandHandler;
 
@@ -45,9 +46,11 @@ public class UI implements IUserInterface {
     @Override
     public void processInput(String input) {
 
-        // if (input.equalsIgnoreCase("QUIT")) {
-        // System.exit(0);
-        // }
+        if (controller.displayStatus.equals(ListStatus.HELP)) {
+            controller.hideOverlays();
+            controller.displayStatus = controller.beforeHelp;
+            controller.switchTabSkin();
+        }
 
         // Clear controller first
         controller.clearCmdArea();
@@ -63,21 +66,23 @@ public class UI implements IUserInterface {
 
     @Override
     public void displayFeedback(String fb, MsgType type) {
+        controller.clearFb();
+        appendFeedback(fb, type);
+    }
+
+    @Override
+    public void appendFeedback(String fb, MsgType type) {
         switch (type) {
             case SUCCESS:
-                controller.clearFb();
                 showToUser(String.format(Constants.UI_MESSAGE_RESPONSE, fb));
                 break;
             case WARNING:
-                controller.clearFb();
                 showToUser(String.format(Constants.UI_MESSAGE_WARNING, fb));
                 break;
             case ERROR:
-                controller.clearFb();
                 showToUser(String.format(Constants.UI_MESSAGE_ERROR, fb));
                 break;
             case EXIT:
-                controller.clearFb();
                 showToUser(Constants.UI_MESSAGE_QUIT);
                 break;
             default:

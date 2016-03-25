@@ -109,10 +109,14 @@ public class MainSetUp extends Application {
 
 <<<<<<< Updated upstream
         //controller.importantList.removeAll(controller.importantList);
+<<<<<<< HEAD
         controller.initSideContent();
 =======
         // controller.importantList.removeAll(controller.importantList);
 >>>>>>> Stashed changes
+=======
+        controller.hideOverlays();
+>>>>>>> master
         controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
         ui.displayWelcome();
     }

@@ -9,6 +9,7 @@ import jfdi.logic.events.DeleteTaskFailedEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
+import jfdi.storage.exceptions.DuplicateTaskException;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.ui.UI;
 
@@ -70,8 +71,8 @@ public class DeleteTaskCommand extends Command {
                 } catch (InvalidIdException e) {
                     // Should not happen
                 assert false;
-                }
-            });
+            }
+        })  ;
 
             pushToUndoStack();
             eventBus.post(new DeleteTaskDoneEvent(screenIds, deletedTasks));
@@ -85,7 +86,7 @@ public class DeleteTaskCommand extends Command {
         deletedTasks.stream().forEach(task -> {
             try {
                 TaskDb.getInstance().undestroy(task.getId());
-            } catch (InvalidIdException e) {
+            } catch (InvalidIdException | DuplicateTaskException e) {
                 assert false;
             }
         });

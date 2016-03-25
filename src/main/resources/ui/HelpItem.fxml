@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 
-<fx:root alignment="CENTER_LEFT" prefWidth="350.0" styleClass="helpItem" type="HBox" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+
+<fx:root maxWidth="510.0" style="-fx-background-color: #faebcd;" styleClass="helpItem" type="VBox" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="description" focusTraversable="false" text="Description" />
-      <HBox alignment="CENTER_RIGHT" nodeOrientation="LEFT_TO_RIGHT" HBox.hgrow="ALWAYS">
-         <children>
-            <Label fx:id="command" alignment="CENTER_RIGHT" focusTraversable="false" nodeOrientation="LEFT_TO_RIGHT" text="Command" HBox.hgrow="ALWAYS" />
-         </children>
-      </HBox>
+      <Label fx:id="description" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="530.0" text="Description" textAlignment="CENTER">
+         <VBox.margin>
+            <Insets bottom="5.0" />
+         </VBox.margin>
+      </Label>
+      <Label fx:id="command" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" nodeOrientation="LEFT_TO_RIGHT" prefWidth="530.0" text="Command" textAlignment="CENTER">
+         <VBox.margin>
+            <Insets bottom="5.0" />
+         </VBox.margin>
+      </Label>
+      <Line endX="455.0" startX="-15.0" stroke="#434343" strokeLineCap="ROUND" translateX="30.0">
+         <VBox.margin>
+            <Insets bottom="5.0" />
+         </VBox.margin>
+      </Line>
    </children>
+   <stylesheets>
+      <URL value="@jfdiLook.css" />
+   </stylesheets>
 </fx:root>

@@ -1,3 +1,5 @@
+//@@author A0121621Y
+
 package jfdi.storage.apis;
 
 import java.time.LocalDateTime;
@@ -6,6 +8,7 @@ import java.util.Objects;
 
 import jfdi.storage.Constants;
 import jfdi.storage.entities.Task;
+import jfdi.storage.exceptions.DuplicateTaskException;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
@@ -16,7 +19,7 @@ import jfdi.storage.exceptions.NoAttributesChangedException;
  * @author Thng Kai Yuan
  *
  */
-public class TaskAttributes {
+public class TaskAttributes implements Comparable<TaskAttributes> {
 
     // Attributes of a Task
     private Integer id = null;
@@ -92,11 +95,48 @@ public class TaskAttributes {
      * @throws InvalidIdException
      *             if the ID stored in the attributes object is invalid (e.g.
      *             null or does not exist)
+     * @throws DuplicateTaskException
+     *             if a similar task already exists in the database
      */
     public void save() throws InvalidTaskParametersException, NoAttributesChangedException,
-            InvalidIdException {
+            InvalidIdException, DuplicateTaskException {
         validateAttributes();
         TaskDb.getInstance().createOrUpdate(this);
+    }
+
+    /**
+     * Checks if the TaskAttributes is overdue.
+     *
+     * @return a boolean indicating if the TaskAttributes is overdue
+     */
+    public boolean isOverdue() {
+        if (getStartElseEndDate() == null) {
+            return false;
+        }
+        return !isCompleted() && getStartElseEndDate().isBefore(LocalDateTime.now());
+    }
+
+    /**
+     * Checks if the TaskAttributes is upcoming.
+     *
+     * @return a boolean indicating if the TaskAttributes is upcoming
+     */
+    public boolean isUpcoming() {
+        if (getStartElseEndDate() == null) {
+            return false;
+        }
+        return !isCompleted() && !isOverdue()
+                && getStartElseEndDate().isBefore(Constants.LOCALDATETIME_UPCOMING);
+    }
+
+    /**
+     * @return the start date-time if it is not null, otherwise the end date-time
+     */
+    private LocalDateTime getStartElseEndDate() {
+        if (getStartDateTime() != null) {
+            return getStartDateTime();
+        }
+        return getEndDateTime();
     }
 
     /**
@@ -154,11 +194,48 @@ public class TaskAttributes {
      */
     public boolean equalTo(Task task) {
         assert task != null;
-        return Objects.equals(this.id, task.getId())
-                && Objects.equals(this.description, task.getDescription())
+        return Objects.equals(this.id, task.getId()) && similarTo(task);
+    }
+
+    /**
+     * This method allows one to compare the properties of a TaskAttributes with a Task.
+     *
+     * @param task
+     *            the Task to be compared with
+     * @return a boolean indicating if the existing TaskAttributes has the same
+     *         properties (excluding ID) as the Task compared
+     */
+    public boolean similarTo(Task task) {
+        assert task != null;
+        return Objects.equals(this.description, task.getDescription())
                 && Objects.equals(this.startDateTime, task.getStartDateTime())
                 && Objects.equals(this.endDateTime, task.getEndDateTime())
                 && this.isCompleted == task.isCompleted();
+    }
+
+    @Override
+    public int hashCode() {
+        return getStartElseEndDate().hashCode();
+    }
+
+    @Override
+    public int compareTo(TaskAttributes taskAttributes) {
+        assert getStartElseEndDate() != null && taskAttributes.getStartElseEndDate() != null;
+        return getStartElseEndDate().compareTo(taskAttributes.getStartElseEndDate());
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == null || !(object instanceof TaskAttributes)) {
+            return false;
+        }
+        if (object == this) {
+            return true;
+        }
+
+        TaskAttributes taskAttributes = (TaskAttributes) object;
+        assert getStartElseEndDate() != null && taskAttributes.getStartElseEndDate() != null;
+        return this.getStartElseEndDate().equals(taskAttributes.getStartElseEndDate());
     }
 
 }

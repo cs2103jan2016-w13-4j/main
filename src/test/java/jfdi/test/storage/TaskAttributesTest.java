@@ -1,9 +1,13 @@
+//@@author A0121621Y
+
 package jfdi.test.storage;
 
 import static org.junit.Assert.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import jfdi.storage.Constants;
 import jfdi.storage.apis.MainStorage;
@@ -11,12 +15,14 @@ import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
 import jfdi.storage.entities.Task;
 import jfdi.storage.exceptions.InvalidIdException;
+import jfdi.storage.exceptions.DuplicateTaskException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
 
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Collections;
 
 public class TaskAttributesTest {
 
@@ -66,11 +72,31 @@ public class TaskAttributesTest {
         assertEquals(task.getEndDateTime(), taskAttributes.getEndDateTime());
     }
 
+    @Test
+    public void testIsValid() throws Exception {
+        // An invalid TaskAttributes (e.g. no description) should return false
+        TaskAttributes taskAttributes = new TaskAttributes();
+        assertFalse(taskAttributes.isValid());
+
+        // A valid TaskAttributes should return true
+        taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        assertTrue(taskAttributes.isValid());
+    }
+
     @Test(expected = InvalidTaskParametersException.class)
     public void testInvalidParametersSave() throws Exception {
         // Save an invalid TaskAttributes object (without parameters)
         // This should throw an exception
         new TaskAttributes().save();
+    }
+
+    @Test(expected = InvalidTaskParametersException.class)
+    public void testStartAfterEndDateTime() throws Exception {
+        // Save a task with start date after end date
+        TaskAttributes taskAttributes = new TaskAttributes();
+        taskAttributes.setStartDateTime(Constants.TEST_TASK_ENDDATETIME);
+        taskAttributes.setEndDateTime(Constants.TEST_TASK_STARTDATETIME);
+        taskAttributes.save();
     }
 
     @Test(expected = NoAttributesChangedException.class)
@@ -82,6 +108,21 @@ public class TaskAttributesTest {
 
         // Call a second save with no changes
         // This should throw an exception
+        taskAttributes.save();
+    }
+
+    @Test(expected = DuplicateTaskException.class)
+    public void testSaveDuplicateTasks() throws Exception {
+        // Save the first Task
+        TaskAttributes taskAttributes = new TaskAttributes();
+        taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        taskAttributes.setStartDateTime(Constants.TEST_TASK_STARTDATETIME);
+        taskAttributes.setEndDateTime(Constants.TEST_TASK_ENDDATETIME);
+        taskAttributes.save();
+
+        // Save another identical Task
+        // This should trigger the exception
+        taskAttributes.setId(null);
         taskAttributes.save();
     }
 
@@ -179,6 +220,130 @@ public class TaskAttributesTest {
 
         // Make sure they are equivalent
         assertTrue(taskAttributes.equalTo(task));
+    }
+
+    @Test
+    public void testIsOverdueAndIsUpcoming() throws Exception {
+        // Task 1 has start date-time which is overdue
+        TaskAttributes task1 = new TaskAttributes();
+        task1.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task1.setStartDateTime(LocalDateTime.now().minusDays(1));
+        assertTrue(task1.isOverdue());
+        assertFalse(task1.isUpcoming());
+
+        // A completed task should not be upcoming/overdue
+        task1.setCompleted(true);
+        assertFalse(task1.isOverdue());
+        assertFalse(task1.isUpcoming());
+
+        // Task 2 has start date-time which is upcoming
+        TaskAttributes task2 = new TaskAttributes();
+        task2.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task2.setStartDateTime(LocalDateTime.now().plusDays(1));
+        assertFalse(task2.isOverdue());
+        assertTrue(task2.isUpcoming());
+
+        // A completed task should not be upcoming/overdue
+        task2.setCompleted(true);
+        assertFalse(task2.isOverdue());
+        assertFalse(task2.isUpcoming());
+
+        // Task 3 has end date-time which is overdue
+        TaskAttributes task3 = new TaskAttributes();
+        task3.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task3.setEndDateTime(LocalDateTime.now().minusDays(1));
+        assertTrue(task3.isOverdue());
+        assertFalse(task3.isUpcoming());
+
+        // A completed task should not be upcoming/overdue
+        task3.setCompleted(true);
+        assertFalse(task3.isOverdue());
+        assertFalse(task3.isUpcoming());
+
+        // Task 4 has end date-time which is upcoming
+        TaskAttributes task4 = new TaskAttributes();
+        task4.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task4.setEndDateTime(LocalDateTime.now().plusDays(1));
+        assertFalse(task4.isOverdue());
+        assertTrue(task4.isUpcoming());
+
+        // A completed task should not be upcoming/overdue
+        task4.setCompleted(true);
+        assertFalse(task4.isOverdue());
+        assertFalse(task4.isUpcoming());
+
+        // Task 5 is an event which started 1 day ago (overdue)
+        TaskAttributes task5 = new TaskAttributes();
+        task5.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task5.setStartDateTime(LocalDateTime.now().minusDays(1));
+        task5.setEndDateTime(LocalDateTime.now().plusDays(1));
+        assertTrue(task5.isOverdue());
+        assertFalse(task5.isUpcoming());
+
+        // A completed task should not be upcoming/overdue
+        task5.setCompleted(true);
+        assertFalse(task5.isOverdue());
+        assertFalse(task5.isUpcoming());
+
+        // Task 6 is an event which will start 1 day later (upcoming)
+        TaskAttributes task6 = new TaskAttributes();
+        task6.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task6.setStartDateTime(LocalDateTime.now().plusDays(1));
+        task6.setEndDateTime(LocalDateTime.now().plusDays(2));
+        assertFalse(task6.isOverdue());
+        assertTrue(task6.isUpcoming());
+
+        // A completed task should not be upcoming/overdue
+        task6.setCompleted(true);
+        assertFalse(task6.isOverdue());
+        assertFalse(task6.isUpcoming());
+
+        // A floating task should not be upcoming/overdue
+        TaskAttributes task7 = new TaskAttributes();
+        task7.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        assertFalse(task7.isOverdue());
+        assertFalse(task7.isUpcoming());
+    }
+
+    @Test
+    public void testSorting() {
+        // Add the earliest event
+        TaskAttributes task1 = new TaskAttributes();
+        task1.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task1.setStartDateTime(LocalDateTime.now().minusDays(7));
+        task1.setEndDateTime(LocalDateTime.now().plusDays(7));
+
+        // Add the second earliest point task
+        TaskAttributes task2 = new TaskAttributes();
+        task2.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task2.setStartDateTime(LocalDateTime.now().minusDays(6));
+
+        // Add the latest deadline task
+        TaskAttributes task3 = new TaskAttributes();
+        task3.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task3.setEndDateTime(LocalDateTime.now().minusDays(4));
+
+        // Add the second latest event
+        TaskAttributes task4 = new TaskAttributes();
+        task4.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task4.setStartDateTime(LocalDateTime.now().minusDays(5));
+        task4.setEndDateTime(LocalDateTime.now().minusDays(4));
+
+        // Add the TaskAttributes to an ArrayList
+        ArrayList<TaskAttributes> taskAttributes = new ArrayList<TaskAttributes>();
+        taskAttributes.add(task4);
+        taskAttributes.add(task3);
+        taskAttributes.add(task2);
+        taskAttributes.add(task1);
+
+        // Command under test
+        Collections.sort(taskAttributes);
+
+        // Check that the TaskAttributes are correctly sorted
+        assertEquals(0, taskAttributes.indexOf(task1));
+        assertEquals(1, taskAttributes.indexOf(task2));
+        assertEquals(2, taskAttributes.indexOf(task4));
+        assertEquals(3, taskAttributes.indexOf(task3));
     }
 
     /**

@@ -1,3 +1,5 @@
+//@@author A0121621Y
+
 package dummy;
 
 /**
@@ -8,7 +10,7 @@ package dummy;
 public class Dummy {
 
     /**
-     * @return true, alawys.
+     * @return true, always.
      */
     public boolean isPresent() {
         return true;

@@ -8,7 +8,7 @@ public class Constants {
     public static final String UI_MESSAGE_INIT = "Initializing UI...";
     public static final String UI_MESSAGE_INITED = "Initialization Completed!";
     public static final String UI_MESSAGE_GREETING = "\nJ.F.D.I. : Hello there! Nice to see you again! :)";
-    public static final String UI_MESSAGE_WELCOME = "\nJ.F.D.I. : What can I do for you?";
+    public static final String UI_MESSAGE_WELCOME = "\nJ.F.D.I. : If you need help, just type \"help\" :)";
     public static final String UI_MESSAGE_USERCMD = "\nYou said: %1$s";
     public static final String UI_MESSAGE_RESPONSE = "\nJ.F.D.I. : %1$s";
     public static final String UI_MESSAGE_WARNING = "\nWarning: %1$s";

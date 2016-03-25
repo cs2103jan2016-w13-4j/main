@@ -5,7 +5,7 @@ public class Constants {
     public static final String UI_MESSAGE_INIT = "Initializing UI...";
     public static final String UI_MESSAGE_INITED = "Initialization Completed!";
     public static final String UI_MESSAGE_GREETING = "J.F.D.I. : Hello there! Nice to see you again! :)";
-    public static final String UI_MESSAGE_WELCOME = "J.F.D.I. : What can I do for you?";
+    public static final String UI_MESSAGE_WELCOME = "\nJ.F.D.I. : What can I do for you?";
     public static final String UI_MESSAGE_USERCMD = "You said: %1$s";
     public static final String UI_MESSAGE_RESPONSE = "J.F.D.I. : %1$s";
     public static final String UI_MESSAGE_WARNING = "Warning: %1$s";
@@ -89,7 +89,7 @@ public class Constants {
     public static final String CMD_SUCCESS_REDONE = "Previous command - %s - redone! :)";
     public static final String CMD_SUCCESS_UNDONE = "Previous command - %s - undone! :)";
     public static final String CMD_SUCCESS_DELETED = "Task(s) deleted! :)";
-    public static final String CMD_SUCCESS_HELP = "J.F.D.I TO THE RESCUE!!! :D";
+    public static final String CMD_SUCCESS_HELP = "TO THE RESCUE!!! :D";
     public static final String CMD_SUCCESS_LISTED = "Here is your requested list! :)";
     public static final String CMD_SUCCESS_MARKED = "Task(s) completed! Good job! :)";
     public static final String CMD_SUCCESS_MOVED = "The location of your files has been moved to %s ! :)";
@@ -175,7 +175,9 @@ public class Constants {
     public static final String HELP_MOVE_DIR_DESC = "Move existing program data to another directory";
     public static final String HELP_MOVE_DIR_COMMAND = "move <new directory>";
     public static final String HELP_UP_DOWN_DESC = "Scroll through your previous commands";
-    public static final String HELP_UP_DOWN_COMMAND = "↑/↓";
+    public static final String HELP_UP_DOWN_COMMAND = "\u25b2 / \u25bC";
+    public static final String HELP_PAGE_UP_DOWN_DESC = "Scroll through your task list and help list";
+    public static final String HELP_PAGE_UP_DOWN_COMMAND = "page up / page down";
     public static final String HELP_EXIT_DESC = "GET OUT OF JFDI";
     public static final String HELP_EXIT_COMMAND = "quit";
 

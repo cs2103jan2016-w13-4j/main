@@ -1,7 +1,7 @@
 package jfdi.logic.commands;
 
 import jfdi.logic.events.UnaliasDoneEvent;
-import jfdi.logic.events.UnaliasFailEvent;
+import jfdi.logic.events.UnaliasFailedEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.InputParser;
 import jfdi.storage.apis.AliasAttributes;
@@ -49,7 +49,7 @@ public class UnaliasCommand extends Command {
             pushToUndoStack();
             eventBus.post(new UnaliasDoneEvent(alias));
         } catch (InvalidAliasException e) {
-            eventBus.post(new UnaliasFailEvent(alias, UnaliasFailEvent.Error.NON_EXISTENT_ALIAS));
+            eventBus.post(new UnaliasFailedEvent(alias, UnaliasFailedEvent.Error.NON_EXISTENT_ALIAS));
         }
     }
 

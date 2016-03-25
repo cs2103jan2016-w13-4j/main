@@ -1,6 +1,6 @@
 package jfdi.test.logic.events;
 
-import jfdi.logic.events.UnaliasFailEvent;
+import jfdi.logic.events.UnaliasFailedEvent;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -8,11 +8,11 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Xinan
  */
-public class UnaliasFailEventTest {
+public class UnaliasFailedEventTest {
 
     private String alias = "alias";
-    private UnaliasFailEvent.Error error = UnaliasFailEvent.Error.NON_EXISTENT_ALIAS;
-    private UnaliasFailEvent event = new UnaliasFailEvent(alias, error);
+    private UnaliasFailedEvent.Error error = UnaliasFailedEvent.Error.NON_EXISTENT_ALIAS;
+    private UnaliasFailedEvent event = new UnaliasFailedEvent(alias, error);
 
     public void getAlias() throws Exception {
         assertEquals(alias, event.getAlias());

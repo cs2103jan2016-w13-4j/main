@@ -12,7 +12,8 @@ import jfdi.parser.Constants.TaskType;
 import jfdi.parser.DateTimeObject.DateTimeObjectBuilder;
 import jfdi.parser.exceptions.BadDateTimeException;
 
-import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
+import com.joestelmach.natty.DateGroup;
+import com.joestelmach.natty.Parser;
 
 /**
  * DateTimeParser is a class used to parse a string input into one a list of
@@ -81,7 +82,7 @@ public class DateTimeParser {
         TaskType taskType = getTaskType(input);
         System.out.println(taskType);
         input = formatDateTimeInput(input);
-        System.out.println(input);
+        System.out.println("After formatting: " + input);
 
         LocalDateTime startDateTime = null;
         LocalDateTime endDateTime = null;
@@ -226,11 +227,11 @@ public class DateTimeParser {
      */
     private LocalDateTime getLocalDateTime(String input) {
         assert input != null;
-        PrettyTimeParser parser = new PrettyTimeParser();
-        List<Date> dateList = parser.parse(input);
+        Parser parser = new Parser();
+        List<DateGroup> dateList = parser.parse(input);
         assert dateList.size() == 1;
         dateList.stream().forEach(System.out::println);
-        return getLocalDateTimeFromDate(dateList.get(0));
+        return getLocalDateTimeFromDate(dateList.get(0).getDates().get(0));
     }
 
     /**
@@ -242,7 +243,8 @@ public class DateTimeParser {
      * @return true if time is specified; false otherwise.
      */
     private boolean checkTimeSpecified(String input) {
-        Pattern pattern = Pattern.compile(Constants.REGEX_TIME_FORMAT);
+        Pattern pattern = Pattern.compile(Constants.REGEX_TIME_FORMAT + "|"
+            + Constants.REGEX_TIME_ATTRIBUTES);
         Matcher matcher = pattern.matcher(input);
         return matcher.find();
     }

@@ -82,12 +82,9 @@ public class DateTimeParser {
 
         TaskType taskType = getTaskType(input);
         System.out.println(taskType);
-        input = formatDate(input);
-        input = formatTime(input);
-        input = toAmericanTime(input);
+        input = formatDateTimeInput(input);
         System.out.println(input);
-        // This might not be sufficient for event tasks
-        // TODO: create methods for individual task type
+
         List<Date> dateList = getDateList(input);
         List<LocalDateTime> dateTimeList = toLocalDateTime(dateList);
 
@@ -147,6 +144,14 @@ public class DateTimeParser {
         DateTimeObject dateTimeObject = dateTimeObjectBuilder.build();
 
         return dateTimeObject;
+    }
+
+    private String formatDateTimeInput(String input) {
+        assert isValidDateTime(input);
+        input = formatDate(input);
+        input = formatTime(input);
+        input = toAmericanTime(input);
+        return input;
     }
 
     /**
@@ -231,6 +236,7 @@ public class DateTimeParser {
         assert input != null;
         PrettyTimeParser parser = new PrettyTimeParser();
         List<Date> dateList = parser.parse(input);
+        dateList.stream().forEach(System.out::println);
         return dateList;
     }
 

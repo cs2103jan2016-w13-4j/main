@@ -56,9 +56,10 @@ public class DateTimeParserTest {
         Assert.assertNull(res.getStartDateTime());
 
         // Check end date time is corrently parsed
-        checkMatchingDateTime(res.getEndDateTime(), getCurrentYearPlus(1),
-            getCurrentMonthPlus(0), getCurrentDayPlus(0), DEFAULT_HOUR,
-            DEFAULT_MINUTES);
+        LocalDateTime expectedDateTime = getCurrentDatePlus(1, 0, 0, 0, 0, 0);
+        checkMatchingDateTime(res.getEndDateTime(), expectedDateTime.getYear(),
+            expectedDateTime.getMonth(), expectedDateTime.getDayOfMonth(),
+            DEFAULT_HOUR, DEFAULT_MINUTES);
 
         res = parseDateTime("by 1 month later");
 
@@ -66,9 +67,10 @@ public class DateTimeParserTest {
         Assert.assertNull(res.getStartDateTime());
 
         // Check end date time is corrently parsed
-        checkMatchingDateTime(res.getEndDateTime(), getCurrentYearPlus(0),
-            getCurrentMonthPlus(1), getCurrentDayPlus(0), DEFAULT_HOUR,
-            DEFAULT_MINUTES);
+        expectedDateTime = getCurrentDatePlus(0, 1, 0, 0, 0, 0);
+        checkMatchingDateTime(res.getEndDateTime(), expectedDateTime.getYear(),
+            expectedDateTime.getMonth(), expectedDateTime.getDayOfMonth(),
+            DEFAULT_HOUR, DEFAULT_MINUTES);
 
         res = parseDateTime("by tomorrow");
 
@@ -76,9 +78,10 @@ public class DateTimeParserTest {
         Assert.assertNull(res.getStartDateTime());
 
         // Check end date time is corrently parsed
-        checkMatchingDateTime(res.getEndDateTime(), getCurrentYearPlus(0),
-            getCurrentMonthPlus(0), getCurrentDayPlus(1), DEFAULT_HOUR,
-            DEFAULT_MINUTES);
+        expectedDateTime = getCurrentDatePlus(0, 0, 0, 1, 0, 0);
+        checkMatchingDateTime(res.getEndDateTime(), expectedDateTime.getYear(),
+            expectedDateTime.getMonth(), expectedDateTime.getDayOfMonth(),
+            DEFAULT_HOUR, DEFAULT_MINUTES);
     }
 
     // Relative date time queries
@@ -92,17 +95,20 @@ public class DateTimeParserTest {
         Assert.assertNull(res.getStartDateTime());
 
         // Check end date time is corrently parsed
-        checkMatchingDateTime(res.getEndDateTime(), getCurrentYearPlus(0),
-            getCurrentMonthPlus(0), getCurrentDayPlus(1), 18, 32);
-
+        LocalDateTime expectedDateTime = getCurrentDatePlus(0, 0, 0, 1, 0, 0);
+        checkMatchingDateTime(res.getEndDateTime(), expectedDateTime.getYear(),
+            expectedDateTime.getMonth(), expectedDateTime.getDayOfMonth(), 18,
+            32);
         res = parseDateTime("by 3 days later, 1100pm");
 
         // Start date-time should be null
         Assert.assertNull(res.getStartDateTime());
 
         // Check end date time is corrently parsed
-        checkMatchingDateTime(res.getEndDateTime(), getCurrentYearPlus(0),
-            getCurrentMonthPlus(0), getCurrentDayPlus(3), 23, 0);
+        expectedDateTime = getCurrentDatePlus(0, 0, 0, 3, 0, 0);
+        checkMatchingDateTime(res.getEndDateTime(), expectedDateTime.getYear(),
+            expectedDateTime.getMonth(), expectedDateTime.getDayOfMonth(), 23,
+            00);
 
         res = parseDateTime("by 23:00h 3 days later");
 
@@ -110,8 +116,10 @@ public class DateTimeParserTest {
         Assert.assertNull(res.getStartDateTime());
 
         // Check end date time is corrently parsed
-        checkMatchingDateTime(res.getEndDateTime(), getCurrentYearPlus(0),
-            getCurrentMonthPlus(0), getCurrentDayPlus(3), 23, 0);
+        expectedDateTime = getCurrentDatePlus(0, 0, 0, 3, 0, 0);
+        checkMatchingDateTime(res.getEndDateTime(), expectedDateTime.getYear(),
+            expectedDateTime.getMonth(), expectedDateTime.getDayOfMonth(), 23,
+            00);
 
     }
 
@@ -126,8 +134,10 @@ public class DateTimeParserTest {
         Assert.assertNull(res.getEndDateTime());
 
         // Check end date time is corrently parsed
-        checkMatchingDateTime(res.getStartDateTime(), getCurrentYearPlus(0),
-            getCurrentMonthPlus(1), getCurrentDayPlus(0), 23, 00);
+        LocalDateTime expectedDateTime = getCurrentDatePlus(0, 1, 0, 0, 0, 0);
+        checkMatchingDateTime(res.getStartDateTime(),
+            expectedDateTime.getYear(), expectedDateTime.getMonth(),
+            expectedDateTime.getDayOfMonth(), 23, 00);
 
         res = parseDateTime("11pm, tomorrow");
 
@@ -135,9 +145,44 @@ public class DateTimeParserTest {
         Assert.assertNull(res.getEndDateTime());
 
         // Check end date time is corrently parsed
-        checkMatchingDateTime(res.getStartDateTime(), getCurrentYearPlus(0),
-            getCurrentMonthPlus(0), getCurrentDayPlus(1), 23, 00);
+        expectedDateTime = getCurrentDatePlus(0, 0, 0, 1, 0, 0);
+        checkMatchingDateTime(res.getStartDateTime(),
+            expectedDateTime.getYear(), expectedDateTime.getMonth(),
+            expectedDateTime.getDayOfMonth(), 23, 00);
 
+    }
+
+    // Relative date time queries
+    // Event Task
+    // Without time specified
+    @Test
+    public void testParseRelativeQueries4() {
+        DateTimeObject res = parseDateTime("From tomorrow to 4 days later");
+
+        // Check start date time is corrently parsed
+        LocalDateTime expectedDateTime = getCurrentDatePlus(0, 0, 0, 1, 0, 0);
+        checkMatchingDateTime(res.getStartDateTime(),
+            expectedDateTime.getYear(), expectedDateTime.getMonth(),
+            expectedDateTime.getDayOfMonth(), BEGINNING_HOUR, BEGINNING_MINUTES);
+        // Check end date time is corrently parsed
+        expectedDateTime = getCurrentDatePlus(0, 0, 0, 4, 0, 0);
+        checkMatchingDateTime(res.getEndDateTime(), expectedDateTime.getYear(),
+            expectedDateTime.getMonth(), expectedDateTime.getDayOfMonth(),
+            END_HOUR, END_MINUTES);
+
+        res = parseDateTime("From yesterday to 3 weeks later");
+
+        // Check start date time is corrently parsed
+        expectedDateTime = getCurrentDatePlus(0, 0, 0, -1, 0, 0);
+        checkMatchingDateTime(res.getStartDateTime(),
+            expectedDateTime.getYear(), expectedDateTime.getMonth(),
+            expectedDateTime.getDayOfMonth(), BEGINNING_HOUR, BEGINNING_MINUTES);
+
+        // Check end date time is corrently parsed
+        expectedDateTime = getCurrentDatePlus(0, 0, 3, 0, 0, 0);
+        checkMatchingDateTime(res.getEndDateTime(), expectedDateTime.getYear(),
+            expectedDateTime.getMonth(), expectedDateTime.getDayOfMonth(),
+            END_HOUR, END_MINUTES);
     }
 
     // Explicit date time queries
@@ -212,15 +257,6 @@ public class DateTimeParserTest {
         checkMatchingDateTime(res.getEndDateTime(), 1997, MONTH[12], 23,
             END_HOUR, END_MINUTES);
 
-        res = parseDateTime("From 3pm to 8pm");
-
-        // Check start date time is corrently parsed
-        checkMatchingDateTime(res.getStartDateTime(), getCurrentYearPlus(0),
-            getCurrentMonthPlus(0), getCurrentDayPlus(0), 15, 00);
-
-        // Check end date time is corrently parsed
-        checkMatchingDateTime(res.getEndDateTime(), getCurrentYearPlus(0),
-            getCurrentMonthPlus(0), getCurrentDayPlus(0), 20, 00);
     }
 
     // Explicit date time queries
@@ -245,6 +281,21 @@ public class DateTimeParserTest {
         // Check end date time is corrently parsed
         checkMatchingDateTime(res.getEndDateTime(), 2016, Month.DECEMBER, 23,
             12, 34);
+
+        res = parseDateTime("From 3pm to 8pm");
+
+        // Check start date time is corrently parsed
+        LocalDateTime expectedDateTime = getCurrentDate();
+        checkMatchingDateTime(res.getStartDateTime(),
+            expectedDateTime.getYear(), expectedDateTime.getMonth(),
+            expectedDateTime.getDayOfMonth(), 15, 00);
+
+        // Check end date time is corrently parsed
+        expectedDateTime = getCurrentDate();
+        checkMatchingDateTime(res.getEndDateTime(), expectedDateTime.getYear(),
+            expectedDateTime.getMonth(), expectedDateTime.getDayOfMonth(), 20,
+            00);
+
     }
 
     @Test(expected = BadDateTimeException.class)
@@ -288,24 +339,15 @@ public class DateTimeParserTest {
         Assert.assertEquals(hour, res.getHour());
     }
 
-    private int getCurrentYearPlus(int i) {
-        return LocalDateTime.now().plusYears(i).getYear();
+    private LocalDateTime getCurrentDatePlus(int addYears, int addMonths,
+        int addWeeks, int addDays, int addHours, int addMinutes) {
+        return LocalDateTime.now().plusYears(addYears).plusMonths(addMonths)
+            .plusWeeks(addWeeks).plusDays(addDays).plusHours(addHours)
+            .plusMinutes(addMinutes);
     }
 
-    private Month getCurrentMonthPlus(int i) {
-        return LocalDateTime.now().plusMonths(i).getMonth();
-    }
-
-    private int getCurrentDayPlus(int i) {
-        return LocalDateTime.now().plusDays(i).getDayOfMonth();
-    }
-
-    private int getCurrentHourPlus(int i) {
-        return LocalDateTime.now().plusHours(i).getHour();
-    }
-
-    private int getCurrentMinutesPlus(int i) {
-        return LocalDateTime.now().plusMinutes(i).getMinute();
+    private LocalDateTime getCurrentDate() {
+        return LocalDateTime.now();
     }
 
 }

@@ -58,6 +58,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         TaskAttributes task = e.getTask();
         appendTaskToDisplayList(task, true);
         if (shouldSort()) {
@@ -73,6 +79,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleAddTaskFailEvent(AddTaskFailedEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_CANT_ADD_UNKNOWN,
@@ -96,6 +108,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleAliasDoneEvent(AliasDoneEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         controller.relayFb(
             String.format(Constants.CMD_SUCCESS_ALIAS, e.getAlias(),
                 e.getCommand()), MsgType.SUCCESS);
@@ -103,6 +121,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleAliasFailEvent(AliasFailedEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         switch (e.getError()) {
             case INVALID_PARAMETERS:
                 controller.relayFb(
@@ -129,17 +153,28 @@ public class CommandHandler {
 
     @Subscribe
     public void handleCommandRedoneEvent(CommandRedoneEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         Class<? extends Command> cmdType = e.getCommandType();
         switchContext(controller.displayStatus, true);
         controller.relayFb(
             String.format(Constants.CMD_SUCCESS_REDONE, cmdType.toString()),
             MsgType.SUCCESS);
         controller.updateNotiBubbles();
-
     }
 
     @Subscribe
     public void handleCommandUndoneEvent(CommandUndoneEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         Class<? extends Command> cmdType = e.getCommandType();
         switchContext(controller.displayStatus, true);
         controller.relayFb(
@@ -150,6 +185,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleDeleteTaskDoneEvent(DeleteTaskDoneEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         ArrayList<Integer> deletedIds = e.getDeletedIds();
         Collections.sort(deletedIds, Comparator.reverseOrder());
 
@@ -169,11 +210,16 @@ public class CommandHandler {
             indexCount++;
         }
         controller.updateNotiBubbles();
-
     }
 
     @Subscribe
     public void handleDeleteTaskFailEvent(DeleteTaskFailedEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_CANT_DELETE_UNKNOWN,
@@ -195,6 +241,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleExitCalledEvent(ExitCalledEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         System.out.printf("\nMoriturus te saluto.\n");
         System.exit(0);
         logger.fine(Constants.LOG_USER_EXIT);
@@ -202,6 +254,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleHelpRequestEvent(HelpRequestedEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         switchContext(ListStatus.HELP, false);
         controller.showHelpDisplay();
         controller.relayFb(Constants.CMD_SUCCESS_HELP, MsgType.SUCCESS);
@@ -216,11 +274,16 @@ public class CommandHandler {
         }
         controller.appendFb(fb, MsgType.WARNING);
         controller.updateNotiBubbles();
-
     }
 
     @Subscribe
     public void handleInitializationFailedEvent(InitializationFailedEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_INIT_FAIL_UNKNOWN,
@@ -238,6 +301,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleInvalidCommandEvent(InvalidCommandEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         controller.relayFb(
             String.format(Constants.CMD_WARNING_DONTKNOW, e.getInputString()),
             MsgType.WARNING);
@@ -246,36 +315,45 @@ public class CommandHandler {
 
     @Subscribe
     public void handleListDoneEvent(ListDoneEvent e) {
-
-        if (!controller.isUpdate) {
-            switch (e.getListType()) {
-                case ALL:
-                    switchContext(ListStatus.ALL, false);
-                    break;
-                case COMPLETED:
-                    switchContext(ListStatus.COMPLETE, false);
-                    break;
-                case INCOMPLETE:
-                    switchContext(ListStatus.INCOMPLETE, false);
-                    break;
-                case OVERDUE:
-                    switchContext(ListStatus.OVERDUE, false);
-                    break;
-                case UPCOMING:
-                    switchContext(ListStatus.UPCOMING, false);
-                    break;
-                default:
-                    break;
-            }
-            listTasks(e.getItems(), false);
-            controller.relayFb(Constants.CMD_SUCCESS_LISTED, MsgType.SUCCESS);
+        updateBubble(e);
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
         }
 
-        updateBubble(e);
+        switch (e.getListType()) {
+            case ALL:
+                switchContext(ListStatus.ALL, false);
+                break;
+            case COMPLETED:
+                switchContext(ListStatus.COMPLETE, false);
+                break;
+            case INCOMPLETE:
+                switchContext(ListStatus.INCOMPLETE, false);
+                break;
+            case OVERDUE:
+                switchContext(ListStatus.OVERDUE, false);
+                break;
+            case UPCOMING:
+                switchContext(ListStatus.UPCOMING, false);
+                break;
+            default:
+                break;
+
+        }
+        listTasks(e.getItems(), false);
+        controller.relayFb(Constants.CMD_SUCCESS_LISTED, MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleMarkTaskDoneEvent(MarkTaskDoneEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         ArrayList<Integer> doneIds = e.getScreenIds();
         Collections.sort(doneIds, Comparator.reverseOrder());
         int indexCount = -1;
@@ -301,6 +379,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleMarkTaskFailEvent(MarkTaskFailedEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_CANT_MARK_UNKNOWN,
@@ -323,16 +407,27 @@ public class CommandHandler {
 
     @Subscribe
     public void handleMoveDirectoryDoneEvent(MoveDirectoryDoneEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         switchContext(ListStatus.INCOMPLETE, true);
         controller.relayFb(
             String.format(Constants.CMD_SUCCESS_MOVED, e.getNewDirectory()),
             MsgType.SUCCESS);
         controller.updateNotiBubbles();
-
     }
 
     @Subscribe
     public void handleMoveDirectoryFailEvent(MoveDirectoryFailedEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(
@@ -351,6 +446,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleNoSurpriseEvent(NoSurpriseEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_SURP_FAIL_UNKNOWN,
@@ -367,6 +468,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleRedoFailedEvent(RedoFailedEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_REDO_FAIL_UNKNOWN,
@@ -383,6 +490,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleRenameTaskDoneEvent(RenameTaskDoneEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         TaskAttributes task = e.getTask();
         int count = 0;
         for (int i = 0; i < controller.importantList.size(); i++) {
@@ -403,6 +516,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleRenameTaskFailEvent(RenameTaskFailedEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_CANT_RENAME_UNKNOWN,
@@ -434,6 +553,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleRescheduleTaskDoneEvent(RescheduleTaskDoneEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         int count = 0;
         TaskAttributes task = e.getTask();
         for (int i = 0; i < controller.importantList.size(); i++) {
@@ -457,6 +582,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleRescheduleTaskFailEvent(RescheduleTaskFailedEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_CANT_RESCHEDULE_UNKNOWN,
@@ -490,6 +621,11 @@ public class CommandHandler {
 
     @Subscribe
     public void handleSearchDoneEvent(SearchDoneEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
 
         listTasks(e.getResults(), false);
 
@@ -507,6 +643,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleShowDirectoryEvent(ShowDirectoryEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         controller.relayFb(
             String.format(Constants.CMD_SUCCESS_SHOWDIRECTORY, e.getPwd()),
             MsgType.SUCCESS);
@@ -515,6 +657,11 @@ public class CommandHandler {
 
     @Subscribe
     public void handleSurpriseEvent(SurpriseEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
 
         controller.importantList.clear();
         TaskAttributes task = e.getTask();
@@ -527,6 +674,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleUnaliasDoneEvent(UnaliasDoneEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         controller.relayFb(
             String.format(Constants.CMD_SUCCESS_UNALIAS, e.getAlias()),
             MsgType.SUCCESS);
@@ -534,6 +687,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleUnaliasFailEvent(UnaliasFailEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(
@@ -555,6 +714,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleUndoFailedEvent(UndoFailedEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_UNDO_FAIL_UNKNOWN,
@@ -571,6 +736,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleUnmarkTaskDoneEvent(UnmarkTaskDoneEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         ArrayList<Integer> undoneIds = e.getScreenIds();
         Collections.sort(undoneIds, Comparator.reverseOrder());
         int indexCount = -1;
@@ -591,6 +762,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleUnmarkTaskFailEvent(UnmarkTaskFailEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(Constants.CMD_ERROR_CANT_UNMARK_UNKNOWN,
@@ -613,6 +790,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleUseDirectoryDoneEvent(UseDirectoryDoneEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         switchContext(ListStatus.INCOMPLETE, true);
         controller.relayFb(
             String.format(Constants.CMD_SUCCESS_USED, e.getNewDirectory()),
@@ -622,6 +805,12 @@ public class CommandHandler {
 
     @Subscribe
     public void handleUseDirectoryFailEvent(UseDirectoryFailedEvent e) {
+        if (controller.isInternalCall()) {
+            // Add any method calls strictly for internal calls here
+            controller.completeInternalCall();
+            return;
+        }
+
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(

@@ -1,7 +1,6 @@
 package jfdi.parser;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -26,7 +25,6 @@ import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
  *
  */
 public class DateTimeParser {
-    // TODO: support for "from {date}{time} to {time}"
     private static DateTimeParser dateTimeParser;
     private static final String SOURCECLASS = DateTimeParser.class.getName();
     private static final Logger LOGGER = JfdiLogger.getLogger();
@@ -85,17 +83,14 @@ public class DateTimeParser {
         input = formatDateTimeInput(input);
         System.out.println(input);
 
-        List<Date> dateList = getDateList(input);
-        List<LocalDateTime> dateTimeList = toLocalDateTime(dateList);
-
         LocalDateTime startDateTime = null;
         LocalDateTime endDateTime = null;
         switch (taskType) {
             case event:
-                assert dateTimeList.size() == 2;
-                startDateTime = dateTimeList.get(0);
-                endDateTime = dateTimeList.get(1);
-                String[] splitInput = originalInput.split("\\bto\\b");
+                String[] splitInput = input.split("\\bto\\b");
+                assert splitInput.length == 2;
+                startDateTime = getLocalDateTime(splitInput[0]);
+                endDateTime = getLocalDateTime(splitInput[1]);
                 if (!checkTimeSpecified(originalInput)) {
                     startDateTime = setTime(startDateTime,
                         Constants.TIME_BEGINNING_OF_DAY);
@@ -118,17 +113,14 @@ public class DateTimeParser {
                 }
                 break;
             case point:
-                assert dateTimeList.size() == 1;
-                startDateTime = dateTimeList.get(0);
+                startDateTime = getLocalDateTime(input);
                 if (!checkTimeSpecified(input)) {
                     startDateTime = setTime(startDateTime,
                         Constants.TIME_DEFAULT);
-                    System.out.println(startDateTime.getHour());
                 }
                 break;
             case deadline:
-                assert dateTimeList.size() == 1;
-                endDateTime = dateTimeList.get(0);
+                endDateTime = getLocalDateTime(input);
                 if (!checkTimeSpecified(input)) {
                     endDateTime = setTime(endDateTime, Constants.TIME_DEFAULT);
                 }
@@ -232,12 +224,13 @@ public class DateTimeParser {
      * @return a list of Date objects, storing information about the date and
      *         time specified in the string.
      */
-    private List<Date> getDateList(String input) {
+    private LocalDateTime getLocalDateTime(String input) {
         assert input != null;
         PrettyTimeParser parser = new PrettyTimeParser();
         List<Date> dateList = parser.parse(input);
+        assert dateList.size() == 1;
         dateList.stream().forEach(System.out::println);
-        return dateList;
+        return getLocalDateTimeFromDate(dateList.get(0));
     }
 
     /**
@@ -252,22 +245,6 @@ public class DateTimeParser {
         Pattern pattern = Pattern.compile(Constants.REGEX_TIME_FORMAT);
         Matcher matcher = pattern.matcher(input);
         return matcher.find();
-    }
-
-    /**
-     * This method converts a list of Dates to a list of LocalDateTimes.
-     *
-     * @param dateTimeList
-     *            the list of Date objects to be converted.
-     * @return a list of LocalDateTime objects.
-     */
-    private List<LocalDateTime> toLocalDateTime(List<Date> dateTimeList) {
-        assert dateTimeList != null;
-        List<LocalDateTime> ldtList = new ArrayList<LocalDateTime>();
-        for (Date d : dateTimeList) {
-            ldtList.add(getLocalDateTimeFromDate(d));
-        }
-        return ldtList;
     }
 
     /**

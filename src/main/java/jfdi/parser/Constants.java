@@ -69,7 +69,7 @@ public class Constants {
     public static final String REGEX_RELATIVE_DATE_1 = "(?i)(tomorrow|yesterday|today|now)";
     public static final String REGEX_RELATIVE_DATE_2 = "(?i)((((the )?next |this |last )("
         + REGEX_DATE_ATTRIBUTES
-        + "))|((the )?next |this (week )? |last )?"
+        + "))|((the )?next |this |last )?"
         + REGEX_DAYS_TEXTUAL + ")";
     public static final String REGEX_RELATIVE_DATE_3 = "((\\d+ )"
         + REGEX_DATE_ATTRIBUTES + " (?i)(later|before|after))";

@@ -265,8 +265,8 @@ public class CommandHandler {
                     break;
                 default:
                     break;
+                    
             }
-
             listTasks(e.getItems(), false);
             controller.relayFb(Constants.CMD_SUCCESS_LISTED, MsgType.SUCCESS);
         }

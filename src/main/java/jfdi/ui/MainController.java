@@ -254,7 +254,7 @@ public class MainController {
 
     private void initFbArea() {
         fbArea.setMouseTransparent(true);
-        fbArea.setFocusTraversable(false);
+        //fbArea.setFocusTraversable(false);
         fbArea.setStyle("-fx-text-fill: #eeeeee;");
     }
 

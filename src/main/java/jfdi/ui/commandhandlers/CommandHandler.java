@@ -144,6 +144,7 @@ public class CommandHandler {
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_UNDONE, cmdType.toString()),
                 MsgType.SUCCESS);
+        controller.updateNotiBubbles();
     }
 
     @Subscribe
@@ -264,8 +265,8 @@ public class CommandHandler {
                     break;
                 default:
                     break;
+                    
             }
-
             listTasks(e.getItems(), false);
             controller.relayFb(Constants.CMD_SUCCESS_LISTED, MsgType.SUCCESS);
         }
@@ -290,6 +291,7 @@ public class CommandHandler {
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_MARKED, indexCount + 1),
                 MsgType.SUCCESS);
+        controller.updateNotiBubbles();
     }
 
 

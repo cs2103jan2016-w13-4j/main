@@ -247,7 +247,6 @@ public class MainController {
 
     private void initImportantList() {
 
-        listMain.setMouseTransparent(true);
         listMain.setFocusTraversable(false);
         importantList = FXCollections.observableArrayList();
         listMain.setItems(importantList);

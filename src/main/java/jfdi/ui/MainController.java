@@ -111,6 +111,7 @@ public class MainController {
     }
 
     public void displayFb(String fb) {
+        fb.trim();
         fbArea.appendText(fb);
     }
 

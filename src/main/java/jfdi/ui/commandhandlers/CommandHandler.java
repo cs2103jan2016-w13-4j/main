@@ -204,8 +204,8 @@ public class CommandHandler {
     public void handleFilesReplacedEvent(FilesReplacedEvent e) {
         String fb = "";
         for (FilePathPair item : e.getFilePathPairs()) {
-            fb += String.format(Constants.CMD_ERROR_INIT_FAIL_REPLACED,
-                    "\n" + item.getOldFilePath(), item.getNewFilePath());
+            fb += String.format("\n" + Constants.CMD_ERROR_INIT_FAIL_REPLACED,
+                    item.getOldFilePath(), item.getNewFilePath());
         }
         controller.appendFb(fb, MsgType.WARNING);
     }

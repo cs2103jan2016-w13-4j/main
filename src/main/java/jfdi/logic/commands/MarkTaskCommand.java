@@ -1,10 +1,5 @@
 package jfdi.logic.commands;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-
 import jfdi.common.utilities.JfdiLogger;
 import jfdi.logic.events.MarkTaskDoneEvent;
 import jfdi.logic.events.MarkTaskFailedEvent;
@@ -14,6 +9,11 @@ import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
 import jfdi.ui.UI;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * @author Liu Xinan

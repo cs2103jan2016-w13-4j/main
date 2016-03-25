@@ -3,16 +3,17 @@ package jfdi.logic.events;
 /**
  * @author Liu Xinan
  */
-public class UnaliasFailEvent {
+public class UnaliasFailedEvent {
 
     public enum Error {
-        NON_EXISTENT_ALIAS, UNKNOWN
+        NON_EXISTENT_ALIAS,
+        UNKNOWN
     }
 
     private String alias;
     private Error error;
 
-    public UnaliasFailEvent(String alias, Error error) {
+    public UnaliasFailedEvent(String alias, Error error) {
         this.alias = alias;
         this.error = error;
     }

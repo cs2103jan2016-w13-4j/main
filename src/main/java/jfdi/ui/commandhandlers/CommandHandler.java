@@ -67,6 +67,7 @@ public class CommandHandler {
                 String.format(Constants.CMD_SUCCESS_ADDED,
                         task.getDescription()), MsgType.SUCCESS);
         logger.fine(String.format(Constants.LOG_ADDED_SUCCESS, task.getId()));
+        controller.updateNotiBubbles();
     }
 
     @Subscribe
@@ -132,6 +133,8 @@ public class CommandHandler {
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_REDONE, cmdType.toString()),
                 MsgType.SUCCESS);
+        controller.updateNotiBubbles();
+
     }
 
     @Subscribe
@@ -163,6 +166,8 @@ public class CommandHandler {
             }
             indexCount++;
         }
+        controller.updateNotiBubbles();
+
     }
 
     @Subscribe
@@ -208,6 +213,8 @@ public class CommandHandler {
                     item.getOldFilePath(), item.getNewFilePath());
         }
         controller.appendFb(fb, MsgType.WARNING);
+        controller.updateNotiBubbles();
+
     }
 
     @Subscribe
@@ -318,6 +325,8 @@ public class CommandHandler {
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_MOVED, e.getNewDirectory()),
                 MsgType.SUCCESS);
+        controller.updateNotiBubbles();
+
     }
 
     @Subscribe
@@ -386,6 +395,7 @@ public class CommandHandler {
                 String.format(Constants.CMD_SUCCESS_RENAMED, count + 1,
                         task.getDescription()), MsgType.SUCCESS);
         logger.fine(String.format(Constants.LOG_RENAMED_SUCCESS, task.getId()));
+        controller.updateNotiBubbles();
     }
 
     @Subscribe
@@ -438,6 +448,7 @@ public class CommandHandler {
                 String.format(Constants.CMD_SUCCESS_RESCHEDULED, count + 1),
                 MsgType.SUCCESS);
         logger.fine(String.format(Constants.LOG_RESCHED_SUCCESS, task.getId()));
+        controller.updateNotiBubbles();
     }
 
     @Subscribe
@@ -486,6 +497,7 @@ public class CommandHandler {
         //controller.switchTabSkin();
         controller.setHighlights(e.getKeywords());
         controller.relayFb(Constants.CMD_SUCCESS_SEARCH, MsgType.SUCCESS);
+        controller.updateNotiBubbles();
     }
 
     @Subscribe
@@ -493,6 +505,7 @@ public class CommandHandler {
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_SHOWDIRECTORY, e.getPwd()),
                 MsgType.SUCCESS);
+        controller.updateNotiBubbles();
     }
 
     @Subscribe
@@ -504,6 +517,7 @@ public class CommandHandler {
         switchContext(ListStatus.ALL, false);
         switchContext(ListStatus.SURPRISE, false);
         controller.relayFb(Constants.CMD_SUCCESS_SURPRISED, MsgType.SUCCESS);
+        controller.updateNotiBubbles();
     }
 
     @Subscribe
@@ -566,6 +580,7 @@ public class CommandHandler {
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_UNMARKED, indexCount + 1),
                 MsgType.SUCCESS);
+        controller.updateNotiBubbles();
     }
 
     @Subscribe
@@ -596,6 +611,7 @@ public class CommandHandler {
         controller.relayFb(
                 String.format(Constants.CMD_SUCCESS_USED, e.getNewDirectory()),
                 MsgType.SUCCESS);
+        controller.updateNotiBubbles();
     }
 
     @Subscribe
@@ -712,15 +728,12 @@ public class CommandHandler {
         switch (e.getListType()) {
             case INCOMPLETE:
                 controller.incompletePlaceHdr.set(count.toString());
-                System.out.println("HERE, incomplete " + controller.incompletePlaceHdr);
                 break;
             case OVERDUE:
                 controller.overduePlaceHdr.set(count.toString());
-                System.out.println("HERE, overdue " + controller.overduePlaceHdr);
                 break;
             case UPCOMING:
                 controller.upcomingPlaceHdr.set(count.toString());
-                System.out.println("HERE, upcoming " + controller.upcomingPlaceHdr);
                 break;
             default:
                 break;

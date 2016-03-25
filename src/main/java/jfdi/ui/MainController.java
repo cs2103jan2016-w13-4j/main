@@ -440,7 +440,6 @@ public class MainController {
     }
 
     public void updateNotiBubbles() {
-        isUpdate = true;
         ListStatus temp = displayStatus;
         displayList(Constants.CTRL_CMD_INCOMPLETE);
         displayList(Constants.CTRL_CMD_OVERDUE);

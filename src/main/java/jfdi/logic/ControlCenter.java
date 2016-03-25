@@ -23,6 +23,8 @@ public class ControlCenter implements ILogic {
     private static ControlCenter ourInstance = new ControlCenter();
     private static EventBus eventBus = UI.getEventBus();
 
+    private InputParser parser = InputParser.getInstance();
+
     private ControlCenter() {
         initStorage();
         initParser();
@@ -34,7 +36,6 @@ public class ControlCenter implements ILogic {
 
     @Override
     public void handleInput(String input) {
-        InputParser parser = InputParser.getInstance();
         Command command;
         try {
             command = parser.parse(input);
@@ -42,6 +43,10 @@ public class ControlCenter implements ILogic {
             command = new InvalidCommand.Builder().build();
         }
         command.execute();
+    }
+
+    public void setParser(InputParser parser) {
+        this.parser = parser;
     }
 
     private void initStorage() {

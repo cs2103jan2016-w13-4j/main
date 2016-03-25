@@ -40,12 +40,13 @@ public class Constants {
     public static final String REGEX_EXIT = "(?i)^(exit|quit)";
 
     // Task related Regex Strings
-    public static final String REGEX_DELETE_FORMAT = REGEX_DELETE
-        + " ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]*)+";
-    public static final String REGEX_MARK_FORMAT = REGEX_MARK
-        + " ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]*)+";
-    public static final String REGEX_UNMARK_FORMAT = REGEX_UNMARK
-        + " ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]*)+";
+    public static final String REGEX_DELETE_FORMAT = String.format(
+        "%s ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]*)+", REGEX_DELETE);
+    public static final String REGEX_MARK_FORMAT = String.format(
+        "%s ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]*)+", REGEX_MARK);
+    public static final String REGEX_UNMARK_FORMAT = String.format(
+        "%s ((\\d+|\\d+[ ]*-[ ]*\\d+),?[ ]*)+", REGEX_UNMARK);
+
     // A taskID is simply an integer
     public static final String REGEX_TASKID = "\\b\\d+\\b";
 
@@ -67,59 +68,58 @@ public class Constants {
     public static final String REGEX_TIME_RELATIVE = "((?i)((this )?(morning|afternoon|evening)|(to)?night|midnight))";
 
     public static final String REGEX_RELATIVE_DATE_1 = "(?i)(tomorrow|yesterday|today|now)";
-    public static final String REGEX_RELATIVE_DATE_2 = "(?i)((((the )?next |this |last )("
-        + REGEX_DATE_ATTRIBUTES
-        + "))|((the )?next |this |last )?"
-        + REGEX_DAYS_TEXTUAL + ")";
-    public static final String REGEX_RELATIVE_DATE_3 = "((\\d+ )("
-        + REGEX_DATE_ATTRIBUTES + "|" + REGEX_TIME_ATTRIBUTES
-        + ") (?i)(later|before|after))";
-    public static final String REGEX_RELATIVE_DATE_4 = "(?i)in \\d+ "
-        + REGEX_TIME_ATTRIBUTES;
+    public static final String REGEX_RELATIVE_DATE_2 = String.format(
+        "(?i)((((the )?next|this|last) %s)|((the )?next |this |last )?%s)",
+        REGEX_DATE_ATTRIBUTES, REGEX_DAYS_TEXTUAL);
+    public static final String REGEX_RELATIVE_DATE_3 = String.format(
+        "(\\d+ (%s|%s) (?i)(later|before|after))", REGEX_DATE_ATTRIBUTES,
+        REGEX_TIME_ATTRIBUTES);
+    public static final String REGEX_RELATIVE_DATE_4 = String.format(
+        "(?i)in \\d+ %s", REGEX_TIME_ATTRIBUTES);
 
-    public static final String REGEX_RELATIVE_DATE = "("
-        + REGEX_RELATIVE_DATE_1 + "|" + REGEX_RELATIVE_DATE_2 + "|"
-        + REGEX_RELATIVE_DATE_3 + "|" + REGEX_RELATIVE_DATE_4 + ")";
+    public static final String REGEX_RELATIVE_DATE = String.format(
+        "(%s|%s|%s|%s)", REGEX_RELATIVE_DATE_1, REGEX_RELATIVE_DATE_2,
+        REGEX_RELATIVE_DATE_3, REGEX_RELATIVE_DATE_4);
 
-    public static final String REGEX_ABSOLUTE_DATE_DDMMYYYY = "\\b"
-        + REGEX_DAYS_NUMERIC + "[-/.]" + REGEX_MONTHS_NUMERIC + "([-/.]"
-        + REGEX_YEARS + ")?\\b";
-    public static final String REGEX_ABSOLUTE_DATE_DDMONTHYYYY = "\\b"
-        + REGEX_DAYS_NUMERIC + "[-/. ]" + REGEX_MONTHS_TEXTUAL + "([-/. ]"
-        + REGEX_YEARS + ")?\\b";
+    public static final String REGEX_ABSOLUTE_DATE_DDMMYYYY = String.format(
+        "\\b%s[-/.]%s([-/.]%s)?\\b", REGEX_DAYS_NUMERIC, REGEX_MONTHS_NUMERIC,
+        REGEX_YEARS);
+    public static final String REGEX_ABSOLUTE_DATE_DDMONTHYYYY = String.format(
+        "\\b%s[-/. ]%s([-/. ]%s)?\\b", REGEX_DAYS_NUMERIC,
+        REGEX_MONTHS_TEXTUAL, REGEX_YEARS);
 
     // Formats for date, time, and date-time in Regex (built from date and time
     // related Regex Strings)
-    public static final String REGEX_DATE_FORMAT = "("
-        + REGEX_ABSOLUTE_DATE_DDMMYYYY + "|" + REGEX_ABSOLUTE_DATE_DDMONTHYYYY
-        + "|" + REGEX_RELATIVE_DATE + ")";
-    public static final String REGEX_TIME_FORMAT = "(" + REGEX_TIME_MILITARY
-        + "|" + REGEX_TIME_NORMAL + "|" + REGEX_TIME_RELATIVE + ")";
-    public static final String REGEX_DATE_TIME_FORMAT_DATE_FIRST = "("
-        + REGEX_DATE_FORMAT + ",?[ ]" + REGEX_TIME_FORMAT + ")";
-    public static final String REGEX_DATE_TIME_FORMAT_DATE_FIRST_WITH_NAMED_GROUPS = "((?<date1>"
-        + REGEX_DATE_FORMAT + "),?[ ](?<time1>" + REGEX_TIME_FORMAT + "))";
-    public static final String REGEX_DATE_TIME_FORMAT_TIME_FIRST = "("
-        + REGEX_TIME_FORMAT + ",?[ ]" + REGEX_DATE_FORMAT + ")";
-    public static final String REGEX_DATE_TIME_FORMAT_TIME_FIRST_WITH_NAMED_GROUPS = "((?<time2>"
-        + REGEX_TIME_FORMAT + "),?[ ](?<date2>" + REGEX_DATE_FORMAT + "))";
-    public static final String REGEX_DATE_TIME_FORMAT = "(" + REGEX_DATE_FORMAT
-        + "|" + REGEX_TIME_FORMAT + "|" + REGEX_DATE_TIME_FORMAT_DATE_FIRST
-        + "|" + REGEX_DATE_TIME_FORMAT_TIME_FIRST + ")";
+    public static final String REGEX_DATE_FORMAT = String.format("(%s|%s|%s)",
+        REGEX_ABSOLUTE_DATE_DDMMYYYY, REGEX_ABSOLUTE_DATE_DDMONTHYYYY,
+        REGEX_RELATIVE_DATE);
+    public static final String REGEX_TIME_FORMAT = String.format("(%s|%s|%s)",
+        REGEX_TIME_MILITARY, REGEX_TIME_NORMAL, REGEX_TIME_RELATIVE);
+    public static final String REGEX_DATE_TIME_FORMAT_DATE_FIRST = String
+        .format("(%s,? %s)", REGEX_DATE_FORMAT, REGEX_TIME_FORMAT);
+    public static final String REGEX_DATE_TIME_FORMAT_DATE_FIRST_WITH_NAMED_GROUPS = String
+        .format("((?<date1>%s),? (?<time1>%s))", REGEX_DATE_FORMAT,
+            REGEX_TIME_FORMAT);
+    public static final String REGEX_DATE_TIME_FORMAT_TIME_FIRST = String
+        .format("(%s,? %s)", REGEX_TIME_FORMAT, REGEX_DATE_FORMAT);
+    public static final String REGEX_DATE_TIME_FORMAT_TIME_FIRST_WITH_NAMED_GROUPS = String
+        .format("((?<time2>%s),? (?<date2>%s))", REGEX_TIME_FORMAT,
+            REGEX_DATE_FORMAT);
+    public static final String REGEX_DATE_TIME_FORMAT = String.format(
+        "(%s|%s|%s|%s)", REGEX_DATE_FORMAT, REGEX_TIME_FORMAT,
+        REGEX_DATE_TIME_FORMAT_DATE_FIRST, REGEX_DATE_TIME_FORMAT_TIME_FIRST);
 
     // Regex used to detect date-time fields in the user's input String
-    public static final String REGEX_DEADLINE_IDENTIFIER = "(?i)(by|before) "
-        + REGEX_DATE_TIME_FORMAT;
-    public static final String REGEX_EVENT_IDENTIFIER = "(?i)(from )?"
-        + REGEX_DATE_TIME_FORMAT + " (to|until) " + REGEX_DATE_TIME_FORMAT;
-    public static final String REGEX_POINT_TASK_IDENTIFIER = "(?i)(on |at )?"
-        + REGEX_DATE_TIME_FORMAT;
-    public static final String REGEX_REPEATED_TASK_IDENTIFIER = "(?i)(every) "
-        + REGEX_DATE_TIME_FORMAT + "(?i)( to " + REGEX_DATE_TIME_FORMAT + ")?";
-    public static final String REGEX_DATE_TIME_IDENTIFIER = "("
-        + REGEX_DEADLINE_IDENTIFIER + "|" + REGEX_EVENT_IDENTIFIER + "|"
-        + REGEX_POINT_TASK_IDENTIFIER + "|" + REGEX_REPEATED_TASK_IDENTIFIER
-        + ")";
+    public static final String REGEX_DEADLINE_IDENTIFIER = String.format(
+        "(?i)(by|before) %s", REGEX_DATE_TIME_FORMAT);
+    public static final String REGEX_EVENT_IDENTIFIER = String.format(
+        "(?i)((from )?%s (to|until) %s)", REGEX_DATE_TIME_FORMAT,
+        REGEX_DATE_TIME_FORMAT);
+    public static final String REGEX_POINT_TASK_IDENTIFIER = String.format(
+        "(?i)(on |at )?%s", REGEX_DATE_TIME_FORMAT);
+    public static final String REGEX_DATE_TIME_IDENTIFIER = String.format(
+        "(%s|%s|%s)", REGEX_DEADLINE_IDENTIFIER, REGEX_EVENT_IDENTIFIER,
+        REGEX_POINT_TASK_IDENTIFIER);
 
     // =============================
     // Non-Regex constants
@@ -211,6 +211,7 @@ public class Constants {
 
     public static void main(String[] args) {
         System.out.println("delete 1-10".matches(REGEX_DELETE_FORMAT));
-        System.out.println("5pm".matches(REGEX_DATE_TIME_FORMAT));
+        System.out.println("mark 1".matches(REGEX_MARK_FORMAT));
+        System.out.println("mark 1-10".matches(REGEX_MARK_FORMAT));
     }
 }

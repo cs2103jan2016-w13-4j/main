@@ -1,9 +1,5 @@
 package jfdi.logic.commands;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.stream.Collectors;
-
 import jfdi.logic.events.DeleteTaskDoneEvent;
 import jfdi.logic.events.DeleteTaskFailedEvent;
 import jfdi.logic.interfaces.Command;
@@ -12,6 +8,10 @@ import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.DuplicateTaskException;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.ui.UI;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * @author Liu Xinan

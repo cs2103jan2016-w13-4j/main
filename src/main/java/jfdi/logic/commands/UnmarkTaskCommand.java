@@ -2,7 +2,7 @@ package jfdi.logic.commands;
 
 import jfdi.common.utilities.JfdiLogger;
 import jfdi.logic.events.UnmarkTaskDoneEvent;
-import jfdi.logic.events.UnmarkTaskFailEvent;
+import jfdi.logic.events.UnmarkTaskFailedEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
@@ -84,7 +84,7 @@ public class UnmarkTaskCommand extends Command {
             pushToUndoStack();
             eventBus.post(new UnmarkTaskDoneEvent(screenIds, unmarkedTasks));
         } else {
-            eventBus.post(new UnmarkTaskFailEvent(screenIds, invalidIds));
+            eventBus.post(new UnmarkTaskFailedEvent(screenIds, invalidIds));
         }
     }
 

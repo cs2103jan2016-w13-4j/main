@@ -36,10 +36,10 @@ import jfdi.logic.events.SearchDoneEvent;
 import jfdi.logic.events.ShowDirectoryEvent;
 import jfdi.logic.events.SurpriseEvent;
 import jfdi.logic.events.UnaliasDoneEvent;
-import jfdi.logic.events.UnaliasFailEvent;
+import jfdi.logic.events.UnaliasFailedEvent;
 import jfdi.logic.events.UndoFailedEvent;
 import jfdi.logic.events.UnmarkTaskDoneEvent;
-import jfdi.logic.events.UnmarkTaskFailEvent;
+import jfdi.logic.events.UnmarkTaskFailedEvent;
 import jfdi.logic.events.UseDirectoryDoneEvent;
 import jfdi.logic.events.UseDirectoryFailedEvent;
 import jfdi.logic.interfaces.Command;
@@ -180,7 +180,7 @@ public class CommandHandler {
         controller.relayFb(
             String.format(Constants.CMD_SUCCESS_UNDONE, cmdType.toString()),
             MsgType.SUCCESS);
-        controller.updateNotiBubbles();
+        //controller.updateNotiBubbles();
     }
 
     @Subscribe
@@ -686,7 +686,7 @@ public class CommandHandler {
     }
 
     @Subscribe
-    public void handleUnaliasFailEvent(UnaliasFailEvent e) {
+    public void handleUnaliasFailEvent(UnaliasFailedEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
             controller.completeInternalCall();
@@ -761,7 +761,7 @@ public class CommandHandler {
     }
 
     @Subscribe
-    public void handleUnmarkTaskFailEvent(UnmarkTaskFailEvent e) {
+    public void handleUnmarkTaskFailEvent(UnmarkTaskFailedEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
             controller.completeInternalCall();

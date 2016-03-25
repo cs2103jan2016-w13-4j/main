@@ -3,8 +3,7 @@ package jfdi.test.logic.events;
 import jfdi.logic.events.AliasDoneEvent;
 import org.junit.Test;
 
-import static javafx.scene.input.KeyCode.COMMAND;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Xinan

@@ -91,7 +91,6 @@ public class TestMainSetUp extends ApplicationTest {
 
         // Initialize Controller
         controller = loader.getController();
-        controller.initialize();
 
         // Link UI with Controller
         ui.setController(controller);
@@ -102,8 +101,9 @@ public class TestMainSetUp extends ApplicationTest {
 
         // Link Controller with UI, MainSetUp and CommandHandler
         controller.setUi(ui);
+        controller.initNotiBubbles();
 
-        controller.importantList.removeAll(controller.importantList);
+        //controller.importantList.removeAll(controller.importantList);
 
         File tempDir = Files.createTempDir();
         originalStorageDirectory = MainStorage.getInstance().getCurrentDirectory();

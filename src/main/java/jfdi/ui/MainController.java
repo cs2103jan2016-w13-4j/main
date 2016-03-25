@@ -4,12 +4,16 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.concurrent.CountDownLatch;
 
 import com.sun.javafx.scene.control.skin.ListViewSkin;
 import com.sun.javafx.scene.control.skin.VirtualFlow;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.IndexedCell;
 import javafx.scene.control.Label;
@@ -325,7 +329,7 @@ public class MainController {
 
     public void initNotiBubbles() {
         updateNotiBubbles();
- /*       Service<Void> service = new Service<Void>() {
+        Service<Void> service = new Service<Void>() {
             @Override
             protected Task<Void> createTask() {
                 return new Task<Void>() {
@@ -336,13 +340,8 @@ public class MainController {
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                try{
-                                    while (true) {
-                                        Thread.sleep(300000);
-                                        updateNotiBubbles();
-                                    }
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
+                                try {
+                                    updateNotiBubbles();
                                 } finally {
                                     latch.countDown();
                                 }
@@ -355,7 +354,7 @@ public class MainController {
                 };
             }
         };
-        service.start();*/
+        service.start();
     }
 
 
@@ -444,9 +443,9 @@ public class MainController {
         displayList(Constants.CTRL_CMD_OVERDUE);
         displayList(Constants.CTRL_CMD_UPCOMING);
         displayStatus = temp;
-        transListCmd();
+        //transListCmd();
     }
-    
+
     /***************************
      *** LEVEL 3 Abstraction ***
      ***************************/

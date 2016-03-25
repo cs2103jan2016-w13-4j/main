@@ -109,7 +109,7 @@ public class MainSetUp extends Application {
 
         controller.hideOverlays();
         controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
-        controller.initNotiBubbles();
+        //controller.initNotiBubbles();
         ui.displayWelcome();
     }
 

@@ -59,7 +59,7 @@ public class InputParserTest {
             Assert.fail();
         }
 
-        addCommand = "hello from 23/12/1993 to 26/09/1998";
+        addCommand = "hello 23/12/1993 to 26/09/1998";
         try {
             Command command = parser.parse(addCommand);
             Assert.assertTrue(command instanceof AddTaskCommand);

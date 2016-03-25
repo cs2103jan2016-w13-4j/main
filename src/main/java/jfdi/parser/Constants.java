@@ -69,7 +69,7 @@ public class Constants {
     public static final String REGEX_RELATIVE_DATE_1 = "(?i)(tomorrow|yesterday|today|now)";
     public static final String REGEX_RELATIVE_DATE_2 = "(?i)((((the )?next |this |last )("
         + REGEX_DATE_ATTRIBUTES
-        + "))|((the )?next |this |last )"
+        + "))|((the )?next |this |last )?"
         + REGEX_DAYS_TEXTUAL + ")";
     public static final String REGEX_RELATIVE_DATE_3 = "((\\d+ )"
         + REGEX_DATE_ATTRIBUTES + " (?i)(later|before|after))";
@@ -107,7 +107,7 @@ public class Constants {
     // Regex used to detect date-time fields in the user's input String
     public static final String REGEX_DEADLINE_IDENTIFIER = "(?i)(by|before) "
         + REGEX_DATE_TIME_FORMAT;
-    public static final String REGEX_EVENT_IDENTIFIER = "(?i)(from) "
+    public static final String REGEX_EVENT_IDENTIFIER = "(?i)(from )?"
         + REGEX_DATE_TIME_FORMAT + " (to|until) " + REGEX_DATE_TIME_FORMAT;
     public static final String REGEX_POINT_TASK_IDENTIFIER = "(?i)(on |at )?"
         + REGEX_DATE_TIME_FORMAT;
@@ -207,8 +207,8 @@ public class Constants {
         REGEX_WILDCARD, REGEX_EXIT};
 
     public static void main(String[] args) {
-        assert false;
         System.out.println("delete 1-10".matches(REGEX_DELETE_FORMAT));
-        System.out.println("by day".matches(REGEX_DATE_TIME_IDENTIFIER));
+        System.out.println("from wednesday to friday"
+            .matches(REGEX_EVENT_IDENTIFIER));
     }
 }

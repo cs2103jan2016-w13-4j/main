@@ -237,27 +237,33 @@ public class CommandHandler {
 
     @Subscribe
     public void handleListDoneEvent(ListDoneEvent e) {
-        switch (e.getListType()) {
-            case ALL:
-                switchContext(ListStatus.ALL, false);
-                break;
-            case COMPLETED:
-                switchContext(ListStatus.COMPLETE, false);
-                break;
-            case INCOMPLETE:
-                switchContext(ListStatus.INCOMPLETE, false);
-                break;
-            case OVERDUE:
-                switchContext(ListStatus.OVERDUE, false);
-                break;
-            case UPCOMING:
-                switchContext(ListStatus.UPCOMING, false);
-                break;
-            default:
-                break;
+
+        if (!controller.isThread) {
+            switch (e.getListType()) {
+                case ALL:
+                    switchContext(ListStatus.ALL, false);
+                    break;
+                case COMPLETED:
+                    switchContext(ListStatus.COMPLETE, false);
+                    break;
+                case INCOMPLETE:
+                    switchContext(ListStatus.INCOMPLETE, false);
+                    break;
+                case OVERDUE:
+                    switchContext(ListStatus.OVERDUE, false);
+                    break;
+                case UPCOMING:
+                    switchContext(ListStatus.UPCOMING, false);
+                    break;
+                default:
+                    break;
+            }
+            
+            listTasks(e.getItems(), false);
+            controller.relayFb(Constants.CMD_SUCCESS_LISTED, MsgType.SUCCESS);
         }
-        listTasks(e.getItems(), false);
-        controller.relayFb(Constants.CMD_SUCCESS_LISTED, MsgType.SUCCESS);
+        
+        updateBubble(e);
     }
 
     @Subscribe
@@ -625,7 +631,6 @@ public class CommandHandler {
         for (TaskAttributes task : tasks) {
             appendTaskToDisplayList(task, shouldCheckContext);
         }
-        updateListNoti();
     }
 
     /**
@@ -701,10 +706,10 @@ public class CommandHandler {
         }
         controller.switchTabSkin();
     }
-
-    private void updateListNoti() {
-        Integer count = controller.importantList.size();
-        switch (controller.displayStatus) {
+    
+    private void updateBubble(ListDoneEvent e) {
+        Integer count = e.getItems().size();
+        switch (e.getListType()) {
             case INCOMPLETE:
                 controller.incompleteCount.setText(count.toString());
                 break;

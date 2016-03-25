@@ -89,6 +89,7 @@ public class MainController {
     public ListStatus displayStatus;
     public ListStatus beforeHelp;
     public String searchCmd = "search ";
+    public boolean isThread = false;
 
     private ObservableList<HelpItem> helpList;
     private InputHistory inputHistory;

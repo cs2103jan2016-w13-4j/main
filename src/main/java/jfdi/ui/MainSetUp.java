@@ -34,6 +34,7 @@ public class MainSetUp extends Application {
         loadFonts();
         initRootLayout();
         initView();
+        primaryStage.show();
 
     }
 
@@ -77,7 +78,6 @@ public class MainSetUp extends Application {
             "https://fonts.googleapis.com/css?family=Hammersmith+One");
         scene.getStylesheets().add(
             "https://fonts.googleapis.com/css?family=Titillium+Web:200");
-        primaryStage.show();
         primaryStage.setResizable(false);
 
     }
@@ -108,9 +108,34 @@ public class MainSetUp extends Application {
         controller.setMainApp(this);
 
         controller.hideOverlays();
+        controller.displayList(Constants.CTRL_CMD_OVERDUE);
+        controller.displayList(Constants.CTRL_CMD_UPCOMING);
         controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
-        //controller.initNotiBubbles();
+        initThread();
         ui.displayWelcome();
+    }
+    
+    private void initThread() {
+        // separate non-FX thread
+        new Thread() {
+            // runnable for that thread
+            @Override
+            public void run() {
+                while(true) {
+                    try {
+                        Thread.sleep(300000);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    controller.isThread = true;
+                    controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
+                    controller.displayList(Constants.CTRL_CMD_OVERDUE);
+                    controller.displayList(Constants.CTRL_CMD_UPCOMING);
+                    controller.isThread = false;
+                }
+            }
+        }.start();
     }
 
     /**

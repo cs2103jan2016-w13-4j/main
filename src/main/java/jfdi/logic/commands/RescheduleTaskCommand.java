@@ -126,7 +126,7 @@ public class RescheduleTaskCommand extends Command {
         LocalDateTime taskEnd = task.getEndDateTime();
 
         // Set floating task to point task
-        if(taskStart == null && taskEnd == null) {
+        if (taskStart == null && taskEnd == null) {
             startDateTime = shiftedDateTime;
             endDateTime = null;
 

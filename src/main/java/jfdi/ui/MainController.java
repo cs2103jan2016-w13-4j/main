@@ -281,7 +281,6 @@ public class MainController {
         helpList.add(new HelpItem(Constants.HELP_UNDONE_DESC, Constants.HELP_UNDONE_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_DELETE_DESC, Constants.HELP_DELETE_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_SEARCH_DESC, Constants.HELP_SEARCH_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_REMINDER_DESC, Constants.HELP_REMINDER_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_UNDO_DESC, Constants.HELP_UNDO_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_CREATE_ALIAS_DESC, Constants.HELP_CREATE_ALIAS_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_DELETE_ALIAS_DESC, Constants.HELP_DELETE_ALIAS_COMMAND));
@@ -391,7 +390,12 @@ public class MainController {
      ***************************/
 
     public void setFirstAndLastVisibleIds() {
-        ListViewSkin<?> listViewSkin = (ListViewSkin<?>) listMain.getSkin();
+        ListViewSkin<?> listViewSkin = null;
+        if (displayStatus.equals(ListStatus.HELP)) {
+            listViewSkin = (ListViewSkin<?>) helpContent.getSkin();
+        } else {
+            listViewSkin = (ListViewSkin<?>) listMain.getSkin();
+        }
         VirtualFlow<?> virtualFlow = (VirtualFlow<?>) listViewSkin.getChildren().get(0);
         firstVisibleId = virtualFlow.getFirstVisibleCell().getIndex();
         lastVisibleId = virtualFlow.getLastVisibleCell().getIndex();

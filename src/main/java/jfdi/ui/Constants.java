@@ -159,7 +159,6 @@ public class Constants {
     public static final String HELP_DELETE_COMMAND = "delete <task number(s)>";
     public static final String HELP_SEARCH_DESC = "Search through the tasks for specific keywords";
     public static final String HELP_SEARCH_COMMAND = "search <keyword(s)>";
-    public static final String HELP_REMINDER_DESC = "add custom reminders to task with a start date and time";
     public static final String HELP_REMINDER_COMMAND = "remind me <duration> before <task number(s)>";
     public static final String HELP_UNDO_DESC = "Undo previous action";
     public static final String HELP_UNDO_COMMAND = "undo";

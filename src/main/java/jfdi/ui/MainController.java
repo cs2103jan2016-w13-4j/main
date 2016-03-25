@@ -390,14 +390,14 @@ public class MainController {
      */
     private void disableScrollBarCmd() {
         cmdArea.textProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                    if (cmdArea.lookup(".scroll-bar") != null) {
-                        ScrollBar scrollBarv = (ScrollBar) cmdArea
-                                .lookup(".scroll-bar");
-                        scrollBarv.setDisable(false);
-                        scrollBarv.setId("command-scroll-bar");
-                    }
-                });
+            (observable, oldValue, newValue) -> {
+                if (cmdArea.lookup(".scroll-bar") != null) {
+                    ScrollBar scrollBarv = (ScrollBar) cmdArea
+                            .lookup(".scroll-bar");
+                    scrollBarv.setDisable(false);
+                    scrollBarv.setId("command-scroll-bar");
+                }
+            });
     }
 
     /***************************

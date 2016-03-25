@@ -162,7 +162,7 @@ public class TestMainSetUp extends ApplicationTest {
         WaitForAsyncUtils.waitForFxEvents();
 
         assertEquals("The feedback message does not match the intended result.",
-                fbArea.getText(), "\nJ.F.D.I. : " + String.format(
+                fbArea.getText(), "J.F.D.I. : " + String.format(
                         Constants.CMD_SUCCESS_ADDED, "hello"));
     }
 }

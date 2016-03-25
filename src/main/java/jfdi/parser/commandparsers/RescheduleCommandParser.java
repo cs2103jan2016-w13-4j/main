@@ -54,8 +54,26 @@ public class RescheduleCommandParser extends AbstractCommandParser {
                 originalInput);
         }
 
+        setIsDateTimeSpecified(input, rescheduleCommandBuilder);
+
         Command rescheduleCommand = rescheduleCommandBuilder.build();
         return rescheduleCommand;
+    }
+
+    private void setIsDateTimeSpecified(String input,
+        Builder rescheduleCommandBuilder) {
+        Pattern pattern = Pattern.compile(Constants.REGEX_TIME_FORMAT);
+        Matcher matcher = pattern.matcher(input);
+        if (matcher.find()) {
+            rescheduleCommandBuilder.setShiftedTimeSpecified(true);
+        }
+
+        pattern = Pattern.compile(Constants.REGEX_DATE_FORMAT);
+        matcher = pattern.matcher(input);
+        if (matcher.find()) {
+            rescheduleCommandBuilder.setShiftedDateSpecified(true);
+        }
+
     }
 
     /**
@@ -115,7 +133,6 @@ public class RescheduleCommandParser extends AbstractCommandParser {
     private String setTaskDateTime(String input, Builder builder)
         throws BadDateTimeException {
 
-        System.out.println(input);
         if (input.isEmpty()) {
             // No date time specified: user does not want any date/time
             // restrictions on task
@@ -123,11 +140,14 @@ public class RescheduleCommandParser extends AbstractCommandParser {
         }
         DateTimeParser dateTimeParser = DateTimeParser.getInstance();
 
+        String dateTimeString = input;
         // The 'to' keyword needs special attention as it can change either
         // start or end date time depending on the current task type of the task
         if (input.matches("(to )?" + Constants.REGEX_DATE_TIME_FORMAT)) {
-            String dateTimeString = getTrimmedSubstringInRange(input, 3,
-                input.length());
+            if (input.matches("(to )" + Constants.REGEX_DATE_TIME_FORMAT)) {
+                dateTimeString = getTrimmedSubstringInRange(input, 3,
+                    input.length());
+            }
             DateTimeObject dateTimeObject = dateTimeParser
                 .parseDateTime(dateTimeString);
 
@@ -146,16 +166,16 @@ public class RescheduleCommandParser extends AbstractCommandParser {
             + Constants.REGEX_DATE_TIME_FORMAT + " to "
             + Constants.REGEX_DATE_TIME_FORMAT + ")")) {
 
-            System.out.println(input);
             if (input.matches("to " + Constants.REGEX_DATE_TIME_FORMAT + " to "
                 + Constants.REGEX_DATE_TIME_FORMAT)) {
-                input = input.replaceAll("^to ", "from ");
+                dateTimeString = input.replaceAll("^to ", "from ");
             }
+            System.out.println(dateTimeString);
 
             // If the input explicitly specifies a deadline, event, or point
             // task, then set start/end date time accordingly
             DateTimeObject dateTimeObject = DateTimeParser.getInstance()
-                .parseDateTime(input);
+                .parseDateTime(dateTimeString);
             builder.setStartDateTime(dateTimeObject.getStartDateTime());
             builder.setEndDateTime(dateTimeObject.getEndDateTime());
         } else {
@@ -163,9 +183,5 @@ public class RescheduleCommandParser extends AbstractCommandParser {
         }
 
         return input;
-    }
-
-    private boolean isValidDateTime(String input) {
-        return input.matches(Constants.REGEX_DATE_TIME_IDENTIFIER);
     }
 }

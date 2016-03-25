@@ -40,8 +40,8 @@ public class RescheduleTaskCommand extends Command {
     public static class Builder {
 
         int screenId;
-        boolean isShiftedDateSpecified;
-        boolean isShiftedTimeSpecified;
+        boolean isShiftedDateSpecified = false;
+        boolean isShiftedTimeSpecified = false;
         LocalDateTime shiftedDateTime;
         LocalDateTime startDateTime;
         LocalDateTime endDateTime;
@@ -179,12 +179,14 @@ public class RescheduleTaskCommand extends Command {
 
     private LocalDateTime shiftTime(LocalDateTime originalDateTime) {
         assert originalDateTime != null && shiftedDateTime != null;
-        return LocalDateTime.of(originalDateTime.toLocalDate(), shiftedDateTime.toLocalTime());
+        return LocalDateTime.of(originalDateTime.toLocalDate(),
+            shiftedDateTime.toLocalTime());
     }
 
     private LocalDateTime shiftDate(LocalDateTime originalDateTime) {
         assert originalDateTime != null && shiftedDateTime != null;
-        return LocalDateTime.of(shiftedDateTime.toLocalDate(), originalDateTime.toLocalTime());
+        return LocalDateTime.of(shiftedDateTime.toLocalDate(),
+            originalDateTime.toLocalTime());
     }
 
 }

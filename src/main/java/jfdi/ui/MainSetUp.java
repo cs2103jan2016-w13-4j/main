@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import jfdi.common.utilities.JfdiLogger;
 
@@ -59,10 +60,9 @@ public class MainSetUp extends Application {
 
     private void loadFonts() {
 
-        // Font.loadFont(MainSetUp.class.getResource(Constants.URL_HAMSMITH_PATH).toExternalForm(),
-        // 12);
-        // Font.loadFont(MainSetUp.class.getResource(Constants.URL_RALEWAY_PATH).toExternalForm(),
-        // 24);
+        Font.loadFont(MainSetUp.class.getResource("/ui/fonts/HammersmithOne.ttf").toExternalForm(), 12);
+        Font.loadFont(MainSetUp.class.getResource("/ui/fonts/TitilliumWeb-Light.ttf").toExternalForm(), 24);
+        Font.loadFont(MainSetUp.class.getResource("/ui/fonts/Lucida Console.ttf").toExternalForm(), 24);
     }
 
     private void initRootLayout() throws IOException {
@@ -76,10 +76,6 @@ public class MainSetUp extends Application {
         scene = new Scene(rootLayout);
         scene.setFill(Color.TRANSPARENT);
         primaryStage.setScene(scene);
-        scene.getStylesheets().add(
-            "https://fonts.googleapis.com/css?family=Hammersmith+One");
-        scene.getStylesheets().add(
-            "https://fonts.googleapis.com/css?family=Titillium+Web:200");
         primaryStage.setResizable(false);
 
     }

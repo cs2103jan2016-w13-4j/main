@@ -37,7 +37,7 @@
 .searchTab,
 .surpriseTab,
 .helpTab {
-	-fx-font-family: "HammersmithOne";
+	-fx-font-family: "Hammersmith One";
 	-fx-font-size: 16px;
 	-fx-text-fill: #eeeeee;
 }
@@ -50,7 +50,7 @@
 .searchTabOn,
 .surpriseTabOn,
 .helpTabOn {
-	-fx-font-family: "HammersmithOne";
+	-fx-font-family: "Hammersmith One";
 	-fx-font-size: 16px;
 	-fx-text-fill: #434343;
 }
@@ -59,7 +59,7 @@
 .overdueCount,
 .upcomingCount {
 	-fx-background-color: #943939;
-	-fx-font-family: "HammersmithOne";
+	-fx-font-family: "Hammersmith One";
 	-fx-font-size: 14px;
 	-fx-text-fill: #eeeeee;
 	-fx-label-padding: 5.0px 10.0px 5.0px 10.0px;
@@ -69,7 +69,7 @@
 .dayDate {
 	-fx-background-color: #434343;
 	-fx-text-fill: #eeeeee;
-	-fx-font-family: "HammersmithOne";
+	-fx-font-family: "Hammersmith One";
 	-fx-font-size: 16px;
 	-fx-alignment: CENTER;
 	-fx-text-alignment: CENTER;
@@ -79,7 +79,7 @@
 .listStatus {
 	-fx-background-color: #faebcd;
 	-fx-text-fill: #434343;
-	-fx-font-family: "HammersmithOne";
+	-fx-font-family: "Hammersmith One";
 	-fx-font-size: 22px;
 	-fx-alignment: CENTER;
 	-fx-text-alignment: CENTER;
@@ -95,7 +95,7 @@
 
 .itemBox #rowIndex {
 	-fx-text-fill: #434343;
-	-fx-font-family: "HammersmithOne";
+	-fx-font-family: "Hammersmith One";
 	-fx-font-size: 16px;
 	-fx-alignment: CENTER;
 	-fx-text-alignment: CENTER;
@@ -103,7 +103,7 @@
 
 .itemBox #description {
 	-fx-text-fill: #434343;
-	-fx-font-family: "HammersmithOne";
+	-fx-font-family: "Hammersmith One";
 	-fx-font-size: 14px;
 	-fx-wrap-text: true;
 }
@@ -111,7 +111,7 @@
 
 .itemBox #timeAndDate {
 	-fx-text-fill: #575757;
-	-fx-font-family: "TitilliumWeb";
+	-fx-font-family: "Titillium Web";
 	-fx-font-size: 11px;
 	-fx-wrap-text: true;
 }
@@ -124,7 +124,7 @@
 
 .itemBoxDone #rowIndex {
 	-fx-text-fill: #434343;
-	-fx-font-family: "HammersmithOne";
+	-fx-font-family: "Hammersmith One";
 	-fx-font-size: 16px;
 	-fx-alignment: CENTER;
 	-fx-text-alignment: CENTER;
@@ -132,7 +132,7 @@
 
 .itemBoxDone #description {
 	-fx-text-fill: #434343;
-	-fx-font-family: "HammersmithOne";
+	-fx-font-family: "Hammersmith One";
 	-fx-font-size: 14px;
 	-fx-wrap-text: true;
 }
@@ -140,14 +140,14 @@
 
 .itemBoxDone #timeAndDate {
 	-fx-text-fill: #575757;
-	-fx-font-family: "TitilliumWeb";
+	-fx-font-family: "Titillium Web";
 	-fx-font-size: 11px;
 	-fx-wrap-text: true;
 }
 
 .itemBoxOverdue #rowIndex {
 	-fx-text-fill: #943939;
-	-fx-font-family: "HammersmithOne";
+	-fx-font-family: "Hammersmith One";
 	-fx-font-size: 16px;
 	-fx-alignment: CENTER;
 	-fx-text-alignment: CENTER;
@@ -155,7 +155,7 @@
 
 .itemBoxOverdue #description {
 	-fx-text-fill: #943939;
-	-fx-font-family: "HammersmithOne";
+	-fx-font-family: "Hammersmith One";
 	-fx-font-size: 14px;
 	-fx-wrap-text: true;
 }
@@ -163,14 +163,14 @@
 
 .itemBoxOverdue #timeAndDate {
 	-fx-text-fill: #943939;
-	-fx-font-family: "TitilliumWeb";
+	-fx-font-family: "Titillium Web";
 	-fx-font-size: 11px;
 	-fx-wrap-text: true;
 }
 
 .itemBoxUpcoming #rowIndex {
 	-fx-text-fill: #E18237;
-	-fx-font-family: "HammersmithOne";
+	-fx-font-family: "Hammersmith One";
 	-fx-font-size: 16px;
 	-fx-alignment: CENTER;
 	-fx-text-alignment: CENTER;
@@ -178,7 +178,7 @@
 
 .itemBoxUpcoming #description {
 	-fx-text-fill: #E18237;
-	-fx-font-family: "HammersmithOne";
+	-fx-font-family: "Hammersmith One";
 	-fx-font-size: 14px;
 	-fx-wrap-text: true;
 }
@@ -186,13 +186,13 @@
 
 .itemBoxUpcoming #timeAndDate {
 	-fx-text-fill: #E18237;
-	-fx-font-family: "TitilliumWeb";
+	-fx-font-family: "Titillium Web";
 	-fx-font-size: 11px;
 	-fx-wrap-text: true;
 }
 
 .fbArea {
-	-fx-font-family: "HammersmithOne";
+	-fx-font-family: "Hammersmith One";
 	-fx-font-size: 14px;
 	-fx-wrap-text: true;
 	-fx-text-fill: #eeeeee;
@@ -209,7 +209,7 @@
 
 .cmdArea {
 	-fx-text-fill: #434343;
-	-fx-font-family: "HammersmithOne";
+	-fx-font-family: "Hammersmith One";
 	-fx-font-size: 12px;
 	-fx-wrap-text: true;
 }
@@ -229,14 +229,14 @@
 
 .helpItem #command {
 	-fx-font-weight: 700;
-	-fx-font-family: "HammersmithOne";
+	-fx-font-family: "Lucida Console";
 	-fx-text-fill: #943939;
 	-fx-font-size: 13px;
 	-fx-wrap-text: true;
 }
 
 .helpItem #description {
-	-fx-font-family: "HammersmithOne";
+	-fx-font-family: "Hammersmith One";
 	-fx-text-fill: #434343;
 	-fx-font-size: 13px;
 	-fx-wrap-text: true;

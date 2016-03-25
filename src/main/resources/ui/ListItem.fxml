@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
@@ -30,5 +31,8 @@
          </VBox.margin>
       </HBox>
       <Line endX="425.0" startX="-15.0" stroke="#434343" strokeLineCap="ROUND" translateX="30.0" />
+      <stylesheets>
+  		 <URL value="@jfdiLook.css" />
+	  </stylesheets>
    </children>
 </fx:root>

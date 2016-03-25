@@ -55,7 +55,9 @@ public class InputHistory {
             previousStack.push(nextStack.pop());
         }
 
-        previousStack.push(input);
+        if (previousStack.empty() || !previousStack.peek().equals(input)) {
+            previousStack.push(input);
+        }
     }
 
     private void addToNext(String input) {

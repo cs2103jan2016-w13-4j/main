@@ -56,17 +56,18 @@ public class DateTimeParserTest {
         Assert.assertNull(res.getStartDateTime());
 
         // Check end date time is corrently parsed
-        checkMatchingDateTime(res.getEndDateTime(), getCurrentYear() + 1,
-            getCurrentMonth(), getCurrentDay(), DEFAULT_HOUR, DEFAULT_MINUTES);
+        checkMatchingDateTime(res.getEndDateTime(), getCurrentYearPlus(1),
+            getCurrentMonthPlus(0), getCurrentDayPlus(0), DEFAULT_HOUR,
+            DEFAULT_MINUTES);
 
-        res = parseDateTime("by 1 week later");
+        res = parseDateTime("by 1 month later");
 
         // Start date-time should be null
         Assert.assertNull(res.getStartDateTime());
 
         // Check end date time is corrently parsed
-        checkMatchingDateTime(res.getEndDateTime(), getCurrentYear(),
-            getCurrentMonth(), getCurrentDay() + 7, DEFAULT_HOUR,
+        checkMatchingDateTime(res.getEndDateTime(), getCurrentYearPlus(0),
+            getCurrentMonthPlus(1), getCurrentDayPlus(0), DEFAULT_HOUR,
             DEFAULT_MINUTES);
 
         res = parseDateTime("by tomorrow");
@@ -75,8 +76,8 @@ public class DateTimeParserTest {
         Assert.assertNull(res.getStartDateTime());
 
         // Check end date time is corrently parsed
-        checkMatchingDateTime(res.getEndDateTime(), getCurrentYear(),
-            getCurrentMonth(), getCurrentDay() + 1, DEFAULT_HOUR,
+        checkMatchingDateTime(res.getEndDateTime(), getCurrentYearPlus(0),
+            getCurrentMonthPlus(0), getCurrentDayPlus(1), DEFAULT_HOUR,
             DEFAULT_MINUTES);
     }
 
@@ -91,8 +92,8 @@ public class DateTimeParserTest {
         Assert.assertNull(res.getStartDateTime());
 
         // Check end date time is corrently parsed
-        checkMatchingDateTime(res.getEndDateTime(), getCurrentYear(),
-            getCurrentMonth(), getCurrentDay() + 1, 18, 32);
+        checkMatchingDateTime(res.getEndDateTime(), getCurrentYearPlus(0),
+            getCurrentMonthPlus(0), getCurrentDayPlus(1), 18, 32);
 
         res = parseDateTime("by 3 days later, 1100pm");
 
@@ -100,8 +101,8 @@ public class DateTimeParserTest {
         Assert.assertNull(res.getStartDateTime());
 
         // Check end date time is corrently parsed
-        checkMatchingDateTime(res.getEndDateTime(), getCurrentYear(),
-            getCurrentMonth(), getCurrentDay() + 3, 23, 0);
+        checkMatchingDateTime(res.getEndDateTime(), getCurrentYearPlus(0),
+            getCurrentMonthPlus(0), getCurrentDayPlus(3), 23, 0);
 
         res = parseDateTime("by 23:00h 3 days later");
 
@@ -109,8 +110,8 @@ public class DateTimeParserTest {
         Assert.assertNull(res.getStartDateTime());
 
         // Check end date time is corrently parsed
-        checkMatchingDateTime(res.getEndDateTime(), getCurrentYear(),
-            getCurrentMonth(), getCurrentDay() + 3, 23, 0);
+        checkMatchingDateTime(res.getEndDateTime(), getCurrentYearPlus(0),
+            getCurrentMonthPlus(0), getCurrentDayPlus(3), 23, 0);
 
     }
 
@@ -119,14 +120,14 @@ public class DateTimeParserTest {
     // With time specified
     @Test
     public void testParseRelativeQueries3() {
-        DateTimeObject res = parseDateTime("next week 11pm");
+        DateTimeObject res = parseDateTime("next month 11pm");
 
         // Start date-time should be null
         Assert.assertNull(res.getEndDateTime());
 
         // Check end date time is corrently parsed
-        checkMatchingDateTime(res.getStartDateTime(), getCurrentYear(),
-            getCurrentMonth(), getCurrentDay() + 7, 23, 00);
+        checkMatchingDateTime(res.getStartDateTime(), getCurrentYearPlus(0),
+            getCurrentMonthPlus(1), getCurrentDayPlus(0), 23, 00);
 
         res = parseDateTime("11pm, tomorrow");
 
@@ -134,8 +135,8 @@ public class DateTimeParserTest {
         Assert.assertNull(res.getEndDateTime());
 
         // Check end date time is corrently parsed
-        checkMatchingDateTime(res.getStartDateTime(), getCurrentYear(),
-            getCurrentMonth(), getCurrentDay() + 1, 23, 00);
+        checkMatchingDateTime(res.getStartDateTime(), getCurrentYearPlus(0),
+            getCurrentMonthPlus(0), getCurrentDayPlus(1), 23, 00);
 
     }
 
@@ -214,12 +215,12 @@ public class DateTimeParserTest {
         res = parseDateTime("From 3pm to 8pm");
 
         // Check start date time is corrently parsed
-        checkMatchingDateTime(res.getStartDateTime(), getCurrentYear(),
-            getCurrentMonth(), getCurrentDay(), 15, 00);
+        checkMatchingDateTime(res.getStartDateTime(), getCurrentYearPlus(0),
+            getCurrentMonthPlus(0), getCurrentDayPlus(0), 15, 00);
 
         // Check end date time is corrently parsed
-        checkMatchingDateTime(res.getEndDateTime(), getCurrentYear(),
-            getCurrentMonth(), getCurrentDay(), 20, 00);
+        checkMatchingDateTime(res.getEndDateTime(), getCurrentYearPlus(0),
+            getCurrentMonthPlus(0), getCurrentDayPlus(0), 20, 00);
     }
 
     // Explicit date time queries
@@ -287,24 +288,24 @@ public class DateTimeParserTest {
         Assert.assertEquals(hour, res.getHour());
     }
 
-    private int getCurrentYear() {
-        return LocalDateTime.now().getYear();
+    private int getCurrentYearPlus(int i) {
+        return LocalDateTime.now().plusYears(i).getYear();
     }
 
-    private Month getCurrentMonth() {
-        return LocalDateTime.now().getMonth();
+    private Month getCurrentMonthPlus(int i) {
+        return LocalDateTime.now().plusMonths(i).getMonth();
     }
 
-    private int getCurrentDay() {
-        return LocalDateTime.now().getDayOfMonth();
+    private int getCurrentDayPlus(int i) {
+        return LocalDateTime.now().plusDays(i).getDayOfMonth();
     }
 
-    private int getCurrentHour() {
-        return LocalDateTime.now().getHour();
+    private int getCurrentHourPlus(int i) {
+        return LocalDateTime.now().plusHours(i).getHour();
     }
 
-    private int getCurrentMinutes() {
-        return LocalDateTime.now().getMinute();
+    private int getCurrentMinutesPlus(int i) {
+        return LocalDateTime.now().plusMinutes(i).getMinute();
     }
 
 }

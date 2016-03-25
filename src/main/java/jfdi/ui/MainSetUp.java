@@ -65,18 +65,18 @@ public class MainSetUp extends Application {
     private void initRootLayout() throws IOException {
 
         rootLayout = (BorderPane) FXMLLoader.load(getClass().getResource(
-                Constants.URL_ROOT_PATH));
+            Constants.URL_ROOT_PATH));
         logger.fine(String.format(Constants.LOG_FXML_PATH, "RootLayout.fxml",
-                Constants.URL_ROOT_PATH));
+            Constants.URL_ROOT_PATH));
 
         // Display scene with root layout
         scene = new Scene(rootLayout);
         scene.setFill(Color.TRANSPARENT);
         primaryStage.setScene(scene);
         scene.getStylesheets().add(
-                "https://fonts.googleapis.com/css?family=Hammersmith+One");
+            "https://fonts.googleapis.com/css?family=Hammersmith+One");
         scene.getStylesheets().add(
-                "https://fonts.googleapis.com/css?family=Titillium+Web:200");
+            "https://fonts.googleapis.com/css?family=Titillium+Web:200");
         primaryStage.show();
         primaryStage.setResizable(false);
 
@@ -91,7 +91,7 @@ public class MainSetUp extends Application {
         loader.setLocation(getClass().getResource(Constants.URL_LIST_PATH));
         listLayout = (AnchorPane) loader.load();
         logger.fine(String.format(Constants.LOG_FXML_PATH, "ListLayout.fxml",
-                Constants.URL_LIST_PATH));
+            Constants.URL_LIST_PATH));
 
         // Initialize Controller
         controller = loader.getController();
@@ -107,8 +107,12 @@ public class MainSetUp extends Application {
         controller.setUi(ui);
         controller.setMainApp(this);
 
+<<<<<<< Updated upstream
         //controller.importantList.removeAll(controller.importantList);
         controller.initSideContent();
+=======
+        // controller.importantList.removeAll(controller.importantList);
+>>>>>>> Stashed changes
         controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
         ui.displayWelcome();
     }

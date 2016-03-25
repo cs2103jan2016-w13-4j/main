@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import jfdi.common.utilities.JfdiLogger;
 import jfdi.ui.UI;
 
+import java.util.Optional;
 import java.util.Stack;
 import java.util.logging.Logger;
 
@@ -18,6 +19,7 @@ public abstract class Command {
     protected static final Stack<Command> redoStack = new Stack<>();
 
     private static boolean redoing = false;
+    private static Optional<String> lastSuggestion = Optional.empty();
 
     protected EventBus eventBus = UI.getEventBus();
 
@@ -33,6 +35,14 @@ public abstract class Command {
 
     protected static void setRedoing(boolean redo) {
         redoing = redo;
+    }
+
+    public static void setLastSuggestion(Optional<String> suggestion) {
+        lastSuggestion = suggestion;
+    }
+
+    public static Optional<String> getLastSuggestion() {
+        return lastSuggestion;
     }
 
     protected void pushToUndoStack() {

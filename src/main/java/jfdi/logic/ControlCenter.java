@@ -15,6 +15,8 @@ import jfdi.storage.exceptions.FilesReplacedException;
 import jfdi.storage.exceptions.InvalidFilePathException;
 import jfdi.ui.UI;
 
+import java.util.Optional;
+
 /**
  * @author Liu Xinan
  */
@@ -43,6 +45,10 @@ public class ControlCenter implements ILogic {
             command = new InvalidCommand.Builder().build();
         }
         command.execute();
+
+        if (!(command instanceof InvalidCommand)) {
+            Command.setLastSuggestion(Optional.empty());
+        }
     }
 
     public void setParser(InputParser parser) {

@@ -21,7 +21,7 @@ public class UnmarkTaskDoneEvent {
         return screenIds;
     }
 
-    public ArrayList<TaskAttributes> getUnarkedTasks() {
+    public ArrayList<TaskAttributes> getUnmarkedTasks() {
         return unmarkedTasks;
     }
 

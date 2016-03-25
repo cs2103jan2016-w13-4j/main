@@ -6,7 +6,8 @@ package jfdi.logic.events;
 public class UnaliasFailEvent {
 
     public enum Error {
-        NON_EXISTENT_ALIAS, UNKNOWN
+        NON_EXISTENT_ALIAS,
+        UNKNOWN
     }
 
     private String alias;

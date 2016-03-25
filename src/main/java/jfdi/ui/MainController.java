@@ -89,7 +89,6 @@ public class MainController {
     private ObservableList<HelpItem> helpList;
     private InputHistory inputHistory;
     private int firstVisibleId;
-    private int lastVisibleId;
 
     public void initialize() {
 
@@ -344,20 +343,9 @@ public class MainController {
                     cmdArea.positionCaret(nextInput.length());
                 }
             } else if (code == KeyCode.PAGE_DOWN) {
-                setFirstAndLastVisibleIds();
-                if (displayStatus.equals(ListStatus.HELP)) {
-                    helpContent.scrollTo(lastVisibleId);
-                } else {
-                    listMain.scrollTo(lastVisibleId);
-                }
+                scrollDown();
             } else if (code == KeyCode.PAGE_UP) {
-                setFirstAndLastVisibleIds();
-                int scrollAmount = lastVisibleId - firstVisibleId;
-                if (displayStatus.equals(ListStatus.HELP)) {
-                    helpContent.scrollTo(firstVisibleId - scrollAmount);
-                } else {
-                    listMain.scrollTo(firstVisibleId - scrollAmount);
-                }
+                scrollUp();
             } else {
                 return;
             }
@@ -390,21 +378,31 @@ public class MainController {
      *** LEVEL 3 Abstraction ***
      ***************************/
 
-    public void setFirstAndLastVisibleIds() {
-        ListViewSkin<?> listViewSkin = null;
+    private void scrollUp() {
+        setFirstVisibleId();
+        ListView<?> listView = getCurrentListView();
+        listView.scrollTo(firstVisibleId - 1);
+    }
+
+    private void scrollDown() {
+        setFirstVisibleId();
+        ListView<?> listView = getCurrentListView();
+        listView.scrollTo(firstVisibleId + 1);
+    }
+
+    private ListView<?> getCurrentListView() {
         if (displayStatus.equals(ListStatus.HELP)) {
-            listViewSkin = (ListViewSkin<?>) helpContent.getSkin();
-        } else {
-            listViewSkin = (ListViewSkin<?>) listMain.getSkin();
+            return helpContent;
         }
+        return listMain;
+    }
+
+    public void setFirstVisibleId() {
+        ListViewSkin<?> listViewSkin = (ListViewSkin<?>) getCurrentListView().getSkin();
         VirtualFlow<?> virtualFlow = (VirtualFlow<?>) listViewSkin.getChildren().get(0);
         IndexedCell<?> firstVisibleCell = virtualFlow.getFirstVisibleCellWithinViewPort();
-        IndexedCell<?> lastVisibleCell = virtualFlow.getLastVisibleCellWithinViewPort();
         if (firstVisibleCell != null) {
             firstVisibleId = firstVisibleCell.getIndex();
-        }
-        if (lastVisibleCell != null) {
-            lastVisibleId = lastVisibleCell.getIndex();
         }
     }
 }

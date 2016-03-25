@@ -31,7 +31,7 @@ dependencies {
 }
 
 checkstyle {
-  toolVersion '6.15'
+  toolVersion '6.16.1'
 }
 
 findbugs {

@@ -5,7 +5,7 @@ import jfdi.logic.interfaces.Command;
 
 /**
  * This class parses the Directory command input by the user. The Directory
- * command is in the format {Directory command} i.e. a singular word.
+ * command is in the format {Directory identifier} i.e. a singular word.
  *
  * @author Leonard Hio
  *

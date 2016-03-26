@@ -1,10 +1,7 @@
 package jfdi.parser.commandparsers;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import jfdi.logic.commands.InvalidCommand;
@@ -15,9 +12,10 @@ import jfdi.parser.ParserUtils;
 import jfdi.parser.exceptions.BadTaskIdException;
 
 /**
- * The AbstractCommandParser class is the abstract class that all specific
- * command parser should inherit from. It also contains the full implementation
- * of some methods that can be used across many different command parsers.
+ * The AbstractCommandParser class is the abstract class that defines the
+ * functionality of all command parsers. It also contains the full
+ * implementation of some methods that can be used across many different command
+ * parsers.
  *
  * @author Leonard Hio
  *
@@ -26,32 +24,37 @@ public abstract class AbstractCommandParser {
     protected String userInput;
 
     /**
-     * This method is used to build a command object based on the input string.
+     * This method is used to build a command object based on the input String.
      *
      * @param input
-     *            the input string from which a command object is to be built
+     *            the input String from which a command object is to be built
      * @return a Command object.
      */
     public abstract Command build(String input);
 
-    protected List<String> getArguments(String input) {
-        List<String> arguments = new ArrayList<String>();
-        arguments.addAll(Arrays.asList(input.trim().split(
-            Constants.REGEX_WHITESPACE)));
-        return arguments;
+    /**
+     * This method checks if the given input is valid. A valid input is one that
+     * is (1) not empty, and (2) not made of whitespaces only.
+     *
+     * @param input
+     *            the input which validity is to be checked
+     * @return true if the input is valid; false otherwise
+     */
+    protected boolean isValidInput(String input) {
+        return input != null && !input.isEmpty() && !input.trim().isEmpty();
     }
 
     /**
-     * Get the substring of an input String from startindex inclusive to
+     * Get the subString of an input String from startindex inclusive to
      * endindex exclusive, trimming it at the same time.
      *
      * @param input
-     *            a string to get substring of
+     *            a String to get subString of
      * @param startIndex
-     *            index of the start of the substring (inclusive)
+     *            index of the start of the subString (inclusive)
      * @param endIndex
-     *            index of the end of the substring (exclusive)
-     * @return the trimmed substring
+     *            index of the end of the subString (exclusive)
+     * @return the trimmed subString
      */
     protected String getTrimmedSubstringInRange(String input, int startIndex,
         int endIndex) {
@@ -89,54 +92,8 @@ public abstract class AbstractCommandParser {
         return taskIdsForDeletion;
     }
 
-    private Collection<? extends Integer> getTaskIdsFromRange(String taskId)
-        throws BadTaskIdException {
-        assert taskId.matches("\\d+[ ]?-[ ]?\\d+");
-        String[] taskIdRangeArray = taskId.split("-");
-        Collection<Integer> taskIdsInRange = new HashSet<>();
-        assert taskIdRangeArray.length == 2;
-        if (toInteger(taskIdRangeArray[0]) > toInteger(taskIdRangeArray[1])) {
-            throw new BadTaskIdException(taskId);
-        } else {
-            for (int i = toInteger(taskIdRangeArray[0]); i <= toInteger(taskIdRangeArray[1]); i++) {
-                taskIdsInRange.add(i);
-            }
-        }
-
-        return taskIdsInRange;
-    }
-
-    /**
-     * This method converts a string object to an Integer.
-     *
-     * @param toInt
-     *            a string that is to be converted to an Integer.
-     * @return an Integer representation of the string.
-     *
-     * @throws NumberFormatException
-     *             if the input string does not represent an Integer.
-     */
     protected Integer toInteger(String toInt) throws NumberFormatException {
         return Integer.parseInt(toInt);
-    }
-
-    /**
-     * Removes the first word in the input string, and returns the rest of the
-     * input.
-     *
-     * @param input
-     *            the string from which the first word is to be removed
-     * @return the input string without the first word and the whitespace
-     *         separating the first word from the rest of the string. If the
-     *         string only consists of one word, return an empty string.
-     */
-    protected String removeFirstWord(String input) {
-        String[] splitInput = input.split(Constants.REGEX_WHITESPACE, 2);
-        if (splitInput.length == 1) {
-            return "";
-        } else {
-            return splitInput[1];
-        }
     }
 
     /**
@@ -167,25 +124,51 @@ public abstract class AbstractCommandParser {
      *            a String from which the first word is to be returned.
      * @return the first word of the input String.
      */
-    public String getFirstWord(String input) {
+    protected String getFirstWord(String input) {
         assert isValidInput(input);
         return input.trim().split(Constants.REGEX_WHITESPACE)[0];
     }
 
     /**
-     * This method checks if the given input is valid. A valid input is one that
-     * is (1) not empty, and (2) not made of whitespaces only.
+     * Removes the first word in the input String, and returns the rest of the
+     * input.
      *
      * @param input
-     *            the input which validity is to be checked
-     * @return true if the input is valid; false otherwise
+     *            the String from which the first word is to be removed
+     * @return the input String without the first word and the whitespace
+     *         separating the first word from the rest of the String. If the
+     *         String only consists of one word, return an empty String.
      */
-    protected boolean isValidInput(String input) {
-        return input != null && !input.isEmpty() && !input.trim().isEmpty();
+    protected String removeFirstWord(String input) {
+        assert isValidInput(input);
+
+        String[] splitInput = input.split(Constants.REGEX_WHITESPACE, 2);
+        if (splitInput.length == 1) {
+            return "";
+        } else {
+            return splitInput[1];
+        }
     }
 
     protected boolean matchesCommandType(String input, CommandType commandType) {
         return ParserUtils.getCommandType(getFirstWord(input)).equals(
             commandType);
+    }
+
+    private Collection<? extends Integer> getTaskIdsFromRange(String taskId)
+        throws BadTaskIdException {
+        assert taskId.matches("\\d+[ ]?-[ ]?\\d+");
+        String[] taskIdRangeArray = taskId.split("-");
+        Collection<Integer> taskIdsInRange = new HashSet<>();
+        assert taskIdRangeArray.length == 2;
+        if (toInteger(taskIdRangeArray[0]) > toInteger(taskIdRangeArray[1])) {
+            throw new BadTaskIdException(taskId);
+        } else {
+            for (int i = toInteger(taskIdRangeArray[0]); i <= toInteger(taskIdRangeArray[1]); i++) {
+                taskIdsInRange.add(i);
+            }
+        }
+
+        return taskIdsInRange;
     }
 }

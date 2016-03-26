@@ -13,7 +13,7 @@ import jfdi.parser.exceptions.InvalidInputException;
 
 /**
  * The SearchCommandParser class is used to parse a user input that represents a
- * search command.
+ * search command. The search input format is: {search identifier} {keywords}.
  *
  * @author Leonard Hio
  *
@@ -27,7 +27,7 @@ public class SearchCommandParser extends AbstractCommandParser {
 
     public static SearchCommandParser getInstance() {
         return instance == null ? instance = new SearchCommandParser()
-                : instance;
+            : instance;
     }
 
     @Override
@@ -39,6 +39,8 @@ public class SearchCommandParser extends AbstractCommandParser {
      * @return the SearchCommand object encapsulating the keywords of the search command.
      */
     public Command build(String input) {
+        assert isValidInput(input);
+
         SearchCommand.Builder builder = new SearchCommand.Builder();
         Collection<String> keywords = new HashSet<String>();
         try {
@@ -62,8 +64,8 @@ public class SearchCommandParser extends AbstractCommandParser {
      *             empty to begin with.
      */
     private Collection<String> getKeywords(String input)
-            throws InvalidInputException {
-        if (input == null || input.isEmpty()) {
+        throws InvalidInputException {
+        if (!isValidInput(input)) {
             throw new InvalidInputException(input);
         }
         String[] keywords = input.split(Constants.REGEX_WHITESPACE);

@@ -10,7 +10,8 @@ import jfdi.parser.ParserUtils;
  * The AliasCommandParser class takes in a user input representing an "Alias"
  * command and parses it into an AliasCommand object. This AliasCommand object
  * will then contain the associated mapping of alias to command type. All alias
- * user commands must be in the format: "alias {command type} {alias}"
+ * user commands must be in the format:
+ * "{alias identifier} {command type} {alias}"
  *
  * @author Leonard Hio
  *
@@ -51,9 +52,9 @@ public class AliasCommandParser extends AbstractCommandParser {
         return builder.build();
     }
 
-    private boolean isPartOfCommandKeyword(String alias) {
-        return ParserUtils.getCommandType(alias) != CommandType.invalid;
-    }
+    // ===================================
+    // First Level of Abstraction
+    // ===================================
 
     /**
      * This method checks to see if the format of the Alias command input is
@@ -96,6 +97,14 @@ public class AliasCommandParser extends AbstractCommandParser {
         String alias = getThirdWord(input);
         return alias;
     }
+
+    private boolean isPartOfCommandKeyword(String alias) {
+        return ParserUtils.getCommandType(alias) != CommandType.invalid;
+    }
+
+    // ===================================
+    // Second Level of Abstraction
+    // ===================================
 
     private String getSecondWord(String input) {
         return input.split(Constants.REGEX_WHITESPACE)[1];

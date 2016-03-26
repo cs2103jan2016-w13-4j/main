@@ -16,8 +16,8 @@ import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
 
 /**
- * DateTimeParser is a class used to parse a string input into one a list of
- * LocalDateTime objects it represents. It supports parsing strings of different
+ * DateTimeParser is a class used to parse a String input into one a list of
+ * LocalDateTime objects it represents. It supports parsing Strings of different
  * formats. For example, it can parse "by 23rd February 2015" or "from 23/02/15
  * 2359hrs to 29/03/16 09:40pm". For an idea of the format of String parseable,
  * see parser.Constants.java.
@@ -36,15 +36,15 @@ public class DateTimeParser {
     }
 
     /**
-     * This method parses the given input string into a DateTimeObject.
+     * This method parses the given input String into a DateTimeObject.
      *
      * @param input
-     *            a string that should match the date-time format listed in
+     *            a String that should match the date-time format listed in
      *            parser.Constants.java.
      * @return a DateTimeObject encapsulating the details of the input date time
-     *         string.
+     *         String.
      * @throws a
-     *             BadDateTimeException if the input string doesn't match a
+     *             BadDateTimeException if the input String doesn't match a
      *             valid date time format.
      */
     public DateTimeObject parseDateTime(String input)
@@ -61,14 +61,14 @@ public class DateTimeParser {
     }
 
     /**
-     * This method builds a DateTimeObject from a given string input. An 'event'
+     * This method builds a DateTimeObject from a given String input. An 'event'
      * type task will have both start and end date time. A 'point' task will
      * only have a start date time and NULL end date time. A 'deadline' task
      * will only have an end date time and NULL start date time. A 'floating'
      * task will have neither.
      *
      * @param input
-     *            a string that contains date time fields
+     *            a String that contains date time fields
      * @return a DateTimeObject.
      * @throws BadDateTimeException
      *             if the start date parsed is later than the end date parsed.
@@ -80,7 +80,6 @@ public class DateTimeParser {
         DateTimeObjectBuilder dateTimeObjectBuilder = new DateTimeObjectBuilder();
 
         TaskType taskType = getTaskType(input);
-        System.out.println(taskType);
         input = formatDateTimeInput(input);
         System.out.println("After formatting: " + input);
 
@@ -153,8 +152,8 @@ public class DateTimeParser {
      * library, prettyTime, can only parse American dates.
      *
      * @param input
-     *            the date time string to be parsed.
-     * @return the same input string, except with day and month reversed, if
+     *            the date time String to be parsed.
+     * @return the same input String, except with day and month reversed, if
      *         any.
      */
     private String toAmericanTime(String input) {
@@ -173,7 +172,7 @@ public class DateTimeParser {
      *
      * @param input
      *            the date-time input.
-     * @return the formatted string.
+     * @return the formatted String.
      */
     private String formatDate(String input) {
 
@@ -205,7 +204,6 @@ public class DateTimeParser {
             int end = dateFormatMatcher2.end();
             inputBuilder.replace(start, end, inputBuilder.substring(start, end)
                 .replaceAll("[./-]", " "));
-            System.out.println("lol" + inputBuilder.toString());
         }
 
         return inputBuilder.toString();
@@ -218,28 +216,27 @@ public class DateTimeParser {
     }
 
     /**
-     * This method parses the input string into a list of Dates.
+     * This method parses the input String into a list of Dates.
      *
      * @param input
-     *            the input string representing a date time.
+     *            the input String representing a date time.
      * @return a list of Date objects, storing information about the date and
-     *         time specified in the string.
+     *         time specified in the String.
      */
     private LocalDateTime getLocalDateTime(String input) {
         assert input != null;
         Parser parser = new Parser();
         List<DateGroup> dateList = parser.parse(input);
         assert dateList.size() == 1;
-        dateList.stream().forEach(System.out::println);
         return getLocalDateTimeFromDate(dateList.get(0).getDates().get(0));
     }
 
     /**
      * This method checks to see if a particular time is specified in the date
-     * time string
+     * time String
      *
      * @param input
-     *            a date time string.
+     *            a date time String.
      * @return true if time is specified; false otherwise.
      */
     private boolean checkTimeSpecified(String input) {
@@ -254,8 +251,8 @@ public class DateTimeParser {
      * input.
      *
      * @param input
-     *            the date time string.
-     * @return a TaskType enum representing the task type of the input string.
+     *            the date time String.
+     * @return a TaskType enum representing the task type of the input String.
      */
     private TaskType getTaskType(String input) {
         assert input != null;

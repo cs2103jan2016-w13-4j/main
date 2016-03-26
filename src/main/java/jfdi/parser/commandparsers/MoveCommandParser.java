@@ -6,7 +6,8 @@ import jfdi.parser.Constants;
 
 /**
  * This class parses the 'Move' user command, which the user inputs whenever he
- * or she wishes to migrate from one directory to another.
+ * or she wishes to migrate from one directory to another. The format for this
+ * command is a singular word i.e. {Mark identifier}.
  *
  * @author Leonard Hio
  *
@@ -26,9 +27,6 @@ public class MoveCommandParser extends AbstractCommandParser {
         return instance;
     }
 
-    /**
-     * This method builds a MoveCommand from the given input.
-     */
     @Override
     public Command build(String input) {
         Builder builder = new Builder();

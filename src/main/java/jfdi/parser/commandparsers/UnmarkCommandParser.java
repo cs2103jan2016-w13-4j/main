@@ -11,9 +11,9 @@ import jfdi.parser.Constants.CommandType;
 import jfdi.parser.exceptions.BadTaskIdException;
 
 /**
- * The MarkCommandParser class is used to parse a given 'Unmark' user input. The
- * 'Unmark' user input is given by the user when there is a need to mark a task
- * (denoted by its taskID) as incomplete. Use this class in tandem with the
+ * The UnmarkCommandParser class is used to parse a given 'Unmark' user input.
+ * The 'Unmark' user input is given by the user when there is a need to mark a
+ * task (denoted by its taskID) as incomplete. Use this class in tandem with the
  * MarkCommandParser class to mark a task as incomplete to complete. The format
  * of an Unmark command is given by: {unmark identifier} {task IDs}. Note that
  * task IDs can be represented as a range i.e. "1-10".

@@ -41,6 +41,8 @@ public class RenameCommandParser extends AbstractCommandParser {
      */
     @Override
     public Command build(String input) {
+        assert isValidInput(input);
+
         String originalInput = input;
         Builder renameCommandBuilder = new Builder();
         // Remove the rename command identifier.
@@ -109,7 +111,7 @@ public class RenameCommandParser extends AbstractCommandParser {
      */
     private String setTaskDescription(String input, Builder builder)
         throws BadTaskDescriptionException {
-        if (input.trim().isEmpty()) {
+        if (!isValidInput(input)) {
             throw new BadTaskDescriptionException(input);
         }
         builder.setDescription(input);

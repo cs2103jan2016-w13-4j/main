@@ -9,9 +9,9 @@ import jfdi.parser.exceptions.InvalidInputException;
 /**
  * The ListCommandParser class is used to parse a user input String that
  * resembles a list command. All user inputs for listing tasks must adhere to
- * the following format: {list identifier} {completed | all}. If the {completed
- * | all} field is unspecified, all incomplete tasks currently in storage will
- * be displayed.
+ * the following format: {list identifier} {completed | all | incomplete}. If
+ * the {completed | all} field is unspecified, all incomplete tasks will by
+ * default be displayed.
  *
  * @author Leonard Hio
  *

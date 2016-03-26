@@ -5,7 +5,7 @@ import jfdi.logic.interfaces.Command;
 
 /**
  * This class parses the Wildcard command input by the user. The Wildcard
- * command is in the format {Wildcard identifier} i.e. a singular word.
+ * command is in the format {Exit identifier} i.e. a singular word.
  *
  * @author Leonard Hio
  *

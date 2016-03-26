@@ -67,6 +67,10 @@ public class AddCommandParser extends AbstractCommandParser {
         return addCommand;
     }
 
+    // ===================================
+    // First Level of Abstraction
+    // ===================================
+
     /**
      * Sets the date time identifier field in the builder, if it can be found in
      * the string input. If the user input has many instances of substrings that
@@ -152,6 +156,10 @@ public class AddCommandParser extends AbstractCommandParser {
             throw new BadTaskDescriptionException(input);
         }
     }
+
+    // ===================================
+    // Second Level of Abstraction
+    // ===================================
 
     /**
      * This method checks to see if the given input is a task description,

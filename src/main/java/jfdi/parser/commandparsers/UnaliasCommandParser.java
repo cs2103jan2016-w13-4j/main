@@ -8,7 +8,8 @@ import jfdi.parser.Constants;
  * The UnaliasCommandParser class takes in a user input representing an "Alias"
  * command and parses it into an UnaliasCommand object. This UnaliasCommand
  * object will then contain the alias that is to be removed from the list of
- * aliases. All unalias user commands must be in the format: "unalias {alias}"
+ * aliases. All unalias user commands must be in the format:
+ * "{unalias identifier} {alias}"
  *
  * @author Leonard Hio
  *
@@ -28,6 +29,8 @@ public class UnaliasCommandParser extends AbstractCommandParser {
 
     @Override
     public Command build(String input) {
+        assert isValidInput(input);
+
         Builder builder = new Builder();
         System.out.println(input);
         if (!isValidFormat(input)) {

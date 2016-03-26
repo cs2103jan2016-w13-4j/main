@@ -12,9 +12,10 @@ import jfdi.parser.exceptions.BadDateTimeException;
 import jfdi.parser.exceptions.NoTaskIdFoundException;
 
 /**
- * The RenameCommandParser class is used to parse user input String that
- * resembles a rename command. All user inputs for renaming tasks must adhere to
- * the following format: {reschedule identifier} {task ID} {new task schedule}
+ * The RescheduleCommandParser class is used to parse user input String that
+ * resembles a reschedule command. All user inputs for renaming tasks must
+ * adhere to the following format: {reschedule identifier} {task ID} to
+ * (optional) {new task schedule}
  *
  * @author Leonard Hio
  *
@@ -42,6 +43,7 @@ public class RescheduleCommandParser extends AbstractCommandParser {
     @Override
     public Command build(String input) {
         assert isValidInput(input);
+
         String originalInput = input;
         Builder rescheduleCommandBuilder = new Builder();
         // Remove the reschedule command identifier.
@@ -58,22 +60,6 @@ public class RescheduleCommandParser extends AbstractCommandParser {
 
         Command rescheduleCommand = rescheduleCommandBuilder.build();
         return rescheduleCommand;
-    }
-
-    private void setIsDateTimeSpecified(String input,
-        Builder rescheduleCommandBuilder) {
-        Pattern pattern = Pattern.compile(Constants.REGEX_TIME_FORMAT);
-        Matcher matcher = pattern.matcher(input);
-        if (matcher.find()) {
-            rescheduleCommandBuilder.setShiftedTimeSpecified(true);
-        }
-
-        pattern = Pattern.compile(Constants.REGEX_DATE_FORMAT);
-        matcher = pattern.matcher(input);
-        if (matcher.find()) {
-            rescheduleCommandBuilder.setShiftedDateSpecified(true);
-        }
-
     }
 
     /**
@@ -120,15 +106,11 @@ public class RescheduleCommandParser extends AbstractCommandParser {
      * This method finds the date time fields from the user input, and adds them
      * to the RescheduleCommand object builder. If the previous inputs were all
      * properly executed, then the input itself should be the task date time
-     * fields. If the input does not match the regex for a correctly formatted
-     * date time, an 'invalid' flag is set in the builder. If the input is empty
-     * (meaning no date time is specified, effectively implying that the task is
-     * meant to have no date time constraints), then an empty ArrayList is added
-     * to the builder.
+     * fields.
      *
      * @param input
      *            the String that corresponds to the new task date time.
-     * @return the input string.
+     * @return the input String.
      */
     private String setTaskDateTime(String input, Builder builder)
         throws BadDateTimeException {
@@ -138,6 +120,7 @@ public class RescheduleCommandParser extends AbstractCommandParser {
             // restrictions on task
             return input;
         }
+
         DateTimeParser dateTimeParser = DateTimeParser.getInstance();
 
         String dateTimeString = input;
@@ -148,6 +131,7 @@ public class RescheduleCommandParser extends AbstractCommandParser {
                 dateTimeString = getTrimmedSubstringInRange(input, 3,
                     input.length());
             }
+
             DateTimeObject dateTimeObject = dateTimeParser
                 .parseDateTime(dateTimeString);
 
@@ -183,5 +167,31 @@ public class RescheduleCommandParser extends AbstractCommandParser {
         }
 
         return input;
+    }
+
+    /**
+     * This method sets the relevant boolean flags to true according to if the
+     * input contains a date or a time or both.
+     *
+     * @param input
+     *            the input on which checks are made to see if it contains a
+     *            date, time or both.
+     * @param rescheduleCommandBuilder
+     *            the RescheduleCommandBuilder object.
+     */
+    private void setIsDateTimeSpecified(String input,
+        Builder rescheduleCommandBuilder) {
+        Pattern pattern = Pattern.compile(Constants.REGEX_TIME_FORMAT);
+        Matcher matcher = pattern.matcher(input);
+        if (matcher.find()) {
+            rescheduleCommandBuilder.setShiftedTimeSpecified(true);
+        }
+
+        pattern = Pattern.compile(Constants.REGEX_DATE_FORMAT);
+        matcher = pattern.matcher(input);
+        if (matcher.find()) {
+            rescheduleCommandBuilder.setShiftedDateSpecified(true);
+        }
+
     }
 }

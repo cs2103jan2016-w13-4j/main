@@ -162,6 +162,29 @@ public class DateTimeParserTest {
             expectedDateTime.getDayOfMonth(), expectedDateTime.getHour(),
             expectedDateTime.getMinute());
 
+        res = parseDateTime("5 hours from now");
+
+        // Start date-time should be null
+        Assert.assertNull(res.getEndDateTime());
+
+        // Check end date time is corrently parsed
+        expectedDateTime = getCurrentDatePlus(0, 0, 0, 0, 5, 0);
+        checkMatchingDateTime(res.getStartDateTime(),
+            expectedDateTime.getYear(), expectedDateTime.getMonth(),
+            expectedDateTime.getDayOfMonth(), expectedDateTime.getHour(),
+            expectedDateTime.getMinute());
+
+        res = parseDateTime("in 4 days' time");
+
+        // Start date-time should be null
+        Assert.assertNull(res.getEndDateTime());
+
+        // Check end date time is corrently parsed
+        expectedDateTime = getCurrentDatePlus(0, 0, 0, 4, 0, 0);
+        checkMatchingDateTime(res.getStartDateTime(),
+            expectedDateTime.getYear(), expectedDateTime.getMonth(),
+            expectedDateTime.getDayOfMonth(), DEFAULT_HOUR, DEFAULT_MINUTES);
+
         res = parseDateTime("in 4 hours");
 
         // Start date-time should be null

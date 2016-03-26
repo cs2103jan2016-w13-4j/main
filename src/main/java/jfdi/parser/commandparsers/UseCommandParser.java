@@ -46,7 +46,7 @@ public class UseCommandParser extends AbstractCommandParser {
     }
 
     private boolean isValidUseInput(String input) {
-        return input != null && !input.isEmpty()
+        return isValidInput(input)
             && input.trim().split(Constants.REGEX_WHITESPACE).length == 2;
     }
 

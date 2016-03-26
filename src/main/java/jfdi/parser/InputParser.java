@@ -39,6 +39,7 @@ import jfdi.storage.apis.AliasAttributes;
  *
  */
 public class InputParser implements IParser {
+
     private static InputParser parserInstance;
     private static final Logger LOGGER = JfdiLogger.getLogger();
     private static final String SOURCECLASS = InputParser.class.getName();
@@ -62,8 +63,10 @@ public class InputParser implements IParser {
                 input));
             throw new InvalidInputException(input);
         }
+
         currentInput = input;
         input = trimInput(input);
+
         // input is guaranteed to be at least one word long
         String unaliasedInput = unalias(input);
         String firstWord = getFirstWord(unaliasedInput);
@@ -85,9 +88,13 @@ public class InputParser implements IParser {
         return String.join("|", Constants.COMMAND_REGEXES);
     }
 
+    // ===================================
+    // First Level of Abstraction
+    // ===================================
+
     /**
      * This method builds a mapping of aliases to their corresponding command
-     * types (represented as strings).
+     * types (represented as Strings).
      */
     private void buildAliasMap() {
         aliasMap = new HashMap<>();
@@ -97,23 +104,11 @@ public class InputParser implements IParser {
     }
 
     /**
-     * This method returns the first word of the input String.
-     *
-     * @param input
-     *            a String from which the first word is to be returned.
-     * @return the first word of the input String.
-     */
-    private String getFirstWord(String input) {
-        assert isValidInput(input);
-        return input.trim().split(Constants.REGEX_WHITESPACE)[0];
-    }
-
-    /**
      * This method replaces an alias (if present) in the input into its
      * corresponding command type.
      *
      * @param input
-     *            the string that may or may not have an alias.
+     *            the String that may or may not have an alias.
      * @return the unaliased input.
      */
     private String unalias(String input) {
@@ -194,9 +189,9 @@ public class InputParser implements IParser {
         }
     }
 
-    private boolean isSingleWord(String input) {
-        return input.trim().split(Constants.REGEX_WHITESPACE).length == 1;
-    }
+    // ===================================
+    // Second Level of Abstraction
+    // ===================================
 
     /**
      * This method checks if the given input is valid. A valid input is one that
@@ -208,6 +203,22 @@ public class InputParser implements IParser {
      */
     private boolean isValidInput(String input) {
         return input != null && !input.isEmpty() && !input.trim().isEmpty();
+    }
+
+    /**
+     * This method returns the first word of the input String.
+     *
+     * @param input
+     *            a String from which the first word is to be returned.
+     * @return the first word of the input String.
+     */
+    private String getFirstWord(String input) {
+        assert isValidInput(input);
+        return input.trim().split(Constants.REGEX_WHITESPACE)[0];
+    }
+
+    private boolean isSingleWord(String input) {
+        return input.trim().split(Constants.REGEX_WHITESPACE).length == 1;
     }
 
     private String trimInput(String input) {

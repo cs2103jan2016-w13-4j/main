@@ -4,6 +4,14 @@ import java.time.LocalDateTime;
 
 import jfdi.parser.Constants.TaskType;
 
+/**
+ * The DateTimeObject class encapsulates all the information relevant to the
+ * datetime field of a user's input. This includes the task type (floating,
+ * event, etc), the values of the start and end date time specified, and so on.
+ *
+ * @author Leonard Hio
+ *
+ */
 public class DateTimeObject {
 
     private TaskType taskType;

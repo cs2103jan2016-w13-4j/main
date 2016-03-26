@@ -168,6 +168,8 @@ public class CommandHandler {
             String.format(Constants.CMD_SUCCESS_REDONE, cmdType.toString()),
             MsgType.SUCCESS);
         controller.updateNotiBubbles();
+
+        controller.updateAutoCompleteList();
     }
 
     @Subscribe
@@ -184,6 +186,8 @@ public class CommandHandler {
             String.format(Constants.CMD_SUCCESS_UNDONE, cmdType.toString()),
             MsgType.SUCCESS);
         //controller.updateNotiBubbles();
+
+        controller.updateAutoCompleteList();
     }
 
     @Subscribe

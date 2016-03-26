@@ -72,10 +72,11 @@ public class Constants {
         "(?i)((((the )?next|this|last) %s)|((the )?next |this |last )?%s)",
         REGEX_DATE_ATTRIBUTES, REGEX_DAYS_TEXTUAL);
     public static final String REGEX_RELATIVE_DATE_3 = String.format(
-        "(\\d+ (%s|%s) (?i)(later|before|after))", REGEX_DATE_ATTRIBUTES,
-        REGEX_TIME_ATTRIBUTES);
+        "(\\d+ (%s|%s) (?i)(later|before|after|from now))",
+        REGEX_DATE_ATTRIBUTES, REGEX_TIME_ATTRIBUTES);
     public static final String REGEX_RELATIVE_DATE_4 = String.format(
-        "(?i)in \\d+ %s", REGEX_TIME_ATTRIBUTES);
+        "(?i)(in )?\\d+ (%s|%s)'?( time)?", REGEX_TIME_ATTRIBUTES,
+        REGEX_DATE_ATTRIBUTES);
 
     public static final String REGEX_RELATIVE_DATE = String.format(
         "(%s|%s|%s|%s)", REGEX_RELATIVE_DATE_1, REGEX_RELATIVE_DATE_2,
@@ -210,6 +211,7 @@ public class Constants {
         REGEX_WILDCARD, REGEX_EXIT};
 
     public static void main(String[] args) {
+
         System.out.println("delete 1-10".matches(REGEX_DELETE_FORMAT));
         System.out.println("mark 1".matches(REGEX_MARK_FORMAT));
         System.out.println("mark 1-10".matches(REGEX_MARK_FORMAT));

@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -14,6 +13,8 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
+
+<?import jfdi.ui.AutoCompleteTextField?>
 
 <AnchorPane maxHeight="690.0" maxWidth="670.0" prefHeight="690.0" prefWidth="670.0" style="-fx-background-color: #f7c873;" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfdi.ui.MainController">
    <children>
@@ -203,11 +204,11 @@
                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                     </VBox.margin>
                         		   </TextArea>
-                                 <TextField id="cmdArea" fx:id="cmdArea" maxWidth="510.0" prefWidth="510.0" styleClass="cmdArea">
+                                 <AutoCompleteTextField id="cmdArea" fx:id="cmdArea" maxWidth="510.0" prefWidth="510.0" styleClass="cmdArea">
                                     <VBox.margin>
                                        <Insets left="10.0" right="10.0" />
                                     </VBox.margin>
-                                 </TextField>
+                                 </AutoCompleteTextField>
                               </children>
                               <VBox.margin>
                                  <Insets bottom="10.0" />

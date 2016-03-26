@@ -214,6 +214,6 @@ public class Constants {
 
         System.out.println("delete 1-10".matches(REGEX_DELETE_FORMAT));
         System.out.println("mark 1".matches(REGEX_MARK_FORMAT));
-        System.out.println("mark 1-10".matches(REGEX_MARK_FORMAT));
+        System.out.println("12:34hrs, 23/12".matches(REGEX_DATE_FORMAT));
     }
 }

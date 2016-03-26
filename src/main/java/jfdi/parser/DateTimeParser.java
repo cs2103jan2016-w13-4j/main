@@ -60,6 +60,10 @@ public class DateTimeParser {
         return dateTimeObject;
     }
 
+    // =========================================
+    // First Level of Abstraction
+    // =========================================
+
     /**
      * This method builds a DateTimeObject from a given String input. An 'event'
      * type task will have both start and end date time. A 'point' task will
@@ -87,7 +91,9 @@ public class DateTimeParser {
         LocalDateTime endDateTime = null;
         switch (taskType) {
             case event:
+                System.out.println("event");
                 String[] splitInput = input.split("\\bto\\b");
+                String[] splitOriginalInput = originalInput.split("\\bto\\b");
                 assert splitInput.length == 2;
                 startDateTime = getLocalDateTime(splitInput[0]);
                 endDateTime = getLocalDateTime(splitInput[1]);
@@ -97,13 +103,17 @@ public class DateTimeParser {
                     endDateTime = setTime(endDateTime,
                         Constants.TIME_END_OF_DAY);
                 } else {
-                    if (!checkTimeSpecified(splitInput[0])) {
+                    if (!checkTimeSpecified(splitOriginalInput[0])) {
                         startDateTime = setTime(startDateTime,
                             Constants.TIME_DEFAULT);
                     }
-                    if (!checkTimeSpecified(splitInput[1])) {
+                    if (!checkTimeSpecified(splitOriginalInput[1])) {
                         endDateTime = setTime(endDateTime,
                             Constants.TIME_DEFAULT);
+                    }
+                    if (!checkDateSpecified(splitOriginalInput[1])) {
+                        System.out.println(true);
+                        endDateTime = setDate(endDateTime, startDateTime);
                     }
                 }
                 if (startDateTime.compareTo(endDateTime) > 0) {
@@ -145,6 +155,10 @@ public class DateTimeParser {
         input = toAmericanTime(input);
         return input;
     }
+
+    // =========================================
+    // Second Level of Abstraction
+    // =========================================
 
     /**
      * This method converts dates of the form {day}/{month}/{year} to
@@ -232,8 +246,7 @@ public class DateTimeParser {
     }
 
     /**
-     * This method checks to see if a particular time is specified in the date
-     * time String
+     * This method checks to see if a time is specified in the date time String.
      *
      * @param input
      *            a date time String.
@@ -242,6 +255,19 @@ public class DateTimeParser {
     private boolean checkTimeSpecified(String input) {
         Pattern pattern = Pattern.compile(Constants.REGEX_TIME_FORMAT + "|"
             + Constants.REGEX_TIME_ATTRIBUTES);
+        Matcher matcher = pattern.matcher(input);
+        return matcher.find();
+    }
+
+    /**
+     * This method checks to see if a date is specified in the date time String.
+     *
+     * @param input
+     *            a date time String.
+     * @return true if date is specified; false otherwise.
+     */
+    private boolean checkDateSpecified(String input) {
+        Pattern pattern = Pattern.compile(Constants.REGEX_DATE_FORMAT);
         Matcher matcher = pattern.matcher(input);
         return matcher.find();
     }
@@ -307,6 +333,21 @@ public class DateTimeParser {
     private LocalDateTime setTime(LocalDateTime dateTime, Constants.Time time) {
         return dateTime.withHour(time.hour).withMinute(time.minutes)
             .withSecond(time.seconds).withNano(time.nanoseconds);
+    }
+
+    /**
+     * This method sets the time of a LocalDateTime object to the time
+     * specified.
+     *
+     * @param to
+     *            the LocalDateTime object which date is to be changed.
+     * @param from
+     *            the LocalDateTime with the new date to change to.
+     * @return a LocalDateTime object with date changed.
+     */
+    private LocalDateTime setDate(LocalDateTime to, LocalDateTime from) {
+        return to.withYear(from.getYear()).withMonth(from.getMonthValue())
+            .withDayOfMonth(from.getDayOfMonth());
     }
 
     public static void main(String[] args) throws Exception {

@@ -411,25 +411,11 @@ public class MainController {
             KeyCode code = keyEvent.getCode();
 
             if (code == KeyCode.ENTER) {
-                cmdArea.hidePopup();
-                String text = cmdArea.getText();
-                ui.processInput(text);
-                inputHistory.addInput(text);
-                cmdArea.clear();
+                enterRoutine();
             } else if (code == KeyCode.UP) {
-                String previousInput = inputHistory.getPrevious();
-                if (previousInput != null) {
-                    cmdArea.setText(previousInput);
-                    cmdArea.hidePopup();
-                    cmdArea.positionCaret(previousInput.length());
-                }
+                getPreviousInput();
             } else if (code == KeyCode.DOWN) {
-                String nextInput = inputHistory.getNext();
-                if (nextInput != null) {
-                    cmdArea.setText(nextInput);
-                    cmdArea.hidePopup();
-                    cmdArea.positionCaret(nextInput.length());
-                }
+                getNextInput();
             } else if (code == KeyCode.PAGE_DOWN) {
                 scrollDown();
             } else if (code == KeyCode.PAGE_UP) {
@@ -474,6 +460,32 @@ public class MainController {
     /***************************
      *** LEVEL 3 Abstraction ***
      ***************************/
+
+    void enterRoutine() {
+        cmdArea.hidePopup();
+        String text = cmdArea.getText();
+        ui.processInput(text);
+        inputHistory.addInput(text);
+        cmdArea.clear();
+    }
+
+    private void getNextInput() {
+        String nextInput = inputHistory.getNext();
+        if (nextInput != null) {
+            cmdArea.setText(nextInput);
+            cmdArea.hidePopup();
+            cmdArea.positionCaret(nextInput.length());
+        }
+    }
+
+    private void getPreviousInput() {
+        String previousInput = inputHistory.getPrevious();
+        if (previousInput != null) {
+            cmdArea.setText(previousInput);
+            cmdArea.hidePopup();
+            cmdArea.positionCaret(previousInput.length());
+        }
+    }
 
     private void scrollUp() {
         setFirstVisibleId();

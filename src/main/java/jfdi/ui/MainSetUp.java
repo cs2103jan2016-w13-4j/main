@@ -1,6 +1,7 @@
 package jfdi.ui;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.logging.Logger;
 
 import javafx.application.Application;
@@ -17,6 +18,8 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import jfdi.common.utilities.JfdiLogger;
 
+import javax.swing.*;
+
 public class MainSetUp extends Application {
 
     private static MainSetUp ourInstance = new MainSetUp();
@@ -26,21 +29,19 @@ public class MainSetUp extends Application {
     private Parent rootLayout;
     private AnchorPane listLayout;
     private MainController controller;
-    private Logger logger;
+    private Logger logger = JfdiLogger.getLogger();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         this.primaryStage = primaryStage;
-        this.primaryStage.getIcons().add(new Image("/ui/images/JFDI_sq.png"));
-        //this.primaryStage.setTitle("JFDI");
+        this.primaryStage.setTitle(Constants.PRODUCT_NAME);
 
-        setLogger();
+        setLogo();
         loadFonts();
         initRootLayout();
         initView();
         primaryStage.show();
-
     }
 
     public static void main(String[] args) {
@@ -55,9 +56,25 @@ public class MainSetUp extends Application {
      *** LEVEL 1 Abstraction ***
      ***************************/
 
-    private void setLogger() {
-        logger = JfdiLogger.getLogger();
+    private void setLogo() {
+        primaryStage.getIcons().add(new Image(Constants.URL_LOGO_PATH));
 
+        // Set Icon for OSX
+        // Need to use Apple Java Extension, using reflection to load the class so that JFDI is compilable
+        if (System.getProperty("os.name").startsWith("Mac OS")) {
+            try {
+                Class util = Class.forName("com.apple.eawt.Application");
+                Method getApplication = util.getMethod("getApplication", new Class[0]);
+                Object application = getApplication.invoke(util);
+                Class[] params = new Class[1];
+                params[0] = java.awt.Image.class;
+                Method setDockIconImage = util.getMethod("setDockIconImage", params);
+                setDockIconImage.invoke(application,
+                    new ImageIcon(UI.class.getResource(Constants.URL_LOGO_PATH)).getImage());
+            } catch (Exception e) {
+                logger.info("Not OS X");
+            }
+        }
     }
 
     private void loadFonts() {

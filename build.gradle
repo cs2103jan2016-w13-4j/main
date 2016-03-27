@@ -1,5 +1,7 @@
 plugins {
+  id 'application'
   id 'checkstyle'
+  id 'com.github.johnrengelman.shadow' version '1.2.3'
   id 'com.github.kt3k.coveralls' version '2.6.3'
   id 'eclipse'
   id 'findbugs'
@@ -10,7 +12,9 @@ plugins {
 }
 
 group 'cs2103jan2016-w13-4j'
-version '0.0'
+version '0.2'
+
+mainClassName = "jfdi.ui.MainSetUp"
 
 repositories {
   jcenter()

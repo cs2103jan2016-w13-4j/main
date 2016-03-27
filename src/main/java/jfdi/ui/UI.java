@@ -125,4 +125,8 @@ public class UI implements IUserInterface {
     public static EventBus getEventBus() {
         return eventBus;
     }
+
+    public void triggerEnter() {
+        controller.enterRoutine();
+    }
 }

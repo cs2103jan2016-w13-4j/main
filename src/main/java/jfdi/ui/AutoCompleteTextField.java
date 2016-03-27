@@ -5,6 +5,8 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -43,6 +45,15 @@ public class AutoCompleteTextField extends TextField {
         });
 
         focusedProperty().addListener((observable, oldValue, newValue) -> popup.hide());
+
+        popup.addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
+            @SuppressWarnings("deprecation")
+            boolean isAnyItemSelected = popup.getItems().stream().map(item -> item.impl_styleableGetNode())
+                    .anyMatch(node -> node.isFocused());
+            if (event.getCode() == KeyCode.ENTER && !isAnyItemSelected) {
+                UI.getInstance().triggerEnter();
+            }
+        });
     }
 
     public void setKeywords(SortedSet<String> keywords) {

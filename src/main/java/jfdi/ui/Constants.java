@@ -5,6 +5,8 @@ public class Constants {
     public static final char ARROW_UP = 0x25b2;
     public static final char ARROW_DOWN = 0x25bC;
 
+    public static final String PRODUCT_NAME = "J.F.D.I.";
+
     public static final String UI_MESSAGE_INIT = "Initializing UI...";
     public static final String UI_MESSAGE_INITED = "Initialization Completed!";
     public static final String UI_MESSAGE_GREETING = "\nJ.F.D.I. : Hello there! Nice to see you again! :)";
@@ -22,6 +24,7 @@ public class Constants {
     public static final String URL_STATS_PATH = "/ui/StatsItem.fxml";
     public static final String URL_HAMSMITH_PATH = "/ui/fonts/HammersmithOne.ttf";
     public static final String URL_RALEWAY_PATH = "/ui/fonts/raleway.heavy.ttf";
+    public static final String URL_LOGO_PATH = "/ui/images/JFDI_sq.png";
 
     public static final String CTRL_CMD_PROMPT_TEXT = "(Hello! Please let me know what I can do for you!)";
     public static final String CTRL_CMD_INCOMPLETE = "list";

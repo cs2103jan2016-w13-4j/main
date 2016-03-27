@@ -425,6 +425,8 @@ public class CommandHandler {
             String.format(Constants.CMD_SUCCESS_MOVED, e.getNewDirectory()),
             MsgType.SUCCESS);
         controller.updateNotiBubbles();
+
+        controller.updateAutoCompleteList();
     }
 
     @Subscribe
@@ -810,6 +812,8 @@ public class CommandHandler {
             String.format(Constants.CMD_SUCCESS_USED, e.getNewDirectory()),
             MsgType.SUCCESS);
         controller.updateNotiBubbles();
+
+        controller.updateAutoCompleteList();
     }
 
     @Subscribe

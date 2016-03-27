@@ -2,6 +2,7 @@ package jfdi.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.concurrent.CountDownLatch;
@@ -23,9 +24,11 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import jfdi.logic.ControlCenter;
+import jfdi.storage.apis.TaskAttributes;
 import jfdi.ui.Constants.ListStatus;
 import jfdi.ui.Constants.MsgType;
 import jfdi.ui.commandhandlers.CommandHandler;
@@ -82,6 +85,16 @@ public class MainController {
     public AutoCompleteTextField cmdArea;
     @FXML
     public ListView<HelpItem> helpContent;
+    @FXML
+    public VBox surpriseOverlay;
+    @FXML
+    public Label surpriseTitle;
+    @FXML
+    public Label taskDesc;
+    @FXML
+    public Label taskTime;
+    @FXML
+    public Label surpriseBottom;
 
     public MainSetUp main;
     public IUserInterface ui;
@@ -113,6 +126,8 @@ public class MainController {
     public void hideOverlays() {
         helpContent.toBack();
         helpContent.setOpacity(0);
+        surpriseOverlay.toBack();
+        surpriseOverlay.setOpacity(0);
     }
 
     public void clearCmdArea() {
@@ -154,6 +169,11 @@ public class MainController {
     public void showHelpDisplay() {
         helpContent.toFront();
         helpContent.setOpacity(1);
+    }
+    
+    public void showSurpriseDisplay() {
+        surpriseOverlay.toFront();
+        surpriseOverlay.setOpacity(1);
     }
 
     public void switchTabSkin() {
@@ -217,7 +237,7 @@ public class MainController {
                 displayList(Constants.CTRL_CMD_SEARCH);
                 break;
             case SURPRISE:
-                displayList(searchCmd);
+                showSurpriseDisplay();
                 break;
             case HELP:
                 hideOverlays();
@@ -374,6 +394,31 @@ public class MainController {
             }
         };
         service.start();
+    }
+    
+    public void initSurpriseOverlay(TaskAttributes task) {
+        taskDesc.setText(task.getDescription());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy h:mma");
+        if (task.getStartDateTime() == null) {
+            if (task.getEndDateTime() == null) {
+                // Floating Tasks
+                taskTime.setText(Constants.ITEM_NO_TIMEDATE);
+            } else {
+                // Deadline Tasks
+                String end = formatter.format(task.getEndDateTime());
+                taskTime.setText(String.format(Constants.ITEM_DEADLINE, end));
+            }
+        } else {
+            String start = formatter.format(task.getStartDateTime());
+            if (task.getEndDateTime() == null) {
+                // Point Tasks
+                taskTime.setText(String.format(Constants.ITEM_POINT_TASK, start));
+            } else {
+                // Event Tasks
+                String end = formatter.format(task.getEndDateTime());
+                taskTime.setText(String.format(Constants.ITEM_EVENT_TASK, start, end));
+            }
+        }
     }
 
 

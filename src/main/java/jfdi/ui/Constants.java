@@ -34,6 +34,8 @@ public class Constants {
     public static final String CTRL_CMD_COMPLETE = "list completed";
     public static final String CTRL_CMD_SURPRISE = "surprise!";
     public static final String CTRL_CMD_SEARCH = "search";
+    public static final String CTRL_CMD_SURPRISE_YAY = "yay";
+    public static final String CTRL_CMD_SURPRISE_NAY = "nay";
 
     public enum ListStatus {
         INCOMPLETE,
@@ -118,6 +120,7 @@ public class Constants {
     public static final String CMD_SUCCESS_SEARCH = "Here are your search results! :)";
     public static final String CMD_SUCCESS_SHOWDIRECTORY = "Your current directory is : %s ! :)";
     public static final String CMD_SUCCESS_SURPRISED = "SURPRISE!!!TAAAADAAAA!!! :D";
+    public static final String CMD_SUCCESS_SURPRISED_YAY = "Way to go! You can do it!!! :D";
     public static final String CMD_SUCCESS_UNALIAS = "Alias - %s - is removed! :)";
     public static final String CMD_SUCCESS_UNMARKED = "Task(s) marked as incomplete! :)";
     public static final String CMD_SUCCESS_USED = "You are now using data from %s ! :)";

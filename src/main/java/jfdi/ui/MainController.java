@@ -400,6 +400,7 @@ public class MainController {
     }
 
     public void initSurpriseOverlay(TaskAttributes task) {
+        taskDesc.setWrapText(true);
         taskDesc.setText(task.getDescription());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy h:mma");
         if (task.getStartDateTime() == null) {

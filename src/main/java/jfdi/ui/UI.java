@@ -51,6 +51,12 @@ public class UI implements IUserInterface {
             controller.displayStatus = controller.beforeHelp;
             controller.switchTabSkin();
         }
+        
+        if (controller.displayStatus.equals(ListStatus.SURPRISE)) {
+            controller.hideOverlays();
+            controller.switchTabSkin();
+        }
+        
 
         // Clear controller first
         controller.clearCmdArea();

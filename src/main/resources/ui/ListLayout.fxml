@@ -14,7 +14,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Font?>
 
  <?import jfdi.ui.AutoCompleteTextField?>
 
@@ -221,14 +220,18 @@
                </children>
             </HBox>
 	        <ListView fx:id="helpContent" focusTraversable="false" maxHeight="510.0" maxWidth="530.0" prefHeight="500.0" prefWidth="530.0" styleClass="helpContent" translateX="60.0" translateY="-33.0" />
-            <VBox fx:id="surpriseOverlay" maxWidth="500.0" maxHeight="210.0" prefHeight="210.0" prefWidth="500.0" translateX="60.0" translateY="-30.0">
+            <AnchorPane maxHeight="500.0" maxWidth="500.0" prefHeight="500.0" prefWidth="500.0" translateX="60.0" translateY="-30.0" StackPane.alignment="CENTER">
                <children>
-                  <Label fx:id="surpriseTitle" styleClass="surpriseTitle" alignment="CENTER" contentDisplay="CENTER" text="SURPRISE!!!" textAlignment="CENTER" translateX="130.0"/>
-                  <Label fx:id="taskDesc" styleClass="taskDesc" alignment="CENTER" contentDisplay="CENTER" maxWidth="500.0" prefWidth="500.0" text="Label" textAlignment="CENTER"/>
-                  <Label fx:id="taskTime" styleClass="taskTime" alignment="CENTER" maxWidth="500.0" prefWidth="500.0" text="Label" textAlignment="CENTER"/>
-                  <Label fx:id="surpriseBottom" styleClass="surpriseBottom" alignment="CENTER" maxWidth="500.0" prefWidth="500.0" textAlignment="CENTER" text="Yay or Nay?"/>
+                  <VBox fx:id="surpriseOverlay" layoutX="-4.0" layoutY="117.0" maxWidth="500.0" prefHeight="0.0" prefWidth="500.0">
+                     <children>
+                        <Label fx:id="surpriseTitle" alignment="CENTER" contentDisplay="CENTER" styleClass="surpriseTitle" text="SURPRISE!!!" textAlignment="CENTER" translateX="130.0" VBox.vgrow="ALWAYS" />
+                        <Label fx:id="taskDesc" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="500.0" prefWidth="500.0" styleClass="taskDesc" text="Label" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
+                        <Label fx:id="taskTime" alignment="CENTER" maxWidth="500.0" prefWidth="500.0" styleClass="taskTime" text="Label" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
+                        <Label fx:id="surpriseBottom" alignment="CENTER" maxWidth="500.0" prefWidth="500.0" styleClass="surpriseBottom" text="Yay or Nay?" textAlignment="CENTER" />
+                     </children>
+                  </VBox>
                </children>
-            </VBox>
+            </AnchorPane>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
                   <ImageView fitHeight="41.0" fitWidth="37.0" layoutX="76.0" layoutY="261.0" pickOnBounds="true" preserveRatio="true" rotate="-35.5">

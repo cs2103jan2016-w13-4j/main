@@ -60,7 +60,6 @@ public class CommandHandler {
     public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -81,7 +80,6 @@ public class CommandHandler {
     public void handleAddTaskFailEvent(AddTaskFailedEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -110,7 +108,6 @@ public class CommandHandler {
     public void handleAliasDoneEvent(AliasDoneEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
 
             return;
         }
@@ -126,7 +123,6 @@ public class CommandHandler {
     public void handleAliasFailEvent(AliasFailedEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -158,7 +154,6 @@ public class CommandHandler {
     public void handleCommandRedoneEvent(CommandRedoneEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -176,7 +171,6 @@ public class CommandHandler {
     public void handleCommandUndoneEvent(CommandUndoneEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -194,7 +188,6 @@ public class CommandHandler {
     public void handleDeleteTaskDoneEvent(DeleteTaskDoneEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -223,7 +216,6 @@ public class CommandHandler {
     public void handleDeleteTaskFailEvent(DeleteTaskFailedEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -250,7 +242,6 @@ public class CommandHandler {
     public void handleExitCalledEvent(ExitCalledEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -263,7 +254,6 @@ public class CommandHandler {
     public void handleHelpRequestEvent(HelpRequestedEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -287,7 +277,6 @@ public class CommandHandler {
     public void handleInitializationFailedEvent(InitializationFailedEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -310,7 +299,6 @@ public class CommandHandler {
     public void handleInvalidCommandEvent(InvalidCommandEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -325,7 +313,6 @@ public class CommandHandler {
         updateBubble(e);
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -357,7 +344,6 @@ public class CommandHandler {
     public void handleMarkTaskDoneEvent(MarkTaskDoneEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -388,7 +374,6 @@ public class CommandHandler {
     public void handleMarkTaskFailEvent(MarkTaskFailedEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -416,7 +401,6 @@ public class CommandHandler {
     public void handleMoveDirectoryDoneEvent(MoveDirectoryDoneEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -433,7 +417,6 @@ public class CommandHandler {
     public void handleMoveDirectoryFailEvent(MoveDirectoryFailedEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -457,7 +440,6 @@ public class CommandHandler {
     public void handleNoSurpriseEvent(NoSurpriseEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -479,7 +461,6 @@ public class CommandHandler {
     public void handleRedoFailedEvent(RedoFailedEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -501,7 +482,6 @@ public class CommandHandler {
     public void handleRenameTaskDoneEvent(RenameTaskDoneEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -527,7 +507,6 @@ public class CommandHandler {
     public void handleRenameTaskFailEvent(RenameTaskFailedEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -564,7 +543,6 @@ public class CommandHandler {
     public void handleRescheduleTaskDoneEvent(RescheduleTaskDoneEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -593,7 +571,6 @@ public class CommandHandler {
     public void handleRescheduleTaskFailEvent(RescheduleTaskFailedEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -632,7 +609,6 @@ public class CommandHandler {
     public void handleSearchDoneEvent(SearchDoneEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -654,7 +630,6 @@ public class CommandHandler {
     public void handleShowDirectoryEvent(ShowDirectoryEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -668,7 +643,6 @@ public class CommandHandler {
     public void handleSurpriseEvent(SurpriseEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -685,7 +659,6 @@ public class CommandHandler {
     public void handleUnaliasDoneEvent(UnaliasDoneEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -700,7 +673,6 @@ public class CommandHandler {
     public void handleUnaliasFailEvent(UnaliasFailedEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -727,7 +699,6 @@ public class CommandHandler {
     public void handleUndoFailedEvent(UndoFailedEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -749,7 +720,6 @@ public class CommandHandler {
     public void handleUnmarkTaskDoneEvent(UnmarkTaskDoneEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -775,7 +745,6 @@ public class CommandHandler {
     public void handleUnmarkTaskFailEvent(UnmarkTaskFailedEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -803,7 +772,6 @@ public class CommandHandler {
     public void handleUseDirectoryDoneEvent(UseDirectoryDoneEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 
@@ -820,7 +788,6 @@ public class CommandHandler {
     public void handleUseDirectoryFailEvent(UseDirectoryFailedEvent e) {
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
-            controller.completeInternalCall();
             return;
         }
 

@@ -138,10 +138,17 @@ public class MainStorage implements IStorage {
      * @param storageDirectory
      *            the folder which should store the user data
      * @return the path to the data directory within the storage directory
+     * @throws InvalidFilePathException
+     *             if the storage directory provided is invalid
      */
-    public String getDataDirectory(String storageDirectory) {
+    public String getDataDirectory(String storageDirectory) throws InvalidFilePathException {
         assert storageDirectory != null;
-        return Paths.get(storageDirectory, Constants.FILENAME_DATA_DIRECTORY).toString();
+        try {
+            return Paths.get(storageDirectory, Constants.FILENAME_DATA_DIRECTORY).toString();
+        } catch (InvalidPathException e) {
+            String errorMessage = String.format(Constants.MESSAGE_INVALID_PATH, storageDirectory);
+            throw new InvalidFilePathException(storageDirectory, errorMessage);
+        }
     }
 
     /**

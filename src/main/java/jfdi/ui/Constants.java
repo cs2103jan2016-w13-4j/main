@@ -43,6 +43,10 @@ public class Constants {
         SUCCESS, WARNING, ERROR, EXIT
     }
 
+    public enum CallType {
+        DISPLAY, INTERNAL
+    }
+
     public static final String CMD_ERROR_CANT_ADD_UNKNOWN = "Some stupid error occurred. Cannot add task!";
     public static final String CMD_ERROR_CANT_ADD_EMPTY = "Cannot add an empty task!";
     public static final String CMD_ERROR_CANT_ADD_DUPLICATE = "Save the trouble. This task already exists :)";

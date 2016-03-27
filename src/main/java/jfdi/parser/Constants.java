@@ -55,7 +55,7 @@ public class Constants {
     // Date and Time related Regex Strings
     public static final String REGEX_DAYS_NUMERIC = "(((?i)0?[1-9]|[12][\\d]|3[01])(st|th|nd|rd)?)";
     public static final String REGEX_DAYS_TEXTUAL = "((?i)(mon)(day)?|"
-        + "(tue)(sday)?|" + "(wed)(nesday)?|" + "(thu)(rsday)?|"
+        + "(tue)(s|sday)?|" + "(wed)(s|nesday)?|" + "(thu)(r|rs|rsday)?|"
         + "(fri)(day)?|" + "(sat)(urday)?|" + "(sun)(day)?)";
     public static final String REGEX_MONTHS_NUMERIC = "(0?[1-9]|1[0-2])";
     public static final String REGEX_MONTHS_TEXTUAL = "((?i)(jan)(uary)?|"
@@ -114,12 +114,12 @@ public class Constants {
 
     // Regex used to detect date-time fields in the user's input String
     public static final String REGEX_DEADLINE_IDENTIFIER = String.format(
-        "(?i)(by|before) %s", REGEX_DATE_TIME_FORMAT);
+        "(?i)\\b(by|before) %s", REGEX_DATE_TIME_FORMAT);
     public static final String REGEX_EVENT_IDENTIFIER = String.format(
-        "(?i)((from )?%s (to|until) %s)", REGEX_DATE_TIME_FORMAT,
+        "(?i)\\b((from )?%s (to|until) %s)", REGEX_DATE_TIME_FORMAT,
         REGEX_DATE_TIME_FORMAT);
     public static final String REGEX_POINT_TASK_IDENTIFIER = String.format(
-        "(?i)(on |at )?%s", REGEX_DATE_TIME_FORMAT);
+        "(?i)\\b(on |at )?%s", REGEX_DATE_TIME_FORMAT);
     public static final String REGEX_DATE_TIME_IDENTIFIER = String.format(
         "(%s|%s|%s)", REGEX_DEADLINE_IDENTIFIER, REGEX_EVENT_IDENTIFIER,
         REGEX_POINT_TASK_IDENTIFIER);

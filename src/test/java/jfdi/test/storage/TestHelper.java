@@ -42,7 +42,12 @@ public class TestHelper {
      * @return the path to the data directory within the storage directory
      */
     public static String getDataDirectory(String storageDirectory) {
-        return MainStorage.getInstance().getDataDirectory(storageDirectory);
+        try {
+            return MainStorage.getInstance().getDataDirectory(storageDirectory);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**

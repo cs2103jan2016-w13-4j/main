@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.concurrent.CountDownLatch;
 
 import com.sun.javafx.scene.control.skin.ListViewSkin;
@@ -29,6 +30,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import jfdi.logic.ControlCenter;
 import jfdi.storage.apis.TaskAttributes;
+import jfdi.ui.Constants.CallType;
 import jfdi.ui.Constants.ListStatus;
 import jfdi.ui.Constants.MsgType;
 import jfdi.ui.commandhandlers.CommandHandler;
@@ -112,7 +114,7 @@ public class MainController {
     private ObservableList<HelpItem> helpList;
     private InputHistory inputHistory;
     private int firstVisibleId;
-    private int internalCalls = 0;
+    private LinkedList<CallType> callQueue = new LinkedList<CallType>();
 
     public void initialize() {
         initDate();
@@ -154,6 +156,7 @@ public class MainController {
     }
 
     public void displayList(String cmd) {
+        triggerDisplayCall();
         ui.relayToLogic(cmd);
     }
 
@@ -271,15 +274,15 @@ public class MainController {
     }
 
     public boolean isInternalCall() {
-        return internalCalls > 0;
+        return !callQueue.isEmpty() && callQueue.remove() == CallType.INTERNAL;
     }
 
     public void triggerInternalCall() {
-        internalCalls++;
+        callQueue.add(CallType.INTERNAL);
     }
 
-    public void completeInternalCall() {
-        internalCalls--;
+    private void triggerDisplayCall() {
+        callQueue.add(CallType.DISPLAY);
     }
 
     /***************************

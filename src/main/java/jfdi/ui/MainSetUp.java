@@ -29,7 +29,7 @@ public class MainSetUp extends Application {
     private Parent rootLayout;
     private AnchorPane listLayout;
     private MainController controller;
-    private Logger logger = JfdiLogger.getLogger();;
+    private Logger logger = JfdiLogger.getLogger();
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -66,7 +66,7 @@ public class MainSetUp extends Application {
                 Class util = Class.forName("com.apple.eawt.Application");
                 Method getApplication = util.getMethod("getApplication", new Class[0]);
                 Object application = getApplication.invoke(util);
-                Class params[] = new Class[1];
+                Class[] params = new Class[1];
                 params[0] = java.awt.Image.class;
                 Method setDockIconImage = util.getMethod("setDockIconImage", params);
                 setDockIconImage.invoke(application,

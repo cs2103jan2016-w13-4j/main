@@ -27,6 +27,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import jfdi.logic.ControlCenter;
 import jfdi.storage.apis.TaskAttributes;
@@ -400,8 +401,9 @@ public class MainController {
     }
 
     public void initSurpriseOverlay(TaskAttributes task) {
-        taskDesc.setWrapText(true);
         taskDesc.setText(task.getDescription());
+        taskDesc.setWrapText(true);
+        taskDesc.setTextAlignment(TextAlignment.JUSTIFY);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy h:mma");
         if (task.getStartDateTime() == null) {
             if (task.getEndDateTime() == null) {

@@ -222,10 +222,10 @@
 	        <ListView fx:id="helpContent" focusTraversable="false" maxHeight="510.0" maxWidth="530.0" prefHeight="500.0" prefWidth="530.0" styleClass="helpContent" translateX="60.0" translateY="-33.0" />
             <AnchorPane maxHeight="500.0" maxWidth="500.0" prefHeight="500.0" prefWidth="500.0" translateX="60.0" translateY="-30.0" StackPane.alignment="CENTER">
                <children>
-                  <VBox fx:id="surpriseOverlay" layoutX="-4.0" layoutY="117.0" maxWidth="500.0" prefHeight="0.0" prefWidth="500.0">
+                  <VBox fx:id="surpriseOverlay" layoutX="-4.0" layoutY="117.0" maxWidth="500.0" prefHeight="500.0" prefWidth="500.0">
                      <children>
                         <Label fx:id="surpriseTitle" alignment="CENTER" contentDisplay="CENTER" styleClass="surpriseTitle" text="SURPRISE!!!" textAlignment="CENTER" translateX="130.0" VBox.vgrow="ALWAYS" />
-                        <Label fx:id="taskDesc" alignment="CENTER" contentDisplay="CENTER" maxHeight="250.0" maxWidth="500.0" prefWidth="500.0" styleClass="taskDesc" text="Label" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
+                        <Label fx:id="taskDesc" alignment="CENTER" maxWidth="500.0" prefWidth="500.0" styleClass="taskDesc" text="Label" VBox.vgrow="ALWAYS" />
                         <Label fx:id="taskTime" alignment="CENTER" maxWidth="500.0" prefWidth="500.0" styleClass="taskTime" text="Label" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
                         <Label fx:id="surpriseBottom" alignment="CENTER" maxWidth="500.0" prefWidth="500.0" styleClass="surpriseBottom" text="Yay or Nay?" textAlignment="CENTER" />
                      </children>

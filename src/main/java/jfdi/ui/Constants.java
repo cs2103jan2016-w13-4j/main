@@ -187,7 +187,7 @@ public class Constants {
     public static final String HELP_UNDO_DESC = "Undo your previous change";
     public static final String HELP_UNDO_COMMAND = "undo";
     public static final String HELP_CREATE_ALIAS_DESC = "Define your own alias (command)";
-    public static final String HELP_CREATE_ALIAS_COMMAND = "alias <default command> as <new alias>";
+    public static final String HELP_CREATE_ALIAS_COMMAND = "alias <default command> <new alias>";
     public static final String HELP_DELETE_ALIAS_DESC = "Remove a previously defined alias";
     public static final String HELP_DELETE_ALIAS_COMMAND = "unalias <alias>";
     public static final String HELP_WILDCARD_DESC = "Let JFDI surprise you";

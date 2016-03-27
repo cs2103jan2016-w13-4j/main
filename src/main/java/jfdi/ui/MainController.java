@@ -173,7 +173,7 @@ public class MainController {
         helpContent.toFront();
         helpContent.setOpacity(1);
     }
-    
+
     public void showSurpriseDisplay() {
         surpriseOverlay.toFront();
         surpriseOverlay.setOpacity(1);
@@ -398,7 +398,7 @@ public class MainController {
         };
         service.start();
     }
-    
+
     public void initSurpriseOverlay(TaskAttributes task) {
         taskDesc.setText(task.getDescription());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy h:mma");

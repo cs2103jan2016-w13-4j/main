@@ -44,15 +44,12 @@ public class MoveCommandParser extends AbstractCommandParser {
     }
 
     private boolean isValidMoveInput(String input) {
-        return input != null && !input.isEmpty()
-            && input.trim().split(Constants.REGEX_WHITESPACE).length == 2;
+        return input != null && !input.isEmpty() && input.trim().split(Constants.REGEX_WHITESPACE).length >= 2;
     }
 
     private String getDirectoryName(String input) {
         assert isValidMoveInput(input);
-
-        String directoryName = input.trim().split(Constants.REGEX_WHITESPACE)[1];
-        return directoryName;
+        return removeFirstWord(input);
     }
 
 }

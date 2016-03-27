@@ -62,7 +62,9 @@ public class CommandHandler {
             // Add any method calls strictly for internal calls here
             return;
         }
-
+        if (!controller.displayStatus.equals(ListStatus.ALL)) {
+            switchContext(ListStatus.INCOMPLETE, true);
+        }
         TaskAttributes task = e.getTask();
         appendTaskToDisplayList(task, true);
         if (shouldSort()) {

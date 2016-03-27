@@ -1,3 +1,5 @@
+// @@author A0127393B
+
 package jfdi.test.parser;
 
 import static org.junit.Assert.assertSame;
@@ -18,7 +20,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class AddCommandParserTest {
-    private static AbstractCommandParser parser = AddCommandParser.getInstance();
+    private static AbstractCommandParser parser = AddCommandParser
+        .getInstance();
 
     @BeforeClass
     public static void init() {

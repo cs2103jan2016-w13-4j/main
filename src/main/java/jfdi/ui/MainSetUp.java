@@ -35,12 +35,32 @@ public class MainSetUp extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         this.primaryStage = primaryStage;
-        this.primaryStage.getIcons().add(new Image(Constants.URL_LOGO_PATH));
         this.primaryStage.setTitle(Constants.PRODUCT_NAME);
 
+        setLogo();
+        loadFonts();
+        initRootLayout();
+        initView();
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    public static MainSetUp getInstance() {
+        return ourInstance;
+    }
+
+    /***************************
+     *** LEVEL 1 Abstraction ***
+     ***************************/
+
+    private void setLogo() {
+        primaryStage.getIcons().add(new Image(Constants.URL_LOGO_PATH));
+
         // Set Icon for OSX
-        // - need to use Apple Java Extension, using reflection to load the
-        //   class so that JFDI is compilable
+        // Need to use Apple Java Extension, using reflection to load the class so that JFDI is compilable
         if (System.getProperty("os.name").startsWith("Mac OS")) {
             try {
                 Class util = Class.forName("com.apple.eawt.Application");
@@ -55,25 +75,7 @@ public class MainSetUp extends Application {
                 logger.info("Not OS X");
             }
         }
-
-        loadFonts();
-        initRootLayout();
-        initView();
-        primaryStage.show();
-
     }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    public static MainSetUp getInstance() {
-        return ourInstance;
-    }
-
-    /***************************
-     *** LEVEL 1 Abstraction ***
-     ***************************/
 
     private void loadFonts() {
 

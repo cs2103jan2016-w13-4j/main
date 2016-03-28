@@ -25,7 +25,10 @@ public class JFDIRobot implements Runnable {
             robot = new Robot();
             commands = new LinkedList<String>();
             String[] commandList = FileManager.readFileToString(Paths.get(COMMAND_FILE_PATH)).split("\\r?\\n");
-            Arrays.asList(commandList).stream().map(cmd -> cmd.replaceAll("\\\\enter$", "\n")).forEach(commands::add);
+            Arrays.asList(commandList).stream()
+                .filter(cmd -> !cmd.startsWith("###"))
+                .map(cmd -> cmd.replaceAll("\\\\enter$", "\n"))
+                .forEach(commands::add);
             instance = new JFDIRobot();
             new Thread(instance, "robot").start();
             isInitialized = true;

@@ -9,5 +9,5 @@ Buy groceries on the way home later\enter
 Have dinner with family tonight\enter
 use work\enter
 use personal\enter
-move <xinan's dropbox dir path>
+move /Users/Xinan/Dropbox/
 directory

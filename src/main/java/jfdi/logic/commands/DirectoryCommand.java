@@ -2,7 +2,6 @@ package jfdi.logic.commands;
 
 import jfdi.logic.events.ShowDirectoryEvent;
 import jfdi.logic.interfaces.Command;
-import jfdi.storage.apis.MainStorage;
 
 /**
  * @author Liu Xinan
@@ -21,7 +20,7 @@ public class DirectoryCommand extends Command {
 
     @Override
     public void execute() {
-        String pwd = MainStorage.getInstance().getCurrentDirectory();
+        String pwd = mainStorage.getCurrentDirectory();
         eventBus.post(new ShowDirectoryEvent(pwd));
     }
 

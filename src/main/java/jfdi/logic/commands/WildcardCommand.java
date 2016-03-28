@@ -4,7 +4,6 @@ import jfdi.logic.events.NoSurpriseEvent;
 import jfdi.logic.events.SurpriseEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
-import jfdi.storage.apis.TaskDb;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class WildcardCommand extends Command {
 
     @Override
     public void execute() {
-        ArrayList<TaskAttributes> incompleteTasks = TaskDb.getInstance().getAll().stream()
+        ArrayList<TaskAttributes> incompleteTasks = taskDb.getAll().stream()
                 .filter(task -> !task.isCompleted() && task.getStartDateTime() == null)
                 .collect(Collectors.toCollection(ArrayList::new));
 

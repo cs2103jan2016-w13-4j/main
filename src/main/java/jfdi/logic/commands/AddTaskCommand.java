@@ -4,7 +4,6 @@ import jfdi.logic.events.AddTaskDoneEvent;
 import jfdi.logic.events.AddTaskFailedEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
-import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.DuplicateTaskException;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
@@ -145,7 +144,7 @@ public class AddTaskCommand extends Command {
     @Override
     public void undo() {
         try {
-            TaskDb.getInstance().destroy(id);
+            taskDb.destroy(id);
 
             pushToRedoStack();
         } catch (InvalidIdException e) {

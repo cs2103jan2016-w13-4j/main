@@ -4,7 +4,6 @@ import jfdi.logic.events.RenameTaskDoneEvent;
 import jfdi.logic.events.RenameTaskFailedEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
-import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.DuplicateTaskException;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
@@ -53,7 +52,7 @@ public class RenameTaskCommand extends Command {
     public void execute() {
         int taskId = UI.getInstance().getTaskId(screenId);
         try {
-            TaskAttributes task = TaskDb.getInstance().getById(taskId);
+            TaskAttributes task = taskDb.getById(taskId);
             oldDescription = task.getDescription();
 
             task.setDescription(description);
@@ -81,7 +80,7 @@ public class RenameTaskCommand extends Command {
         int taskId = UI.getInstance().getTaskId(screenId);
 
         try {
-            TaskAttributes task = TaskDb.getInstance().getById(taskId);
+            TaskAttributes task = taskDb.getById(taskId);
 
             task.setDescription(oldDescription);
             task.save();

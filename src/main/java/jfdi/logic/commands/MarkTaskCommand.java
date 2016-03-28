@@ -5,7 +5,6 @@ import jfdi.logic.events.MarkTaskDoneEvent;
 import jfdi.logic.events.MarkTaskFailedEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
-import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
 import jfdi.ui.UI;

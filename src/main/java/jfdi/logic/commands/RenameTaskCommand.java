@@ -4,7 +4,6 @@ import jfdi.logic.events.RenameTaskDoneEvent;
 import jfdi.logic.events.RenameTaskFailedEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
-import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.DuplicateTaskException;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;

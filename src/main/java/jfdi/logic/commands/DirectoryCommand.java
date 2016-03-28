@@ -2,7 +2,6 @@ package jfdi.logic.commands;
 
 import jfdi.logic.events.ShowDirectoryEvent;
 import jfdi.logic.interfaces.Command;
-import jfdi.storage.apis.MainStorage;
 
 /**
  * @author Liu Xinan

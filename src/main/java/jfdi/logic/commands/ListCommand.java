@@ -3,8 +3,6 @@ package jfdi.logic.commands;
 import jfdi.logic.events.ListDoneEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
-import jfdi.storage.apis.TaskDb;
-import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Collections;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;

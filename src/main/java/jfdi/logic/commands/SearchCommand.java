@@ -3,7 +3,6 @@ package jfdi.logic.commands;
 import jfdi.logic.events.SearchDoneEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
-import jfdi.storage.apis.TaskDb;
 
 import java.util.ArrayList;
 import java.util.Collection;

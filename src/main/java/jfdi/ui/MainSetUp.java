@@ -18,6 +18,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import jfdi.common.utilities.JFDIRobot;
 import jfdi.common.utilities.JfdiLogger;
 
 
@@ -43,6 +44,7 @@ public class MainSetUp extends Application {
         initRootLayout();
         initView();
         primaryStage.show();
+        JFDIRobot.intitialize();
     }
 
     public static void main(String[] args) {

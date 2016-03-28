@@ -30,6 +30,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import jfdi.common.utilities.JFDIRobot;
 import jfdi.logic.ControlCenter;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.ui.Constants.CallType;
@@ -184,7 +185,7 @@ public class MainController {
         surpriseOverlay.toFront();
         surpriseOverlay.setOpacity(1);
     }
-    
+
     public void showNoSurpriseDisplay() {
         noSurpriseOverlay.toFront();
         noSurpriseOverlay.setOpacity(1);
@@ -484,6 +485,8 @@ public class MainController {
                 scrollUp();
             } else if (code == KeyCode.TAB) {
                 cmdArea.selectFirst();
+            } else if (code == KeyCode.F1) {
+                JFDIRobot.typeNext();
             } else {
                 return;
             }

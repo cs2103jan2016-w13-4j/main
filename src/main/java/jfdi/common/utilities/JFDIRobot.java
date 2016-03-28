@@ -144,9 +144,9 @@ public class JFDIRobot implements Runnable {
         case '}': doType(VK_SHIFT, VK_CLOSE_BRACKET); break;
         case '|': doType(VK_SHIFT, VK_BACK_SLASH); break;
         case ';': doType(VK_SEMICOLON); break;
-        case ':': doType(VK_COLON); break;
+        case ':': doType(VK_SHIFT, VK_SEMICOLON); break;
         case '\'': doType(VK_QUOTE); break;
-        case '"': doType(VK_QUOTEDBL); break;
+        case '"': doType(VK_SHIFT, VK_QUOTE); break;
         case ',': doType(VK_COMMA); break;
         case '<': doType(VK_SHIFT, VK_COMMA); break;
         case '.': doType(VK_PERIOD); break;

@@ -52,6 +52,7 @@ public class AutoCompleteTextField extends TextField {
                     .anyMatch(node -> node.isFocused());
             if (event.getCode() == KeyCode.ENTER && !isAnyItemSelected) {
                 UI.getInstance().triggerEnter();
+                results.clear();
             }
         });
     }

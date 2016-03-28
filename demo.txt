@@ -1,3 +1,24 @@
+### Xinan's Portion
+mark 1
+unmark 1
+mark 1, 2, 3
+mark 4 5
+mark 6-8
+unmark 2 4 6
+list completed
+list upcoming
+list overdue
+list all
+list incomplete
+\b\b\b\b\b\b\b\b\b\b
+search meeting
+search meeting boss
+delete 1
+undo
+
+
+
+
 ### KY's Portion
 surprise!
 surprise!\enter

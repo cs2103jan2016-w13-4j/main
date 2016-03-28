@@ -44,7 +44,7 @@ public class MainSetUp extends Application {
         initRootLayout();
         initView();
         primaryStage.show();
-        JFDIRobot.intitialize();
+        JFDIRobot.initialize();
     }
 
     public static void main(String[] args) {

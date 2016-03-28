@@ -19,7 +19,7 @@ public class JFDIRobot implements Runnable {
     private static boolean isInitialized = false;
     private static JFDIRobot instance = null;
 
-    public static void intitialize() {
+    public static void initialize() {
         if (isInitialized) return;
         try {
             robot = new Robot();

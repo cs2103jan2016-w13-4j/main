@@ -49,13 +49,14 @@ public class ListCommand extends Command {
 
     @Override
     public void execute() {
-        ArrayList<TaskAttributes> tasks = new ArrayList<>(TaskDb.getInstance()
-            .getAll());
+        ArrayList<TaskAttributes> tasks = taskDb.getAll().stream()
+            .collect(Collectors.toCollection(ArrayList::new));
+
         switch (listType) {
             case ALL:
                 break;
             case COMPLETED:
-                tasks = tasks.stream().filter(task -> task.isCompleted())
+                tasks = tasks.stream().filter(TaskAttributes::isCompleted)
                     .collect(Collectors.toCollection(ArrayList::new));
                 break;
             case INCOMPLETE:
@@ -65,12 +66,14 @@ public class ListCommand extends Command {
             case ALIASES:
                 break;
             case OVERDUE:
-                tasks = new ArrayList<TaskAttributes>(TaskDb.getInstance().getOverdue());
-                Collections.sort(tasks);
+                tasks = taskDb.getOverdue().stream()
+                    .sorted()
+                    .collect(Collectors.toCollection(ArrayList::new));
                 break;
             case UPCOMING:
-                tasks = new ArrayList<TaskAttributes>(TaskDb.getInstance().getUpcoming());
-                Collections.sort(tasks);
+                tasks = taskDb.getUpcoming().stream()
+                    .sorted()
+                    .collect(Collectors.toCollection(ArrayList::new));
                 break;
             default:
                 break;

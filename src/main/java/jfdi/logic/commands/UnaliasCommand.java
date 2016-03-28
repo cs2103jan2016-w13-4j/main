@@ -39,12 +39,11 @@ public class UnaliasCommand extends Command {
 
     @Override
     public void execute() {
-        AliasDb aliasDb = AliasDb.getInstance();
         try {
             command = aliasDb.getCommandFromAlias(alias);
 
             aliasDb.destroy(alias);
-            InputParser.getInstance().setAliases(aliasDb.getAll());
+            parser.setAliases(aliasDb.getAll());
 
             pushToUndoStack();
             eventBus.post(new UnaliasDoneEvent(alias));
@@ -58,7 +57,7 @@ public class UnaliasCommand extends Command {
         try {
             AliasAttributes oldAlias = new AliasAttributes(alias, command);
             oldAlias.save();
-            InputParser.getInstance().setAliases(AliasDb.getInstance().getAll());
+            parser.setAliases(aliasDb.getAll());
 
             pushToRedoStack();
         } catch (InvalidAliasParametersException | DuplicateAliasException e) {

@@ -145,7 +145,7 @@ public class AddTaskCommand extends Command {
     @Override
     public void undo() {
         try {
-            TaskDb.getInstance().destroy(id);
+            taskDb.destroy(id);
 
             pushToRedoStack();
         } catch (InvalidIdException e) {

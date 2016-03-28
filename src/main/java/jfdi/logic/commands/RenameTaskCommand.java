@@ -53,7 +53,7 @@ public class RenameTaskCommand extends Command {
     public void execute() {
         int taskId = UI.getInstance().getTaskId(screenId);
         try {
-            TaskAttributes task = TaskDb.getInstance().getById(taskId);
+            TaskAttributes task = taskDb.getById(taskId);
             oldDescription = task.getDescription();
 
             task.setDescription(description);
@@ -81,7 +81,7 @@ public class RenameTaskCommand extends Command {
         int taskId = UI.getInstance().getTaskId(screenId);
 
         try {
-            TaskAttributes task = TaskDb.getInstance().getById(taskId);
+            TaskAttributes task = taskDb.getById(taskId);
 
             task.setDescription(oldDescription);
             task.save();

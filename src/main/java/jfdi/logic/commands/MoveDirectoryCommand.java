@@ -4,7 +4,6 @@ import jfdi.logic.events.FilesReplacedEvent;
 import jfdi.logic.events.MoveDirectoryDoneEvent;
 import jfdi.logic.events.MoveDirectoryFailedEvent;
 import jfdi.logic.interfaces.Command;
-import jfdi.storage.apis.MainStorage;
 import jfdi.storage.exceptions.FilesReplacedException;
 import jfdi.storage.exceptions.InvalidFilePathException;
 
@@ -41,12 +40,10 @@ public class MoveDirectoryCommand extends Command {
 
     @Override
     public void execute() {
-        MainStorage storage = MainStorage.getInstance();
-
         try {
-            oldDirectory = storage.getCurrentDirectory();
+            oldDirectory = mainStorage.getCurrentDirectory();
 
-            storage.changeDirectory(newDirectory);
+            mainStorage.changeDirectory(newDirectory);
 
             pushToUndoStack();
             eventBus.post(new MoveDirectoryDoneEvent(newDirectory));
@@ -60,10 +57,8 @@ public class MoveDirectoryCommand extends Command {
 
     @Override
     public void undo() {
-        MainStorage storage = MainStorage.getInstance();
-
         try {
-            storage.changeDirectory(oldDirectory);
+            mainStorage.changeDirectory(oldDirectory);
 
             pushToRedoStack();
         } catch (InvalidFilePathException e) {

@@ -43,7 +43,7 @@ public class SearchCommand extends Command {
 
     @Override
     public void execute() {
-        Collection<TaskAttributes> allTasks = TaskDb.getInstance().getAll();
+        Collection<TaskAttributes> allTasks = taskDb.getAll();
         ArrayList<TaskAttributes> results = allTasks.stream()
                 .filter(task -> {
                     for (String keyword : keywords) {

@@ -43,12 +43,11 @@ public class UseDirectoryCommand extends Command {
 
     @Override
     public void execute() {
-        MainStorage storage = MainStorage.getInstance();
         try {
-            oldDirectory = storage.getCurrentDirectory();
+            oldDirectory = mainStorage.getCurrentDirectory();
 
-            storage.use(newDirectory);
-            InputParser.getInstance().setAliases(AliasDb.getInstance().getAll());
+            mainStorage.use(newDirectory);
+            parser.setAliases(aliasDb.getAll());
 
             pushToUndoStack();
             eventBus.post(new UseDirectoryDoneEvent(newDirectory));
@@ -62,10 +61,9 @@ public class UseDirectoryCommand extends Command {
 
     @Override
     public void undo() {
-        MainStorage storage = MainStorage.getInstance();
         try {
-            storage.use(oldDirectory);
-            InputParser.getInstance().setAliases(AliasDb.getInstance().getAll());
+            mainStorage.use(oldDirectory);
+            parser.setAliases(aliasDb.getAll());
 
             pushToRedoStack();
         } catch (InvalidFilePathException | FilesReplacedException e) {

@@ -28,6 +28,8 @@ public class JFDIRobot implements Runnable {
             Arrays.asList(commandList).stream()
                 .filter(cmd -> !cmd.startsWith("###"))
                 .map(cmd -> cmd.replaceAll("\\\\enter$", "\n"))
+                .map(cmd -> cmd.replaceAll("\\\\b", "\b"))
+                .map(cmd -> cmd.replaceAll("\\\\t", "\t"))
                 .forEach(commands::add);
             instance = new JFDIRobot();
             new Thread(instance, "robot").start();
@@ -132,6 +134,7 @@ public class JFDIRobot implements Runnable {
         case ')': doType(VK_SHIFT, VK_0); break;
         case '_': doType(VK_SHIFT, VK_MINUS); break;
         case '+': doType(VK_SHIFT, VK_EQUALS); break;
+        case '\b': doType(VK_BACK_SPACE); break;
         case '\t': doType(VK_TAB); break;
         case '\n': doType(VK_ENTER); break;
         case '[': doType(VK_OPEN_BRACKET); break;

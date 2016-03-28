@@ -451,8 +451,12 @@ public class CommandHandler {
                     MsgType.ERROR);
                 break;
             case NO_TASKS:
+                controller.importantList.clear();
+                //switchContext(ListStatus.ALL, false);
+                switchContext(ListStatus.SURPRISE, false);
                 controller.relayFb(Constants.CMD_ERROR_SURP_FAIL_NO_TASKS,
-                    MsgType.ERROR);
+                        MsgType.ERROR);
+                controller.updateNotiBubbles();
                 break;
             default:
                 break;

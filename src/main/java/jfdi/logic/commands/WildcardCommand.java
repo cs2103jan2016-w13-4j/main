@@ -28,7 +28,8 @@ public class WildcardCommand extends Command {
     @Override
     public void execute() {
         ArrayList<TaskAttributes> incompleteTasks = TaskDb.getInstance().getAll().stream()
-                .filter(task -> !task.isCompleted()).collect(Collectors.toCollection(ArrayList::new));
+                .filter(task -> !task.isCompleted() && task.getStartDateTime() == null)
+                .collect(Collectors.toCollection(ArrayList::new));
 
         SecureRandom random = new SecureRandom();
 

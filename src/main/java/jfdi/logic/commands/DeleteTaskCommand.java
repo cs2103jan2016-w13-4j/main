@@ -53,7 +53,6 @@ public class DeleteTaskCommand extends Command {
     public void execute() {
         UI ui = UI.getInstance();
 
-        TaskDb taskDb = TaskDb.getInstance();
         ArrayList<Integer> taskIds = screenIds.stream().map(ui::getTaskId)
             .collect(Collectors.toCollection(ArrayList::new));
 
@@ -67,7 +66,7 @@ public class DeleteTaskCommand extends Command {
                 try {
                     deletedTasks.add(taskDb.getById(id));
                     logger.info("Deleting task #" + id);
-                    TaskDb.getInstance().destroy(id);
+                    taskDb.destroy(id);
                 } catch (InvalidIdException e) {
                     // Should not happen
                 assert false;
@@ -85,7 +84,7 @@ public class DeleteTaskCommand extends Command {
     public void undo() {
         deletedTasks.stream().forEach(task -> {
             try {
-                TaskDb.getInstance().undestroy(task.getId());
+                taskDb.undestroy(task.getId());
             } catch (InvalidIdException | DuplicateTaskException e) {
                 assert false;
             }

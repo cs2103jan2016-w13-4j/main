@@ -21,7 +21,7 @@ public class DirectoryCommand extends Command {
 
     @Override
     public void execute() {
-        String pwd = MainStorage.getInstance().getCurrentDirectory();
+        String pwd = mainStorage.getCurrentDirectory();
         eventBus.post(new ShowDirectoryEvent(pwd));
     }
 

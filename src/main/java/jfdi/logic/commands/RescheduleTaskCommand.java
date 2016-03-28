@@ -85,7 +85,7 @@ public class RescheduleTaskCommand extends Command {
         int taskId = UI.getInstance().getTaskId(screenId);
 
         try {
-            TaskAttributes task = TaskDb.getInstance().getById(taskId);
+            TaskAttributes task = taskDb.getById(taskId);
 
             oldStartDateTime = task.getStartDateTime();
             oldEndDateTime = task.getEndDateTime();
@@ -123,7 +123,7 @@ public class RescheduleTaskCommand extends Command {
         int taskId = UI.getInstance().getTaskId(screenId);
 
         try {
-            TaskAttributes task = TaskDb.getInstance().getById(taskId);
+            TaskAttributes task = taskDb.getById(taskId);
 
             task.setStartDateTime(oldStartDateTime);
             task.setEndDateTime(oldEndDateTime);

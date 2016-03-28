@@ -27,7 +27,7 @@ public class WildcardCommand extends Command {
 
     @Override
     public void execute() {
-        ArrayList<TaskAttributes> incompleteTasks = TaskDb.getInstance().getAll().stream()
+        ArrayList<TaskAttributes> incompleteTasks = taskDb.getAll().stream()
                 .filter(task -> !task.isCompleted() && task.getStartDateTime() == null)
                 .collect(Collectors.toCollection(ArrayList::new));
 

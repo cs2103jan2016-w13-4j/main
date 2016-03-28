@@ -57,12 +57,11 @@ public class UnmarkTaskCommand extends Command {
     public void execute() {
         UI ui = UI.getInstance();
 
-        TaskDb taskdb = TaskDb.getInstance();
         ArrayList<Integer> taskIds = screenIds.stream().map(ui::getTaskId)
             .collect(Collectors.toCollection(ArrayList::new));
 
         ArrayList<Integer> invalidIds = screenIds.stream()
-            .filter(id -> !taskdb.hasId(ui.getTaskId(id)))
+            .filter(id -> !taskDb.hasId(ui.getTaskId(id)))
             .collect(Collectors.toCollection(ArrayList::new));
 
         if (invalidIds.isEmpty()) {
@@ -70,8 +69,8 @@ public class UnmarkTaskCommand extends Command {
             unmarkedIds = new ArrayList<>();
             taskIds.stream().forEach(id -> {
                 try {
-                    unmarkedTasks.add(taskdb.getById(id));
-                    taskdb.markAsIncomplete(id);
+                    unmarkedTasks.add(taskDb.getById(id));
+                    taskDb.markAsIncomplete(id);
 
                     unmarkedIds.add(id);
                 } catch (NoAttributesChangedException e) {
@@ -92,7 +91,7 @@ public class UnmarkTaskCommand extends Command {
     public void undo() {
         unmarkedIds.stream().forEach(id -> {
             try {
-                TaskDb.getInstance().markAsComplete(id);
+                taskDb.markAsComplete(id);
 
                 pushToRedoStack();
             } catch (NoAttributesChangedException | InvalidIdException e) {

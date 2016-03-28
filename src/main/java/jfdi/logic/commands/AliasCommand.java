@@ -57,7 +57,7 @@ public class AliasCommand extends Command {
         AliasAttributes newAlias = new AliasAttributes(alias, command);
         try {
             newAlias.save();
-            InputParser.getInstance().setAliases(AliasDb.getInstance().getAll());
+            parser.setAliases(aliasDb.getAll());
 
             pushToUndoStack();
             eventBus.post(new AliasDoneEvent(command, alias));
@@ -73,8 +73,8 @@ public class AliasCommand extends Command {
     @Override
     public void undo() {
         try {
-            AliasDb.getInstance().destroy(alias);
-            InputParser.getInstance().setAliases(AliasDb.getInstance().getAll());
+            aliasDb.destroy(alias);
+            parser.setAliases(aliasDb.getAll());
 
             pushToRedoStack();
         } catch (InvalidAliasException e) {

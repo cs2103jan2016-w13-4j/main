@@ -2,6 +2,10 @@ package jfdi.logic.interfaces;
 
 import com.google.common.eventbus.EventBus;
 import jfdi.common.utilities.JfdiLogger;
+import jfdi.parser.InputParser;
+import jfdi.storage.apis.AliasDb;
+import jfdi.storage.apis.MainStorage;
+import jfdi.storage.apis.TaskDb;
 import jfdi.ui.UI;
 
 import java.util.Optional;
@@ -14,14 +18,18 @@ import java.util.logging.Logger;
 public abstract class Command {
 
     protected static final Logger logger = JfdiLogger.getLogger();
+    protected static final EventBus eventBus = UI.getEventBus();
 
     protected static final Stack<Command> undoStack = new Stack<>();
     protected static final Stack<Command> redoStack = new Stack<>();
 
+    protected static InputParser parser = InputParser.getInstance();
+    protected static MainStorage mainStorage = MainStorage.getInstance();
+    protected static TaskDb taskDb = TaskDb.getInstance();
+    protected static AliasDb aliasDb = AliasDb.getInstance();
+
     private static boolean redoing = false;
     private static Optional<String> lastSuggestion = Optional.empty();
-
-    protected EventBus eventBus = UI.getEventBus();
 
     /**
      * Executes the command.
@@ -59,4 +67,24 @@ public abstract class Command {
         redoStack.push(this);
     }
 
+    //================================================================
+    // List of setters for testing.
+    //================================================================
+
+
+    public static void setParser(InputParser parser) {
+        Command.parser = parser;
+    }
+
+    public static void setMainStorage(MainStorage mainStorage) {
+        Command.mainStorage = mainStorage;
+    }
+
+    public static void setTaskDb(TaskDb taskDb) {
+        Command.taskDb = taskDb;
+    }
+
+    public static void setAliasDb(AliasDb aliasDb) {
+        Command.aliasDb = aliasDb;
+    }
 }

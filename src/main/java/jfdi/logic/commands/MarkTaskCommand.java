@@ -57,12 +57,11 @@ public class MarkTaskCommand extends Command {
     public void execute() {
         UI ui = UI.getInstance();
 
-        TaskDb taskdb = TaskDb.getInstance();
         ArrayList<Integer> taskIds = screenIds.stream().map(ui::getTaskId)
             .collect(Collectors.toCollection(ArrayList::new));
 
         ArrayList<Integer> invalidIds = screenIds.stream()
-            .filter(id -> !taskdb.hasId(ui.getTaskId(id)))
+            .filter(id -> !taskDb.hasId(ui.getTaskId(id)))
             .collect(Collectors.toCollection(ArrayList::new));
 
         if (invalidIds.isEmpty()) {
@@ -70,8 +69,8 @@ public class MarkTaskCommand extends Command {
             markedIds = new ArrayList<>();
             taskIds.stream().forEach(id -> {
                 try {
-                    markedTasks.add(taskdb.getById(id));
-                    taskdb.markAsComplete(id);
+                    markedTasks.add(taskDb.getById(id));
+                    taskDb.markAsComplete(id);
                     markedIds.add(id);
                 } catch (NoAttributesChangedException e) {
                     LOGGER.warning("Task " + id + " is already completed.");
@@ -92,7 +91,7 @@ public class MarkTaskCommand extends Command {
     public void undo() {
         markedIds.stream().forEach(id -> {
             try {
-                TaskDb.getInstance().markAsIncomplete(id);
+                taskDb.markAsIncomplete(id);
             } catch (NoAttributesChangedException | InvalidIdException e) {
                 assert false;
             }

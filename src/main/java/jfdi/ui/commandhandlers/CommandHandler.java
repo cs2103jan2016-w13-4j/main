@@ -452,8 +452,11 @@ public class CommandHandler {
                 break;
             case NO_TASKS:
                 controller.importantList.clear();
-                //switchContext(ListStatus.ALL, false);
+                switchContext(ListStatus.ALL, false);
                 switchContext(ListStatus.SURPRISE, false);
+                controller.initSurpriseOverlay(new TaskAttributes());
+                controller.showSurpriseDisplay();
+                controller.showNoSurpriseDisplay();
                 controller.relayFb(Constants.CMD_ERROR_SURP_FAIL_NO_TASKS,
                         MsgType.ERROR);
                 controller.updateNotiBubbles();

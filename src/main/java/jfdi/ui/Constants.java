@@ -202,7 +202,7 @@ public class Constants {
     public static final String HELP_EXIT_COMMAND = "quit";
 
     public static final String ITEM_ROW_INDEX = " #%d  ";
-    public static final String ITEM_NO_TIMEDATE = "No specified time and date.";
+    public static final String ITEM_NO_TIMEDATE = "Anytime ~";
     public static final String ITEM_DEADLINE = "by %s";
     public static final String ITEM_POINT_TASK = "on %s";
     public static final String ITEM_EVENT_TASK = "from %s to %s";

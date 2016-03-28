@@ -34,16 +34,22 @@ public class JFDIRobot implements Runnable {
         }
     }
 
-    public static void runNextCommand() {
+    public static void typeNext() {
+        synchronized (instance) {
+            instance.notify();
+        }
+    }
+
+    public void runNextCommand() {
         if (commands.isEmpty()) return;
         type(commands.remove());
     }
 
-    private static void type(String command) {
+    private void type(String command) {
         for (char c : command.toCharArray()) type(c);
     }
 
-    private static void type(char c) {
+    private void type(char c) {
         switch (c) {
         case 'a': doType(VK_A); break;
         case 'b': doType(VK_B); break;
@@ -147,11 +153,11 @@ public class JFDIRobot implements Runnable {
         }
     }
 
-    private static void doType(int... keyCodes) {
+    private void doType(int... keyCodes) {
         doType(keyCodes, 0, keyCodes.length);
     }
 
-    private static void doType(int[] keyCodes, int offset, int length) {
+    private void doType(int[] keyCodes, int offset, int length) {
         if (length == 0) {
             return;
         }
@@ -171,12 +177,6 @@ public class JFDIRobot implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    public static void typeNext() {
-        synchronized (instance) {
-            instance.notify();
         }
     }
 

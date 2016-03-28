@@ -24,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
@@ -98,6 +99,8 @@ public class MainController {
     public Label taskTime;
     @FXML
     public Label surpriseBottom;
+    @FXML
+    public ImageView noSurpriseOverlay;
 
     public MainSetUp main;
     public IUserInterface ui;
@@ -131,6 +134,8 @@ public class MainController {
         helpContent.setOpacity(0);
         surpriseOverlay.toBack();
         surpriseOverlay.setOpacity(0);
+        noSurpriseOverlay.toBack();
+        noSurpriseOverlay.setOpacity(0);
     }
 
     public void clearCmdArea() {
@@ -178,6 +183,12 @@ public class MainController {
     public void showSurpriseDisplay() {
         surpriseOverlay.toFront();
         surpriseOverlay.setOpacity(1);
+    }
+    
+    public void showNoSurpriseDisplay() {
+        noSurpriseOverlay.toFront();
+        noSurpriseOverlay.setOpacity(1);
+        System.out.println("HERE");
     }
 
     public void switchTabSkin() {

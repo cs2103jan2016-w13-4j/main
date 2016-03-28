@@ -181,7 +181,7 @@ public class CommandHandler {
         controller.relayFb(
             String.format(Constants.CMD_SUCCESS_UNDONE, cmdType.toString()),
             MsgType.SUCCESS);
-        //controller.updateNotiBubbles();
+        controller.updateNotiBubbles();
 
         controller.updateAutoCompleteList();
     }
@@ -451,8 +451,15 @@ public class CommandHandler {
                     MsgType.ERROR);
                 break;
             case NO_TASKS:
+                controller.importantList.clear();
+                switchContext(ListStatus.ALL, false);
+                switchContext(ListStatus.SURPRISE, false);
+                controller.initSurpriseOverlay(new TaskAttributes());
+                controller.showSurpriseDisplay();
+                controller.showNoSurpriseDisplay();
                 controller.relayFb(Constants.CMD_ERROR_SURP_FAIL_NO_TASKS,
-                    MsgType.ERROR);
+                        MsgType.ERROR);
+                controller.updateNotiBubbles();
                 break;
             default:
                 break;

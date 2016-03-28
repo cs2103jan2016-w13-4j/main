@@ -81,7 +81,7 @@ public class Constants {
         "The folder %s is occupied. File has been moved to %s instead!";
     public static final String CMD_ERROR_SURP_FAIL_UNKNOWN = "I can't even surprise you...I am such a failure! :(";
     public static final String CMD_ERROR_SURP_FAIL_NO_TASKS =
-        "How can I surprise you if you did not even add any task in me! :(";
+        "There's really nothing much that you can do now.. take a rest or add more tasks! :D";
     public static final String CMD_ERROR_REDO_FAIL_UNKNOWN =
         "Some stupid error occurred. Cannot redo the previous task!";
     public static final String CMD_ERROR_REDO_FAIL_NO_TASKS = "Cannot find any previous task to redo!";
@@ -202,7 +202,7 @@ public class Constants {
     public static final String HELP_EXIT_COMMAND = "quit";
 
     public static final String ITEM_ROW_INDEX = " #%d  ";
-    public static final String ITEM_NO_TIMEDATE = "No specified time and date.";
+    public static final String ITEM_NO_TIMEDATE = "Anytime ~";
     public static final String ITEM_DEADLINE = "by %s";
     public static final String ITEM_POINT_TASK = "on %s";
     public static final String ITEM_EVENT_TASK = "from %s to %s";

@@ -4,9 +4,6 @@ import jfdi.logic.events.FilesReplacedEvent;
 import jfdi.logic.events.MoveDirectoryFailedEvent;
 import jfdi.logic.events.UseDirectoryDoneEvent;
 import jfdi.logic.interfaces.Command;
-import jfdi.parser.InputParser;
-import jfdi.storage.apis.AliasDb;
-import jfdi.storage.apis.MainStorage;
 import jfdi.storage.exceptions.FilesReplacedException;
 import jfdi.storage.exceptions.InvalidFilePathException;
 

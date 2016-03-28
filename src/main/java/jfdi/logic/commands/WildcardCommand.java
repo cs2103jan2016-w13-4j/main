@@ -4,7 +4,6 @@ import jfdi.logic.events.NoSurpriseEvent;
 import jfdi.logic.events.SurpriseEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
-import jfdi.storage.apis.TaskDb;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;

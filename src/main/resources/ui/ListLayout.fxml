@@ -15,12 +15,49 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
- <?import jfdi.ui.AutoCompleteTextField?>
+<?import jfdi.ui.AutoCompleteTextField?>
 
 <AnchorPane maxHeight="690.0" maxWidth="670.0" prefHeight="690.0" prefWidth="670.0" style="-fx-background-color: #f7c873;" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jfdi.ui.MainController">
    <children>
       <StackPane maxWidth="670.0" prefHeight="690.0" prefWidth="670.0" VBox.vgrow="ALWAYS">
           <children>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="41.0" fitWidth="37.0" layoutX="76.0" layoutY="261.0" pickOnBounds="true" preserveRatio="true" rotate="-35.5">
+                     <image>
+                        <Image url="@images/10.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="49.0" fitWidth="118.0" layoutX="597.0" layoutY="504.0" pickOnBounds="true" preserveRatio="true" rotate="-24.0">
+                     <image>
+                        <Image url="@images/8.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="59.0" fitWidth="41.0" layoutX="145.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" rotate="-15.9">
+                     <image>
+                        <Image url="@images/7.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="47.0" fitWidth="118.0" layoutX="593.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true" rotate="21.8">
+                     <image>
+                        <Image url="@images/6.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="35.0" fitWidth="126.0" layoutX="420.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/5.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="82.0" fitWidth="276.0" layoutX="22.0" layoutY="569.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/4.png" />
+                     </image>
+                     <viewport>
+                        <Rectangle2D minX="100.0" width="100.0" />
+                     </viewport>
+                  </ImageView>
+               </children>
+            </AnchorPane>
             <HBox maxWidth="670.0" prefWidth="670.0">
                <children>
                   <VBox maxHeight="690.0" maxWidth="130.0" minWidth="130.0" prefHeight="690.0" prefWidth="116.0" style="-fx-background-color: #f7c873;">
@@ -224,49 +261,26 @@
                <children>
                   <VBox fx:id="surpriseOverlay" layoutX="-4.0" layoutY="117.0" maxWidth="500.0" prefHeight="500.0" prefWidth="500.0">
                      <children>
-                        <Label fx:id="surpriseTitle" alignment="CENTER" contentDisplay="CENTER" styleClass="surpriseTitle" text="SURPRISE!!!" textAlignment="CENTER" translateX="130.0" VBox.vgrow="ALWAYS" />
+                        <HBox maxHeight="80.0" prefHeight="184.0" prefWidth="500.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <ImageView fitHeight="53.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true" translateX="60.0">
+                                 <image>
+                                    <Image url="@images/tadaflip.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="surpriseTitle" alignment="CENTER" contentDisplay="CENTER" styleClass="surpriseTitle" text="SURPRISE!!!" textAlignment="CENTER" translateX="75.0" />
+                              <ImageView fitHeight="53.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true" translateX="90.0">
+                                 <image>
+                                    <Image url="@images/tada.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </HBox>
                         <Label fx:id="taskDesc" alignment="CENTER" maxWidth="500.0" prefWidth="500.0" styleClass="taskDesc" text="Label" VBox.vgrow="ALWAYS" />
                         <Label fx:id="taskTime" alignment="CENTER" maxWidth="500.0" prefWidth="500.0" styleClass="taskTime" text="Label" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
                         <Label fx:id="surpriseBottom" alignment="CENTER" maxWidth="500.0" prefWidth="500.0" styleClass="surpriseBottom" text="Yay or Nay?" textAlignment="CENTER" />
                      </children>
                   </VBox>
-               </children>
-            </AnchorPane>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <ImageView fitHeight="41.0" fitWidth="37.0" layoutX="76.0" layoutY="261.0" pickOnBounds="true" preserveRatio="true" rotate="-35.5">
-                     <image>
-                        <Image url="@images/10.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="49.0" fitWidth="118.0" layoutX="597.0" layoutY="504.0" pickOnBounds="true" preserveRatio="true" rotate="-24.0">
-                     <image>
-                        <Image url="@images/8.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="59.0" fitWidth="41.0" layoutX="145.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" rotate="-15.9">
-                     <image>
-                        <Image url="@images/7.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="118.0" layoutX="593.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true" rotate="21.8">
-                     <image>
-                        <Image url="@images/6.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="35.0" fitWidth="126.0" layoutX="420.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/5.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="82.0" fitWidth="276.0" layoutX="22.0" layoutY="569.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@images/4.png" />
-                     </image>
-                     <viewport>
-                        <Rectangle2D minX="100.0" width="100.0" />
-                     </viewport>
-                  </ImageView>
                </children>
             </AnchorPane>
             

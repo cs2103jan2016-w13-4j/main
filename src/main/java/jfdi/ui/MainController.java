@@ -184,7 +184,7 @@ public class MainController {
         surpriseOverlay.toFront();
         surpriseOverlay.setOpacity(1);
     }
-    
+
     public void showNoSurpriseDisplay() {
         noSurpriseOverlay.toFront();
         noSurpriseOverlay.setOpacity(1);

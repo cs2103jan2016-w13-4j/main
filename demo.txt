@@ -1,2 +1,13 @@
-hello
-it's me
+### KY's Portion
+surprise!
+surprise!\enter
+use work
+Attend project JFDI meeting from 2pm to 3pm\enter
+Submit financial report to boss by 6pm\enter
+use personal
+Buy groceries on the way home later\enter
+Have dinner with family tonight\enter
+use work\enter
+use personal\enter
+move <xinan's dropbox dir path>
+directory

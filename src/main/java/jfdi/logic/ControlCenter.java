@@ -8,13 +8,12 @@ import jfdi.logic.interfaces.Command;
 import jfdi.logic.interfaces.ILogic;
 import jfdi.parser.InputParser;
 import jfdi.parser.exceptions.InvalidInputException;
-import jfdi.storage.apis.AliasAttributes;
-import jfdi.storage.apis.AliasDb;
-import jfdi.storage.apis.MainStorage;
+import jfdi.storage.apis.*;
 import jfdi.storage.exceptions.FilesReplacedException;
 import jfdi.storage.exceptions.InvalidFilePathException;
 import jfdi.ui.UI;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.TreeSet;
@@ -26,7 +25,12 @@ import java.util.stream.Collectors;
 public class ControlCenter implements ILogic {
 
     private static ControlCenter ourInstance = new ControlCenter();
-    private static EventBus eventBus = UI.getEventBus();
+
+    private final EventBus eventBus = UI.getEventBus();
+
+    private MainStorage mainStorage = MainStorage.getInstance();
+    private TaskDb taskDb = TaskDb.getInstance();
+    private AliasDb aliasDb = AliasDb.getInstance();
 
     private InputParser parser = InputParser.getInstance();
 
@@ -54,6 +58,7 @@ public class ControlCenter implements ILogic {
         }
     }
 
+    @Override
     public TreeSet<String> getKeywords() {
         TreeSet<String> keywords = Arrays.stream(InputParser.getInstance()
             .getAllCommandRegexes()
@@ -69,15 +74,43 @@ public class ControlCenter implements ILogic {
         return keywords;
     }
 
-    public void setParser(InputParser parser) {
-        this.parser = parser;
+    @Override
+    public ArrayList<TaskAttributes> getIncompleteTasks() {
+        return taskDb.getAll().stream()
+            .filter(task -> !task.isCompleted())
+            .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    @Override
+    public ArrayList<TaskAttributes> getCompletedTasks() {
+        return taskDb.getAll().stream()
+            .filter(TaskAttributes::isCompleted)
+            .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    @Override
+    public ArrayList<TaskAttributes> getAllTasks() {
+        return taskDb.getAll().stream()
+            .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    @Override
+    public ArrayList<TaskAttributes> getUpcomingTasks() {
+        return taskDb.getUpcoming().stream()
+            .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    @Override
+    public ArrayList<TaskAttributes> getOverdueTasks() {
+        return taskDb.getOverdue().stream()
+            .collect(Collectors.toCollection(ArrayList::new));
     }
 
     private void initStorage() {
         // Set a list of permitted commands that can be aliased
-        AliasAttributes.setCommandRegex(InputParser.getInstance().getAllCommandRegexes());
+        AliasAttributes.setCommandRegex(parser.getAllCommandRegexes());
         try {
-            MainStorage.getInstance().initialize();
+            mainStorage.initialize();
         } catch (FilesReplacedException e) {
             eventBus.post(new FilesReplacedEvent(e.getReplacedFilePairs()));
         } catch (InvalidFilePathException e) {
@@ -87,6 +120,26 @@ public class ControlCenter implements ILogic {
     }
 
     private void initParser() {
-        InputParser.getInstance().setAliases(AliasDb.getInstance().getAll());
+        parser.setAliases(aliasDb.getAll());
+    }
+
+    //================================================================
+    // List of setters for testing.
+    //================================================================
+
+    public void setParser(InputParser parser) {
+        this.parser = parser;
+    }
+
+    public void setMainStorage(MainStorage mainStorage) {
+        this.mainStorage = mainStorage;
+    }
+
+    public void setTaskDb(TaskDb taskDb) {
+        this.taskDb = taskDb;
+    }
+
+    public void setAliasDb(AliasDb aliasDb) {
+        this.aliasDb = aliasDb;
     }
 }

@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
-import org.testfx.util.WaitForAsyncUtils;
 
 import com.google.common.io.Files;
 
@@ -47,7 +46,7 @@ import jfdi.ui.UI;
 import jfdi.ui.items.HelpItem;
 import jfdi.ui.items.ListItem;
 
-public class TestMainSetUp extends ApplicationTest {
+public class TestMain extends ApplicationTest {
 
     /* The widgets of the GUI used for the tests. */
     Rectangle incompleteBox;
@@ -157,8 +156,6 @@ public class TestMainSetUp extends ApplicationTest {
         // Initialize Controller
         UI.getInstance().controller = loader.getController();
         controller = UI.getInstance().controller;
-
-        // Link UI with Controller
         ui.init();
 
         ((BorderPane) rootLayout).setCenter(listLayout);
@@ -166,9 +163,9 @@ public class TestMainSetUp extends ApplicationTest {
 
         // Link Controller with UI, MainSetUp and CommandHandler
         controller.setUi(ui);
-        controller.initNotiBubbles();
+        //controller.initNotiBubbles();
 
-        // controller.importantList.removeAll(controller.importantList);
+        //controller.importantList.removeAll(controller.importantList);
 
         File tempDir = Files.createTempDir();
         originalStorageDirectory = MainStorage.getInstance().getCurrentDirectory();
@@ -301,19 +298,5 @@ public class TestMainSetUp extends ApplicationTest {
         assertNotNull(String.format(errMsg, "taskTime"), taskTime);
         assertNotNull(String.format(errMsg, "surpriseBottom"), surpriseBottom);
         assertNotNull(String.format(errMsg, "noSurpriseOverlay"), noSurpriseOverlay);
-    }
-
-    /*
-     * Test a simple "add hello" command and check if the feedback displayed
-     * matches the expected lines.
-     */
-    @Test
-    public void testAddTask() {
-        clickOn(cmdArea).type(KeyCode.BACK_SPACE).type(KeyCode.A).type(KeyCode.D).type(KeyCode.D).type(KeyCode.SPACE)
-                .type(KeyCode.H).type(KeyCode.E).type(KeyCode.L).type(KeyCode.L).type(KeyCode.O).type(KeyCode.ENTER);
-        WaitForAsyncUtils.waitForFxEvents();
-
-        //assertEquals("The feedback message does not match the intended result.", fbArea.getText(),
-        //      "J.F.D.I. : " + String.format(Constants.CMD_SUCCESS_ADDED, "hello"));
     }
 }

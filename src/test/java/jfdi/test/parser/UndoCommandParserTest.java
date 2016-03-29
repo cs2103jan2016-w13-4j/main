@@ -54,11 +54,9 @@ public class UndoCommandParserTest {
         Assert.assertTrue(command instanceof InvalidCommand);
 
         // Boundary case: null
-        try {
-            command = parser.build(null);
-        } catch (AssertionError e) {
-            Assert.assertTrue(true);
-        }
+        command = parser.build(null);
+        Assert.assertTrue(command instanceof InvalidCommand);
+
     }
 
 }

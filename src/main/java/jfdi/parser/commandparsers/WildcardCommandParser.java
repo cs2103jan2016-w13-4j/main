@@ -37,8 +37,7 @@ public class WildcardCommandParser extends AbstractCommandParser {
     }
 
     private boolean isValidWildCardCommand(String input) {
-        assert input != null;
-        return isSingleWord(input) && input.matches(Constants.REGEX_WILDCARD);
+        return isValidInput(input) && input.matches(Constants.REGEX_WILDCARD);
     }
 
 }

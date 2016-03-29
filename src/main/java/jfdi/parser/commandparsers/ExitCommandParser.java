@@ -37,7 +37,6 @@ public class ExitCommandParser extends AbstractCommandParser {
     }
 
     private boolean isValidExitCommand(String input) {
-        assert input != null;
-        return isSingleWord(input) && input.matches(Constants.REGEX_EXIT);
+        return isValidInput(input) && input.matches(Constants.REGEX_EXIT);
     }
 }

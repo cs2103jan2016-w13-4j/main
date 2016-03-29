@@ -37,8 +37,7 @@ public class HelpCommandParser extends AbstractCommandParser {
     }
 
     private boolean isValidHelpCommand(String input) {
-        assert input != null;
-        return isSingleWord(input) && input.matches(Constants.REGEX_HELP);
+        return isValidInput(input) && input.matches(Constants.REGEX_HELP);
     }
 
 }

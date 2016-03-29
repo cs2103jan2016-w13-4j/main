@@ -37,7 +37,6 @@ public class DirectoryCommandParser extends AbstractCommandParser {
     }
 
     private boolean isValidDirectoryCommand(String input) {
-        assert input != null;
-        return isSingleWord(input) && input.matches(Constants.REGEX_DIRECTORY);
+        return isValidInput(input) && input.matches(Constants.REGEX_DIRECTORY);
     }
 }

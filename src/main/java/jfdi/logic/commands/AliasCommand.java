@@ -23,6 +23,18 @@ public class AliasCommand extends Command {
         this.isValid = builder.isValid;
     }
 
+    public String getCommand() {
+        return command;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public boolean isValid() {
+        return isValid;
+    }
+
     public static class Builder {
 
         String command;
@@ -60,11 +72,9 @@ public class AliasCommand extends Command {
             pushToUndoStack();
             eventBus.post(new AliasDoneEvent(command, alias));
         } catch (InvalidAliasParametersException e) {
-            eventBus.post(new AliasFailedEvent(command, alias,
-                AliasFailedEvent.Error.INVALID_PARAMETERS));
+            eventBus.post(new AliasFailedEvent(command, alias, AliasFailedEvent.Error.INVALID_PARAMETERS));
         } catch (DuplicateAliasException e) {
-            eventBus.post(new AliasFailedEvent(command, alias,
-                AliasFailedEvent.Error.DUPLICATED_ALIAS));
+            eventBus.post(new AliasFailedEvent(command, alias, AliasFailedEvent.Error.DUPLICATED_ALIAS));
         }
     }
 

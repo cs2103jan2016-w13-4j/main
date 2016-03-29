@@ -1,5 +1,8 @@
 package jfdi.logic.commands;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 import jfdi.logic.events.RescheduleTaskDoneEvent;
 import jfdi.logic.events.RescheduleTaskFailedEvent;
 import jfdi.logic.interfaces.Command;
@@ -9,9 +12,6 @@ import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
 import jfdi.ui.UI;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
 
 /**
  * @author Liu Xinan
@@ -34,6 +34,26 @@ public class RescheduleTaskCommand extends Command {
         this.shiftedDateTime = builder.shiftedDateTime;
         this.startDateTime = builder.startDateTime;
         this.endDateTime = builder.endDateTime;
+    }
+
+    public int getScreenId() {
+        return screenId;
+    }
+
+    public boolean isShiftedDateSpecified() {
+        return isShiftedDateSpecified;
+    }
+
+    public boolean isShiftedTimeSpecified() {
+        return isShiftedTimeSpecified;
+    }
+
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
+    }
+
+    public LocalDateTime getEndDateTime() {
+        return endDateTime;
     }
 
     public static class Builder {
@@ -100,19 +120,16 @@ public class RescheduleTaskCommand extends Command {
             pushToUndoStack();
             eventBus.post(new RescheduleTaskDoneEvent(task));
         } catch (InvalidIdException e) {
-            eventBus.post(new RescheduleTaskFailedEvent(screenId,
-                startDateTime, endDateTime,
+            eventBus.post(new RescheduleTaskFailedEvent(screenId, startDateTime, endDateTime,
                 RescheduleTaskFailedEvent.Error.NON_EXISTENT_ID));
         } catch (InvalidTaskParametersException e) {
             // Should not happen
             assert false;
         } catch (NoAttributesChangedException e) {
-            eventBus.post(new RescheduleTaskFailedEvent(screenId,
-                startDateTime, endDateTime,
+            eventBus.post(new RescheduleTaskFailedEvent(screenId, startDateTime, endDateTime,
                 RescheduleTaskFailedEvent.Error.NO_CHANGES));
         } catch (DuplicateTaskException e) {
-            eventBus.post(new RescheduleTaskFailedEvent(screenId,
-                startDateTime, endDateTime,
+            eventBus.post(new RescheduleTaskFailedEvent(screenId, startDateTime, endDateTime,
                 RescheduleTaskFailedEvent.Error.DUPLICATED_TASK));
         }
     }
@@ -129,8 +146,8 @@ public class RescheduleTaskCommand extends Command {
             task.save();
 
             pushToRedoStack();
-        } catch (InvalidIdException | InvalidTaskParametersException
-            | NoAttributesChangedException | DuplicateTaskException e) {
+        } catch (InvalidIdException | InvalidTaskParametersException | NoAttributesChangedException
+            | DuplicateTaskException e) {
             assert false;
         }
     }
@@ -164,6 +181,10 @@ public class RescheduleTaskCommand extends Command {
         }
     }
 
+    public LocalDateTime getShiftedDateTime() {
+        return shiftedDateTime;
+    }
+
     private LocalDateTime getShiftedDateTime(LocalDateTime dateTime) {
         if (isShiftedDateSpecified && isShiftedTimeSpecified) {
             return shiftedDateTime;
@@ -178,14 +199,12 @@ public class RescheduleTaskCommand extends Command {
 
     private LocalDateTime shiftTime(LocalDateTime originalDateTime) {
         assert originalDateTime != null && shiftedDateTime != null;
-        return LocalDateTime.of(originalDateTime.toLocalDate(),
-            shiftedDateTime.toLocalTime());
+        return LocalDateTime.of(originalDateTime.toLocalDate(), shiftedDateTime.toLocalTime());
     }
 
     private LocalDateTime shiftDate(LocalDateTime originalDateTime) {
         assert originalDateTime != null && shiftedDateTime != null;
-        return LocalDateTime.of(shiftedDateTime.toLocalDate(),
-            originalDateTime.toLocalTime());
+        return LocalDateTime.of(shiftedDateTime.toLocalDate(), originalDateTime.toLocalTime());
     }
 
 }

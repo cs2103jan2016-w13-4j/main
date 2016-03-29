@@ -37,8 +37,7 @@ public class UndoCommandParser extends AbstractCommandParser {
     }
 
     private boolean isValidUndoCommand(String input) {
-        assert input != null;
-        return isSingleWord(input) && input.matches(Constants.REGEX_UNDO);
+        return isValidInput(input) && input.matches(Constants.REGEX_UNDO);
     }
 
 }

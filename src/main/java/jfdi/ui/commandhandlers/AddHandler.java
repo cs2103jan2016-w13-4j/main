@@ -34,10 +34,10 @@ public class AddHandler extends CommandHandler {
         if (shouldSort()) {
             sortDisplayList();
         }
-        controller.relayFb(String.format(Constants.CMD_SUCCESS_ADDED, task.getDescription()), MsgType.SUCCESS);
-        logger.fine(String.format(Constants.LOG_ADDED_SUCCESS, task.getId()));
         controller.updateNotiBubbles();
         controller.listMain.scrollTo(controller.importantList.size() - 1);
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_ADDED, task.getDescription()), MsgType.SUCCESS);
+        logger.fine(String.format(Constants.LOG_ADDED_SUCCESS, task.getId()));
     }
 
     @Subscribe

@@ -53,6 +53,7 @@ public class UseCommandParser extends AbstractCommandParser {
     }
 
     private String getDirectoryName(String input) {
+        assert isValidInput(input);
         return removeFirstWord(input);
     }
 

@@ -11,11 +11,9 @@ public class UI implements IUserInterface {
 
     private static final EventBus eventBus = new EventBus();
     private static UI ourInstance = new UI();
+    private static ControlCenter logic;
 
-    public CommandHandler cmdHandler = new CommandHandler();
-
-    private MainController controller;
-    private ControlCenter logic;
+    public MainController controller;
 
     private UI() {
     }
@@ -31,7 +29,7 @@ public class UI implements IUserInterface {
 
         // Initialize Logic
         logic = ControlCenter.getInstance();
-        this.prepareListener();
+        prepareListeners();
 
         // showToUser(UI_MESSAGE_INITED);
     }
@@ -108,23 +106,17 @@ public class UI implements IUserInterface {
         return controller.getIdFromIndex(onScreenId - 1);
     }
 
-    @Override
-    public void setController(MainController controller) {
-        this.controller = controller;
-    }
-
     /***************************
      *** LEVEL 1 Abstraction ***
      ***************************/
 
+    private void prepareListeners() {
+        CommandHandler.registerEvents();
+    }
+
     private void showToUser(String string) {
         controller.displayFb(string);
         System.out.println(string);
-    }
-
-    private void prepareListener() {
-        cmdHandler.setController(controller);
-        eventBus.register(cmdHandler);
     }
 
     @Override

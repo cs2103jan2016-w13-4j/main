@@ -8,6 +8,8 @@ import jfdi.parser.InputParser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertSame;
@@ -20,7 +22,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ControlCenterTest {
 
-    @Mock
+    @Spy
     private InputParser parser;
 
     @Mock
@@ -54,6 +56,8 @@ public class ControlCenterTest {
         verify(ls).execute();
         verify(lol).execute();
         verify(exit).execute();
+
+        Mockito.reset(parser);
     }
 
 }

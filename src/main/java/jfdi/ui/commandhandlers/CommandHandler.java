@@ -51,7 +51,7 @@ import jfdi.ui.Constants.MsgType;
 import jfdi.ui.MainController;
 import jfdi.ui.items.ListItem;
 
-public class CommandHandler {
+public abstract class CommandHandler {
 
     public MainController controller;
     public Logger logger = JfdiLogger.getLogger();

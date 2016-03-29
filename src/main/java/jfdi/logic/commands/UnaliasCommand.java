@@ -20,6 +20,10 @@ public class UnaliasCommand extends Command {
         this.alias = builder.alias;
     }
 
+    public String getAlias() {
+        return alias;
+    }
+
     public static class Builder {
 
         String alias;

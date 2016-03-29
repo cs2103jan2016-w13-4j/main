@@ -16,12 +16,12 @@ public class SearchCommand extends Command {
 
     private HashSet<String> keywords;
 
-    public HashSet<String> getKeywords() {
-        return keywords;
-    }
-
     private SearchCommand(Builder builder) {
         this.keywords = builder.keywords;
+    }
+
+    public HashSet<String> getKeywords() {
+        return keywords;
     }
 
     public static class Builder {

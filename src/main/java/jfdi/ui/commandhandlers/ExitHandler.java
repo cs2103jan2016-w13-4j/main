@@ -8,14 +8,14 @@ import jfdi.ui.Constants;
 public class ExitHandler extends CommandHandler {
 
     private static ExitHandler instance = new ExitHandler();
-    
+
     private ExitHandler() {
     }
-    
+
     public static ExitHandler getInstance() {
         return instance;
     }
-    
+
     @Subscribe
     public void handleExitCalledEvent(ExitCalledEvent e) {
         if (controller.isInternalCall()) {

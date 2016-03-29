@@ -12,16 +12,16 @@ import jfdi.ui.Constants;
 import jfdi.ui.Constants.MsgType;
 
 public class MarkHandler extends CommandHandler {
-    
+
     private static MarkHandler instance = new MarkHandler();
-    
+
     private MarkHandler() {
     }
-    
+
     public static MarkHandler getInstance() {
         return instance;
     }
-    
+
     @Subscribe
     public void handleMarkTaskDoneEvent(MarkTaskDoneEvent e) {
         if (controller.isInternalCall()) {
@@ -41,9 +41,7 @@ public class MarkHandler extends CommandHandler {
             // controller.displayList(controller.displayStatus);
             // logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, num));
         }
-        controller.relayFb(
-            String.format(Constants.CMD_SUCCESS_MARKED, indexCount + 1),
-            MsgType.SUCCESS);
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_MARKED, indexCount + 1), MsgType.SUCCESS);
         controller.updateNotiBubbles();
         controller.listMain.scrollTo(indexCount);
     }
@@ -57,16 +55,13 @@ public class MarkHandler extends CommandHandler {
 
         switch (e.getError()) {
             case UNKNOWN:
-                controller.relayFb(Constants.CMD_ERROR_CANT_MARK_UNKNOWN,
-                    MsgType.ERROR);
+                controller.relayFb(Constants.CMD_ERROR_CANT_MARK_UNKNOWN, MsgType.ERROR);
                 // logger.fine(Constants.LOG_DELETE_FAIL_UNKNOWN);
                 break;
             case NON_EXISTENT_ID:
                 // NEED TO CHANGE TO INDEX SOON????
                 for (Integer screenId : e.getInvalidIds()) {
-                    controller.relayFb(String.format(
-                        Constants.CMD_ERROR_CANT_MARK_NO_ID, screenId),
-                        MsgType.ERROR);
+                    controller.relayFb(String.format(Constants.CMD_ERROR_CANT_MARK_NO_ID, screenId), MsgType.ERROR);
                 }
                 // logger.fine(Constants.LOG_DELETE_FAIL_NOID);
                 break;

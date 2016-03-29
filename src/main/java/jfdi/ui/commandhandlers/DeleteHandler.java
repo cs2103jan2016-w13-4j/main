@@ -13,16 +13,16 @@ import jfdi.ui.Constants.MsgType;
 import jfdi.ui.items.ListItem;
 
 public class DeleteHandler extends CommandHandler {
-    
+
     private static DeleteHandler instance = new DeleteHandler();
-    
+
     private DeleteHandler() {
     }
-    
+
     public static DeleteHandler getInstance() {
         return instance;
     }
-    
+
     @Subscribe
     public void handleDeleteTaskDoneEvent(DeleteTaskDoneEvent e) {
         if (controller.isInternalCall()) {
@@ -60,15 +60,12 @@ public class DeleteHandler extends CommandHandler {
 
         switch (e.getError()) {
             case UNKNOWN:
-                controller.relayFb(Constants.CMD_ERROR_CANT_DELETE_UNKNOWN,
-                    MsgType.ERROR);
+                controller.relayFb(Constants.CMD_ERROR_CANT_DELETE_UNKNOWN, MsgType.ERROR);
                 logger.fine(Constants.LOG_DELETE_FAIL_UNKNOWN);
                 break;
             case NON_EXISTENT_ID:
                 for (Integer screenId : e.getInvalidIds()) {
-                    controller.relayFb(String.format(
-                        Constants.CMD_ERROR_CANT_DELETE_NO_ID, screenId),
-                        MsgType.ERROR);
+                    controller.relayFb(String.format(Constants.CMD_ERROR_CANT_DELETE_NO_ID, screenId), MsgType.ERROR);
                 }
                 logger.fine(Constants.LOG_DELETE_FAIL_NOID);
                 break;

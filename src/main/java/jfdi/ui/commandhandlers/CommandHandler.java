@@ -14,8 +14,8 @@ import jfdi.ui.items.ListItem;
 
 public abstract class CommandHandler {
 
-    public MainController controller = UI.getInstance().controller;
     public static Logger logger = JfdiLogger.getLogger();
+    public MainController controller = UI.getInstance().controller;
 
     protected void refreshDisplay() {
         controller.listMain.refresh();
@@ -24,7 +24,7 @@ public abstract class CommandHandler {
     public void setController(MainController ctrl) {
         controller = ctrl;
     }
-    
+
     public static void registerEvents() {
         UI.getEventBus().register(AddHandler.getInstance());
         UI.getEventBus().register(AliasHandler.getInstance());
@@ -55,8 +55,7 @@ public abstract class CommandHandler {
      * @param tasks
      *            the ArrayList of tasks to be displayed
      */
-    protected void listTasks(ArrayList<TaskAttributes> tasks,
-        boolean shouldCheckContext) {
+    protected void listTasks(ArrayList<TaskAttributes> tasks, boolean shouldCheckContext) {
         controller.importantList.clear();
         for (TaskAttributes task : tasks) {
             appendTaskToDisplayList(task, shouldCheckContext);
@@ -69,8 +68,7 @@ public abstract class CommandHandler {
      * @param task
      *            the task to be appended
      */
-    protected void appendTaskToDisplayList(TaskAttributes task,
-        boolean shouldCheckContext) {
+    protected void appendTaskToDisplayList(TaskAttributes task, boolean shouldCheckContext) {
         if (shouldCheckContext && !isSameContext(task)) {
             return;
         }
@@ -81,28 +79,25 @@ public abstract class CommandHandler {
         if (task.isCompleted()) {
             listItem = new ListItem(onScreenId, task, true);
             controller.importantList.add(listItem);
-            controller.importantList.get(controller.importantList.size() - 1)
-                .strikeOut();
+            controller.importantList.get(controller.importantList.size() - 1).strikeOut();
             listItem.strikeOut();
         } else {
             listItem = new ListItem(onScreenId, task, false);
             controller.importantList.add(listItem);
-            controller.importantList.get(controller.importantList.size() - 1)
-                .getStyleClass().add("itemBox");
+            controller.importantList.get(controller.importantList.size() - 1).getStyleClass().add("itemBox");
         }
     }
 
     protected void sortDisplayList() {
         ArrayList<TaskAttributes> taskList = new ArrayList<TaskAttributes>();
-        controller.importantList.forEach(listItem -> taskList.add(listItem
-            .getItem()));
+        controller.importantList.forEach(listItem -> taskList.add(listItem.getItem()));
         Collections.sort(taskList);
         listTasks(taskList, false);
     }
 
     protected boolean shouldSort() {
         return controller.displayStatus.equals(ListStatus.OVERDUE)
-            || controller.displayStatus.equals(ListStatus.UPCOMING);
+                || controller.displayStatus.equals(ListStatus.UPCOMING);
     }
 
     private boolean isSameContext(TaskAttributes task) {

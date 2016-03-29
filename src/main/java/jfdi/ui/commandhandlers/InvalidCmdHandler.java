@@ -9,14 +9,14 @@ import jfdi.ui.Constants.MsgType;
 public class InvalidCmdHandler extends CommandHandler {
 
     private static InvalidCmdHandler instance = new InvalidCmdHandler();
-    
+
     private InvalidCmdHandler() {
     }
-    
+
     public static InvalidCmdHandler getInstance() {
         return instance;
     }
-    
+
     @Subscribe
     public void handleInvalidCommandEvent(InvalidCommandEvent e) {
         if (controller.isInternalCall()) {
@@ -24,9 +24,7 @@ public class InvalidCmdHandler extends CommandHandler {
             return;
         }
 
-        controller.relayFb(
-            String.format(Constants.CMD_WARNING_DONTKNOW, e.getInputString()),
-            MsgType.WARNING);
+        controller.relayFb(String.format(Constants.CMD_WARNING_DONTKNOW, e.getInputString()), MsgType.WARNING);
         logger.fine(Constants.LOG_INVALID_COMMAND);
     }
 

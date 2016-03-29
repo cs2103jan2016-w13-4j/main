@@ -9,22 +9,22 @@ import jfdi.ui.Constants;
 import jfdi.ui.Constants.MsgType;
 
 public class InitializationHandler extends CommandHandler {
-    
+
     private static InitializationHandler instance = new InitializationHandler();
-    
+
     private InitializationHandler() {
     }
-    
+
     public static InitializationHandler getInstance() {
         return instance;
     }
-    
+
     @Subscribe
     public void handleFilesReplacedEvent(FilesReplacedEvent e) {
         String fb = "";
         for (FilePathPair item : e.getFilePathPairs()) {
-            fb += String.format("\n" + Constants.CMD_ERROR_INIT_FAIL_REPLACED,
-                item.getOldFilePath(), item.getNewFilePath());
+            fb += String.format("\n" + Constants.CMD_ERROR_INIT_FAIL_REPLACED, item.getOldFilePath(),
+                    item.getNewFilePath());
         }
         controller.appendFb(fb, MsgType.WARNING);
         controller.updateNotiBubbles();
@@ -39,13 +39,10 @@ public class InitializationHandler extends CommandHandler {
 
         switch (e.getError()) {
             case UNKNOWN:
-                controller.relayFb(Constants.CMD_ERROR_INIT_FAIL_UNKNOWN,
-                    MsgType.ERROR);
+                controller.relayFb(Constants.CMD_ERROR_INIT_FAIL_UNKNOWN, MsgType.ERROR);
                 break;
             case INVALID_PATH:
-                controller.relayFb(
-                    String.format(Constants.CMD_ERROR_INIT_FAIL_INVALID,
-                        e.getPath()), MsgType.ERROR);
+                controller.relayFb(String.format(Constants.CMD_ERROR_INIT_FAIL_INVALID, e.getPath()), MsgType.ERROR);
                 break;
             default:
                 break;

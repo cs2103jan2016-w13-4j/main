@@ -10,12 +10,12 @@ import jfdi.ui.Constants.ListStatus;
 import jfdi.ui.Constants.MsgType;
 
 public class AddHandler extends CommandHandler {
-    
+
     private static AddHandler instance = new AddHandler();
-    
+
     private AddHandler() {
     }
-    
+
     public static AddHandler getInstance() {
         return instance;
     }
@@ -34,9 +34,7 @@ public class AddHandler extends CommandHandler {
         if (shouldSort()) {
             sortDisplayList();
         }
-        controller.relayFb(
-            String.format(Constants.CMD_SUCCESS_ADDED, task.getDescription()),
-            MsgType.SUCCESS);
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_ADDED, task.getDescription()), MsgType.SUCCESS);
         logger.fine(String.format(Constants.LOG_ADDED_SUCCESS, task.getId()));
         controller.updateNotiBubbles();
         controller.listMain.scrollTo(controller.importantList.size() - 1);
@@ -51,24 +49,20 @@ public class AddHandler extends CommandHandler {
 
         switch (e.getError()) {
             case UNKNOWN:
-                controller.relayFb(Constants.CMD_ERROR_CANT_ADD_UNKNOWN,
-                    MsgType.ERROR);
+                controller.relayFb(Constants.CMD_ERROR_CANT_ADD_UNKNOWN, MsgType.ERROR);
                 logger.fine(String.format(Constants.LOG_ADD_FAIL_UNKNOWN));
                 break;
             case EMPTY_DESCRIPTION:
-                controller.relayFb(Constants.CMD_ERROR_CANT_ADD_EMPTY,
-                    MsgType.ERROR);
+                controller.relayFb(Constants.CMD_ERROR_CANT_ADD_EMPTY, MsgType.ERROR);
                 logger.fine(String.format(Constants.LOG_ADD_FAIL_EMPTY));
                 break;
             case DUPLICATED_TASK:
-                controller.relayFb(Constants.CMD_ERROR_CANT_ADD_DUPLICATE,
-                    MsgType.ERROR);
+                controller.relayFb(Constants.CMD_ERROR_CANT_ADD_DUPLICATE, MsgType.ERROR);
                 logger.fine(String.format(Constants.LOG_ADD_FAIL_DUPLICATE));
                 break;
             default:
                 break;
         }
     }
-    
-    
+
 }

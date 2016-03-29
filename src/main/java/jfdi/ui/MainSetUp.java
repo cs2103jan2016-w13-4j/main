@@ -20,7 +20,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import jfdi.common.utilities.JfdiLogger;
 
-
 public class MainSetUp extends Application {
 
     private static MainSetUp ourInstance = new MainSetUp();
@@ -61,7 +60,8 @@ public class MainSetUp extends Application {
         primaryStage.getIcons().add(new Image(Constants.URL_LOGO_PATH));
 
         // Set Icon for OSX
-        // Need to use Apple Java Extension, using reflection to load the class so that JFDI is compilable
+        // Need to use Apple Java Extension, using reflection to load the class
+        // so that JFDI is compilable
         if (System.getProperty("os.name").startsWith("Mac OS")) {
             try {
                 Class util = Class.forName("com.apple.eawt.Application");
@@ -71,7 +71,7 @@ public class MainSetUp extends Application {
                 params[0] = java.awt.Image.class;
                 Method setDockIconImage = util.getMethod("setDockIconImage", params);
                 setDockIconImage.invoke(application,
-                    new ImageIcon(UI.class.getResource(Constants.URL_LOGO_PATH)).getImage());
+                        new ImageIcon(UI.class.getResource(Constants.URL_LOGO_PATH)).getImage());
             } catch (Exception e) {
                 logger.info("Not OS X");
             }
@@ -80,23 +80,15 @@ public class MainSetUp extends Application {
 
     private void loadFonts() {
 
-        Font.loadFont(
-            MainSetUp.class.getResource("/ui/fonts/HammersmithOne.ttf")
-                .toExternalForm(), 12);
-        Font.loadFont(
-            MainSetUp.class.getResource("/ui/fonts/TitilliumWeb-Light.ttf")
-                .toExternalForm(), 24);
-        Font.loadFont(
-            MainSetUp.class.getResource("/ui/fonts/Lucida Console.ttf")
-                .toExternalForm(), 24);
+        Font.loadFont(MainSetUp.class.getResource("/ui/fonts/HammersmithOne.ttf").toExternalForm(), 12);
+        Font.loadFont(MainSetUp.class.getResource("/ui/fonts/TitilliumWeb-Light.ttf").toExternalForm(), 24);
+        Font.loadFont(MainSetUp.class.getResource("/ui/fonts/Lucida Console.ttf").toExternalForm(), 24);
     }
 
     private void initRootLayout() throws IOException {
 
-        rootLayout = (BorderPane) FXMLLoader.load(getClass().getResource(
-            Constants.URL_ROOT_PATH));
-        logger.fine(String.format(Constants.LOG_FXML_PATH, "RootLayout.fxml",
-            Constants.URL_ROOT_PATH));
+        rootLayout = (BorderPane) FXMLLoader.load(getClass().getResource(Constants.URL_ROOT_PATH));
+        logger.fine(String.format(Constants.LOG_FXML_PATH, "RootLayout.fxml", Constants.URL_ROOT_PATH));
 
         // Display scene with root layout
         scene = new Scene(rootLayout);
@@ -114,8 +106,7 @@ public class MainSetUp extends Application {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(Constants.URL_LIST_PATH));
         listLayout = (AnchorPane) loader.load();
-        logger.fine(String.format(Constants.LOG_FXML_PATH, "ListLayout.fxml",
-            Constants.URL_LIST_PATH));
+        logger.fine(String.format(Constants.LOG_FXML_PATH, "ListLayout.fxml", Constants.URL_LIST_PATH));
 
         // Initialize Controller
         UI.getInstance().controller = loader.getController();
@@ -127,7 +118,6 @@ public class MainSetUp extends Application {
 
         // Link Controller with UI, MainSetUp and CommandHandler
         controller.setUi(ui);
-        
 
         controller.hideOverlays();
         controller.displayList(Constants.CTRL_CMD_OVERDUE);
@@ -158,11 +148,9 @@ public class MainSetUp extends Application {
             }
         };
 
-        controller.incompleteCount.textProperty().bind(
-                controller.incompletePlaceHdr);
+        controller.incompleteCount.textProperty().bind(controller.incompletePlaceHdr);
         controller.overdueCount.textProperty().bind(controller.overduePlaceHdr);
-        controller.upcomingCount.textProperty().bind(
-                controller.upcomingPlaceHdr);
+        controller.upcomingCount.textProperty().bind(controller.upcomingPlaceHdr);
 
         Thread thread = new Thread(task);
         thread.setDaemon(true);

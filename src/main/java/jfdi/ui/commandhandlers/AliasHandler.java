@@ -8,12 +8,12 @@ import jfdi.ui.Constants;
 import jfdi.ui.Constants.MsgType;
 
 public class AliasHandler extends CommandHandler {
-    
+
     private static AliasHandler instance = new AliasHandler();
-    
+
     private AliasHandler() {
     }
-    
+
     public static AliasHandler getInstance() {
         return instance;
     }
@@ -26,9 +26,7 @@ public class AliasHandler extends CommandHandler {
             return;
         }
 
-        controller.relayFb(
-            String.format(Constants.CMD_SUCCESS_ALIAS, e.getAlias(),
-                e.getCommand()), MsgType.SUCCESS);
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_ALIAS, e.getAlias(), e.getCommand()), MsgType.SUCCESS);
 
         controller.updateAutoCompleteList();
     }
@@ -42,21 +40,18 @@ public class AliasHandler extends CommandHandler {
 
         switch (e.getError()) {
             case INVALID_PARAMETERS:
-                controller.relayFb(
-                    String.format(Constants.CMD_ERROR_CANT_ALIAS_INVALID,
-                        e.getAlias(), e.getCommand()), MsgType.ERROR);
+                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_ALIAS_INVALID, e.getAlias(), e.getCommand()),
+                        MsgType.ERROR);
                 // logger.fine(String.format(format, args));
                 break;
             case DUPLICATED_ALIAS:
-                controller.relayFb(
-                    String.format(Constants.CMD_ERROR_CANT_ALIAS_DUPLICATED,
-                        e.getAlias()), MsgType.ERROR);
+                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_ALIAS_DUPLICATED, e.getAlias()),
+                        MsgType.ERROR);
                 // logger.fine(String.format(format, args));
                 break;
             case UNKNOWN:
-                controller.relayFb(
-                    String.format(Constants.CMD_ERROR_CANT_ALIAS_UNKNOWN,
-                        e.getCommand()), MsgType.ERROR);
+                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_ALIAS_UNKNOWN, e.getCommand()),
+                        MsgType.ERROR);
                 // logger.fine(String.format(format, args));
                 break;
             default:

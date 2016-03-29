@@ -115,7 +115,7 @@ public class MainController {
     public StringProperty upcomingPlaceHdr = new SimpleStringProperty();
 
     private ObservableList<HelpItem> helpList;
-    private static InputHistory inputHistory;
+    private InputHistory inputHistory;
     private int firstVisibleId;
     private LinkedList<CallType> callQueue = new LinkedList<CallType>();
 

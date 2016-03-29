@@ -7,17 +7,17 @@ import jfdi.ui.Constants;
 import jfdi.ui.Constants.ListStatus;
 import jfdi.ui.Constants.MsgType;
 
-public class SearchHandler  extends CommandHandler {
-    
+public class SearchHandler extends CommandHandler {
+
     private static SearchHandler instance = new SearchHandler();
-    
+
     private SearchHandler() {
     }
-    
+
     public static SearchHandler getInstance() {
         return instance;
     }
-    
+
     @Subscribe
     public void handleSearchDoneEvent(SearchDoneEvent e) {
         if (controller.isInternalCall()) {

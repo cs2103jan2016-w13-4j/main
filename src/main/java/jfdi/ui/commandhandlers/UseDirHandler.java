@@ -9,16 +9,16 @@ import jfdi.ui.Constants.ListStatus;
 import jfdi.ui.Constants.MsgType;
 
 public class UseDirHandler extends CommandHandler {
-    
+
     private static UseDirHandler instance = new UseDirHandler();
-    
+
     private UseDirHandler() {
     }
-    
+
     public static UseDirHandler getInstance() {
         return instance;
     }
-    
+
     @Subscribe
     public void handleUseDirectoryDoneEvent(UseDirectoryDoneEvent e) {
         if (controller.isInternalCall()) {

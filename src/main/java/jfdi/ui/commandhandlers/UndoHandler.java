@@ -11,14 +11,14 @@ import jfdi.ui.Constants.MsgType;
 public class UndoHandler extends CommandHandler {
 
     private static UndoHandler instance = new UndoHandler();
-    
+
     private UndoHandler() {
     }
-    
+
     public static UndoHandler getInstance() {
         return instance;
     }
-    
+
     @Subscribe
     public void handleCommandUndoneEvent(CommandUndoneEvent e) {
         if (controller.isInternalCall()) {
@@ -28,14 +28,12 @@ public class UndoHandler extends CommandHandler {
 
         Class<? extends Command> cmdType = e.getCommandType();
         switchContext(controller.displayStatus, true);
-        controller.relayFb(
-            String.format(Constants.CMD_SUCCESS_UNDONE, cmdType.toString()),
-            MsgType.SUCCESS);
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_UNDONE, cmdType.toString()), MsgType.SUCCESS);
         controller.updateNotiBubbles();
 
         controller.updateAutoCompleteList();
     }
-    
+
     @Subscribe
     public void handleUndoFailedEvent(UndoFailedEvent e) {
         if (controller.isInternalCall()) {
@@ -45,12 +43,10 @@ public class UndoHandler extends CommandHandler {
 
         switch (e.getError()) {
             case UNKNOWN:
-                controller.relayFb(Constants.CMD_ERROR_UNDO_FAIL_UNKNOWN,
-                    MsgType.ERROR);
+                controller.relayFb(Constants.CMD_ERROR_UNDO_FAIL_UNKNOWN, MsgType.ERROR);
                 break;
             case NONTHING_TO_UNDO:
-                controller.relayFb(Constants.CMD_ERROR_UNDO_FAIL_NO_TASKS,
-                    MsgType.ERROR);
+                controller.relayFb(Constants.CMD_ERROR_UNDO_FAIL_NO_TASKS, MsgType.ERROR);
                 break;
             default:
                 break;

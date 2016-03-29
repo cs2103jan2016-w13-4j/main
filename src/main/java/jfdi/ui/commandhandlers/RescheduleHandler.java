@@ -10,6 +10,15 @@ import jfdi.ui.Constants.MsgType;
 
 public class RescheduleHandler extends CommandHandler {
     
+    private static RescheduleHandler instance = new RescheduleHandler();
+    
+    private RescheduleHandler() {
+    }
+    
+    public static RescheduleHandler getInstance() {
+        return instance;
+    }
+
     @Subscribe
     public void handleRescheduleTaskDoneEvent(RescheduleTaskDoneEvent e) {
         if (controller.isInternalCall()) {

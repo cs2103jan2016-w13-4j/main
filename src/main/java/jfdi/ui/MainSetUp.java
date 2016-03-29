@@ -118,10 +118,8 @@ public class MainSetUp extends Application {
             Constants.URL_LIST_PATH));
 
         // Initialize Controller
-        controller = loader.getController();
-
-        // Link UI with Controller
-        ui.setController(controller);
+        UI.getInstance().controller = loader.getController();
+        controller = UI.getInstance().controller;
         ui.init();
 
         ((BorderPane) rootLayout).setCenter(listLayout);
@@ -129,6 +127,7 @@ public class MainSetUp extends Application {
 
         // Link Controller with UI, MainSetUp and CommandHandler
         controller.setUi(ui);
+        
 
         controller.hideOverlays();
         controller.displayList(Constants.CTRL_CMD_OVERDUE);
@@ -160,10 +159,10 @@ public class MainSetUp extends Application {
         };
 
         controller.incompleteCount.textProperty().bind(
-            controller.incompletePlaceHdr);
+                controller.incompletePlaceHdr);
         controller.overdueCount.textProperty().bind(controller.overduePlaceHdr);
         controller.upcomingCount.textProperty().bind(
-            controller.upcomingPlaceHdr);
+                controller.upcomingPlaceHdr);
 
         Thread thread = new Thread(task);
         thread.setDaemon(true);
@@ -187,9 +186,5 @@ public class MainSetUp extends Application {
 
     public AnchorPane getlistPane() {
         return this.listLayout;
-    }
-
-    public MainController getController() {
-        return this.controller;
     }
 }

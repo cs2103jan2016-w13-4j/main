@@ -9,6 +9,15 @@ import jfdi.ui.Constants.MsgType;
 
 public class SearchHandler  extends CommandHandler {
     
+    private static SearchHandler instance = new SearchHandler();
+    
+    private SearchHandler() {
+    }
+    
+    public static SearchHandler getInstance() {
+        return instance;
+    }
+    
     @Subscribe
     public void handleSearchDoneEvent(SearchDoneEvent e) {
         if (controller.isInternalCall()) {
@@ -25,7 +34,7 @@ public class SearchHandler  extends CommandHandler {
         }
 
         // controller.switchTabSkin();
-        controller.setHighlights(e.getKeywords());
+        // controller.setHighlights(e.getKeywords());
         controller.relayFb(Constants.CMD_SUCCESS_SEARCH, MsgType.SUCCESS);
         controller.updateNotiBubbles();
     }

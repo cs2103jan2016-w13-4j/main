@@ -10,7 +10,15 @@ import jfdi.ui.Constants.MsgType;
 
 public class UndoHandler extends CommandHandler {
 
-
+    private static UndoHandler instance = new UndoHandler();
+    
+    private UndoHandler() {
+    }
+    
+    public static UndoHandler getInstance() {
+        return instance;
+    }
+    
     @Subscribe
     public void handleCommandUndoneEvent(CommandUndoneEvent e) {
         if (controller.isInternalCall()) {

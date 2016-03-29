@@ -4,7 +4,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.concurrent.CountDownLatch;
 
@@ -116,7 +115,7 @@ public class MainController {
     public StringProperty upcomingPlaceHdr = new SimpleStringProperty();
 
     private ObservableList<HelpItem> helpList;
-    private InputHistory inputHistory;
+    private static InputHistory inputHistory;
     private int firstVisibleId;
     private LinkedList<CallType> callQueue = new LinkedList<CallType>();
 
@@ -169,10 +168,6 @@ public class MainController {
     public void executeInternalCommand(String cmd) {
         triggerInternalCall();
         ui.relayToLogic(cmd);
-    }
-
-    public void setHighlights(HashSet<String> keywords) {
-        // TODO Auto-generated method stub
     }
 
     public void showHelpDisplay() {
@@ -526,7 +521,7 @@ public class MainController {
     void enterRoutine() {
         cmdArea.hidePopup();
         String text = cmdArea.getText();
-        ui.processInput(text);
+        UI.getInstance().processInput(text);
         inputHistory.addInput(text);
         cmdArea.clear();
     }

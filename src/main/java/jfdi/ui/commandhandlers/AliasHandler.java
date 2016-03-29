@@ -8,6 +8,15 @@ import jfdi.ui.Constants;
 import jfdi.ui.Constants.MsgType;
 
 public class AliasHandler extends CommandHandler {
+    
+    private static AliasHandler instance = new AliasHandler();
+    
+    private AliasHandler() {
+    }
+    
+    public static AliasHandler getInstance() {
+        return instance;
+    }
 
     @Subscribe
     public void handleAliasDoneEvent(AliasDoneEvent e) {

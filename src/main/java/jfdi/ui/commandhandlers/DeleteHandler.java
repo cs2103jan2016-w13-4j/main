@@ -13,6 +13,16 @@ import jfdi.ui.Constants.MsgType;
 import jfdi.ui.items.ListItem;
 
 public class DeleteHandler extends CommandHandler {
+    
+    private static DeleteHandler instance = new DeleteHandler();
+    
+    private DeleteHandler() {
+    }
+    
+    public static DeleteHandler getInstance() {
+        return instance;
+    }
+    
     @Subscribe
     public void handleDeleteTaskDoneEvent(DeleteTaskDoneEvent e) {
         if (controller.isInternalCall()) {

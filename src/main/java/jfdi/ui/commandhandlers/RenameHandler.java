@@ -10,6 +10,15 @@ import jfdi.ui.Constants.MsgType;
 
 public class RenameHandler extends CommandHandler {
     
+    private static RenameHandler instance = new RenameHandler();
+    
+    private RenameHandler() {
+    }
+    
+    public static RenameHandler getInstance() {
+        return instance;
+    }
+    
     @Subscribe
     public void handleRenameTaskDoneEvent(RenameTaskDoneEvent e) {
         if (controller.isInternalCall()) {

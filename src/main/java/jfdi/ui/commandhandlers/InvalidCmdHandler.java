@@ -8,6 +8,15 @@ import jfdi.ui.Constants.MsgType;
 
 public class InvalidCmdHandler extends CommandHandler {
 
+    private static InvalidCmdHandler instance = new InvalidCmdHandler();
+    
+    private InvalidCmdHandler() {
+    }
+    
+    public static InvalidCmdHandler getInstance() {
+        return instance;
+    }
+    
     @Subscribe
     public void handleInvalidCommandEvent(InvalidCommandEvent e) {
         if (controller.isInternalCall()) {

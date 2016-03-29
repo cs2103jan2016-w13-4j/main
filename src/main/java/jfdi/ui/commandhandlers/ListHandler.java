@@ -9,6 +9,15 @@ import jfdi.ui.Constants.MsgType;
 
 public class ListHandler extends CommandHandler {
     
+    private static ListHandler instance = new ListHandler();
+    
+    private ListHandler() {
+    }
+    
+    public static ListHandler getInstance() {
+        return instance;
+    }
+    
     @Subscribe
     public void handleListDoneEvent(ListDoneEvent e) {
         updateBubble(e);

@@ -13,6 +13,15 @@ import jfdi.ui.Constants.MsgType;
 
 public class MarkHandler extends CommandHandler {
     
+    private static MarkHandler instance = new MarkHandler();
+    
+    private MarkHandler() {
+    }
+    
+    public static MarkHandler getInstance() {
+        return instance;
+    }
+    
     @Subscribe
     public void handleMarkTaskDoneEvent(MarkTaskDoneEvent e) {
         if (controller.isInternalCall()) {

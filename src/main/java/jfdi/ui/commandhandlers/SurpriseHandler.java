@@ -10,7 +10,16 @@ import jfdi.ui.Constants.ListStatus;
 import jfdi.ui.Constants.MsgType;
 
 public class SurpriseHandler extends CommandHandler {
-
+    
+    private static SurpriseHandler instance = new SurpriseHandler();
+    
+    private SurpriseHandler() {
+    }
+    
+    public static SurpriseHandler getInstance() {
+        return instance;
+    }
+    
     @Subscribe
     public void handleSurpriseEvent(SurpriseEvent e) {
         if (controller.isInternalCall()) {

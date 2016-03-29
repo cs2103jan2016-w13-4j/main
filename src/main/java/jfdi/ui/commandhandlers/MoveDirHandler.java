@@ -10,6 +10,15 @@ import jfdi.ui.Constants.MsgType;
 
 public class MoveDirHandler extends CommandHandler {
     
+    private static MoveDirHandler instance = new MoveDirHandler();
+    
+    private MoveDirHandler() {
+    }
+    
+    public static MoveDirHandler getInstance() {
+        return instance;
+    }
+    
     @Subscribe
     public void handleMoveDirectoryDoneEvent(MoveDirectoryDoneEvent e) {
         if (controller.isInternalCall()) {

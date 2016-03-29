@@ -10,6 +10,15 @@ import jfdi.ui.Constants.MsgType;
 
 public class InitializationHandler extends CommandHandler {
     
+    private static InitializationHandler instance = new InitializationHandler();
+    
+    private InitializationHandler() {
+    }
+    
+    public static InitializationHandler getInstance() {
+        return instance;
+    }
+    
     @Subscribe
     public void handleFilesReplacedEvent(FilesReplacedEvent e) {
         String fb = "";

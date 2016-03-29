@@ -9,6 +9,15 @@ import jfdi.ui.Constants.MsgType;
 
 public class UnaliasHandler extends CommandHandler {
     
+    private static UnaliasHandler instance = new UnaliasHandler();
+    
+    private UnaliasHandler() {
+    }
+    
+    public static UnaliasHandler getInstance() {
+        return instance;
+    }
+    
     @Subscribe
     public void handleUnaliasDoneEvent(UnaliasDoneEvent e) {
         if (controller.isInternalCall()) {

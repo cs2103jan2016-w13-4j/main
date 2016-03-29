@@ -161,11 +161,12 @@ public class TestMainSetUp extends ApplicationTest {
         listLayout = (AnchorPane) loader.load();
 
         // Initialize Controller
-        controller = loader.getController();
+        UI.getInstance().controller = loader.getController();
+        controller = UI.getInstance().controller;
 
         // Link UI with Controller
-        ui.setController(controller);
         ui.init();
+
 
         ((BorderPane) rootLayout).setCenter(listLayout);
         controller.setStage(stage);

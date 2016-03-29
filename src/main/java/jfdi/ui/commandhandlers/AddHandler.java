@@ -10,8 +10,16 @@ import jfdi.ui.Constants.ListStatus;
 import jfdi.ui.Constants.MsgType;
 
 public class AddHandler extends CommandHandler {
+    
+    private static AddHandler instance = new AddHandler();
+    
+    private AddHandler() {
+    }
+    
+    public static AddHandler getInstance() {
+        return instance;
+    }
 
-    @Override
     @Subscribe
     public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {
         if (controller.isInternalCall()) {
@@ -34,7 +42,6 @@ public class AddHandler extends CommandHandler {
         controller.listMain.scrollTo(controller.importantList.size() - 1);
     }
 
-    @Override
     @Subscribe
     public void handleAddTaskFailEvent(AddTaskFailedEvent e) {
         if (controller.isInternalCall()) {
@@ -62,4 +69,6 @@ public class AddHandler extends CommandHandler {
                 break;
         }
     }
+    
+    
 }

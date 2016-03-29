@@ -9,7 +9,15 @@ import jfdi.ui.Constants.MsgType;
 
 public class HelpHandler extends CommandHandler {
 
-
+    private static HelpHandler instance = new HelpHandler();
+    
+    private HelpHandler() {
+    }
+    
+    public static HelpHandler getInstance() {
+        return instance;
+    }
+    
     @Subscribe
     public void handleHelpRequestEvent(HelpRequestedEvent e) {
         if (controller.isInternalCall()) {

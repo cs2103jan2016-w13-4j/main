@@ -7,7 +7,16 @@ import jfdi.ui.Constants;
 import jfdi.ui.Constants.MsgType;
 
 public class ShowDirHandler extends CommandHandler {
-
+    
+    private static ShowDirHandler instance = new ShowDirHandler();
+    
+    private ShowDirHandler() {
+    }
+    
+    public static ShowDirHandler getInstance() {
+        return instance;
+    }
+    
     @Subscribe
     public void handleShowDirectoryEvent(ShowDirectoryEvent e) {
         if (controller.isInternalCall()) {

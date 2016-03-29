@@ -8,14 +8,12 @@ import jfdi.ui.Constants.MsgType;
 import jfdi.ui.commandhandlers.CommandHandler;
 
 public class UI implements IUserInterface {
+    
+    public MainController controller;
 
     private static final EventBus eventBus = new EventBus();
     private static UI ourInstance = new UI();
-
-    public CommandHandler cmdHandler = new CommandHandler();
-
-    private MainController controller;
-    private ControlCenter logic;
+    private static ControlCenter logic;
 
     private UI() {
     }
@@ -31,7 +29,7 @@ public class UI implements IUserInterface {
 
         // Initialize Logic
         logic = ControlCenter.getInstance();
-        this.prepareListener();
+        prepareListeners();
 
         // showToUser(UI_MESSAGE_INITED);
     }
@@ -48,7 +46,7 @@ public class UI implements IUserInterface {
 
         if (controller.displayStatus.equals(ListStatus.HELP)) {
             controller.hideOverlays();
-            controller.displayStatus = controller.beforeHelp;
+            controller.displayStatus =  controller.beforeHelp;
             controller.switchTabSkin();
         }
 
@@ -108,23 +106,17 @@ public class UI implements IUserInterface {
         return controller.getIdFromIndex(onScreenId - 1);
     }
 
-    @Override
-    public void setController(MainController controller) {
-        this.controller = controller;
-    }
-
     /***************************
      *** LEVEL 1 Abstraction ***
      ***************************/
 
+    private void prepareListeners() {
+        CommandHandler.registerEvents();
+    }
+    
     private void showToUser(String string) {
         controller.displayFb(string);
         System.out.println(string);
-    }
-
-    private void prepareListener() {
-        cmdHandler.setController(controller);
-        eventBus.register(cmdHandler);
     }
 
     @Override

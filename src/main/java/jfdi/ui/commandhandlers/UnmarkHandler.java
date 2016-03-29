@@ -12,6 +12,15 @@ import jfdi.ui.Constants;
 import jfdi.ui.Constants.MsgType;
 
 public class UnmarkHandler extends CommandHandler {
+    
+    private static UnmarkHandler instance = new UnmarkHandler();
+    
+    private UnmarkHandler() {
+    }
+    
+    public static UnmarkHandler getInstance() {
+        return instance;
+    }
 
     @Subscribe
     public void handleUnmarkTaskDoneEvent(UnmarkTaskDoneEvent e) {

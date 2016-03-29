@@ -9,7 +9,16 @@ import jfdi.ui.Constants;
 import jfdi.ui.Constants.MsgType;
 
 public class RedoHandler extends CommandHandler {
-
+    
+    private static RedoHandler instance = new RedoHandler();
+    
+    private RedoHandler() {
+    }
+    
+    public static RedoHandler getInstance() {
+        return instance;
+    }
+    
     @Subscribe
     public void handleCommandRedoneEvent(CommandRedoneEvent e) {
         if (controller.isInternalCall()) {

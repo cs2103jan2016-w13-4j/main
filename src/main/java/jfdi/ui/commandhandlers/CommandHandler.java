@@ -9,19 +9,43 @@ import jfdi.logic.events.ListDoneEvent;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.ui.Constants.ListStatus;
 import jfdi.ui.MainController;
+import jfdi.ui.UI;
 import jfdi.ui.items.ListItem;
 
 public abstract class CommandHandler {
 
-    public MainController controller;
-    public Logger logger = JfdiLogger.getLogger();
+    public MainController controller = UI.getInstance().controller;
+    public static Logger logger = JfdiLogger.getLogger();
 
-    private void refreshDisplay() {
+    protected void refreshDisplay() {
         controller.listMain.refresh();
     }
 
-    public void setController(MainController controller) {
-        this.controller = controller;
+    public void setController(MainController ctrl) {
+        controller = ctrl;
+    }
+    
+    public static void registerEvents() {
+        UI.getEventBus().register(AddHandler.getInstance());
+        UI.getEventBus().register(AliasHandler.getInstance());
+        UI.getEventBus().register(DeleteHandler.getInstance());
+        UI.getEventBus().register(ExitHandler.getInstance());
+        UI.getEventBus().register(HelpHandler.getInstance());
+        UI.getEventBus().register(InitializationHandler.getInstance());
+        UI.getEventBus().register(InvalidCmdHandler.getInstance());
+        UI.getEventBus().register(ListHandler.getInstance());
+        UI.getEventBus().register(MarkHandler.getInstance());
+        UI.getEventBus().register(MoveDirHandler.getInstance());
+        UI.getEventBus().register(RedoHandler.getInstance());
+        UI.getEventBus().register(RenameHandler.getInstance());
+        UI.getEventBus().register(RescheduleHandler.getInstance());
+        UI.getEventBus().register(SearchHandler.getInstance());
+        UI.getEventBus().register(ShowDirHandler.getInstance());
+        UI.getEventBus().register(SurpriseHandler.getInstance());
+        UI.getEventBus().register(UnaliasHandler.getInstance());
+        UI.getEventBus().register(UndoHandler.getInstance());
+        UI.getEventBus().register(UnmarkHandler.getInstance());
+        UI.getEventBus().register(UseDirHandler.getInstance());
     }
 
     /**
@@ -31,7 +55,7 @@ public abstract class CommandHandler {
      * @param tasks
      *            the ArrayList of tasks to be displayed
      */
-    private void listTasks(ArrayList<TaskAttributes> tasks,
+    protected void listTasks(ArrayList<TaskAttributes> tasks,
         boolean shouldCheckContext) {
         controller.importantList.clear();
         for (TaskAttributes task : tasks) {
@@ -45,7 +69,7 @@ public abstract class CommandHandler {
      * @param task
      *            the task to be appended
      */
-    private void appendTaskToDisplayList(TaskAttributes task,
+    protected void appendTaskToDisplayList(TaskAttributes task,
         boolean shouldCheckContext) {
         if (shouldCheckContext && !isSameContext(task)) {
             return;
@@ -68,7 +92,7 @@ public abstract class CommandHandler {
         }
     }
 
-    private void sortDisplayList() {
+    protected void sortDisplayList() {
         ArrayList<TaskAttributes> taskList = new ArrayList<TaskAttributes>();
         controller.importantList.forEach(listItem -> taskList.add(listItem
             .getItem()));
@@ -76,7 +100,7 @@ public abstract class CommandHandler {
         listTasks(taskList, false);
     }
 
-    private boolean shouldSort() {
+    protected boolean shouldSort() {
         return controller.displayStatus.equals(ListStatus.OVERDUE)
             || controller.displayStatus.equals(ListStatus.UPCOMING);
     }
@@ -105,7 +129,7 @@ public abstract class CommandHandler {
         }
     }
 
-    private void switchContext(ListStatus status, Boolean isListing) {
+    protected void switchContext(ListStatus status, Boolean isListing) {
         if (status.equals(ListStatus.HELP)) {
             controller.beforeHelp = controller.displayStatus;
         }
@@ -116,7 +140,7 @@ public abstract class CommandHandler {
         controller.switchTabSkin();
     }
 
-    private void updateBubble(ListDoneEvent e) {
+    protected void updateBubble(ListDoneEvent e) {
         Integer count = e.getItems().size();
         switch (e.getListType()) {
             case INCOMPLETE:

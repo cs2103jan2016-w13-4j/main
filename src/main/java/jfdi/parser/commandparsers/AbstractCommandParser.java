@@ -168,4 +168,8 @@ public abstract class AbstractCommandParser {
 
         return taskIdsInRange;
     }
+
+    protected boolean isSingleWord(String input) {
+        return input.trim().split(Constants.REGEX_WHITESPACE).length == 1;
+    }
 }

@@ -4,6 +4,8 @@ package jfdi.parser.commandparsers;
 
 import jfdi.logic.commands.WildcardCommand.Builder;
 import jfdi.logic.interfaces.Command;
+import jfdi.parser.Constants;
+import jfdi.parser.Constants.CommandType;
 
 /**
  * This class parses the Wildcard command input by the user. The Wildcard
@@ -27,8 +29,16 @@ public class WildcardCommandParser extends AbstractCommandParser {
 
     @Override
     public Command build(String input) {
+        if (!isValidWildCardCommand(input)) {
+            return createInvalidCommand(CommandType.wildcard, input);
+        }
         Builder builder = new Builder();
         return builder.build();
+    }
+
+    private boolean isValidWildCardCommand(String input) {
+        assert input != null;
+        return isSingleWord(input) && input.matches(Constants.REGEX_WILDCARD);
     }
 
 }

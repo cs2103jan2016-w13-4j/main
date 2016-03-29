@@ -185,8 +185,8 @@ public class InputParser implements IParser {
             case exit:
                 return isSingleWord(input) ? ExitCommandParser.getInstance().build(input) : AddCommandParser
                     .getInstance().build(currentInput);
-            case invalid:
-                return parseInvalidCommandInput(currentInput, input);
+                // case invalid:
+                // return parseInvalidCommandInput(currentInput, input);
             default:
                 return AddCommandParser.getInstance().build(input);
         }

@@ -129,7 +129,6 @@ public class MainSetUp extends Application {
 
         // Link Controller with UI, MainSetUp and CommandHandler
         controller.setUi(ui);
-        controller.setMainApp(this);
 
         controller.hideOverlays();
         controller.displayList(Constants.CTRL_CMD_OVERDUE);

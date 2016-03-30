@@ -36,6 +36,7 @@ public class Constants {
     public static final String CTRL_CMD_SEARCH = "search";
     public static final String CTRL_CMD_SURPRISE_YAY = "yay";
     public static final String CTRL_CMD_SURPRISE_NAY = "nay";
+    public static final String CTRL_CMD_HELP = "help";
 
     public enum ListStatus {
         INCOMPLETE,

@@ -106,8 +106,8 @@ public class MainController {
     public CommandHandler cmdHandler;
     public Stage mainStage;
     public ObservableList<ListItem> importantList;
-    public ListStatus displayStatus;
-    public ListStatus beforeHelp;
+    public ListStatus displayStatus = ListStatus.INCOMPLETE;
+    public ListStatus beforeHelp = ListStatus.INCOMPLETE;
     public String searchCmd = "search ";
     public boolean isUpdate = false;
     public StringProperty incompletePlaceHdr = new SimpleStringProperty();
@@ -162,12 +162,12 @@ public class MainController {
 
     public void displayList(String cmd) {
         triggerDisplayCall();
-        ui.relayToLogic(cmd);
+        ui.processInput(cmd);
     }
 
     public void executeInternalCommand(String cmd) {
         triggerInternalCall();
-        ui.relayToLogic(cmd);
+        ui.processInput(cmd);
     }
 
     public void showHelpDisplay() {
@@ -479,7 +479,21 @@ public class MainController {
                 scrollUp();
             } else if (code == KeyCode.TAB) {
                 cmdArea.selectFirst();
-            } else {
+            } else if (code == KeyCode.F1) {
+                displayList(Constants.CTRL_CMD_INCOMPLETE);
+            } else if (code == KeyCode.F2) {
+                displayList(Constants.CTRL_CMD_OVERDUE);
+            } else if (code == KeyCode.F3) {
+                displayList(Constants.CTRL_CMD_UPCOMING);
+            } else if (code == KeyCode.F4) {
+                displayList(Constants.CTRL_CMD_ALL);
+            } else if (code == KeyCode.F5) {
+                displayList(Constants.CTRL_CMD_COMPLETE);
+            } else if (code == KeyCode.F6) {
+                displayList(Constants.CTRL_CMD_SURPRISE);
+            } else if (code == KeyCode.F7) {
+                displayList(Constants.CTRL_CMD_HELP);
+            }else {
                 return;
             }
 

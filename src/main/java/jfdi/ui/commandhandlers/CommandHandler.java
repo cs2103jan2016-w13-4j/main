@@ -1,4 +1,4 @@
- package jfdi.ui.commandhandlers;
+package jfdi.ui.commandhandlers;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;

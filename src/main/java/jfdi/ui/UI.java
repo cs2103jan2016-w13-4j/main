@@ -54,12 +54,12 @@ public class UI implements IUserInterface {
         }
 
         if (controller.displayStatus.equals(ListStatus.SURPRISE)) {
-                if (input.equalsIgnoreCase(Constants.CTRL_CMD_SURPRISE_NAY)) {
-                    input = Constants.CTRL_CMD_SURPRISE;
-                } else if (input.equalsIgnoreCase(Constants.CTRL_CMD_SURPRISE_YAY)) {
-                    displayFeedback(Constants.CMD_SUCCESS_SURPRISED_YAY, MsgType.SUCCESS);
-                    return;
-                }
+            if (input.equalsIgnoreCase(Constants.CTRL_CMD_SURPRISE_NAY)) {
+                input = Constants.CTRL_CMD_SURPRISE;
+            } else if (input.equalsIgnoreCase(Constants.CTRL_CMD_SURPRISE_YAY)) {
+                displayFeedback(Constants.CMD_SUCCESS_SURPRISED_YAY, MsgType.SUCCESS);
+                return;
+            }
             controller.hideOverlays();
             controller.switchTabSkin();
         }

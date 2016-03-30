@@ -50,8 +50,7 @@ public class DeleteCommandParser extends AbstractCommandParser {
      */
     @Override
     public Command build(String input) {
-        assert isValidInput(input)
-            && matchesCommandType(input, CommandType.delete);
+        assert isValidInput(input) && matchesCommandType(input, CommandType.delete);
 
         if (!isValidDeleteCommand(input)) {
             return createInvalidCommand(CommandType.delete, input);

@@ -37,6 +37,10 @@ public class ListCommandParserTest {
         cmd = parser.build("LiSt");
         listCommand = validateAndReturnListCommand(cmd);
         validateListType(listCommand, ListType.INCOMPLETE);
+
+        cmd = parser.build("LiSt incomplete");
+        listCommand = validateAndReturnListCommand(cmd);
+        validateListType(listCommand, ListType.INCOMPLETE);
     }
 
     @Test

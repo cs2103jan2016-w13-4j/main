@@ -33,8 +33,7 @@ public class DateTimeParser {
     private static final Logger LOGGER = JfdiLogger.getLogger();
 
     public static DateTimeParser getInstance() {
-        return dateTimeParser == null ? dateTimeParser = new DateTimeParser()
-            : dateTimeParser;
+        return dateTimeParser == null ? dateTimeParser = new DateTimeParser() : dateTimeParser;
     }
 
     /**
@@ -49,11 +48,9 @@ public class DateTimeParser {
      *             BadDateTimeException if the input String doesn't match a
      *             valid date time format.
      */
-    public DateTimeObject parseDateTime(String input)
-        throws BadDateTimeException {
+    public DateTimeObject parseDateTime(String input) throws BadDateTimeException {
         if (!isValidDateTime(input)) {
-            LOGGER.throwing(SOURCECLASS, "parseDateTime",
-                new BadDateTimeException(input));
+            LOGGER.throwing(SOURCECLASS, "parseDateTime", new BadDateTimeException(input));
             throw new BadDateTimeException(input);
         }
 
@@ -79,8 +76,7 @@ public class DateTimeParser {
      * @throws BadDateTimeException
      *             if the start date parsed is later than the end date parsed.
      */
-    private DateTimeObject buildDateTimeObject(String input)
-        throws BadDateTimeException {
+    private DateTimeObject buildDateTimeObject(String input) throws BadDateTimeException {
         assert isValidDateTime(input);
         String originalInput = input;
         DateTimeObjectBuilder dateTimeObjectBuilder = new DateTimeObjectBuilder();
@@ -100,18 +96,14 @@ public class DateTimeParser {
                 startDateTime = getLocalDateTime(splitInput[0]);
                 endDateTime = getLocalDateTime(splitInput[1]);
                 if (!checkTimeSpecified(originalInput)) {
-                    startDateTime = setTime(startDateTime,
-                        Constants.TIME_BEGINNING_OF_DAY);
-                    endDateTime = setTime(endDateTime,
-                        Constants.TIME_END_OF_DAY);
+                    startDateTime = setTime(startDateTime, Constants.TIME_BEGINNING_OF_DAY);
+                    endDateTime = setTime(endDateTime, Constants.TIME_END_OF_DAY);
                 } else {
                     if (!checkTimeSpecified(splitOriginalInput[0])) {
-                        startDateTime = setTime(startDateTime,
-                            Constants.TIME_DEFAULT);
+                        startDateTime = setTime(startDateTime, Constants.TIME_DEFAULT);
                     }
                     if (!checkTimeSpecified(splitOriginalInput[1])) {
-                        endDateTime = setTime(endDateTime,
-                            Constants.TIME_DEFAULT);
+                        endDateTime = setTime(endDateTime, Constants.TIME_DEFAULT);
                     }
                     if (!checkDateSpecified(splitOriginalInput[1])) {
                         System.out.println(true);
@@ -119,16 +111,14 @@ public class DateTimeParser {
                     }
                 }
                 if (startDateTime.compareTo(endDateTime) > 0) {
-                    LOGGER.throwing(SOURCECLASS, "buildDateTimeObject",
-                        new BadDateTimeException(input));
+                    LOGGER.throwing(SOURCECLASS, "buildDateTimeObject", new BadDateTimeException(input));
                     throw new BadDateTimeException(input);
                 }
                 break;
             case point:
                 startDateTime = getLocalDateTime(input);
                 if (!checkTimeSpecified(input)) {
-                    startDateTime = setTime(startDateTime,
-                        Constants.TIME_DEFAULT);
+                    startDateTime = setTime(startDateTime, Constants.TIME_DEFAULT);
                 }
                 break;
             case deadline:
@@ -175,11 +165,9 @@ public class DateTimeParser {
     private String toAmericanTime(String input) {
         assert isValidDateTime(input);
 
-        return input
-            .replaceAll(
-                "\\b(?<day>0?[1-9]|[12][\\d]|3[01])(?<delimiter1>[-/.])"
-                    + "(?<month>0?[1-9]|1[0-2])((?<delimiter2>[-/.])(?<year>(19|20)?\\d\\d))?\\b",
-                "${month}${delimiter1}${day}${delimiter2}${year}");
+        return input.replaceAll("\\b(?<day>0?[1-9]|[12][\\d]|3[01])(?<delimiter1>[-/.])"
+            + "(?<month>0?[1-9]|1[0-2])((?<delimiter2>[-/.])(?<year>(19|20)?\\d\\d))?\\b",
+            "${month}${delimiter1}${day}${delimiter2}${year}");
     }
 
     /**
@@ -192,42 +180,33 @@ public class DateTimeParser {
      */
     private String formatDate(String input) {
 
-        input = input.replaceAll(
-            Constants.REGEX_DATE_TIME_FORMAT_DATE_FIRST_WITH_NAMED_GROUPS,
-            "${time1}, ${date1}");
-        input = input.replaceAll(
-            Constants.REGEX_DATE_TIME_FORMAT_TIME_FIRST_WITH_NAMED_GROUPS,
-            "${time2}, ${date2}");
-        input = input.replaceAll("\\b(?<days>" + Constants.REGEX_DAYS_NUMERIC
-            + ")[-/. ](?<months>" + Constants.REGEX_MONTHS_TEXTUAL + ")[-/. ]"
-            + "(?<year>\\d\\d)\\b", "${days} ${months} 20${year}");
+        input = input.replaceAll(Constants.REGEX_DATE_TIME_FORMAT_DATE_FIRST_WITH_NAMED_GROUPS, "${time1}, ${date1}");
+        input = input.replaceAll(Constants.REGEX_DATE_TIME_FORMAT_TIME_FIRST_WITH_NAMED_GROUPS, "${time2}, ${date2}");
+        input =
+            input.replaceAll("\\b(?<days>" + Constants.REGEX_DAYS_NUMERIC + ")[-/. ](?<months>"
+                + Constants.REGEX_MONTHS_TEXTUAL + ")[-/. ]" + "(?<year>\\d\\d)\\b", "${days} ${months} 20${year}");
         StringBuilder inputBuilder = new StringBuilder(input);
-        Pattern dateFormatPattern = Pattern
-            .compile(Constants.REGEX_ABSOLUTE_DATE_DDMMYYYY);
+        Pattern dateFormatPattern = Pattern.compile(Constants.REGEX_ABSOLUTE_DATE_DDMMYYYY);
         Matcher dateFormatMatcher = dateFormatPattern.matcher(input);
         while (dateFormatMatcher.find()) {
             int start = dateFormatMatcher.start();
             int end = dateFormatMatcher.end();
-            inputBuilder.replace(start, end, inputBuilder.substring(start, end)
-                .replaceAll("[.-]", "/"));
+            inputBuilder.replace(start, end, inputBuilder.substring(start, end).replaceAll("[.-]", "/"));
         }
 
-        Pattern dateFormatPattern2 = Pattern
-            .compile(Constants.REGEX_ABSOLUTE_DATE_DDMONTHYYYY);
+        Pattern dateFormatPattern2 = Pattern.compile(Constants.REGEX_ABSOLUTE_DATE_DDMONTHYYYY);
         Matcher dateFormatMatcher2 = dateFormatPattern2.matcher(input);
         while (dateFormatMatcher2.find()) {
             int start = dateFormatMatcher2.start();
             int end = dateFormatMatcher2.end();
-            inputBuilder.replace(start, end, inputBuilder.substring(start, end)
-                .replaceAll("[./-]", " "));
+            inputBuilder.replace(start, end, inputBuilder.substring(start, end).replaceAll("[./-]", " "));
         }
 
         return inputBuilder.toString();
     }
 
     private String formatTime(String input) {
-        input = input.replaceAll(
-            "(?i)(0?[1-9]|1[0-2])([0-5][0-9])([ :]?([a|p][m]))", "$1.$2$3");
+        input = input.replaceAll("(?i)(0?[1-9]|1[0-2])([0-5][0-9])([ :]?([a|p][m]))", "$1.$2$3");
         return input;
     }
 
@@ -255,8 +234,7 @@ public class DateTimeParser {
      * @return true if time is specified; false otherwise.
      */
     private boolean checkTimeSpecified(String input) {
-        Pattern pattern = Pattern.compile(Constants.REGEX_TIME_FORMAT + "|"
-            + Constants.REGEX_TIME_ATTRIBUTES);
+        Pattern pattern = Pattern.compile(Constants.REGEX_TIME_FORMAT + "|" + Constants.REGEX_TIME_ATTRIBUTES);
         Matcher matcher = pattern.matcher(input);
         return matcher.find();
     }
@@ -283,15 +261,13 @@ public class DateTimeParser {
      * @return a TaskType enum representing the task type of the input String.
      */
     private TaskType getTaskType(String input) {
-        assert input != null;
+        assert isValidDateTime(input);
         if (input.matches(Constants.REGEX_EVENT_IDENTIFIER)) {
             return TaskType.event;
         } else if (input.matches(Constants.REGEX_DEADLINE_IDENTIFIER)) {
             return TaskType.deadline;
-        } else if (input.matches(Constants.REGEX_POINT_TASK_IDENTIFIER)) {
-            return TaskType.point;
         } else {
-            return TaskType.floating;
+            return TaskType.point;
         }
     }
 
@@ -305,8 +281,7 @@ public class DateTimeParser {
      *         otherwise.
      */
     private boolean isValidDateTime(String input) {
-        assert input != null;
-        return input.matches(Constants.REGEX_DATE_TIME_IDENTIFIER);
+        return input != null && input.matches(Constants.REGEX_DATE_TIME_IDENTIFIER);
     }
 
     /**
@@ -333,8 +308,8 @@ public class DateTimeParser {
      * @return a LocalDateTime object with time changed.
      */
     private LocalDateTime setTime(LocalDateTime dateTime, Constants.Time time) {
-        return dateTime.withHour(time.hour).withMinute(time.minutes)
-            .withSecond(time.seconds).withNano(time.nanoseconds);
+        return dateTime.withHour(time.hour).withMinute(time.minutes).withSecond(time.seconds)
+            .withNano(time.nanoseconds);
     }
 
     /**
@@ -348,12 +323,7 @@ public class DateTimeParser {
      * @return a LocalDateTime object with date changed.
      */
     private LocalDateTime setDate(LocalDateTime to, LocalDateTime from) {
-        return to.withYear(from.getYear()).withMonth(from.getMonthValue())
-            .withDayOfMonth(from.getDayOfMonth());
+        return to.withYear(from.getYear()).withMonth(from.getMonthValue()).withDayOfMonth(from.getDayOfMonth());
     }
 
-    public static void main(String[] args) throws Exception {
-        DateTimeParser parser = DateTimeParser.getInstance();
-        System.out.println(parser.formatDate("by 23rd feb 16"));
-    }
 }

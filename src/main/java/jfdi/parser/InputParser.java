@@ -3,17 +3,13 @@
 package jfdi.parser;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import jfdi.common.utilities.JfdiLogger;
-import jfdi.logic.commands.InvalidCommand;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants.CommandType;
 import jfdi.parser.commandparsers.AddCommandParser;
@@ -35,8 +31,6 @@ import jfdi.parser.commandparsers.UseCommandParser;
 import jfdi.parser.commandparsers.WildcardCommandParser;
 import jfdi.parser.exceptions.InvalidInputException;
 import jfdi.storage.apis.AliasAttributes;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * The InputParser class is used to parse a String input into its associated
@@ -92,7 +86,11 @@ public class InputParser implements IParser {
 
     @Override
     public String getAllCommandRegexes() {
-        return String.join("|", Constants.COMMAND_REGEXES);
+        return String.join("|", Constants.getCommandRegexes());
+    }
+
+    public HashMap<String, String> getAliasMap() {
+        return aliasMap;
     }
 
     // ===================================
@@ -195,40 +193,34 @@ public class InputParser implements IParser {
     // ===================================
     // Second Level of Abstraction
     // ===================================
-
-    private Command parseInvalidCommandInput(String currentInput, String input) {
-        String firstWord = getFirstWord(currentInput);
-
-        Set<String> keywords = getKeywords();
-        for (String keyword : keywords) {
-            if (StringUtils.getLevenshteinDistance(firstWord, keyword) <= 2) {
-                System.out.println(StringUtils.getLevenshteinDistance(firstWord, keyword));
-                String suggestedInput = currentInput.replaceAll("^" + firstWord, keyword);
-                System.out.println(suggestedInput);
-                return createInvalidCommand(CommandType.invalid, currentInput, suggestedInput);
-            }
-        }
-        return AddCommandParser.getInstance().build(input);
-    }
-
-    private TreeSet<String> getKeywords() {
-        TreeSet<String> keywords =
-            Arrays.stream(InputParser.getInstance().getAllCommandRegexes().replaceAll("\\W+", " ").split("\\s+"))
-                .filter(part -> part.length() > 1).collect(Collectors.toCollection(TreeSet::new));
-
-        aliases.stream().map(AliasAttributes::getAlias).forEach(keywords::add);
-
-        return keywords;
-    }
-
-    private InvalidCommand createInvalidCommand(CommandType commandType, String inputString, String suggestion) {
-        InvalidCommand.Builder invalidCommandBuilder = new InvalidCommand.Builder();
-        invalidCommandBuilder.setInputString(inputString);
-        invalidCommandBuilder.setCommandType(commandType);
-        invalidCommandBuilder.setSuggestion(suggestion);
-
-        return invalidCommandBuilder.build();
-    }
+    /*
+     * private Command parseInvalidCommandInput(String currentInput, String
+     * input) { String firstWord = getFirstWord(currentInput); Set<String>
+     * keywords = getKeywords(); for (String keyword : keywords) { if
+     * (StringUtils.getLevenshteinDistance(firstWord, keyword) <= 2) {
+     * System.out.println(StringUtils.getLevenshteinDistance(firstWord,
+     * keyword)); String suggestedInput = currentInput.replaceAll("^" +
+     * firstWord, keyword); System.out.println(suggestedInput); return
+     * createInvalidCommand(CommandType.invalid, currentInput, suggestedInput);
+     * } } return AddCommandParser.getInstance().build(input); }
+     *//*
+        * private TreeSet<String> getKeywords() { TreeSet<String> keywords =
+        * Arrays
+        * .stream(InputParser.getInstance().getAllCommandRegexes().replaceAll
+        * ("\\W+", " ").split("\\s+")) .filter(part -> part.length() >
+        * 1).collect(Collectors.toCollection(TreeSet::new));
+        * aliases.stream().map
+        * (AliasAttributes::getAlias).forEach(keywords::add); return keywords; }
+        */
+    /*
+     * private InvalidCommand createInvalidCommand(CommandType commandType,
+     * String inputString, String suggestion) { InvalidCommand.Builder
+     * invalidCommandBuilder = new InvalidCommand.Builder();
+     * invalidCommandBuilder.setInputString(inputString);
+     * invalidCommandBuilder.setCommandType(commandType);
+     * invalidCommandBuilder.setSuggestion(suggestion); return
+     * invalidCommandBuilder.build(); }
+     */
 
     /**
      * This method checks if the given input is valid. A valid input is one that

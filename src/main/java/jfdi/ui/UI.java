@@ -43,10 +43,13 @@ public class UI implements IUserInterface {
 
     @Override
     public void processInput(String input) {
-
+        controller.hideOverlays();
         if (controller.displayStatus.equals(ListStatus.HELP)) {
             controller.hideOverlays();
             controller.displayStatus = controller.beforeHelp;
+            if (controller.beforeHelp == ListStatus.SURPRISE) {
+                controller.displayStatus = ListStatus.INCOMPLETE;
+            }
             controller.switchTabSkin();
         }
 
@@ -60,14 +63,9 @@ public class UI implements IUserInterface {
             controller.hideOverlays();
             controller.switchTabSkin();
         }
-
         // Clear controller first
         controller.clearCmdArea();
         controller.clearFb();
-
-        // Show user what the command recognized in the feedback area
-        // controller.displayFb(String.format(Constants.UI_MESSAGE_USERCMD,
-        // input));
 
         // Relay user input to logic and wait for reply
         relayToLogic(input);

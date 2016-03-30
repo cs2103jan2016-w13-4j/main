@@ -110,22 +110,6 @@
                         </StackPane>
                         <StackPane layoutX="35.0" layoutY="255.0">
                            <children>
-                              <Rectangle fx:id="searchBox" height="35.0" styleClass="tabOff" width="120.0" />
-                              <Label id="searchTab" fx:id="searchTab" maxWidth="120.0" prefWidth="120.0" styleClass="searchTab" text="Search">
-                                 <StackPane.margin>
-                                    <Insets />
-                                 </StackPane.margin>
-                                 <padding>
-                                    <Insets left="15.0" />
-                                 </padding>
-                              </Label>
-                           </children>
-                           <VBox.margin>
-                              <Insets left="10.0" top="15.0" />
-                           </VBox.margin>
-                        </StackPane>
-                        <StackPane layoutX="25.0" layoutY="390.0">
-                           <children>
                               <Rectangle fx:id="surpriseBox" height="35.0" styleClass="tabOff" width="120.0" />
                               <Label id="surpriseTab" fx:id="surpriseTab" maxWidth="120.0" prefWidth="120.0" styleClass="surpriseTab" text="Surprise!">
                                  <StackPane.margin>
@@ -140,10 +124,26 @@
                               <Insets left="10.0" top="15.0" />
                            </VBox.margin>
                         </StackPane>
-                        <StackPane layoutX="20.0" layoutY="470.0">
+                        <StackPane layoutX="25.0" layoutY="390.0">
                            <children>
                               <Rectangle fx:id="helpBox" height="35.0" styleClass="tabOff" width="120.0" />
                               <Label id="helpTab" fx:id="helpTab" maxWidth="120.0" prefWidth="120.0" styleClass="helpTab" text="Help">
+                                 <StackPane.margin>
+                                    <Insets />
+                                 </StackPane.margin>
+                                 <padding>
+                                    <Insets left="15.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets left="10.0" top="15.0" />
+                           </VBox.margin>
+                        </StackPane>
+                        <StackPane layoutX="20.0" layoutY="470.0">
+                           <children>
+                              <Rectangle fx:id="searchBox" height="35.0" styleClass="tabOff" width="120.0" />
+                              <Label id="searchTab" fx:id="searchTab" maxWidth="120.0" prefWidth="120.0" styleClass="searchTab" text="Search">
                                  <StackPane.margin>
                                     <Insets />
                                  </StackPane.margin>
@@ -190,12 +190,12 @@
                                  </StackPane>
                               </children>
                            </HBox>
-      				     <ListView fx:id="listMain" maxHeight="510.0" maxWidth="530.0" prefHeight="510.0" prefWidth="530.0" style="-fx-background-color: #faebcd;">
+      				     <ListView fx:id="listMain" maxHeight="510.0" maxWidth="530.0" prefHeight="500.0" prefWidth="530.0" style="-fx-background-color: #faebcd;">
       				        <VBox.margin>
       				           <Insets right="5.0" />
       				        </VBox.margin>
                            <padding>
-                              <Insets top="5.0" />
+                              <Insets bottom="5.0" top="15.0" />
                            </padding>
       				     </ListView>
                            <VBox maxHeight="120.0" maxWidth="530.0" prefHeight="120.0" prefWidth="530.0" style="-fx-background-color: #434343;">
@@ -219,7 +219,11 @@
       		       </VBox>
                </children>
             </HBox>
-	        <ListView fx:id="helpContent" focusTraversable="false" maxHeight="510.0" maxWidth="530.0" prefHeight="500.0" prefWidth="530.0" styleClass="helpContent" translateX="60.0" translateY="-33.0" />
+	        <ListView fx:id="helpContent" focusTraversable="false" maxHeight="485.0" maxWidth="530.0" prefHeight="485.0" prefWidth="530.0" styleClass="helpContent" translateX="60.0" translateY="-35.0">
+               <padding>
+                  <Insets bottom="5.0" top="15.0" />
+               </padding>  
+            </ListView> 
             <AnchorPane maxHeight="500.0" maxWidth="500.0" prefHeight="500.0" prefWidth="500.0" translateX="60.0" translateY="-30.0" StackPane.alignment="CENTER">
                <children>
                   <VBox fx:id="surpriseOverlay" layoutX="-4.0" layoutY="117.0" maxWidth="500.0" prefHeight="500.0" prefWidth="500.0">
@@ -239,9 +243,17 @@
                               </ImageView>
                            </children>
                         </HBox>
-                        <Label fx:id="taskDesc" alignment="CENTER" maxWidth="500.0" prefWidth="500.0" styleClass="taskDesc" text="Label" VBox.vgrow="ALWAYS" />
-                        <Label fx:id="taskTime" alignment="CENTER" maxWidth="500.0" prefWidth="500.0" styleClass="taskTime" text="Label" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
-                        <Label fx:id="surpriseBottom" alignment="CENTER" maxWidth="500.0" prefWidth="500.0" styleClass="surpriseBottom" text="Yay or Nay?" textAlignment="CENTER" />
+                        <VBox alignment="CENTER" maxWidth="500.0" prefWidth="500.0" style="-fx-background-color: #faebcd;">
+                        	<children>
+                        		<Label fx:id="taskDesc" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" nodeOrientation="LEFT_TO_RIGHT" prefWidth="500.0" styleClass="taskDesc" text="Command command adfasd command comanda adfasdf adsfasdfads asdfasdf" textAlignment="CENTER">
+                        			<VBox.margin>
+            							<Insets bottom="5.0" />
+         							</VBox.margin>
+         						</Label>
+                        		<Label fx:id="taskTime" alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefWidth="500.0" styleClass="taskTime" text="Label" textAlignment="CENTER" />
+                        		<Label fx:id="surpriseBottom" alignment="CENTER" maxWidth="500.0" prefWidth="500.0" styleClass="surpriseBottom" text="Yay or Nay?" textAlignment="CENTER" />
+                     		</children>
+                     	</VBox>
                      </children>
                   </VBox>
                </children>

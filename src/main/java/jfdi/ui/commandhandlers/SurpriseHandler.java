@@ -29,12 +29,11 @@ public class SurpriseHandler extends CommandHandler {
 
         controller.importantList.clear();
         controller.initSurpriseOverlay(e.getTask());
-        controller.showSurpriseDisplay();
-        // appendTaskToDisplayList(task, false);
         switchContext(ListStatus.ALL, false);
         switchContext(ListStatus.SURPRISE, false);
         controller.relayFb(Constants.CMD_SUCCESS_SURPRISED, MsgType.SUCCESS);
         controller.updateNotiBubbles();
+        controller.showSurpriseDisplay();
     }
 
     @Subscribe

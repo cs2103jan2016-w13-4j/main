@@ -14,6 +14,7 @@ public class TestHelpEvent extends TestMain {
      */
     @Test
     public void tesHelpTaskDone() {
+        assertEquals("The help overlay is wrongly displayed.", false, helpContent.isVisible());
 
         clickOn(cmdArea).type(KeyCode.BACK_SPACE).type(KeyCode.H).type(KeyCode.E).type(KeyCode.L).type(KeyCode.P)
                 .type(KeyCode.ENTER);

@@ -217,9 +217,11 @@ public class TestMain extends ApplicationTest {
          */
         return lookup(query).query();
     }
-
+    
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
+        
+        FxToolkit.registerPrimaryStage();
         /* Retrieve the tested widgets from the GUI. */
         incompleteBox = find("#incompleteBox");
         overdueBox = find("#overdueBox");
@@ -251,16 +253,21 @@ public class TestMain extends ApplicationTest {
         taskTime = find("#taskTime");
         surpriseBottom = find("#surpriseBottom");
         noSurpriseOverlay = find("#noSurpriseOverlay");
+        
+        //WaitForAsyncUtils.waitForFxEvents();
+
     }
 
     /* To clear the ongoing events */
     @After
     public void tearDown() throws Exception {
         /* Close the window. It will be re-opened at the next test. */
+        FxToolkit.cleanupStages();
         FxToolkit.hideStage();
         release(new KeyCode[] {});
         release(new MouseButton[] {});
         MainStorage.getInstance().use(originalStorageDirectory);
+
     }
 
     @Test

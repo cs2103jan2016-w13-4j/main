@@ -32,7 +32,7 @@ public class Constants {
     public static final String CTRL_CMD_UPCOMING = "list upcoming";
     public static final String CTRL_CMD_ALL = "list all";
     public static final String CTRL_CMD_COMPLETE = "list completed";
-    public static final String CTRL_CMD_SURPRISE = "surprise!";
+    public static final String CTRL_CMD_SURPRISE = "surprise";
     public static final String CTRL_CMD_SEARCH = "search";
     public static final String CTRL_CMD_SURPRISE_YAY = "yay";
     public static final String CTRL_CMD_SURPRISE_NAY = "nay";

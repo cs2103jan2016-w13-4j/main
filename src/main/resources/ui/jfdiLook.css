@@ -286,6 +286,7 @@
 	-fx-text-fill: #434343;
 	-fx-font-size: 36px;
 	-fx-wrap-text: true;
+	-fx-text-alignment:center ;
 }
 
 .taskTime {

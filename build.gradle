@@ -28,7 +28,8 @@ dependencies {
   compile 'org.ocpsoft.prettytime:prettytime-nlp:3.2.7.Final'
   compile 'commons-io:commons-io:2.4'
   compile 'org.apache.commons:commons-lang3:3.3.2'
-
+  
+  testCompile 'junit:junit:4.12'
   testCompile 'org.loadui:testFx:3.1.2'
   testCompile 'org.mockito:mockito-core:1.+'
 }

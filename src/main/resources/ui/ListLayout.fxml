@@ -219,7 +219,7 @@
       		       </VBox>
                </children>
             </HBox>
-	        <ListView fx:id="helpContent" focusTraversable="false" maxHeight="480.0" maxWidth="530.0" prefHeight="480.0" prefWidth="530.0" styleClass="helpContent" translateX="60.0" translateY="-35.0">
+	        <ListView fx:id="helpContent" focusTraversable="false" maxHeight="485.0" maxWidth="530.0" prefHeight="485.0" prefWidth="530.0" styleClass="helpContent" translateX="60.0" translateY="-35.0">
                <padding>
                   <Insets bottom="5.0" top="15.0" />
                </padding>  
@@ -243,10 +243,14 @@
                               </ImageView>
                            </children>
                         </HBox>
-                        <VBox maxWidth="510.0" style="-fx-background-color: #faebcd;">
+                        <VBox alignment="CENTER" maxWidth="500.0" prefWidth="500.0" style="-fx-background-color: #faebcd;">
                         	<children>
-                        		<Label fx:id="taskDesc" alignment="CENTER" prefWidth="250.0" styleClass="taskDesc" text="Label" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
-                        		<Label fx:id="taskTime" alignment="CENTER" prefWidth="250.0" styleClass="taskTime" text="Label" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
+                        		<Label fx:id="taskDesc" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" nodeOrientation="LEFT_TO_RIGHT" prefWidth="500.0" styleClass="taskDesc" text="Command command adfasd command comanda adfasdf adsfasdfads asdfasdf" textAlignment="CENTER">
+                        			<VBox.margin>
+            							<Insets bottom="5.0" />
+         							</VBox.margin>
+         						</Label>
+                        		<Label fx:id="taskTime" alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefWidth="500.0" styleClass="taskTime" text="Label" textAlignment="CENTER" />
                         		<Label fx:id="surpriseBottom" alignment="CENTER" maxWidth="500.0" prefWidth="500.0" styleClass="surpriseBottom" text="Yay or Nay?" textAlignment="CENTER" />
                      		</children>
                      	</VBox>

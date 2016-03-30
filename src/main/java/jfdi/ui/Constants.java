@@ -153,9 +153,9 @@ public class Constants {
     public static final String LOG_RESCHE_FAIL_NOCHANGE = "A rescheduling with no change was queried.";
     public static final String LOG_RESCHE_FAIL_DUPLICATE = "A task was not rescheduled as a duplicate task exists.";
 
-    public static final String HELP_OVERLAY_TITLE = "JFDI TO THE RESCUE!";
-    public static final String HELP_OVERLAY_ICON = "\uf05a"; // SUB IN ACTUAL
-                                                             // ADDRESS
+    public static final String HELP_HOT_KEYS_DESC = "Navigate the tabs using hot keys";
+    public static final String HELP_HOT_KEYS_COMMAND = "Incomplete <F1> / Overdue <F2> / Upcoming <F3> "
+        + "/ All <F4> / Completed <F5> / Surprise <F6> / Help <F7>";
     public static final String HELP_PAGE_UP_DOWN_DESC = "Scroll the on-screen list";
     public static final String HELP_PAGE_UP_DOWN_COMMAND = "press your keyboard's page up/down button";
     public static final String HELP_UP_DOWN_DESC = "Scroll through your previous commands";

@@ -243,9 +243,13 @@
                               </ImageView>
                            </children>
                         </HBox>
-                        <Label fx:id="taskDesc" alignment="CENTER" maxWidth="500.0" prefWidth="250.0" styleClass="taskDesc" text="Label" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
-                        <Label fx:id="taskTime" alignment="CENTER" maxWidth="500.0" prefWidth="500.0" styleClass="taskTime" text="Label" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
-                        <Label fx:id="surpriseBottom" alignment="CENTER" maxWidth="500.0" prefWidth="500.0" styleClass="surpriseBottom" text="Yay or Nay?" textAlignment="CENTER" />
+                        <VBox maxWidth="510.0" style="-fx-background-color: #faebcd;">
+                        	<children>
+                        		<Label fx:id="taskDesc" alignment="CENTER" prefWidth="250.0" styleClass="taskDesc" text="Label" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
+                        		<Label fx:id="taskTime" alignment="CENTER" prefWidth="250.0" styleClass="taskTime" text="Label" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
+                        		<Label fx:id="surpriseBottom" alignment="CENTER" maxWidth="500.0" prefWidth="500.0" styleClass="surpriseBottom" text="Yay or Nay?" textAlignment="CENTER" />
+                     		</children>
+                     	</VBox>
                      </children>
                   </VBox>
                </children>

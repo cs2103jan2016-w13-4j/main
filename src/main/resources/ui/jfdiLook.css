@@ -285,8 +285,9 @@
 	-fx-font-family: "Hammersmith One";
 	-fx-text-fill: #434343;
 	-fx-font-size: 36px;
+	-fx-text-alignment:center;
 	-fx-wrap-text: true;
-	-fx-text-alignment:center ;
+	
 }
 
 .taskTime {

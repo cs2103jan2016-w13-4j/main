@@ -325,6 +325,10 @@ public class MainController {
 
     private void initHelpList() {
         helpList = FXCollections.observableArrayList();
+        helpList.add(new HelpItem(Constants.HELP_HOT_KEYS_DESC,
+                Constants.HELP_HOT_KEYS_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_UP_DOWN_DESC,
+                Constants.HELP_UP_DOWN_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_PAGE_UP_DOWN_DESC,
                 Constants.HELP_PAGE_UP_DOWN_COMMAND));
         helpList.add(new HelpItem(Constants.HELP_UP_DOWN_DESC,

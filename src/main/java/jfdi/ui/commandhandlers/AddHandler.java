@@ -27,7 +27,7 @@ public class AddHandler extends CommandHandler {
             return;
         }
         if (!controller.displayStatus.equals(ListStatus.ALL)) {
-            switchContext(ListStatus.INCOMPLETE, true);
+            switchContext(ListStatus.INCOMPLETE, false);
         }
         TaskAttributes task = e.getTask();
         appendTaskToDisplayList(task, true);

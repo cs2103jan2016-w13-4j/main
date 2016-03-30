@@ -163,9 +163,9 @@ public class TestMain extends ApplicationTest {
 
         // Link Controller with UI, MainSetUp and CommandHandler
         controller.setUi(ui);
-        //controller.initNotiBubbles();
+        // controller.initNotiBubbles();
 
-        //controller.importantList.removeAll(controller.importantList);
+        // controller.importantList.removeAll(controller.importantList);
 
         File tempDir = Files.createTempDir();
         originalStorageDirectory = MainStorage.getInstance().getCurrentDirectory();
@@ -217,10 +217,10 @@ public class TestMain extends ApplicationTest {
          */
         return lookup(query).query();
     }
-    
+
     @Before
     public void setUp() throws Exception {
-        
+
         FxToolkit.registerPrimaryStage();
         /* Retrieve the tested widgets from the GUI. */
         incompleteBox = find("#incompleteBox");
@@ -253,8 +253,8 @@ public class TestMain extends ApplicationTest {
         taskTime = find("#taskTime");
         surpriseBottom = find("#surpriseBottom");
         noSurpriseOverlay = find("#noSurpriseOverlay");
-        
-        //WaitForAsyncUtils.waitForFxEvents();
+
+        // WaitForAsyncUtils.waitForFxEvents();
 
     }
 

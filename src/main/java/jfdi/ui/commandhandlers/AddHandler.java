@@ -28,13 +28,13 @@ public class AddHandler extends CommandHandler {
             // Add any method calls strictly for internal calls here
             return;
         }
-        
+
         if (controller.displayStatus.equals(ListStatus.SEARCH)) {
             switchContext(ListStatus.INCOMPLETE, true);
         } else if (!controller.displayStatus.equals(ListStatus.ALL)) {
             switchContext(ListStatus.INCOMPLETE, false);
         }
-        
+
         TaskAttributes task = e.getTask();
         appendTaskToDisplayList(task, true);
         if (shouldSort()) {

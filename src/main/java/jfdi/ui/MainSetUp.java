@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.logging.Logger;
 
-import javax.swing.ImageIcon;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -18,9 +16,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
+import javax.swing.ImageIcon;
+
 import jfdi.common.utilities.JFDIRobot;
 import jfdi.common.utilities.JfdiLogger;
-
 
 public class MainSetUp extends Application {
 
@@ -63,7 +63,8 @@ public class MainSetUp extends Application {
         primaryStage.getIcons().add(new Image(Constants.URL_LOGO_PATH));
 
         // Set Icon for OSX
-        // Need to use Apple Java Extension, using reflection to load the class so that JFDI is compilable
+        // Need to use Apple Java Extension, using reflection to load the class
+        // so that JFDI is compilable
         if (System.getProperty("os.name").startsWith("Mac OS")) {
             try {
                 Class util = Class.forName("com.apple.eawt.Application");
@@ -82,23 +83,15 @@ public class MainSetUp extends Application {
 
     private void loadFonts() {
 
-        Font.loadFont(
-            MainSetUp.class.getResource("/ui/fonts/HammersmithOne.ttf")
-                .toExternalForm(), 12);
-        Font.loadFont(
-            MainSetUp.class.getResource("/ui/fonts/TitilliumWeb-Light.ttf")
-                .toExternalForm(), 24);
-        Font.loadFont(
-            MainSetUp.class.getResource("/ui/fonts/Lucida Console.ttf")
-                .toExternalForm(), 24);
+        Font.loadFont(MainSetUp.class.getResource("/ui/fonts/HammersmithOne.ttf").toExternalForm(), 12);
+        Font.loadFont(MainSetUp.class.getResource("/ui/fonts/TitilliumWeb-Light.ttf").toExternalForm(), 24);
+        Font.loadFont(MainSetUp.class.getResource("/ui/fonts/Lucida Console.ttf").toExternalForm(), 24);
     }
 
     private void initRootLayout() throws IOException {
 
-        rootLayout = (BorderPane) FXMLLoader.load(getClass().getResource(
-            Constants.URL_ROOT_PATH));
-        logger.fine(String.format(Constants.LOG_FXML_PATH, "RootLayout.fxml",
-            Constants.URL_ROOT_PATH));
+        rootLayout = (BorderPane) FXMLLoader.load(getClass().getResource(Constants.URL_ROOT_PATH));
+        logger.fine(String.format(Constants.LOG_FXML_PATH, "RootLayout.fxml", Constants.URL_ROOT_PATH));
 
         // Display scene with root layout
         scene = new Scene(rootLayout);
@@ -116,8 +109,7 @@ public class MainSetUp extends Application {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(Constants.URL_LIST_PATH));
         listLayout = (AnchorPane) loader.load();
-        logger.fine(String.format(Constants.LOG_FXML_PATH, "ListLayout.fxml",
-            Constants.URL_LIST_PATH));
+        logger.fine(String.format(Constants.LOG_FXML_PATH, "ListLayout.fxml", Constants.URL_LIST_PATH));
 
         // Initialize Controller
         controller = loader.getController();
@@ -162,11 +154,9 @@ public class MainSetUp extends Application {
             }
         };
 
-        controller.incompleteCount.textProperty().bind(
-            controller.incompletePlaceHdr);
+        controller.incompleteCount.textProperty().bind(controller.incompletePlaceHdr);
         controller.overdueCount.textProperty().bind(controller.overduePlaceHdr);
-        controller.upcomingCount.textProperty().bind(
-            controller.upcomingPlaceHdr);
+        controller.upcomingCount.textProperty().bind(controller.upcomingPlaceHdr);
 
         Thread thread = new Thread(task);
         thread.setDaemon(true);

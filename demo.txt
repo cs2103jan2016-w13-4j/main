@@ -1,3 +1,19 @@
+### Leonard's Portion
+he
+\t
+add Plan for summer vacation
+add Dinner with Taylor Swift 1 April 7pm
+add Submit CS2107 Assignment by next fri, 2359hrs
+Internship interview with Google from tomorrow 4pm to 6pm
+"Watch The Day After Tomorow"
+rename 21 Watch the Day after Tomorrow
+reschedule 20 1pm to 3pm
+alias reschedule res
+res 20 next friday 2000hrs to 2200hrs
+unalias res
+
+delete 17-21
+
 ### Xinan's Portion
 mark 1
 unmark 1

@@ -27,7 +27,7 @@ public class SurpriseHandler extends CommandHandler {
             return;
         }
 
-        controller.importantList.clear();
+        //controller.importantList.clear();
         controller.initSurpriseOverlay(e.getTask());
         switchContext(ListStatus.ALL, false);
         switchContext(ListStatus.SURPRISE, false);

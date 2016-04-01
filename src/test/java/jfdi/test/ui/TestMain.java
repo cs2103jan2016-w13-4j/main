@@ -253,9 +253,6 @@ public class TestMain extends ApplicationTest {
         taskTime = find("#taskTime");
         surpriseBottom = find("#surpriseBottom");
         noSurpriseOverlay = find("#noSurpriseOverlay");
-
-        // WaitForAsyncUtils.waitForFxEvents();
-
     }
 
     /* To clear the ongoing events */

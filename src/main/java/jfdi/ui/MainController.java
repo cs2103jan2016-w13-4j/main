@@ -23,9 +23,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import jfdi.logic.ControlCenter;
@@ -88,7 +87,7 @@ public class MainController {
     @FXML
     public ListView<HelpItem> helpContent;
     @FXML
-    public VBox surpriseOverlay;
+    public AnchorPane surpriseOverlay;
     @FXML
     public Label surpriseTitle;
     @FXML
@@ -98,7 +97,7 @@ public class MainController {
     @FXML
     public Label surpriseBottom;
     @FXML
-    public ImageView noSurpriseOverlay;
+    public AnchorPane noSurpriseOverlay;
 
     public MainSetUp main;
     public IUserInterface ui;

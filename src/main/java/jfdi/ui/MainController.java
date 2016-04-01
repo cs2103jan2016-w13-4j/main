@@ -4,7 +4,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.concurrent.CountDownLatch;
 
@@ -28,7 +27,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import jfdi.common.utilities.JFDIRobot;
 import jfdi.logic.ControlCenter;
@@ -108,8 +106,8 @@ public class MainController {
     public CommandHandler cmdHandler;
     public Stage mainStage;
     public ObservableList<ListItem> importantList;
-    public ListStatus displayStatus;
-    public ListStatus beforeHelp;
+    public ListStatus displayStatus = ListStatus.INCOMPLETE;
+    public ListStatus beforeHelp = ListStatus.INCOMPLETE;
     public String searchCmd = "search ";
     public boolean isUpdate = false;
     public StringProperty incompletePlaceHdr = new SimpleStringProperty();
@@ -164,16 +162,12 @@ public class MainController {
 
     public void displayList(String cmd) {
         triggerDisplayCall();
-        ui.relayToLogic(cmd);
+        ui.processInput(cmd);
     }
 
     public void executeInternalCommand(String cmd) {
         triggerInternalCall();
-        ui.relayToLogic(cmd);
-    }
-
-    public void setHighlights(HashSet<String> keywords) {
-        // TODO Auto-generated method stub
+        ui.processInput(cmd);
     }
 
     public void showHelpDisplay() {
@@ -331,50 +325,30 @@ public class MainController {
 
     private void initHelpList() {
         helpList = FXCollections.observableArrayList();
-        helpList.add(new HelpItem(Constants.HELP_PAGE_UP_DOWN_DESC,
-                Constants.HELP_PAGE_UP_DOWN_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_UP_DOWN_DESC,
-                Constants.HELP_UP_DOWN_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_ADD_FLOATING_DESC,
-                Constants.HELP_ADD_FLOATING_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_ADD_POINT_DESC,
-                Constants.HELP_ADD_POINT_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_ADD_DEADLINE_DESC,
-                Constants.HELP_ADD_DEADLINE_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_ADD_EVENT_DESC,
-                Constants.HELP_ADD_EVENT_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_LIST_DESC,
-                Constants.HELP_LIST_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_RENAME_DESC,
-                Constants.HELP_RENAME_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_RESCH_DESC,
-                Constants.HELP_RESCH_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_REMOVE_TIME_DESC,
-                Constants.HELP_REMOVE_TIME_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_DONE_DESC,
-                Constants.HELP_DONE_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_UNDONE_DESC,
-                Constants.HELP_UNDONE_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_DELETE_DESC,
-                Constants.HELP_DELETE_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_SEARCH_DESC,
-                Constants.HELP_SEARCH_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_UNDO_DESC,
-                Constants.HELP_UNDO_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_CREATE_ALIAS_DESC,
-                Constants.HELP_CREATE_ALIAS_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_DELETE_ALIAS_DESC,
-                Constants.HELP_DELETE_ALIAS_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_WILDCARD_DESC,
-                Constants.HELP_WILDCARD_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_CHECK_DIR_DESC,
-                Constants.HELP_CHECK_DIR_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_USE_DIR_DESC,
-                Constants.HELP_USE_DIR_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_MOVE_DIR_DESC,
-                Constants.HELP_MOVE_DIR_COMMAND));
-        helpList.add(new HelpItem(Constants.HELP_EXIT_DESC,
-                Constants.HELP_EXIT_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_HOT_KEYS_DESC, Constants.HELP_HOT_KEYS_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_UP_DOWN_DESC, Constants.HELP_UP_DOWN_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_PAGE_UP_DOWN_DESC, Constants.HELP_PAGE_UP_DOWN_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_UP_DOWN_DESC, Constants.HELP_UP_DOWN_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_ADD_FLOATING_DESC, Constants.HELP_ADD_FLOATING_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_ADD_POINT_DESC, Constants.HELP_ADD_POINT_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_ADD_DEADLINE_DESC, Constants.HELP_ADD_DEADLINE_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_ADD_EVENT_DESC, Constants.HELP_ADD_EVENT_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_LIST_DESC, Constants.HELP_LIST_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_RENAME_DESC, Constants.HELP_RENAME_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_RESCH_DESC, Constants.HELP_RESCH_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_REMOVE_TIME_DESC, Constants.HELP_REMOVE_TIME_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_DONE_DESC, Constants.HELP_DONE_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_UNDONE_DESC, Constants.HELP_UNDONE_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_DELETE_DESC, Constants.HELP_DELETE_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_SEARCH_DESC, Constants.HELP_SEARCH_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_UNDO_DESC, Constants.HELP_UNDO_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_CREATE_ALIAS_DESC, Constants.HELP_CREATE_ALIAS_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_DELETE_ALIAS_DESC, Constants.HELP_DELETE_ALIAS_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_WILDCARD_DESC, Constants.HELP_WILDCARD_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_CHECK_DIR_DESC, Constants.HELP_CHECK_DIR_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_USE_DIR_DESC, Constants.HELP_USE_DIR_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_MOVE_DIR_DESC, Constants.HELP_MOVE_DIR_COMMAND));
+        helpList.add(new HelpItem(Constants.HELP_EXIT_DESC, Constants.HELP_EXIT_COMMAND));
         helpContent.setItems(helpList);
     }
 
@@ -390,7 +364,7 @@ public class MainController {
                 return new Task<Void>() {
                     @Override
                     protected Void call() throws Exception {
-                        //Background work
+                        // Background work
                         final CountDownLatch latch = new CountDownLatch(1);
                         Platform.runLater(new Runnable() {
                             @Override
@@ -403,7 +377,7 @@ public class MainController {
                             }
                         });
                         latch.await();
-                        //Keep with the background work
+                        // Keep with the background work
                         return null;
                     }
                 };
@@ -414,8 +388,6 @@ public class MainController {
 
     public void initSurpriseOverlay(TaskAttributes task) {
         taskDesc.setText(task.getDescription());
-        taskDesc.setWrapText(true);
-        taskDesc.setTextAlignment(TextAlignment.JUSTIFY);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy h:mma");
         if (task.getStartDateTime() == null) {
             if (task.getEndDateTime() == null) {
@@ -438,7 +410,6 @@ public class MainController {
             }
         }
     }
-
 
     /***************************
      *** LEVEL 2 Abstraction ***
@@ -486,6 +457,20 @@ public class MainController {
             } else if (code == KeyCode.TAB) {
                 cmdArea.selectFirst();
             } else if (code == KeyCode.F1) {
+                displayList(Constants.CTRL_CMD_INCOMPLETE);
+            } else if (code == KeyCode.F2) {
+                displayList(Constants.CTRL_CMD_OVERDUE);
+            } else if (code == KeyCode.F3) {
+                displayList(Constants.CTRL_CMD_UPCOMING);
+            } else if (code == KeyCode.F4) {
+                displayList(Constants.CTRL_CMD_ALL);
+            } else if (code == KeyCode.F5) {
+                displayList(Constants.CTRL_CMD_COMPLETE);
+            } else if (code == KeyCode.F6) {
+                displayList(Constants.CTRL_CMD_SURPRISE);
+            } else if (code == KeyCode.F7) {
+                displayList(Constants.CTRL_CMD_HELP);
+            } else if (code == KeyCode.F8) {
                 JFDIRobot.typeNext();
             } else {
                 return;
@@ -505,15 +490,13 @@ public class MainController {
      * Disable the scroll bar when it appears (Edit if necessary)
      */
     private void disableScrollBarCmd() {
-        cmdArea.textProperty().addListener(
-            (observable, oldValue, newValue) -> {
-                if (cmdArea.lookup(".scroll-bar") != null) {
-                    ScrollBar scrollBarv = (ScrollBar) cmdArea
-                            .lookup(".scroll-bar");
-                    scrollBarv.setDisable(false);
-                    scrollBarv.setId("command-scroll-bar");
-                }
-            });
+        cmdArea.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (cmdArea.lookup(".scroll-bar") != null) {
+                ScrollBar scrollBarv = (ScrollBar) cmdArea.lookup(".scroll-bar");
+                scrollBarv.setDisable(false);
+                scrollBarv.setId("command-scroll-bar");
+            }
+        });
     }
 
     public void updateNotiBubbles() {
@@ -529,7 +512,7 @@ public class MainController {
     void enterRoutine() {
         cmdArea.hidePopup();
         String text = cmdArea.getText();
-        ui.processInput(text);
+        UI.getInstance().processInput(text);
         inputHistory.addInput(text);
         cmdArea.clear();
     }
@@ -572,12 +555,9 @@ public class MainController {
     }
 
     public void setFirstVisibleId() {
-        ListViewSkin<?> listViewSkin = (ListViewSkin<?>) getCurrentListView()
-                .getSkin();
-        VirtualFlow<?> virtualFlow = (VirtualFlow<?>) listViewSkin
-                .getChildren().get(0);
-        IndexedCell<?> firstVisibleCell = virtualFlow
-                .getFirstVisibleCellWithinViewPort();
+        ListViewSkin<?> listViewSkin = (ListViewSkin<?>) getCurrentListView().getSkin();
+        VirtualFlow<?> virtualFlow = (VirtualFlow<?>) listViewSkin.getChildren().get(0);
+        IndexedCell<?> firstVisibleCell = virtualFlow.getFirstVisibleCellWithinViewPort();
         if (firstVisibleCell != null) {
             firstVisibleId = firstVisibleCell.getIndex();
         }

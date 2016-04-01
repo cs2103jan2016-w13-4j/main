@@ -4,6 +4,8 @@ package jfdi.parser.commandparsers;
 
 import jfdi.logic.commands.DirectoryCommand.Builder;
 import jfdi.logic.interfaces.Command;
+import jfdi.parser.Constants;
+import jfdi.parser.Constants.CommandType;
 
 /**
  * This class parses the Directory command input by the user. The Directory
@@ -27,8 +29,14 @@ public class DirectoryCommandParser extends AbstractCommandParser {
 
     @Override
     public Command build(String input) {
+        if (!isValidDirectoryCommand(input)) {
+            return createInvalidCommand(CommandType.wildcard, input);
+        }
         Builder builder = new Builder();
         return builder.build();
     }
 
+    private boolean isValidDirectoryCommand(String input) {
+        return isValidInput(input) && input.matches(Constants.REGEX_DIRECTORY);
+    }
 }

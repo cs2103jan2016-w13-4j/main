@@ -74,7 +74,7 @@ public class MainSetUp extends Application {
                 params[0] = java.awt.Image.class;
                 Method setDockIconImage = util.getMethod("setDockIconImage", params);
                 setDockIconImage.invoke(application,
-                    new ImageIcon(UI.class.getResource(Constants.URL_LOGO_PATH)).getImage());
+                        new ImageIcon(UI.class.getResource(Constants.URL_LOGO_PATH)).getImage());
             } catch (Exception e) {
                 logger.info("Not OS X");
             }
@@ -112,10 +112,8 @@ public class MainSetUp extends Application {
         logger.fine(String.format(Constants.LOG_FXML_PATH, "ListLayout.fxml", Constants.URL_LIST_PATH));
 
         // Initialize Controller
-        controller = loader.getController();
-
-        // Link UI with Controller
-        ui.setController(controller);
+        UI.getInstance().controller = loader.getController();
+        controller = UI.getInstance().controller;
         ui.init();
 
         ((BorderPane) rootLayout).setCenter(listLayout);
@@ -123,7 +121,6 @@ public class MainSetUp extends Application {
 
         // Link Controller with UI, MainSetUp and CommandHandler
         controller.setUi(ui);
-        controller.setMainApp(this);
 
         controller.hideOverlays();
         controller.displayList(Constants.CTRL_CMD_OVERDUE);
@@ -180,9 +177,5 @@ public class MainSetUp extends Application {
 
     public AnchorPane getlistPane() {
         return this.listLayout;
-    }
-
-    public MainController getController() {
-        return this.controller;
     }
 }

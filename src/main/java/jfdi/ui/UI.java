@@ -11,11 +11,9 @@ public class UI implements IUserInterface {
 
     private static final EventBus eventBus = new EventBus();
     private static UI ourInstance = new UI();
+    private static ControlCenter logic;
 
-    public CommandHandler cmdHandler = new CommandHandler();
-
-    private MainController controller;
-    private ControlCenter logic;
+    public MainController controller;
 
     private UI() {
     }
@@ -31,7 +29,7 @@ public class UI implements IUserInterface {
 
         // Initialize Logic
         logic = ControlCenter.getInstance();
-        this.prepareListener();
+        prepareListeners();
 
         // showToUser(UI_MESSAGE_INITED);
     }
@@ -45,10 +43,13 @@ public class UI implements IUserInterface {
 
     @Override
     public void processInput(String input) {
-
+        controller.hideOverlays();
         if (controller.displayStatus.equals(ListStatus.HELP)) {
             controller.hideOverlays();
             controller.displayStatus = controller.beforeHelp;
+            if (controller.beforeHelp == ListStatus.SURPRISE) {
+                controller.displayStatus = ListStatus.INCOMPLETE;
+            }
             controller.switchTabSkin();
         }
 
@@ -62,14 +63,9 @@ public class UI implements IUserInterface {
             controller.hideOverlays();
             controller.switchTabSkin();
         }
-
         // Clear controller first
         controller.clearCmdArea();
         controller.clearFb();
-
-        // Show user what the command recognized in the feedback area
-        // controller.displayFb(String.format(Constants.UI_MESSAGE_USERCMD,
-        // input));
 
         // Relay user input to logic and wait for reply
         relayToLogic(input);
@@ -108,23 +104,17 @@ public class UI implements IUserInterface {
         return controller.getIdFromIndex(onScreenId - 1);
     }
 
-    @Override
-    public void setController(MainController controller) {
-        this.controller = controller;
-    }
-
     /***************************
      *** LEVEL 1 Abstraction ***
      ***************************/
 
+    private void prepareListeners() {
+        CommandHandler.registerEvents();
+    }
+
     private void showToUser(String string) {
         controller.displayFb(string);
         System.out.println(string);
-    }
-
-    private void prepareListener() {
-        cmdHandler.setController(controller);
-        eventBus.register(cmdHandler);
     }
 
     @Override

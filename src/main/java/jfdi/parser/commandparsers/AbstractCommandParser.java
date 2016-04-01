@@ -58,8 +58,7 @@ public abstract class AbstractCommandParser {
      *            index of the end of the subString (exclusive)
      * @return the trimmed subString
      */
-    protected String getTrimmedSubstringInRange(String input, int startIndex,
-        int endIndex) {
+    protected String getTrimmedSubstringInRange(String input, int startIndex, int endIndex) {
         return input.substring(startIndex, endIndex).trim();
     }
 
@@ -73,8 +72,7 @@ public abstract class AbstractCommandParser {
      * @return an ArrayList of task IDs, all Strings. If no task IDs can be
      *         found, an empty ArrayList is returned.
      */
-    protected Collection<Integer> getTaskIds(String input)
-        throws BadTaskIdException {
+    protected Collection<Integer> getTaskIds(String input) throws BadTaskIdException {
         Set<Integer> taskIdsForDeletion = new HashSet<Integer>();
         input = input.replaceAll("(\\d+)[ ]*-[ ]*(\\d+)", "$1-$2");
         input = input.replaceAll("[ ]+", ",");
@@ -110,8 +108,7 @@ public abstract class AbstractCommandParser {
      * @return an InvalidCommand object, containing the command type of the
      *         invalid user's input, and the user's input itself.
      */
-    protected InvalidCommand createInvalidCommand(CommandType commandType,
-        String inputString) {
+    protected InvalidCommand createInvalidCommand(CommandType commandType, String inputString) {
         InvalidCommand.Builder invalidCommandBuilder = new InvalidCommand.Builder();
         invalidCommandBuilder.setInputString(inputString);
         invalidCommandBuilder.setCommandType(commandType);
@@ -153,12 +150,10 @@ public abstract class AbstractCommandParser {
     }
 
     protected boolean matchesCommandType(String input, CommandType commandType) {
-        return ParserUtils.getCommandType(getFirstWord(input)).equals(
-            commandType);
+        return ParserUtils.getCommandType(getFirstWord(input)).equals(commandType);
     }
 
-    private Collection<? extends Integer> getTaskIdsFromRange(String taskId)
-        throws BadTaskIdException {
+    private Collection<? extends Integer> getTaskIdsFromRange(String taskId) throws BadTaskIdException {
         assert taskId.matches("\\d+[ ]?-[ ]?\\d+");
         String[] taskIdRangeArray = taskId.split("-");
         Collection<Integer> taskIdsInRange = new HashSet<>();
@@ -172,5 +167,9 @@ public abstract class AbstractCommandParser {
         }
 
         return taskIdsInRange;
+    }
+
+    protected boolean isSingleWord(String input) {
+        return input.trim().split(Constants.REGEX_WHITESPACE).length == 1;
     }
 }

@@ -10,8 +10,6 @@ public interface IUserInterface {
 
     void processInput(String input);
 
-    void setController(MainController controller);
-
     void relayToLogic(String ctrlCmdShowlist);
 
     int getTaskId(int onScreenId);

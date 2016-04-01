@@ -9,6 +9,7 @@ import jfdi.logic.commands.RenameTaskCommand;
 import jfdi.logic.commands.RenameTaskCommand.Builder;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants;
+import jfdi.parser.Constants.CommandType;
 import jfdi.parser.exceptions.BadTaskDescriptionException;
 import jfdi.parser.exceptions.NoTaskIdFoundException;
 
@@ -43,7 +44,9 @@ public class RenameCommandParser extends AbstractCommandParser {
      */
     @Override
     public Command build(String input) {
-        assert isValidInput(input);
+        if (!isValidRenameInput(input)) {
+            return createInvalidCommand(CommandType.rename, input);
+        }
 
         String originalInput = input;
         Builder renameCommandBuilder = new Builder();
@@ -53,8 +56,7 @@ public class RenameCommandParser extends AbstractCommandParser {
             input = setAndRemoveTaskId(input, renameCommandBuilder);
             setTaskDescription(input, renameCommandBuilder);
         } catch (NoTaskIdFoundException | BadTaskDescriptionException e) {
-            return createInvalidCommand(Constants.CommandType.rename,
-                originalInput);
+            return createInvalidCommand(Constants.CommandType.rename, originalInput);
         }
 
         RenameTaskCommand renameCommand = renameCommandBuilder.build();
@@ -75,8 +77,7 @@ public class RenameCommandParser extends AbstractCommandParser {
      *            the rename command object builder.
      * @return the input String, without the task ID.
      */
-    protected String setAndRemoveTaskId(String input, Builder builder)
-        throws NoTaskIdFoundException {
+    protected String setAndRemoveTaskId(String input, Builder builder) throws NoTaskIdFoundException {
         Pattern taskIdPattern = Pattern.compile(Constants.REGEX_TASKID);
         Matcher taskIdMatcher = taskIdPattern.matcher(input);
 
@@ -88,13 +89,11 @@ public class RenameCommandParser extends AbstractCommandParser {
             assert taskIdMatcher.start() == 0;
             // The task ID for all rename command inputs should be the first
             // instance of all task ID instances found.
-            String taskId = getTrimmedSubstringInRange(input,
-                taskIdMatcher.start(), taskIdMatcher.end());
+            String taskId = getTrimmedSubstringInRange(input, taskIdMatcher.start(), taskIdMatcher.end());
             builder.setId(toInteger(taskId));
 
             // Remove the task ID from the input
-            input = getTrimmedSubstringInRange(input, taskIdMatcher.end(),
-                input.length());
+            input = getTrimmedSubstringInRange(input, taskIdMatcher.end(), input.length());
         }
 
         return input;
@@ -111,12 +110,16 @@ public class RenameCommandParser extends AbstractCommandParser {
      * @throws BadTaskDescriptionException
      *             if the input is empty.
      */
-    private String setTaskDescription(String input, Builder builder)
-        throws BadTaskDescriptionException {
+    private String setTaskDescription(String input, Builder builder) throws BadTaskDescriptionException {
         if (!isValidInput(input)) {
             throw new BadTaskDescriptionException(input);
         }
         builder.setDescription(input);
         return input;
+    }
+
+    private boolean isValidRenameInput(String input) {
+        return isValidInput(input) && getFirstWord(input).matches(Constants.REGEX_RENAME);
+
     }
 }

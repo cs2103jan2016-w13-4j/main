@@ -28,8 +28,7 @@ public class SearchCommandParser extends AbstractCommandParser {
     }
 
     public static SearchCommandParser getInstance() {
-        return instance == null ? instance = new SearchCommandParser()
-            : instance;
+        return instance == null ? instance = new SearchCommandParser() : instance;
     }
 
     @Override
@@ -41,7 +40,10 @@ public class SearchCommandParser extends AbstractCommandParser {
      * @return the SearchCommand object encapsulating the keywords of the search command.
      */
     public Command build(String input) {
-        assert isValidInput(input);
+
+        if (!isValidSearchInput(input)) {
+            return createInvalidCommand(CommandType.search, input);
+        }
 
         SearchCommand.Builder builder = new SearchCommand.Builder();
         Collection<String> keywords = new HashSet<String>();
@@ -65,11 +67,9 @@ public class SearchCommandParser extends AbstractCommandParser {
      *             if no keywords are specified in the input, or if the input is
      *             empty to begin with.
      */
-    private Collection<String> getKeywords(String input)
-        throws InvalidInputException {
-        if (!isValidInput(input)) {
-            throw new InvalidInputException(input);
-        }
+    private Collection<String> getKeywords(String input) throws InvalidInputException {
+        assert isValidSearchInput(input);
+
         String[] keywords = input.split(Constants.REGEX_WHITESPACE);
         if (keywords.length <= 1) {
             throw new InvalidInputException(input);
@@ -80,6 +80,10 @@ public class SearchCommandParser extends AbstractCommandParser {
         }
 
         return keywordsAsList;
+    }
+
+    private boolean isValidSearchInput(String input) {
+        return isValidInput(input) && getFirstWord(input).matches(Constants.REGEX_SEARCH);
     }
 
 }

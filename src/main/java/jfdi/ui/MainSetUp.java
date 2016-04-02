@@ -21,6 +21,7 @@ import javax.swing.ImageIcon;
 
 import jfdi.common.utilities.JFDIRobot;
 import jfdi.common.utilities.JfdiLogger;
+import jfdi.parser.InputParser;
 
 public class MainSetUp extends Application {
 
@@ -35,7 +36,8 @@ public class MainSetUp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        InputParser initialParser = InputParser.getInstance();
+        initialParser.parse("this is for initialisation by tomorrow");
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle(Constants.PRODUCT_NAME);
 
@@ -74,7 +76,7 @@ public class MainSetUp extends Application {
                 params[0] = java.awt.Image.class;
                 Method setDockIconImage = util.getMethod("setDockIconImage", params);
                 setDockIconImage.invoke(application,
-                        new ImageIcon(UI.class.getResource(Constants.URL_LOGO_PATH)).getImage());
+                    new ImageIcon(UI.class.getResource(Constants.URL_LOGO_PATH)).getImage());
             } catch (Exception e) {
                 logger.info("Not OS X");
             }

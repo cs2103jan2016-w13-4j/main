@@ -30,15 +30,15 @@ public class AddHandler extends CommandHandler {
         }
 
         if (controller.displayStatus.equals(ListStatus.SEARCH)) {
-            switchContext(ListStatus.INCOMPLETE, true);
+            controller.switchContext(ListStatus.INCOMPLETE, true);
         } else if (!controller.displayStatus.equals(ListStatus.ALL)) {
-            switchContext(ListStatus.INCOMPLETE, false);
+            controller.switchContext(ListStatus.INCOMPLETE, false);
         }
 
         TaskAttributes task = e.getTask();
-        appendTaskToDisplayList(task, true);
-        if (shouldSort()) {
-            sortDisplayList();
+        controller.appendTaskToDisplayList(task, true);
+        if (controller.shouldSort()) {
+            controller.sortDisplayList();
         }
         controller.updateNotiBubbles();
         controller.listMain.scrollTo(controller.importantList.size() - 1);

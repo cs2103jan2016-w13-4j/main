@@ -29,8 +29,8 @@ public class SurpriseHandler extends CommandHandler {
 
         //controller.importantList.clear();
         controller.initSurpriseOverlay(e.getTask());
-        switchContext(ListStatus.ALL, false);
-        switchContext(ListStatus.SURPRISE, false);
+        controller.switchContext(ListStatus.ALL, false);
+        controller.switchContext(ListStatus.SURPRISE, false);
         controller.relayFb(Constants.CMD_SUCCESS_SURPRISED, MsgType.SUCCESS);
         controller.updateNotiBubbles();
         controller.showSurpriseDisplay();
@@ -49,8 +49,8 @@ public class SurpriseHandler extends CommandHandler {
                 break;
             case NO_TASKS:
                 controller.importantList.clear();
-                switchContext(ListStatus.ALL, false);
-                switchContext(ListStatus.SURPRISE, false);
+                controller.switchContext(ListStatus.ALL, false);
+                controller.switchContext(ListStatus.SURPRISE, false);
                 controller.initSurpriseOverlay(new TaskAttributes());
                 controller.showSurpriseDisplay();
                 controller.showNoSurpriseDisplay();

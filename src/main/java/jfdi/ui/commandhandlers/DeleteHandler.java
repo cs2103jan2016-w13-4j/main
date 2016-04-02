@@ -39,7 +39,6 @@ public class DeleteHandler extends CommandHandler {
             controller.importantList.remove(indexCount);
             logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, screenId));
         }
-        controller.relayFb(Constants.CMD_SUCCESS_DELETED, MsgType.SUCCESS);
 
         indexCount = 1;
         for (ListItem item : controller.importantList) {
@@ -49,6 +48,7 @@ public class DeleteHandler extends CommandHandler {
             indexCount++;
         }
         controller.updateNotiBubbles();
+        controller.relayFb(Constants.CMD_SUCCESS_DELETED, MsgType.SUCCESS);
     }
 
     @Subscribe

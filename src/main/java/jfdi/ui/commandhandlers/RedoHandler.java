@@ -27,7 +27,7 @@ public class RedoHandler extends CommandHandler {
         }
 
         Class<? extends Command> cmdType = e.getCommandType();
-        switchContext(controller.displayStatus, true);
+        controller.switchContext(controller.displayStatus, true);
         controller.relayFb(String.format(Constants.CMD_SUCCESS_REDONE, cmdType.toString()), MsgType.SUCCESS);
         controller.updateNotiBubbles();
 

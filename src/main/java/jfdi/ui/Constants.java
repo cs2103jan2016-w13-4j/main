@@ -33,7 +33,7 @@ public class Constants {
     public static final String CTRL_CMD_ALL = "list all";
     public static final String CTRL_CMD_COMPLETE = "list completed";
     public static final String CTRL_CMD_SURPRISE = "surprise";
-    public static final String CTRL_CMD_SEARCH = "search";
+    public static final String CTRL_CMD_SEARCH = "search ";
     public static final String CTRL_CMD_SURPRISE_YAY = "yay";
     public static final String CTRL_CMD_SURPRISE_NAY = "nay";
     public static final String CTRL_CMD_HELP = "help";
@@ -109,8 +109,8 @@ public class Constants {
 
     public static final String CMD_SUCCESS_ADDED = "Task - %s - added! :)";
     public static final String CMD_SUCCESS_ALIAS = "Alias - %s - is created for command - %s -! :)";
-    public static final String CMD_SUCCESS_REDONE = "Previous command - %s - redone! :)";
-    public static final String CMD_SUCCESS_UNDONE = "Previous command - %s - undone! :)";
+    public static final String CMD_SUCCESS_REDONE = "Previous command redone! :)";
+    public static final String CMD_SUCCESS_UNDONE = "Previous command undone! :)";
     public static final String CMD_SUCCESS_DELETED = "Task(s) deleted! :)";
     public static final String CMD_SUCCESS_HELP = "TO THE RESCUE!!! :D";
     public static final String CMD_SUCCESS_LISTED = "Here is your requested list! :)";
@@ -119,7 +119,7 @@ public class Constants {
     public static final String CMD_SUCCESS_RENAMED = "Task #%d renamed to - %s -! :)";
     public static final String CMD_SUCCESS_RESCHEDULED = "Task #%d rescheduled! :)";
     public static final String CMD_SUCCESS_SEARCH = "Here are your search results! :)";
-    public static final String CMD_SUCCESS_SHOWDIRECTORY = "Your current directory is : %s ! :)";
+    public static final String CMD_SUCCESS_SHOWDIRECTORY = "Your current directory is %s ";
     public static final String CMD_SUCCESS_SURPRISED = "SURPRISE!!!TAAAADAAAA!!! :D";
     public static final String CMD_SUCCESS_SURPRISED_YAY = "Way to go! You can do it!!! :D";
     public static final String CMD_SUCCESS_UNALIAS = "Alias - %s - is removed! :)";

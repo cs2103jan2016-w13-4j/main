@@ -35,11 +35,12 @@ public class RenameHandler extends CommandHandler {
                 break;
             }
         }
-        controller.relayFb(String.format(Constants.CMD_SUCCESS_RENAMED, count + 1, task.getDescription()),
-                MsgType.SUCCESS);
+        
         logger.fine(String.format(Constants.LOG_RENAMED_SUCCESS, task.getId()));
         controller.updateNotiBubbles();
         controller.listMain.scrollTo(count);
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_RENAMED, count + 1, task.getDescription()),
+                MsgType.SUCCESS);
     }
 
     @Subscribe

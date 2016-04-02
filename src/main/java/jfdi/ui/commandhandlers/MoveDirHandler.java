@@ -26,7 +26,7 @@ public class MoveDirHandler extends CommandHandler {
             return;
         }
 
-        switchContext(ListStatus.INCOMPLETE, true);
+        controller.switchContext(ListStatus.INCOMPLETE, true);
         controller.relayFb(String.format(Constants.CMD_SUCCESS_MOVED, e.getNewDirectory()), MsgType.SUCCESS);
         controller.updateNotiBubbles();
 

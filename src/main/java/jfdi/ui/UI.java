@@ -66,8 +66,8 @@ public class UI implements IUserInterface {
         }
 
         // Clear controller first
-        controller.clearCmdArea();
-        controller.clearFb();
+        // controller.clearCmdArea();
+        // controller.clearFb();
 
         // Relay user input to logic and wait for reply
         relayToLogic(input);

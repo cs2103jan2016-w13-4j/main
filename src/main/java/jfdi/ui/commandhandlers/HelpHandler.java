@@ -25,7 +25,7 @@ public class HelpHandler extends CommandHandler {
             return;
         }
 
-        switchContext(ListStatus.HELP, false);
+        controller.switchContext(ListStatus.HELP, false);
         controller.showHelpDisplay();
         controller.relayFb(Constants.CMD_SUCCESS_HELP, MsgType.SUCCESS);
     }

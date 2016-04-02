@@ -27,11 +27,11 @@ public class UndoHandler extends CommandHandler {
         }
 
         Class<? extends Command> cmdType = e.getCommandType();
-        switchContext(controller.displayStatus, true);
-        controller.relayFb(String.format(Constants.CMD_SUCCESS_UNDONE, cmdType.toString()), MsgType.SUCCESS);
         controller.updateNotiBubbles();
-
+        controller.switchContext(controller.displayStatus, true);
         controller.updateAutoCompleteList();
+        System.out.println("HERE" + controller.displayStatus);
+        controller.relayFb(Constants.CMD_SUCCESS_UNDONE, MsgType.SUCCESS);
     }
 
     @Subscribe

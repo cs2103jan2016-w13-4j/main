@@ -35,13 +35,13 @@ public class RescheduleHandler extends CommandHandler {
                 break;
             }
         }
-        if (shouldSort()) {
-            sortDisplayList();
+        if (controller.shouldSort()) {
+            controller.sortDisplayList();
         }
-        controller.relayFb(String.format(Constants.CMD_SUCCESS_RESCHEDULED, count + 1), MsgType.SUCCESS);
         logger.fine(String.format(Constants.LOG_RESCHED_SUCCESS, task.getId()));
         controller.updateNotiBubbles();
         controller.listMain.scrollTo(count);
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_RESCHEDULED, count + 1), MsgType.SUCCESS);
     }
 
     @Subscribe

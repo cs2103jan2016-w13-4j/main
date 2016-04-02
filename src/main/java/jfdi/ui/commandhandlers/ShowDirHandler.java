@@ -23,7 +23,7 @@ public class ShowDirHandler extends CommandHandler {
             // Add any method calls strictly for internal calls here
             return;
         }
-        
+
         controller.updateNotiBubbles();
         controller.relayFb(String.format(Constants.CMD_SUCCESS_SHOWDIRECTORY, e.getPwd()), MsgType.SUCCESS);
     }

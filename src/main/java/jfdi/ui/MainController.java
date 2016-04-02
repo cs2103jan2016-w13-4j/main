@@ -497,7 +497,7 @@ public class MainController {
     public void updateNotiBubbles() {
         incompletePlaceHdr.set(String.valueOf(controlCenter.getIncompleteTasks().size()));
         overduePlaceHdr.set(String.valueOf(controlCenter.getOverdueTasks().size()));
-        upcomingPlaceHdr.set(String.valueOf(controlCenter.getUpcomingTasks().size()));;
+        upcomingPlaceHdr.set(String.valueOf(controlCenter.getUpcomingTasks().size()));
     }
 
     /***************************
@@ -557,7 +557,7 @@ public class MainController {
             firstVisibleId = firstVisibleCell.getIndex();
         }
     }
-    
+
     /**
      * Sets the display list to the given ArrayList of tasks which match the
      * context.
@@ -606,8 +606,7 @@ public class MainController {
     }
 
     public boolean shouldSort() {
-        return displayStatus.equals(ListStatus.OVERDUE)
-                || displayStatus.equals(ListStatus.UPCOMING);
+        return displayStatus.equals(ListStatus.OVERDUE) || displayStatus.equals(ListStatus.UPCOMING);
     }
 
     private boolean isSameContext(TaskAttributes task) {

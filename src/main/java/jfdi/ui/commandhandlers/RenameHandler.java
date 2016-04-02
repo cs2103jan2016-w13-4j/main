@@ -35,7 +35,7 @@ public class RenameHandler extends CommandHandler {
                 break;
             }
         }
-        
+
         logger.fine(String.format(Constants.LOG_RENAMED_SUCCESS, task.getId()));
         controller.updateNotiBubbles();
         controller.listMain.scrollTo(count);

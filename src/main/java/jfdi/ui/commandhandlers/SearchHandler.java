@@ -28,7 +28,7 @@ public class SearchHandler extends CommandHandler {
         controller.listTasks(e.getResults(), false);
 
         controller.switchContext(ListStatus.SEARCH, false);
-        
+
         controller.searchCmd = Constants.CTRL_CMD_SEARCH;
         for (String key : e.getKeywords()) {
             controller.searchCmd += key + " ";

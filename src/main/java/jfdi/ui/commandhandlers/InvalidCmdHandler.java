@@ -19,10 +19,6 @@ public class InvalidCmdHandler extends CommandHandler {
 
     @Subscribe
     public void handleInvalidCommandEvent(InvalidCommandEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         controller.relayFb(String.format(Constants.CMD_WARNING_DONTKNOW, e.getInputString()), MsgType.WARNING);
         logger.fine(Constants.LOG_INVALID_COMMAND);

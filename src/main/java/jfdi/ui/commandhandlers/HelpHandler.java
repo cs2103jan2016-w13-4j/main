@@ -20,10 +20,6 @@ public class HelpHandler extends CommandHandler {
 
     @Subscribe
     public void handleHelpRequestEvent(HelpRequestedEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         controller.switchContext(ListStatus.HELP, false);
         controller.showHelpDisplay();

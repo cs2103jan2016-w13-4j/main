@@ -22,26 +22,19 @@ public class SurpriseHandler extends CommandHandler {
 
     @Subscribe
     public void handleSurpriseEvent(SurpriseEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
+        
+        //DO STH ABT YAY!!!
 
-        //controller.importantList.clear();
         controller.initSurpriseOverlay(e.getTask());
-        controller.switchContext(ListStatus.ALL, false);
+        controller.switchContext(ListStatus.ALL, false);// why is this needed?
         controller.switchContext(ListStatus.SURPRISE, false);
-        controller.relayFb(Constants.CMD_SUCCESS_SURPRISED, MsgType.SUCCESS);
-        controller.updateNotiBubbles();
         controller.showSurpriseDisplay();
+        controller.updateNotiBubbles();
+        controller.relayFb(Constants.CMD_SUCCESS_SURPRISED, MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleNoSurpriseEvent(NoSurpriseEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         switch (e.getError()) {
             case UNKNOWN:

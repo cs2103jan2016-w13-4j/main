@@ -20,23 +20,14 @@ public class UnaliasHandler extends CommandHandler {
 
     @Subscribe
     public void handleUnaliasDoneEvent(UnaliasDoneEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         controller.relayFb(String.format(Constants.CMD_SUCCESS_UNALIAS, e.getAlias()), MsgType.SUCCESS);
-
         controller.updateAutoCompleteList();
     }
 
     @Subscribe
     public void handleUnaliasFailEvent(UnaliasFailedEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
-
+        
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(String.format(Constants.CMD_ERROR_CANT_UNALIAS_UNKNOWN, e.getAlias()),

@@ -21,25 +21,18 @@ public class RedoHandler extends CommandHandler {
 
     @Subscribe
     public void handleCommandRedoneEvent(CommandRedoneEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         Class<? extends Command> cmdType = e.getCommandType();
         controller.switchContext(controller.displayStatus, true);
-        controller.relayFb(String.format(Constants.CMD_SUCCESS_REDONE, cmdType.toString()), MsgType.SUCCESS);
-        controller.updateNotiBubbles();
 
         controller.updateAutoCompleteList();
+
+        controller.updateNotiBubbles();
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_REDONE, cmdType.toString()), MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleRedoFailedEvent(RedoFailedEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         switch (e.getError()) {
             case UNKNOWN:

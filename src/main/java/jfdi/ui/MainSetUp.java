@@ -120,9 +120,7 @@ public class MainSetUp extends Application {
         controller.setUi(ui);
 
         controller.hideOverlays();
-        controller.displayList(Constants.CTRL_CMD_OVERDUE);
-        controller.displayList(Constants.CTRL_CMD_UPCOMING);
-        controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
+        controller.updateNotiBubbles();
         initThread();
         ui.displayWelcome();
     }

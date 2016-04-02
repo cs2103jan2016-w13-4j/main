@@ -30,7 +30,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import jfdi.logic.ControlCenter;
-import jfdi.logic.events.ListDoneEvent;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.ui.Constants.CallType;
 import jfdi.ui.Constants.ListStatus;
@@ -163,7 +162,6 @@ public class MainController {
     }
 
     public void displayList(String cmd) {
-        triggerDisplayCall();
         ui.processInput(cmd);
     }
 
@@ -277,18 +275,6 @@ public class MainController {
         return importantList.get(index).getItem().getId();
     }
 
-    public boolean isInternalCall() {
-        return !callQueue.isEmpty() && callQueue.remove() == CallType.INTERNAL;
-    }
-
-    public void triggerInternalCall() {
-        callQueue.add(CallType.INTERNAL);
-    }
-
-    private void triggerDisplayCall() {
-        callQueue.add(CallType.DISPLAY);
-    }
-
     /***************************
      *** LEVEL 1 Abstraction ***
      ***************************/
@@ -305,6 +291,7 @@ public class MainController {
         listMain.setFocusTraversable(false);
         importantList = FXCollections.observableArrayList();
         listMain.setItems(importantList);
+        switchContext(ListStatus.INCOMPLETE, true);
     }
 
     private void initFbArea() {
@@ -642,22 +629,5 @@ public class MainController {
             transListCmd();
         }
         switchTabSkin();
-    }
-
-    public void updateBubble(ListDoneEvent e) {
-        Integer count = e.getItems().size();
-        switch (e.getListType()) {
-            case INCOMPLETE:
-                incompletePlaceHdr.set(count.toString());
-                break;
-            case OVERDUE:
-                overduePlaceHdr.set(count.toString());
-                break;
-            case UPCOMING:
-                upcomingPlaceHdr.set(count.toString());
-                break;
-            default:
-                break;
-        }
     }
 }

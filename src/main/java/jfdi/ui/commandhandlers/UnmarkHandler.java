@@ -1,7 +1,6 @@
 package jfdi.ui.commandhandlers;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 import com.google.common.eventbus.Subscribe;
 
@@ -24,48 +23,58 @@ public class UnmarkHandler extends CommandHandler {
 
     @Subscribe
     public void handleUnmarkTaskDoneEvent(UnmarkTaskDoneEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
+
+        // check size of list of ids > 0
+        // check size of id list == task list
+
+        controller.updateNotiBubbles();
 
         ArrayList<Integer> undoneIds = e.getScreenIds();
-        Collections.sort(undoneIds, Comparator.reverseOrder());
-        int indexCount = -1;
-        for (Integer screenId : undoneIds) {
-            indexCount = screenId - 1;
-            controller.importantList.get(indexCount).setMarkF();
-            controller.importantList.get(indexCount).removeStrike();
-            refreshDisplay();
-            // controller.displayList(controller.displayStatus);
-            // logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, num));
+        Collections.sort(undoneIds);
+
+        unmarkTaskOnList(undoneIds);
+    }
+
+    private void unmarkTaskOnList(ArrayList<Integer> undoneIds) {
+
+        if (undoneIds.size() == 1) {
+            controller.importantList.get(undoneIds.get(0) - 1).setMarkF();
+            controller.importantList.get(undoneIds.get(0) - 1).removeStrike();
+            controller.relayFb(String.format(Constants.CMD_SUCCESS_UNMARKED_1, undoneIds.get(0)), MsgType.SUCCESS);
+            controller.listMain.scrollTo(undoneIds.get(0));
+        } else {
+            int count = 0;
+            int indexCount = -1;
+            String indices = "";
+            for (int screenId : undoneIds) {
+                indexCount = screenId - 1;
+                indices += "#" + String.valueOf(screenId);
+                count++;
+                if (count == undoneIds.size() - 1) {
+                    indices += " and ";
+                } else if (!(count == undoneIds.size())) {
+                    indices += ", ";
+                }
+                controller.importantList.get(indexCount).setMarkF();
+                controller.importantList.get(indexCount).removeStrike();
+            }
+            controller.listMain.scrollTo(undoneIds.get(0));
+            controller.relayFb(String.format(Constants.CMD_SUCCESS_UNMARKED_2, indices), MsgType.SUCCESS);
         }
-        controller.relayFb(
-            String.format(Constants.CMD_SUCCESS_UNMARKED, indexCount + 1),
-            MsgType.SUCCESS);
-        controller.updateNotiBubbles();
-        controller.listMain.scrollTo(indexCount);
     }
 
     @Subscribe
     public void handleUnmarkTaskFailEvent(UnmarkTaskFailedEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         switch (e.getError()) {
             case UNKNOWN:
-                controller.relayFb(Constants.CMD_ERROR_CANT_UNMARK_UNKNOWN,
-                    MsgType.ERROR);
+                controller.relayFb(Constants.CMD_ERROR_CANT_UNMARK_UNKNOWN, MsgType.ERROR);
                 // logger.fine(Constants.LOG_DELETE_FAIL_UNKNOWN);
                 break;
             case NON_EXISTENT_ID:
                 // NEED TO CHANGE TO INDEX SOON????
                 for (Integer screenId : e.getInvalidIds()) {
-                    controller.relayFb(String.format(
-                        Constants.CMD_ERROR_CANT_UNMARK_NO_ID, screenId),
-                        MsgType.ERROR);
+                    controller.relayFb(String.format(Constants.CMD_ERROR_CANT_UNMARK_NO_ID, screenId), MsgType.ERROR);
                 }
                 // logger.fine(Constants.LOG_DELETE_FAIL_NOID);
                 break;

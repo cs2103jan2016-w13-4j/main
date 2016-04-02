@@ -21,10 +21,6 @@ public class RenameHandler extends CommandHandler {
 
     @Subscribe
     public void handleRenameTaskDoneEvent(RenameTaskDoneEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         TaskAttributes task = e.getTask();
         int count = 0;
@@ -37,18 +33,14 @@ public class RenameHandler extends CommandHandler {
         }
 
         logger.fine(String.format(Constants.LOG_RENAMED_SUCCESS, task.getId()));
-        controller.updateNotiBubbles();
         controller.listMain.scrollTo(count);
+        controller.updateNotiBubbles();
         controller.relayFb(String.format(Constants.CMD_SUCCESS_RENAMED, count + 1, task.getDescription()),
                 MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleRenameTaskFailEvent(RenameTaskFailedEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         switch (e.getError()) {
             case UNKNOWN:

@@ -1,7 +1,6 @@
 package jfdi.ui.commandhandlers;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 import com.google.common.eventbus.Subscribe;
 
@@ -25,38 +24,24 @@ public class DeleteHandler extends CommandHandler {
 
     @Subscribe
     public void handleDeleteTaskDoneEvent(DeleteTaskDoneEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
+
+        // check size of list of ids > 0
+        // check size of id list == task list
 
         ArrayList<Integer> deletedIds = e.getDeletedIds();
-        Collections.sort(deletedIds, Comparator.reverseOrder());
+        Collections.sort(deletedIds);
 
-        int indexCount = -1;
-        for (int screenId : deletedIds) {
-            indexCount = screenId - 1;
-            controller.importantList.remove(indexCount);
-            logger.fine(String.format(Constants.LOG_DELETED_SUCCESS, screenId));
-        }
+        removeTaskFromList(deletedIds);
+        reorderListIndices();
 
-        indexCount = 1;
-        for (ListItem item : controller.importantList) {
-            if (item.getIndex() != indexCount) {
-                item.setIndex(indexCount);
-            }
-            indexCount++;
-        }
         controller.updateNotiBubbles();
-        controller.relayFb(Constants.CMD_SUCCESS_DELETED, MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleDeleteTaskFailEvent(DeleteTaskFailedEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
+
+        // check size of list of ids > 0
+        // check size of id list == task list
 
         switch (e.getError()) {
             case UNKNOWN:
@@ -74,4 +59,37 @@ public class DeleteHandler extends CommandHandler {
         }
     }
 
+    private void removeTaskFromList(ArrayList<Integer> deletedIds) {
+
+        if (deletedIds.size() == 1) {
+            controller.importantList.remove(deletedIds.get(0) - 1);
+            controller.relayFb(String.format(Constants.CMD_SUCCESS_DELETED_1, deletedIds.get(0)), MsgType.SUCCESS);
+        } else {
+            int count = 0;
+            int indexCount = -1;
+            String indices = "";
+            for (int screenId : deletedIds) {
+                indexCount = screenId - 1;
+                indices += "#" + String.valueOf(screenId);
+                count++;
+                if (count == deletedIds.size() - 1) {
+                    indices += " and ";
+                } else if (!(count == 1) && !(count == deletedIds.size())) {
+                    indices += ", ";
+                }
+                controller.importantList.remove(indexCount);
+            }
+            controller.relayFb(String.format(Constants.CMD_SUCCESS_DELETED_2, indices), MsgType.SUCCESS);
+        }
+    }
+
+    private void reorderListIndices() {
+        int indexCount = 1;
+        for (ListItem item : controller.importantList) {
+            if (item.getIndex() != indexCount) {
+                item.setIndex(indexCount);
+            }
+            indexCount++;
+        }
+    }
 }

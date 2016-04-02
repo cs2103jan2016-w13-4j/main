@@ -21,25 +21,16 @@ public class UndoHandler extends CommandHandler {
 
     @Subscribe
     public void handleCommandUndoneEvent(CommandUndoneEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         Class<? extends Command> cmdType = e.getCommandType();
         controller.updateNotiBubbles();
         controller.switchContext(controller.displayStatus, true);
         controller.updateAutoCompleteList();
-        System.out.println("HERE" + controller.displayStatus);
         controller.relayFb(Constants.CMD_SUCCESS_UNDONE, MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleUndoFailedEvent(UndoFailedEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         switch (e.getError()) {
             case UNKNOWN:

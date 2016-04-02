@@ -21,24 +21,15 @@ public class MoveDirHandler extends CommandHandler {
 
     @Subscribe
     public void handleMoveDirectoryDoneEvent(MoveDirectoryDoneEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         controller.switchContext(ListStatus.INCOMPLETE, true);
-        controller.relayFb(String.format(Constants.CMD_SUCCESS_MOVED, e.getNewDirectory()), MsgType.SUCCESS);
-        controller.updateNotiBubbles();
-
         controller.updateAutoCompleteList();
+        controller.updateNotiBubbles();
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_MOVED, e.getNewDirectory()), MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleMoveDirectoryFailEvent(MoveDirectoryFailedEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         switch (e.getError()) {
             case UNKNOWN:

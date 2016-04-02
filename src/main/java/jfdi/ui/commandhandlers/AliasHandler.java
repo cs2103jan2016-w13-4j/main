@@ -20,23 +20,13 @@ public class AliasHandler extends CommandHandler {
 
     @Subscribe
     public void handleAliasDoneEvent(AliasDoneEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-
-            return;
-        }
 
         controller.relayFb(String.format(Constants.CMD_SUCCESS_ALIAS, e.getAlias(), e.getCommand()), MsgType.SUCCESS);
-
         controller.updateAutoCompleteList();
     }
 
     @Subscribe
     public void handleAliasFailEvent(AliasFailedEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         switch (e.getError()) {
             case INVALID_PARAMETERS:

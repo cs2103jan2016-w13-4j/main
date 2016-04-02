@@ -11,10 +11,6 @@ public abstract class CommandHandler {
     public static Logger logger = JfdiLogger.getLogger();
     public MainController controller = UI.getInstance().controller;
 
-    protected void refreshDisplay() {
-        controller.listMain.refresh();
-    }
-
     public void setController(MainController ctrl) {
         controller = ctrl;
     }

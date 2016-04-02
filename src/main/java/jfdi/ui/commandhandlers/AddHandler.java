@@ -22,12 +22,6 @@ public class AddHandler extends CommandHandler {
 
     @Subscribe
     public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {
-        System.out.println(controller.displayStatus);
-
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         if (controller.displayStatus.equals(ListStatus.SEARCH)) {
             controller.switchContext(ListStatus.INCOMPLETE, true);
@@ -37,21 +31,21 @@ public class AddHandler extends CommandHandler {
 
         TaskAttributes task = e.getTask();
         controller.appendTaskToDisplayList(task, true);
+
         if (controller.shouldSort()) {
             controller.sortDisplayList();
         }
+
         controller.updateNotiBubbles();
+
         controller.listMain.scrollTo(controller.importantList.size() - 1);
+
         controller.relayFb(String.format(Constants.CMD_SUCCESS_ADDED, task.getDescription()), MsgType.SUCCESS);
         logger.fine(String.format(Constants.LOG_ADDED_SUCCESS, task.getId()));
     }
 
     @Subscribe
     public void handleAddTaskFailEvent(AddTaskFailedEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         switch (e.getError()) {
             case UNKNOWN:

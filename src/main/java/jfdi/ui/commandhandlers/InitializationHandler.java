@@ -32,10 +32,6 @@ public class InitializationHandler extends CommandHandler {
 
     @Subscribe
     public void handleInitializationFailedEvent(InitializationFailedEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         switch (e.getError()) {
             case UNKNOWN:

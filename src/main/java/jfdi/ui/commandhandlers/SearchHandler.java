@@ -20,23 +20,35 @@ public class SearchHandler extends CommandHandler {
 
     @Subscribe
     public void handleSearchDoneEvent(SearchDoneEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
+        
+        // check size of result and keyword > 0
 
         controller.listTasks(e.getResults(), false);
-
         controller.switchContext(ListStatus.SEARCH, false);
-
-        controller.searchCmd = Constants.CTRL_CMD_SEARCH;
-        for (String key : e.getKeywords()) {
-            controller.searchCmd += key + " ";
-        }
-
-        // controller.switchTabSkin();
-        // controller.setHighlights(e.getKeywords());
-        controller.relayFb(Constants.CMD_SUCCESS_SEARCH, MsgType.SUCCESS);
+        controller.switchTabSkin();
         controller.updateNotiBubbles();
+        createSearchFb(e);
+
+
+    }
+
+    private void createSearchFb(SearchDoneEvent e) {
+        controller.searchCmd = Constants.CTRL_CMD_SEARCH;
+        if (e.getKeywords().size() == 1) {
+            controller.relayFb(String.format(Constants.CMD_SUCCESS_SEARCH_1, e.getKeywords()), MsgType.SUCCESS);
+        } else {
+            int count = 0;
+            String searchKeyWords = "";
+            for (String key : e.getKeywords()) {
+                controller.searchCmd += key + " ";
+                searchKeyWords += key;
+                if (count == e.getKeywords().size() - 1) {
+                    searchKeyWords += " and ";
+                } else if (!(count == e.getKeywords().size())) {
+                    searchKeyWords += ", ";
+                }
+            }
+            controller.relayFb(String.format(Constants.CMD_SUCCESS_SEARCH_2, searchKeyWords), MsgType.SUCCESS);
+        }
     }
 }

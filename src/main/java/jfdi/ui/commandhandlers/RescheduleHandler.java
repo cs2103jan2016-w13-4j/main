@@ -21,11 +21,7 @@ public class RescheduleHandler extends CommandHandler {
 
     @Subscribe
     public void handleRescheduleTaskDoneEvent(RescheduleTaskDoneEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
-
+        
         int count = 0;
         TaskAttributes task = e.getTask();
         for (int i = 0; i < controller.importantList.size(); i++) {
@@ -35,21 +31,19 @@ public class RescheduleHandler extends CommandHandler {
                 break;
             }
         }
+        
         if (controller.shouldSort()) {
             controller.sortDisplayList();
         }
+        
         logger.fine(String.format(Constants.LOG_RESCHED_SUCCESS, task.getId()));
-        controller.updateNotiBubbles();
         controller.listMain.scrollTo(count);
+        controller.updateNotiBubbles();
         controller.relayFb(String.format(Constants.CMD_SUCCESS_RESCHEDULED, count + 1), MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleRescheduleTaskFailEvent(RescheduleTaskFailedEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         switch (e.getError()) {
             case UNKNOWN:

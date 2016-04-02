@@ -20,12 +20,7 @@ public class ListHandler extends CommandHandler {
 
     @Subscribe
     public void handleListDoneEvent(ListDoneEvent e) {
-        controller.updateBubble(e);
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
-
+        
         switch (e.getListType()) {
             case ALL:
                 controller.switchContext(ListStatus.ALL, false);
@@ -35,6 +30,7 @@ public class ListHandler extends CommandHandler {
                 break;
             case INCOMPLETE:
                 controller.switchContext(ListStatus.INCOMPLETE, false);
+                //divide list into different parts
                 break;
             case OVERDUE:
                 controller.switchContext(ListStatus.OVERDUE, false);
@@ -46,8 +42,10 @@ public class ListHandler extends CommandHandler {
                 break;
 
         }
+
+        controller.updateNotiBubbles();
         controller.listTasks(e.getItems(), false);
-        controller.relayFb(Constants.CMD_SUCCESS_LISTED, MsgType.SUCCESS);
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_LISTED, e.getListType()), MsgType.SUCCESS);
     }
 
 }

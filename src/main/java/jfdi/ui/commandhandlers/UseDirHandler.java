@@ -21,10 +21,6 @@ public class UseDirHandler extends CommandHandler {
 
     @Subscribe
     public void handleUseDirectoryDoneEvent(UseDirectoryDoneEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         controller.switchContext(ListStatus.INCOMPLETE, true);
         controller.relayFb(
@@ -37,10 +33,6 @@ public class UseDirHandler extends CommandHandler {
 
     @Subscribe
     public void handleUseDirectoryFailEvent(UseDirectoryFailedEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         switch (e.getError()) {
             case UNKNOWN:

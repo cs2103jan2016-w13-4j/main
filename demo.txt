@@ -28,6 +28,7 @@ list incomplete
 \b\b\b\b\b\b\b\b\b\b
 search meeting
 search meeting boss
+search boss meeting
 delete 1
 undo
 

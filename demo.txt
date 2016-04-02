@@ -36,15 +36,14 @@ undo
 
 
 ### KY's Portion
-surprise!
+surprise!\enter
 surprise!\enter
 use work
 Attend project JFDI meeting from 2pm to 3pm\enter
 Submit financial report to boss by 6pm\enter
-use personal
+use personal\enter
 Buy groceries on the way home later\enter
 Have dinner with family tonight\enter
-use work\enter
-use personal\enter
+use work\enteruse personal\enteruse work\enter
 move /Users/Xinan/Dropbox/
 directory

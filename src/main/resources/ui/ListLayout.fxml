@@ -224,9 +224,24 @@
                   <Insets bottom="5.0" top="15.0" />
                </padding>  
             </ListView> 
-            <AnchorPane maxHeight="500.0" maxWidth="500.0" prefHeight="500.0" prefWidth="500.0" translateX="60.0" translateY="-30.0" StackPane.alignment="CENTER">
+            <AnchorPane fx:id="surpriseOverlay" maxHeight="485.0" maxWidth="530.0" prefHeight="485.0" prefWidth="500.0" style="-fx-background-color: #faebcd;" translateX="60.0" translateY="-30.0" StackPane.alignment="CENTER">
                <children>
-                  <VBox fx:id="surpriseOverlay" layoutX="-4.0" layoutY="117.0" maxWidth="500.0" prefHeight="500.0" prefWidth="500.0">
+                  <HBox maxHeight="80.0" prefHeight="184.0" prefWidth="500.0">
+                     <children>
+                        <ImageView fitHeight="53.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true" translateX="60.0">
+                           <image>
+                              <Image url="@images/tadaflip.png" />
+                           </image>
+                        </ImageView>
+                        <Label alignment="CENTER" contentDisplay="CENTER" styleClass="surpriseTitle" text="SURPRISE!!!" textAlignment="CENTER" translateX="75.0" />
+                        <ImageView fitHeight="53.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true" translateX="90.0">
+                           <image>
+                              <Image url="@images/tada.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+                  <VBox layoutX="-5.0" maxHeight="485.0" maxWidth="530.0" prefHeight="485.0" prefWidth="530.0" style="-fx-background-color: #faebcd;" translateX="5.0">
                      <children>
                         <HBox maxHeight="80.0" prefHeight="184.0" prefWidth="500.0" VBox.vgrow="ALWAYS">
                            <children>
@@ -242,10 +257,13 @@
                                  </image>
                               </ImageView>
                            </children>
+                           <VBox.margin>
+                              <Insets left="15.0" top="80.0" />
+                           </VBox.margin>
                         </HBox>
                         <VBox alignment="CENTER" maxWidth="500.0" prefWidth="500.0" style="-fx-background-color: #faebcd;">
                         	<children>
-                        		<Label fx:id="taskDesc" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" nodeOrientation="LEFT_TO_RIGHT" prefWidth="500.0" styleClass="taskDesc" text="Command command adfasd command comanda adfasdf adsfasdfads asdfasdf" textAlignment="CENTER">
+                        		<Label fx:id="taskDesc" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" nodeOrientation="LEFT_TO_RIGHT" prefWidth="500.0" styleClass="taskDesc" text="label" textAlignment="CENTER">
                         			<VBox.margin>
             							<Insets bottom="5.0" />
          							</VBox.margin>
@@ -253,19 +271,40 @@
                         		<Label fx:id="taskTime" alignment="CENTER" contentDisplay="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefWidth="500.0" styleClass="taskTime" text="Label" textAlignment="CENTER" />
                         		<Label fx:id="surpriseBottom" alignment="CENTER" maxWidth="500.0" prefWidth="500.0" styleClass="surpriseBottom" text="Yay or Nay?" textAlignment="CENTER" />
                      		</children>
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
                      	</VBox>
                      </children>
                   </VBox>
                </children>
             </AnchorPane>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <AnchorPane fx:id="noSurpriseOverlay" maxHeight="485.0" maxWidth="530.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #faebcd;" StackPane.alignment="CENTER_RIGHT">
                <children>
-                  <ImageView fx:id="noSurpriseOverlay" fitHeight="228.0" fitWidth="273.0" layoutX="274.0" layoutY="209.0" pickOnBounds="true" preserveRatio="true">
+                  <HBox maxHeight="80.0" prefHeight="184.0" prefWidth="500.0" translateX="15.0" translateY="80.0">
+                     <children>
+                        <ImageView fitHeight="53.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true" translateX="60.0">
+                           <image>
+                              <Image url="@images/tadaflip.png" />
+                           </image>
+                        </ImageView>
+                        <Label alignment="CENTER" contentDisplay="CENTER" styleClass="surpriseTitle" text="SURPRISE!!!" textAlignment="CENTER" translateX="75.0" />
+                        <ImageView fitHeight="53.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true" translateX="90.0">
+                           <image>
+                              <Image url="@images/tada.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+                  <ImageView fitHeight="228.0" fitWidth="273.0" layoutX="149.0" layoutY="156.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/relieved-face.png" />
                      </image>
                   </ImageView>
                </children>
+               <StackPane.margin>
+                  <Insets bottom="70.0" right="10.0" />
+               </StackPane.margin>
             </AnchorPane>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
@@ -274,7 +313,7 @@
                         <Image url="@images/10.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="49.0" fitWidth="118.0" layoutX="597.0" layoutY="504.0" pickOnBounds="true" preserveRatio="true" rotate="-24.0">
+                  <ImageView fitHeight="49.0" fitWidth="118.0" layoutX="596.0" layoutY="502.0" pickOnBounds="true" preserveRatio="true" rotate="-24.0">
                      <image>
                         <Image url="@images/8.png" />
                      </image>
@@ -284,7 +323,7 @@
                         <Image url="@images/7.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="47.0" fitWidth="118.0" layoutX="593.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true" rotate="21.8">
+                  <ImageView fitHeight="47.0" fitWidth="118.0" layoutX="598.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" rotate="21.8">
                      <image>
                         <Image url="@images/6.png" />
                      </image>

@@ -215,7 +215,7 @@ public class TestMain extends ApplicationTest {
          * TestFX provides many operations to retrieve elements from the loaded
          * GUI.
          */
-        return lookup(query).query();
+        return lookup(query).queryFirst();
     }
 
     @Before
@@ -253,9 +253,6 @@ public class TestMain extends ApplicationTest {
         taskTime = find("#taskTime");
         surpriseBottom = find("#surpriseBottom");
         noSurpriseOverlay = find("#noSurpriseOverlay");
-
-        // WaitForAsyncUtils.waitForFxEvents();
-
     }
 
     /* To clear the ongoing events */

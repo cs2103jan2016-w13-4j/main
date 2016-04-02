@@ -3,6 +3,7 @@ package jfdi.ui;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.concurrent.CountDownLatch;
@@ -10,6 +11,7 @@ import java.util.concurrent.CountDownLatch;
 import com.sun.javafx.scene.control.skin.ListViewSkin;
 import com.sun.javafx.scene.control.skin.VirtualFlow;
 
+import edu.emory.mathcs.backport.java.util.Collections;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -23,13 +25,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import jfdi.common.utilities.JFDIRobot;
 import jfdi.logic.ControlCenter;
+import jfdi.logic.events.ListDoneEvent;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.ui.Constants.CallType;
 import jfdi.ui.Constants.ListStatus;
@@ -89,7 +91,7 @@ public class MainController {
     @FXML
     public ListView<HelpItem> helpContent;
     @FXML
-    public VBox surpriseOverlay;
+    public AnchorPane surpriseOverlay;
     @FXML
     public Label surpriseTitle;
     @FXML
@@ -99,16 +101,17 @@ public class MainController {
     @FXML
     public Label surpriseBottom;
     @FXML
-    public ImageView noSurpriseOverlay;
+    public AnchorPane noSurpriseOverlay;
 
     public MainSetUp main;
     public IUserInterface ui;
     public CommandHandler cmdHandler;
     public Stage mainStage;
+    public ControlCenter controlCenter = ControlCenter.getInstance();
     public ObservableList<ListItem> importantList;
     public ListStatus displayStatus = ListStatus.INCOMPLETE;
     public ListStatus beforeHelp = ListStatus.INCOMPLETE;
-    public String searchCmd = "search ";
+    public String searchCmd;
     public boolean isUpdate = false;
     public StringProperty incompletePlaceHdr = new SimpleStringProperty();
     public StringProperty overduePlaceHdr = new SimpleStringProperty();
@@ -162,11 +165,6 @@ public class MainController {
 
     public void displayList(String cmd) {
         triggerDisplayCall();
-        ui.processInput(cmd);
-    }
-
-    public void executeInternalCommand(String cmd) {
-        triggerInternalCall();
         ui.processInput(cmd);
     }
 
@@ -229,22 +227,22 @@ public class MainController {
     public void transListCmd() {
         switch (displayStatus) {
             case INCOMPLETE:
-                displayList(Constants.CTRL_CMD_INCOMPLETE);
+                listTasks(controlCenter.getIncompleteTasks(), false);
                 break;
             case OVERDUE:
-                displayList(Constants.CTRL_CMD_OVERDUE);
+                listTasks(controlCenter.getOverdueTasks(), false);
                 break;
             case UPCOMING:
-                displayList(Constants.CTRL_CMD_UPCOMING);
+                listTasks(controlCenter.getUpcomingTasks(), false);
                 break;
             case ALL:
-                displayList(Constants.CTRL_CMD_ALL);
+                listTasks(controlCenter.getAllTasks(), false);
                 break;
             case COMPLETE:
-                displayList(Constants.CTRL_CMD_COMPLETE);
+                listTasks(controlCenter.getCompletedTasks(), false);
                 break;
             case SEARCH:
-                displayList(Constants.CTRL_CMD_SEARCH);
+                displayList(searchCmd);
                 break;
             case SURPRISE:
                 showSurpriseDisplay();
@@ -360,10 +358,10 @@ public class MainController {
         updateNotiBubbles();
         Service<Void> service = new Service<Void>() {
             @Override
-            protected Task<Void> createTask() {
+            public Task<Void> createTask() {
                 return new Task<Void>() {
                     @Override
-                    protected Void call() throws Exception {
+                    public Void call() throws Exception {
                         // Background work
                         final CountDownLatch latch = new CountDownLatch(1);
                         Platform.runLater(new Runnable() {
@@ -500,9 +498,9 @@ public class MainController {
     }
 
     public void updateNotiBubbles() {
-        executeInternalCommand(Constants.CTRL_CMD_INCOMPLETE);
-        executeInternalCommand(Constants.CTRL_CMD_OVERDUE);
-        executeInternalCommand(Constants.CTRL_CMD_UPCOMING);
+        incompletePlaceHdr.set(String.valueOf(controlCenter.getIncompleteTasks().size()));
+        overduePlaceHdr.set(String.valueOf(controlCenter.getOverdueTasks().size()));
+        upcomingPlaceHdr.set(String.valueOf(controlCenter.getUpcomingTasks().size()));;
     }
 
     /***************************
@@ -560,6 +558,110 @@ public class MainController {
         IndexedCell<?> firstVisibleCell = virtualFlow.getFirstVisibleCellWithinViewPort();
         if (firstVisibleCell != null) {
             firstVisibleId = firstVisibleCell.getIndex();
+        }
+    }
+    
+    /**
+     * Sets the display list to the given ArrayList of tasks which match the
+     * context.
+     *
+     * @param tasks
+     *            the ArrayList of tasks to be displayed
+     */
+    public void listTasks(ArrayList<TaskAttributes> tasks, boolean shouldCheckContext) {
+        importantList.clear();
+        for (TaskAttributes task : tasks) {
+            appendTaskToDisplayList(task, shouldCheckContext);
+        }
+    }
+
+    /**
+     * Appends a task to the list of tasks displayed.
+     *
+     * @param task
+     *            the task to be appended
+     */
+    public void appendTaskToDisplayList(TaskAttributes task, boolean shouldCheckContext) {
+        if (shouldCheckContext && !isSameContext(task)) {
+            return;
+        }
+
+        int onScreenId = importantList.size() + 1;
+        ListItem listItem;
+
+        if (task.isCompleted()) {
+            listItem = new ListItem(onScreenId, task, true);
+            importantList.add(listItem);
+            importantList.get(importantList.size() - 1).strikeOut();
+            listItem.strikeOut();
+        } else {
+            listItem = new ListItem(onScreenId, task, false);
+            importantList.add(listItem);
+            importantList.get(importantList.size() - 1).getStyleClass().add("itemBox");
+        }
+    }
+
+    public void sortDisplayList() {
+        ArrayList<TaskAttributes> taskList = new ArrayList<TaskAttributes>();
+        importantList.forEach(listItem -> taskList.add(listItem.getItem()));
+        Collections.sort(taskList);
+        listTasks(taskList, false);
+    }
+
+    public boolean shouldSort() {
+        return displayStatus.equals(ListStatus.OVERDUE)
+                || displayStatus.equals(ListStatus.UPCOMING);
+    }
+
+    private boolean isSameContext(TaskAttributes task) {
+        switch (displayStatus) {
+            case ALL:
+                return true;
+            case SEARCH:
+                return false;
+            case SURPRISE:
+                return false;
+            case HELP:
+                return false;
+            case COMPLETE:
+                return task.isCompleted();
+            case INCOMPLETE:
+                return !task.isCompleted();
+            case OVERDUE:
+                return task.isOverdue();
+            case UPCOMING:
+                return task.isUpcoming();
+            default:
+                assert false;
+                return false;
+        }
+    }
+
+    public void switchContext(ListStatus status, Boolean isListing) {
+        if (status.equals(ListStatus.HELP)) {
+            beforeHelp = displayStatus;
+        }
+        displayStatus = status;
+        if (isListing) {
+            transListCmd();
+        }
+        switchTabSkin();
+    }
+
+    public void updateBubble(ListDoneEvent e) {
+        Integer count = e.getItems().size();
+        switch (e.getListType()) {
+            case INCOMPLETE:
+                incompletePlaceHdr.set(count.toString());
+                break;
+            case OVERDUE:
+                overduePlaceHdr.set(count.toString());
+                break;
+            case UPCOMING:
+                upcomingPlaceHdr.set(count.toString());
+                break;
+            default:
+                break;
         }
     }
 }

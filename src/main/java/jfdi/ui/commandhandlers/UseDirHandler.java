@@ -26,7 +26,7 @@ public class UseDirHandler extends CommandHandler {
             return;
         }
 
-        switchContext(ListStatus.INCOMPLETE, true);
+        controller.switchContext(ListStatus.INCOMPLETE, true);
         controller.relayFb(
             String.format(Constants.CMD_SUCCESS_USED, e.getNewDirectory()),
             MsgType.SUCCESS);

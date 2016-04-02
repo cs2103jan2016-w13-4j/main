@@ -22,17 +22,23 @@ public class AddHandler extends CommandHandler {
 
     @Subscribe
     public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {
+        System.out.println(controller.displayStatus);
+
         if (controller.isInternalCall()) {
             // Add any method calls strictly for internal calls here
             return;
         }
-        if (!controller.displayStatus.equals(ListStatus.ALL)) {
-            switchContext(ListStatus.INCOMPLETE, false);
+
+        if (controller.displayStatus.equals(ListStatus.SEARCH)) {
+            controller.switchContext(ListStatus.INCOMPLETE, true);
+        } else if (!controller.displayStatus.equals(ListStatus.ALL)) {
+            controller.switchContext(ListStatus.INCOMPLETE, false);
         }
+
         TaskAttributes task = e.getTask();
-        appendTaskToDisplayList(task, true);
-        if (shouldSort()) {
-            sortDisplayList();
+        controller.appendTaskToDisplayList(task, true);
+        if (controller.shouldSort()) {
+            controller.sortDisplayList();
         }
         controller.updateNotiBubbles();
         controller.listMain.scrollTo(controller.importantList.size() - 1);

@@ -44,6 +44,7 @@ public class UI implements IUserInterface {
     @Override
     public void processInput(String input) {
         controller.hideOverlays();
+
         if (controller.displayStatus.equals(ListStatus.HELP)) {
             controller.hideOverlays();
             controller.displayStatus = controller.beforeHelp;
@@ -63,9 +64,10 @@ public class UI implements IUserInterface {
             controller.hideOverlays();
             controller.switchTabSkin();
         }
+
         // Clear controller first
-        controller.clearCmdArea();
-        controller.clearFb();
+        // controller.clearCmdArea();
+        // controller.clearFb();
 
         // Relay user input to logic and wait for reply
         relayToLogic(input);

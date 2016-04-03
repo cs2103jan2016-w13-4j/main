@@ -1,5 +1,7 @@
 package jfdi.ui;
 
+import jfdi.ui.items.ListItem;
+
 public class Constants {
 
     public static final char ARROW_UP = 0x25b2;
@@ -37,6 +39,9 @@ public class Constants {
     public static final String CTRL_CMD_SURPRISE_YAY = "yay";
     public static final String CTRL_CMD_SURPRISE_NAY = "nay";
     public static final String CTRL_CMD_HELP = "help";
+    public static final ListItem HEADER_OVERDUE = new ListItem(ListStatus.OVERDUE.toString());
+    public static final ListItem HEADER_UPCOMING = new ListItem(ListStatus.UPCOMING.toString());
+    public static final ListItem HEADER_OTHERS = new ListItem(ListStatus.OTHERS.toString());
 
     public enum ListStatus {
         INCOMPLETE,

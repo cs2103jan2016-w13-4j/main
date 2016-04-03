@@ -4,7 +4,6 @@ import com.google.common.eventbus.Subscribe;
 
 import jfdi.logic.events.CommandUndoneEvent;
 import jfdi.logic.events.UndoFailedEvent;
-import jfdi.logic.interfaces.Command;
 import jfdi.ui.Constants;
 import jfdi.ui.Constants.MsgType;
 
@@ -22,7 +21,6 @@ public class UndoHandler extends CommandHandler {
     @Subscribe
     public void handleCommandUndoneEvent(CommandUndoneEvent e) {
 
-        Class<? extends Command> cmdType = e.getCommandType();
         controller.updateNotiBubbles();
         controller.switchContext(controller.displayStatus, true);
         controller.updateAutoCompleteList();

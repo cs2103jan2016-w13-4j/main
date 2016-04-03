@@ -21,7 +21,7 @@ public class RescheduleHandler extends CommandHandler {
 
     @Subscribe
     public void handleRescheduleTaskDoneEvent(RescheduleTaskDoneEvent e) {
-        
+
         int count = 0;
         TaskAttributes task = e.getTask();
         for (int i = 0; i < controller.importantList.size(); i++) {
@@ -31,11 +31,11 @@ public class RescheduleHandler extends CommandHandler {
                 break;
             }
         }
-        
+
         if (controller.shouldSort()) {
             controller.sortDisplayList();
         }
-        
+
         logger.fine(String.format(Constants.LOG_RESCHED_SUCCESS, task.getId()));
         controller.listMain.scrollTo(count);
         controller.updateNotiBubbles();

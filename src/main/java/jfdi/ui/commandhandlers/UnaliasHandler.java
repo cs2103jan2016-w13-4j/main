@@ -27,7 +27,7 @@ public class UnaliasHandler extends CommandHandler {
 
     @Subscribe
     public void handleUnaliasFailEvent(UnaliasFailedEvent e) {
-        
+
         switch (e.getError()) {
             case UNKNOWN:
                 controller.relayFb(String.format(Constants.CMD_ERROR_CANT_UNALIAS_UNKNOWN, e.getAlias()),

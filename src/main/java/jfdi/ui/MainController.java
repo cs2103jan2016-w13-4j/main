@@ -108,9 +108,6 @@ public class MainController {
     public ObservableList<ListItem> importantList;
     // arraylist index against display index
     public HashMap<Integer, Integer> indexMatch = new HashMap<>();
-    ListItem headerOverdue = new ListItem(ListStatus.OVERDUE.toString());
-    ListItem headerUpcoming = new ListItem(ListStatus.UPCOMING.toString());
-    ListItem headerOthers = new ListItem(ListStatus.OTHERS.toString());
     public TaskAttributes highLight;
     public int highLightIndex;
     public ListStatus displayStatus = ListStatus.INCOMPLETE;
@@ -253,6 +250,7 @@ public class MainController {
                 hideOverlays();
                 listTasks(controlCenter.getIncompleteTasks(), false, true);
                 doSurpriseYay();
+                break;
             case HELP:
                 hideOverlays();
                 break;
@@ -593,35 +591,32 @@ public class MainController {
         }
     }
 
-    private void splitIncompleteList(ArrayList<TaskAttributes> items, boolean shouldCheckContext, boolean shouldHighLight) {
+    private void splitIncompleteList(ArrayList<TaskAttributes> items, boolean shouldCheckContext,
+            boolean shouldHighLight) {
 
         ArrayList<TaskAttributes> overdueList = new ArrayList<>(controlCenter.getOverdueTasks());
         ArrayList<TaskAttributes> upcomingList = new ArrayList<>(controlCenter.getUpcomingTasks());
         ArrayList<TaskAttributes> othersList = new ArrayList<>(controlCenter.getIncompleteTasks());
-        
-        importantList.add(headerOverdue);
+
+        importantList.add(Constants.HEADER_OVERDUE);
         for (TaskAttributes task : overdueList) {
-            if (shouldHighLight) {
-                if(!(highLight == null) && task.equals(highLight)) {
-                    appendTaskToDisplayList(task, shouldCheckContext, shouldHighLight);
-                    continue;
-                }
+            if (shouldHighLight && task.equals(highLight)) {
+                appendTaskToDisplayList(task, shouldCheckContext, shouldHighLight);
+                continue;
             }
             appendTaskToDisplayList(task, shouldCheckContext, false);
         }
 
-        importantList.add(headerUpcoming);
+        importantList.add(Constants.HEADER_UPCOMING);
         for (TaskAttributes task : upcomingList) {
-            if (shouldHighLight) {
-                if(!(highLight == null) && task.equals(highLight)) {
-                    appendTaskToDisplayList(task, shouldCheckContext, shouldHighLight);
-                    continue;
-                }
+            if (shouldHighLight && task.equals(highLight)) {
+                appendTaskToDisplayList(task, shouldCheckContext, shouldHighLight);
+                continue;
             }
             appendTaskToDisplayList(task, shouldCheckContext, false);
         }
 
-        importantList.add(headerOthers);
+        importantList.add(Constants.HEADER_OTHERS);
         for (TaskAttributes item : overdueList) {
             othersList.remove(item);
         }
@@ -629,11 +624,9 @@ public class MainController {
             othersList.remove(item);
         }
         for (TaskAttributes task : othersList) {
-            if (shouldHighLight) {
-                if(!(highLight == null) && task.getDescription().equals(highLight.getDescription())) {
-                    appendTaskToDisplayList(task, shouldCheckContext, shouldHighLight);
-                    continue;
-                }
+            if (shouldHighLight && task.getDescription().equals(highLight.getDescription())) {
+                appendTaskToDisplayList(task, shouldCheckContext, shouldHighLight);
+                continue;
             }
             appendTaskToDisplayList(task, shouldCheckContext, false);
         }
@@ -644,7 +637,10 @@ public class MainController {
      *
      * @param task
      *            the task to be appended
+     * @param shouldCheckContext
+     *            flag for context checking
      * @param shouldHighLight
+     *            flag for item highlighting
      */
     public void appendTaskToDisplayList(TaskAttributes task, boolean shouldCheckContext, boolean shouldHighLight) {
         if (shouldCheckContext && !isSameContext(task)) {

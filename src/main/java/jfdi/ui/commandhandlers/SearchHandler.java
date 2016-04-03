@@ -20,15 +20,14 @@ public class SearchHandler extends CommandHandler {
 
     @Subscribe
     public void handleSearchDoneEvent(SearchDoneEvent e) {
-        
+
         // check size of result and keyword > 0
-        
+
         controller.switchContext(ListStatus.SEARCH, false);
         controller.listTasks(e.getResults(), false, true);
         controller.switchTabSkin();
         controller.updateNotiBubbles();
         createSearchFb(e);
-
 
     }
 

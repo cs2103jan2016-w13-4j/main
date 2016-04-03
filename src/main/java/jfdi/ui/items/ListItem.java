@@ -20,7 +20,7 @@ public class ListItem extends VBox {
     private Label timeAndDate;
     @FXML
     private Label headerName;
-    
+
     private String name;
     private int index;
     private TaskAttributes item;
@@ -37,13 +37,13 @@ public class ListItem extends VBox {
             setMarkF();
         }
     }
-    
+
     public ListItem(String name) {
         loadHeaderView();
         setName(name);
         isHeader = true;
     }
-    
+
     private void loadView() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(Constants.URL_ITEM_PATH));
@@ -55,7 +55,7 @@ public class ListItem extends VBox {
             e.printStackTrace();
         }
     }
-    
+
     private void loadHeaderView() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(Constants.URL_HEADER_PATH));
@@ -124,7 +124,7 @@ public class ListItem extends VBox {
 
     public void setMarkT() {
         this.mark = true;
-        //  NEED TO BE ABLE TO STRIKE OUT THE TASK
+        // NEED TO BE ABLE TO STRIKE OUT THE TASK
     }
 
     public void setMarkF() {
@@ -143,7 +143,7 @@ public class ListItem extends VBox {
     public void removeStrike() {
         this.getStyleClass().setAll("itemBox");
     }
-    
+
     public boolean getIsHeader() {
         return isHeader;
     }

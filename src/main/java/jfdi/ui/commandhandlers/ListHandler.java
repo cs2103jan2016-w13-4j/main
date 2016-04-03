@@ -20,7 +20,7 @@ public class ListHandler extends CommandHandler {
 
     @Subscribe
     public void handleListDoneEvent(ListDoneEvent e) {
-        
+
         switch (e.getListType()) {
             case ALL:
                 controller.switchContext(ListStatus.ALL, true);

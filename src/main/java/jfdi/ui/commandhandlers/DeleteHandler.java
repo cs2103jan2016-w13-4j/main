@@ -33,7 +33,7 @@ public class DeleteHandler extends CommandHandler {
 
         removeTaskFromList(deletedIds);
         reorderListIndices();
-        
+
         controller.transListCmd();
 
         controller.updateNotiBubbles();
@@ -86,13 +86,13 @@ public class DeleteHandler extends CommandHandler {
     }
 
     private void reorderListIndices() {
-        
+
         int indexCount = 1;
         for (ListItem item : controller.importantList) {
             if (item.getIsHeader()) {
                 continue;
             }
-            
+
             if (item.getIndex() != indexCount) {
                 item.setIndex(indexCount);
             }

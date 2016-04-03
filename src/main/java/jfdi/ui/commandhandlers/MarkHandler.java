@@ -38,8 +38,8 @@ public class MarkHandler extends CommandHandler {
     private void markTaskOnList(ArrayList<Integer> doneIds) {
 
         if (doneIds.size() == 1) {
-            controller.importantList.get(doneIds.get(0) - 1).setMarkT();
-            controller.importantList.get(doneIds.get(0) - 1).strikeOut();
+            controller.importantList.get(controller.indexMatch.get(doneIds.get(0))).setMarkT();
+            controller.importantList.get(controller.indexMatch.get(doneIds.get(0))).strikeOut();
             controller.relayFb(String.format(Constants.CMD_SUCCESS_MARKED_1, doneIds.get(0)), MsgType.SUCCESS);
             controller.listMain.scrollTo(doneIds.get(0));
         } else {
@@ -47,7 +47,7 @@ public class MarkHandler extends CommandHandler {
             int indexCount = -1;
             String indices = "";
             for (int screenId : doneIds) {
-                indexCount = screenId - 1;
+                indexCount = controller.indexMatch.get(screenId);
                 indices += "#" + String.valueOf(screenId);
                 count++;
                 if (count == doneIds.size() - 1) {

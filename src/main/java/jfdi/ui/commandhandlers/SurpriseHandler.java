@@ -12,6 +12,7 @@ import jfdi.ui.Constants.MsgType;
 public class SurpriseHandler extends CommandHandler {
 
     private static SurpriseHandler instance = new SurpriseHandler();
+    private TaskAttributes surpriseItem;
 
     private SurpriseHandler() {
     }
@@ -23,8 +24,7 @@ public class SurpriseHandler extends CommandHandler {
     @Subscribe
     public void handleSurpriseEvent(SurpriseEvent e) {
         
-        //DO STH ABT YAY!!!
-
+        controller.highLight = e.getTask();
         controller.initSurpriseOverlay(e.getTask());
         controller.switchContext(ListStatus.ALL, false);// why is this needed?
         controller.switchContext(ListStatus.SURPRISE, false);

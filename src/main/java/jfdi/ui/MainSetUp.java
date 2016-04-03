@@ -121,6 +121,8 @@ public class MainSetUp extends Application {
 
         controller.hideOverlays();
         controller.updateNotiBubbles();
+        controller.transListCmd();
+        controller.switchTabSkin();
         initThread();
         ui.displayWelcome();
     }

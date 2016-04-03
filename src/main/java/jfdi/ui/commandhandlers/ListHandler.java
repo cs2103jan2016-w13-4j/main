@@ -23,20 +23,19 @@ public class ListHandler extends CommandHandler {
         
         switch (e.getListType()) {
             case ALL:
-                controller.switchContext(ListStatus.ALL, false);
+                controller.switchContext(ListStatus.ALL, true);
                 break;
             case COMPLETED:
-                controller.switchContext(ListStatus.COMPLETE, false);
+                controller.switchContext(ListStatus.COMPLETE, true);
                 break;
             case INCOMPLETE:
-                controller.switchContext(ListStatus.INCOMPLETE, false);
-                //divide list into different parts
+                controller.switchContext(ListStatus.INCOMPLETE, true);
                 break;
             case OVERDUE:
-                controller.switchContext(ListStatus.OVERDUE, false);
+                controller.switchContext(ListStatus.OVERDUE, true);
                 break;
             case UPCOMING:
-                controller.switchContext(ListStatus.UPCOMING, false);
+                controller.switchContext(ListStatus.UPCOMING, true);
                 break;
             default:
                 break;
@@ -44,7 +43,6 @@ public class ListHandler extends CommandHandler {
         }
 
         controller.updateNotiBubbles();
-        controller.listTasks(e.getItems(), false);
         controller.relayFb(String.format(Constants.CMD_SUCCESS_LISTED, e.getListType()), MsgType.SUCCESS);
     }
 

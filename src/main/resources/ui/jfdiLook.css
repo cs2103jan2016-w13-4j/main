@@ -163,30 +163,15 @@
 	-fx-wrap-text: true;
 }
 
-.itemBoxOverdue #rowIndex {
+.headerName {
 	-fx-text-fill: #943939;
 	-fx-font-family: "Hammersmith One";
-	-fx-font-size: 16px;
+	-fx-font-size: 32px;
 	-fx-alignment: CENTER;
 	-fx-text-alignment: CENTER;
 }
 
-.itemBoxOverdue #description {
-	-fx-text-fill: #943939;
-	-fx-font-family: "Hammersmith One";
-	-fx-font-size: 14px;
-	-fx-wrap-text: true;
-}
-
-
-.itemBoxOverdue #timeAndDate {
-	-fx-text-fill: #943939;
-	-fx-font-family: "Titillium Web";
-	-fx-font-size: 11px;
-	-fx-wrap-text: true;
-}
-
-.itemBoxUpcoming #rowIndex {
+.itemBoxYay #rowIndex {
 	-fx-text-fill: #E18237;
 	-fx-font-family: "Hammersmith One";
 	-fx-font-size: 16px;
@@ -194,7 +179,7 @@
 	-fx-text-alignment: CENTER;
 }
 
-.itemBoxUpcoming #description {
+.itemBoxYay #description {
 	-fx-text-fill: #E18237;
 	-fx-font-family: "Hammersmith One";
 	-fx-font-size: 14px;
@@ -202,7 +187,7 @@
 }
 
 
-.itemBoxUpcoming #timeAndDate {
+.itemBoxYay #timeAndDate {
 	-fx-text-fill: #E18237;
 	-fx-font-family: "Titillium Web";
 	-fx-font-size: 11px;

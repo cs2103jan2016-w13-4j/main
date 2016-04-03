@@ -30,7 +30,7 @@ public class AddHandler extends CommandHandler {
         }
 
         TaskAttributes task = e.getTask();
-        controller.appendTaskToDisplayList(task, true);
+        controller.appendTaskToDisplayList(task, true, false);
 
         if (controller.shouldSort()) {
             controller.sortDisplayList();

@@ -33,6 +33,8 @@ public class DeleteHandler extends CommandHandler {
 
         removeTaskFromList(deletedIds);
         reorderListIndices();
+        
+        controller.transListCmd();
 
         controller.updateNotiBubbles();
     }
@@ -62,19 +64,19 @@ public class DeleteHandler extends CommandHandler {
     private void removeTaskFromList(ArrayList<Integer> deletedIds) {
 
         if (deletedIds.size() == 1) {
-            controller.importantList.remove(deletedIds.get(0) - 1);
+            controller.importantList.remove(controller.indexMatch.get(deletedIds.get(0)));
             controller.relayFb(String.format(Constants.CMD_SUCCESS_DELETED_1, deletedIds.get(0)), MsgType.SUCCESS);
         } else {
             int count = 0;
-            int indexCount = -1;
+            int indexCount;
             String indices = "";
             for (int screenId : deletedIds) {
-                indexCount = screenId - 1;
+                indexCount = controller.indexMatch.get(screenId);
                 indices += "#" + String.valueOf(screenId);
                 count++;
                 if (count == deletedIds.size() - 1) {
                     indices += " and ";
-                } else if (!(count == 1) && !(count == deletedIds.size())) {
+                } else if (!(count == deletedIds.size())) {
                     indices += ", ";
                 }
                 controller.importantList.remove(indexCount);
@@ -84,8 +86,13 @@ public class DeleteHandler extends CommandHandler {
     }
 
     private void reorderListIndices() {
+        
         int indexCount = 1;
         for (ListItem item : controller.importantList) {
+            if (item.getIsHeader()) {
+                continue;
+            }
+            
             if (item.getIndex() != indexCount) {
                 item.setIndex(indexCount);
             }

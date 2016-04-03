@@ -38,8 +38,8 @@ public class UnmarkHandler extends CommandHandler {
     private void unmarkTaskOnList(ArrayList<Integer> undoneIds) {
 
         if (undoneIds.size() == 1) {
-            controller.importantList.get(undoneIds.get(0) - 1).setMarkF();
-            controller.importantList.get(undoneIds.get(0) - 1).removeStrike();
+            controller.importantList.get(controller.indexMatch.get(undoneIds.get(0))).setMarkF();
+            controller.importantList.get(controller.indexMatch.get(undoneIds.get(0))).removeStrike();
             controller.relayFb(String.format(Constants.CMD_SUCCESS_UNMARKED_1, undoneIds.get(0)), MsgType.SUCCESS);
             controller.listMain.scrollTo(undoneIds.get(0));
         } else {
@@ -47,7 +47,7 @@ public class UnmarkHandler extends CommandHandler {
             int indexCount = -1;
             String indices = "";
             for (int screenId : undoneIds) {
-                indexCount = screenId - 1;
+                indexCount = controller.indexMatch.get(screenId);
                 indices += "#" + String.valueOf(screenId);
                 count++;
                 if (count == undoneIds.size() - 1) {

@@ -21,7 +21,7 @@ public class Constants {
     public static final String URL_LIST_PATH = "/ui/ListLayout.fxml";
     public static final String URL_HELP_PATH = "/ui/HelpItem.fxml";
     public static final String URL_ITEM_PATH = "/ui/ListItem.fxml";
-    public static final String URL_STATS_PATH = "/ui/StatsItem.fxml";
+    public static final String URL_HEADER_PATH = "/ui/ListHeader.fxml";
     public static final String URL_HAMSMITH_PATH = "/ui/fonts/HammersmithOne.ttf";
     public static final String URL_RALEWAY_PATH = "/ui/fonts/raleway.heavy.ttf";
     public static final String URL_LOGO_PATH = "/ui/images/JFDI_sq.png";
@@ -46,7 +46,9 @@ public class Constants {
         COMPLETE,
         SEARCH,
         SURPRISE,
-        HELP
+        SURPRISE_YAY,
+        HELP,
+        OTHERS
     }
 
     public enum MsgType {

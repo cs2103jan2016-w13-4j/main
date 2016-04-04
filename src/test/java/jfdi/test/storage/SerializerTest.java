@@ -35,4 +35,10 @@ public class SerializerTest {
         assertEquals(false, deserializedTask.isCompleted());
     }
 
+    @Test
+    public void testDeserializeInvalidData() {
+        String invalidData = "some data that doesn't make sense in JSON.";
+        assertEquals(null, Serializer.deserialize(invalidData, Task.class));
+    }
+
 }

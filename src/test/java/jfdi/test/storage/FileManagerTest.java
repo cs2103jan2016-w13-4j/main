@@ -130,6 +130,15 @@ public class FileManagerTest {
         File backupFile = new File(backupPath);
         assertFalse(testFile.exists());
         assertTrue(backupFile.exists());
+
+        // Create the test file again
+        FileManager.writeToFile(Constants.TEST_FILE_DATA, testFilePath);
+
+        // The backup method should work even if a backup already exists
+        String backupPath2 = FileManager.backupAndRemove(testFilePath);
+        File backupFile2 = new File(backupPath2);
+        assertFalse(testFile.exists());
+        assertTrue(backupFile2.exists());
     }
 
     @Test

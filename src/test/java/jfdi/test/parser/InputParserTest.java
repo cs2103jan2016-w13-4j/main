@@ -2,6 +2,10 @@
 
 package jfdi.test.parser;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import jfdi.logic.commands.AddTaskCommand;
 import jfdi.logic.commands.AliasCommand;
 import jfdi.logic.commands.DeleteTaskCommand;
@@ -21,8 +25,11 @@ import jfdi.logic.commands.UnmarkTaskCommand;
 import jfdi.logic.commands.UseDirectoryCommand;
 import jfdi.logic.commands.WildcardCommand;
 import jfdi.logic.interfaces.Command;
+import jfdi.parser.Constants;
 import jfdi.parser.InputParser;
 import jfdi.parser.exceptions.InvalidInputException;
+import jfdi.storage.apis.AliasAttributes;
+import jfdi.storage.entities.Alias;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -30,10 +37,21 @@ import org.junit.Test;
 
 public class InputParserTest {
     InputParser parser;
+    ArrayList<AliasAttributes> aliasAttributes = new ArrayList<>();
 
     @Before
     public void setupParser() {
         parser = InputParser.getInstance();
+        aliasAttributes.clear();
+        aliasAttributes.add(new AliasAttributes(new Alias("ad", "add")));
+        aliasAttributes.add(new AliasAttributes(new Alias("del", "delete")));
+        aliasAttributes.add(new AliasAttributes(new Alias("res", "reschedule")));
+        aliasAttributes.add(new AliasAttributes(new Alias("q", "quit")));
+        aliasAttributes.add(new AliasAttributes(new Alias("un", "undo")));
+        aliasAttributes.add(new AliasAttributes(new Alias("rm", "delete")));
+        aliasAttributes.add(new AliasAttributes(new Alias("dir", "directory")));
+
+        parser.setAliases(aliasAttributes);
     }
 
     // ==============================================================
@@ -44,435 +62,320 @@ public class InputParserTest {
     // ==============================================================
 
     @Test
-    public void testUserInputAdd() {
+    public void testUserInputAdd() throws InvalidInputException {
         String addCommand = "add hello";
-        try {
-            Command command = parser.parse(addCommand);
-            Assert.assertTrue(command instanceof AddTaskCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+        Command command = parser.parse(addCommand);
+        Assert.assertTrue(command instanceof AddTaskCommand);
 
         addCommand = "hello";
-        try {
-            Command command = parser.parse(addCommand);
-            Assert.assertTrue(command instanceof AddTaskCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+        command = parser.parse(addCommand);
+        Assert.assertTrue(command instanceof AddTaskCommand);
 
         addCommand = "hello 23/12/1993 to 26/09/1998";
-        try {
-            Command command = parser.parse(addCommand);
-            Assert.assertTrue(command instanceof AddTaskCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+        command = parser.parse(addCommand);
+        Assert.assertTrue(command instanceof AddTaskCommand);
 
         addCommand = "hello by 22nd Jan 1500hrs";
-        try {
-            Command command = parser.parse(addCommand);
-            Assert.assertTrue(command instanceof AddTaskCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+        command = parser.parse(addCommand);
+        Assert.assertTrue(command instanceof AddTaskCommand);
 
-        addCommand = "hello on 15th Sep 2015";
-        try {
-            Command command = parser.parse(addCommand);
-            Assert.assertTrue(command instanceof AddTaskCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+        // With alias
+        addCommand = "ad hello on 15th Sep 2015";
+        command = parser.parse(addCommand);
+        Assert.assertTrue(command instanceof AddTaskCommand);
 
         addCommand = "from now to tomorrow";
-        try {
-            Command command = parser.parse(addCommand);
-            Assert.assertTrue(command instanceof InvalidCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+        command = parser.parse(addCommand);
+        Assert.assertTrue(command instanceof InvalidCommand);
 
         addCommand = "add";
-        try {
-            Command command = parser.parse(addCommand);
-            Assert.assertTrue(command instanceof InvalidCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+        command = parser.parse(addCommand);
+        Assert.assertTrue(command instanceof InvalidCommand);
     }
 
     @Test
-    public void testUserInputList() {
+    public void testUserInputList() throws InvalidInputException {
         String listCommand = "List";
-        try {
-            Command command = parser.parse(listCommand);
-            Assert.assertTrue(command instanceof ListCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+        Command command = parser.parse(listCommand);
+        Assert.assertTrue(command instanceof ListCommand);
+
         listCommand = "List all";
-        try {
-            Command command = parser.parse(listCommand);
-            Assert.assertTrue(command instanceof ListCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+        command = parser.parse(listCommand);
+        Assert.assertTrue(command instanceof ListCommand);
+
         listCommand = "list completed";
-        try {
-            Command command = parser.parse(listCommand);
-            Assert.assertTrue(command instanceof ListCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+        command = parser.parse(listCommand);
+        Assert.assertTrue(command instanceof ListCommand);
+
         listCommand = "list voodoo";
-        try {
-            Command command = parser.parse(listCommand);
-            Assert.assertTrue(command instanceof InvalidCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+        command = parser.parse(listCommand);
+        Assert.assertTrue(command instanceof InvalidCommand);
+
         listCommand = "list 12345";
-        try {
-            Command command = parser.parse(listCommand);
-            Assert.assertTrue(command instanceof InvalidCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+        command = parser.parse(listCommand);
+        Assert.assertTrue(command instanceof InvalidCommand);
 
     }
 
     @Test
-    public void testUserInputDelete() {
+    public void testUserInputDelete() throws InvalidInputException {
         String deleteCommand = "delete 1,2,3";
-        try {
-            Command command = parser.parse(deleteCommand);
-            Assert.assertTrue(command instanceof DeleteTaskCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        Command command = parser.parse(deleteCommand);
+        Assert.assertTrue(command instanceof DeleteTaskCommand);
+
         deleteCommand = "delete";
-        try {
-            Command command = parser.parse(deleteCommand);
-            Assert.assertTrue(command instanceof InvalidCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+        command = parser.parse(deleteCommand);
+        Assert.assertTrue(command instanceof InvalidCommand);
     }
 
     @Test
-    public void testUserInputRename() {
+    public void testUserInputRename() throws InvalidInputException {
         String renameCommand = "rename 1 hello";
-        try {
-            Command command = parser.parse(renameCommand);
-            Assert.assertTrue(command instanceof RenameTaskCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        Command command = parser.parse(renameCommand);
+        Assert.assertTrue(command instanceof RenameTaskCommand);
 
         renameCommand = "rename 10";
-        try {
-            Command command = parser.parse(renameCommand);
-            Assert.assertTrue(command instanceof InvalidCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        command = parser.parse(renameCommand);
+        Assert.assertTrue(command instanceof InvalidCommand);
     }
 
     @Test
-    public void testUserInputReschedule() {
+    public void testUserInputReschedule() throws InvalidInputException {
         String rescheduleCommand = "reschedule 4 by next week";
-        try {
-            Command command = parser.parse(rescheduleCommand);
-            Assert.assertTrue(command instanceof RescheduleTaskCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        Command command = parser.parse(rescheduleCommand);
+        Assert.assertTrue(command instanceof RescheduleTaskCommand);
     }
 
     @Test
-    public void testUserInputSearch() {
+    public void testUserInputSearch() throws InvalidInputException {
         String searchCommand = "search hello";
-        try {
-            Command command = parser.parse(searchCommand);
-            Assert.assertTrue(command instanceof SearchCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        Command command = parser.parse(searchCommand);
+        Assert.assertTrue(command instanceof SearchCommand);
 
         searchCommand = "search";
-        try {
-            Command command = parser.parse(searchCommand);
-            Assert.assertTrue(command instanceof InvalidCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        command = parser.parse(searchCommand);
+        Assert.assertTrue(command instanceof InvalidCommand);
     }
 
     @Test
-    public void testUserInputMark() {
+    public void testUserInputMark() throws InvalidInputException {
         String markCommand = "mark 1";
-        try {
-            Command command = parser.parse(markCommand);
-            Assert.assertTrue(command instanceof MarkTaskCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        Command command = parser.parse(markCommand);
+        Assert.assertTrue(command instanceof MarkTaskCommand);
 
         markCommand = "mark";
-        try {
-            Command command = parser.parse(markCommand);
-            Assert.assertTrue(command instanceof InvalidCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        command = parser.parse(markCommand);
+        Assert.assertTrue(command instanceof InvalidCommand);
     }
 
     @Test
-    public void testUserInputUnmark() {
+    public void testUserInputUnmark() throws InvalidInputException {
         String unmarkCommand = "unmark 1";
-        try {
-            Command command = parser.parse(unmarkCommand);
-            Assert.assertTrue(command instanceof UnmarkTaskCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        Command command = parser.parse(unmarkCommand);
+        Assert.assertTrue(command instanceof UnmarkTaskCommand);
 
         unmarkCommand = "unmark dfsdfsdf";
-        try {
-            Command command = parser.parse(unmarkCommand);
-            Assert.assertTrue(command instanceof InvalidCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        command = parser.parse(unmarkCommand);
+        Assert.assertTrue(command instanceof InvalidCommand);
     }
 
     @Test
-    public void testUserInputAlias() {
+    public void testUserInputAlias() throws InvalidInputException {
         String aliasCommand = "alias add hello";
-        try {
-            Command command = parser.parse(aliasCommand);
-            Assert.assertTrue(command instanceof AliasCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        Command command = parser.parse(aliasCommand);
+        Assert.assertTrue(command instanceof AliasCommand);
 
         aliasCommand = "alias banana hello";
-        try {
-            Command command = parser.parse(aliasCommand);
-            Assert.assertTrue(command instanceof AliasCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        command = parser.parse(aliasCommand);
+        Assert.assertTrue(command instanceof AliasCommand);
 
         aliasCommand = "alias hello";
-        try {
-            Command command = parser.parse(aliasCommand);
-            Assert.assertTrue(command instanceof InvalidCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        command = parser.parse(aliasCommand);
+        Assert.assertTrue(command instanceof InvalidCommand);
     }
 
     @Test
-    public void testUserInputUnalias() {
+    public void testUserInputUnalias() throws InvalidInputException {
         String unaliasCommand = "unalias hello";
-        try {
-            Command command = parser.parse(unaliasCommand);
-            Assert.assertTrue(command instanceof UnaliasCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        Command command = parser.parse(unaliasCommand);
+        Assert.assertTrue(command instanceof UnaliasCommand);
 
         unaliasCommand = "unalias ";
-        try {
-            Command command = parser.parse(unaliasCommand);
-            Assert.assertTrue(command instanceof InvalidCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        command = parser.parse(unaliasCommand);
+        Assert.assertTrue(command instanceof InvalidCommand);
     }
 
     @Test
-    public void testUserInputDirectory() {
+    public void testUserInputDirectory() throws InvalidInputException {
         String directoryCommand = "directory";
-        try {
-            Command command = parser.parse(directoryCommand);
-            Assert.assertTrue(command instanceof DirectoryCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        Command command = parser.parse(directoryCommand);
+        Assert.assertTrue(command instanceof DirectoryCommand);
 
         // For single word commands, add extra characters after the command
         directoryCommand = "directory to NUS";
-        try {
-            Command command = parser.parse(directoryCommand);
-            Assert.assertTrue(command instanceof AddTaskCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        command = parser.parse(directoryCommand);
+        Assert.assertTrue(command instanceof AddTaskCommand);
     }
 
     @Test
-    public void testUserInputMove() {
+    public void testUserInputMove() throws InvalidInputException {
         String moveCommand = "move";
-        try {
-            Command command = parser.parse(moveCommand);
-            Assert.assertTrue(command instanceof InvalidCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        Command command = parser.parse(moveCommand);
+        Assert.assertTrue(command instanceof InvalidCommand);
 
         moveCommand = "move C:/";
-        try {
-            Command command = parser.parse(moveCommand);
-            Assert.assertTrue(command instanceof MoveDirectoryCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        command = parser.parse(moveCommand);
+        Assert.assertTrue(command instanceof MoveDirectoryCommand);
     }
 
     @Test
-    public void testUserInputUse() {
+    public void testUserInputUse() throws InvalidInputException {
         String useCommand = "use";
-        try {
-            Command command = parser.parse(useCommand);
-            Assert.assertTrue(command instanceof InvalidCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        Command command = parser.parse(useCommand);
+        Assert.assertTrue(command instanceof InvalidCommand);
         useCommand = "use C://";
-        try {
-            Command command = parser.parse(useCommand);
-            Assert.assertTrue(command instanceof UseDirectoryCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        command = parser.parse(useCommand);
+        Assert.assertTrue(command instanceof UseDirectoryCommand);
     }
 
     @Test
-    public void testUserInputUndo() {
+    public void testUserInputUndo() throws InvalidInputException {
         String undoCommand = "undo";
-        try {
-            Command command = parser.parse(undoCommand);
-            Assert.assertTrue(command instanceof UndoCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        Command command = parser.parse(undoCommand);
+        Assert.assertTrue(command instanceof UndoCommand);
 
         undoCommand = "undo my life";
-        try {
-            Command command = parser.parse(undoCommand);
-            Assert.assertTrue(command instanceof AddTaskCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        command = parser.parse(undoCommand);
+        Assert.assertTrue(command instanceof AddTaskCommand);
     }
 
     @Test
-    public void testUserInputHelp() {
+    public void testUserInputHelp() throws InvalidInputException {
         String helpCommand = "help";
-        try {
-            Command command = parser.parse(helpCommand);
-            Assert.assertTrue(command instanceof HelpCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        Command command = parser.parse(helpCommand);
+        Assert.assertTrue(command instanceof HelpCommand);
 
         helpCommand = "help me get my life back on track";
-        try {
-            Command command = parser.parse(helpCommand);
-            Assert.assertTrue(command instanceof AddTaskCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        command = parser.parse(helpCommand);
+        Assert.assertTrue(command instanceof AddTaskCommand);
     }
 
     @Test
-    public void testUserInputWildcard() {
+    public void testUserInputWildcard() throws InvalidInputException {
         String wildcardCommand = "surprise";
-        try {
-            Command command = parser.parse(wildcardCommand);
-            Assert.assertTrue(command instanceof WildcardCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+        Command command = parser.parse(wildcardCommand);
+        Assert.assertTrue(command instanceof WildcardCommand);
 
         wildcardCommand = "surprise!!";
-        try {
-            Command command = parser.parse(wildcardCommand);
-            Assert.assertTrue(command instanceof WildcardCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+        command = parser.parse(wildcardCommand);
+        Assert.assertTrue(command instanceof WildcardCommand);
 
         wildcardCommand = "surprise!!!!!!!!!!!!!!";
-        try {
-            Command command = parser.parse(wildcardCommand);
-            Assert.assertTrue(command instanceof WildcardCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+        command = parser.parse(wildcardCommand);
+        Assert.assertTrue(command instanceof WildcardCommand);
 
         wildcardCommand = "surprise myself on my birthday (since nobody else will :()";
-        try {
-            Command command = parser.parse(wildcardCommand);
-            Assert.assertTrue(command instanceof AddTaskCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+        command = parser.parse(wildcardCommand);
+        Assert.assertTrue(command instanceof AddTaskCommand);
     }
 
     @Test
-    public void testUserInputExit() {
+    public void testUserInputExit() throws InvalidInputException {
         String exitCommand = "exit";
-        try {
-            Command command = parser.parse(exitCommand);
-            Assert.assertTrue(command instanceof ExitCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        Command command = parser.parse(exitCommand);
+        Assert.assertTrue(command instanceof ExitCommand);
 
         exitCommand = "quit";
-        try {
-            Command command = parser.parse(exitCommand);
-            Assert.assertTrue(command instanceof ExitCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        command = parser.parse(exitCommand);
+        Assert.assertTrue(command instanceof ExitCommand);
 
         exitCommand = "quit slacking";
-        try {
-            Command command = parser.parse(exitCommand);
-            Assert.assertTrue(command instanceof AddTaskCommand);
-        } catch (InvalidInputException e) {
-            Assert.fail();
-        }
+
+        command = parser.parse(exitCommand);
+        Assert.assertTrue(command instanceof AddTaskCommand);
 
         exitCommand = "exit on the left";
+
+        command = parser.parse(exitCommand);
+        Assert.assertTrue(command instanceof AddTaskCommand);
+    }
+
+    @Test
+    public void testInvalid() throws InvalidInputException {
+
+        Command command = null;
         try {
-            Command command = parser.parse(exitCommand);
-            Assert.assertTrue(command instanceof AddTaskCommand);
+            command = parser.parse(null);
         } catch (InvalidInputException e) {
-            Assert.fail();
+            Assert.assertTrue(true);
+        }
+
+        try {
+            command = parser.parse("");
+        } catch (InvalidInputException e) {
+            Assert.assertTrue(true);
+        }
+
+        try {
+            command = parser.parse(" ");
+        } catch (InvalidInputException e) {
+            Assert.assertTrue(true);
         }
     }
 
     @Test
-    public void testInvalid() {
-        String invalidCommand = null;
-        try {
-            Command command = parser.parse(invalidCommand);
-            Assert.fail();
-        } catch (InvalidInputException e) {
-            Assert.assertTrue(true);
+    public void testSetAliases() {
+
+        List<String> aliasesInAliasAttributes =
+            Arrays.asList(aliasAttributes.stream().map(aliasAttribute -> aliasAttribute.getAlias())
+                .toArray(size -> new String[size]));
+        List<String> commandsInAliasAttributes =
+            Arrays.asList(aliasAttributes.stream().map(aliasAttribute -> aliasAttribute.getCommand())
+                .toArray(size -> new String[size]));
+
+        for (String alias : parser.getAliasMap().keySet()) {
+            Assert.assertTrue(aliasesInAliasAttributes.contains(alias));
+            String command = commandsInAliasAttributes.get(aliasesInAliasAttributes.indexOf(alias));
+            Assert.assertTrue(parser.getAliasMap().get(alias).equals(command));
         }
-        invalidCommand = "";
-        try {
-            Command command = parser.parse(invalidCommand);
-            Assert.fail();
-        } catch (InvalidInputException e) {
-            Assert.assertTrue(true);
+
+        for (String alias : aliasesInAliasAttributes) {
+            Assert.assertTrue(parser.getAliasMap().keySet().contains(alias));
+            String command = parser.getAliasMap().get(alias);
+            Assert.assertTrue(commandsInAliasAttributes.get(aliasesInAliasAttributes.indexOf(alias)).equals(command));
         }
+    }
+
+    @Test
+    public void testGetAllCommandRegexes() {
+        String allCommandRegexes = parser.getAllCommandRegexes();
+        Assert.assertTrue(allCommandRegexes.equals(String.join("|", Constants.getCommandRegexes())));
     }
 }

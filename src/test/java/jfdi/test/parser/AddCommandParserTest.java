@@ -20,8 +20,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class AddCommandParserTest {
-    private static AbstractCommandParser parser = AddCommandParser
-        .getInstance();
+    private static AbstractCommandParser parser = AddCommandParser.getInstance();
 
     @BeforeClass
     public static void init() {
@@ -52,33 +51,28 @@ public class AddCommandParserTest {
         // Boundary case: no 'add' keyword
         cmd = parser.build("This should parse as an add command.");
         addTaskCommand = validateAndReturnAddCommand(cmd);
-        validateDescription(addTaskCommand,
-            "This should parse as an add command.");
+        validateDescription(addTaskCommand, "This should parse as an add command.");
         Assert.assertFalse(hasStartDateTime(addTaskCommand));
         Assert.assertFalse(hasEndDateTime(addTaskCommand));
 
         // Boundary case: With escape delimiters
         cmd = parser.build("\"This should parse as an add command.\"");
         addTaskCommand = validateAndReturnAddCommand(cmd);
-        validateDescription(addTaskCommand,
-            "This should parse as an add command.");
+        validateDescription(addTaskCommand, "This should parse as an add command.");
         Assert.assertFalse(hasStartDateTime(addTaskCommand));
         Assert.assertFalse(hasEndDateTime(addTaskCommand));
 
         // Boundary case: With escape delimiters
-        cmd = parser
-            .build("\"The date time here should not be parsed by tomorrow\"");
+        cmd = parser.build("\"The date time here should not be parsed by tomorrow\"");
         addTaskCommand = validateAndReturnAddCommand(cmd);
-        validateDescription(addTaskCommand,
-            "The date time here should not be parsed by tomorrow");
+        validateDescription(addTaskCommand, "The date time here should not be parsed by tomorrow");
         Assert.assertFalse(hasStartDateTime(addTaskCommand));
         Assert.assertFalse(hasEndDateTime(addTaskCommand));
 
         // Boundary case: symbols
         cmd = parser.build("&%&^%%*@^#!)!@#()\\@*@)_    @#@#***");
         addTaskCommand = validateAndReturnAddCommand(cmd);
-        validateDescription(addTaskCommand,
-            "&%&^%%*@^#!)!@#()\\@*@)_    @#@#***");
+        validateDescription(addTaskCommand, "&%&^%%*@^#!)!@#()\\@*@)_    @#@#***");
         Assert.assertFalse(hasStartDateTime(addTaskCommand));
         Assert.assertFalse(hasEndDateTime(addTaskCommand));
 
@@ -94,32 +88,27 @@ public class AddCommandParserTest {
     public void testValidAddInputWithDateTime() {
         // Equivalence class: valid inputs with date-time
         // covers the three types of date-time tasks: deadline, event, point
-        Command addCommand = parser
-            .build("add watch how i met your mother by tomorrow");
+        Command addCommand = parser.build("add watch how i met your mother by tomorrow");
         AddTaskCommand addTaskCommand = validateAndReturnAddCommand(addCommand);
         validateDescription(addTaskCommand, "watch how i met your mother");
         Assert.assertFalse(hasStartDateTime(addTaskCommand));
         Assert.assertTrue(hasEndDateTime(addTaskCommand));
-        Assert.assertEquals(getEndDateTime(addTaskCommand),
-            getEndDateTime("by tomorrow"));
+        Assert.assertEquals(getEndDateTime(addTaskCommand), getEndDateTime("by tomorrow"));
 
         addCommand = parser.build("go to bed at 9pm");
         addTaskCommand = validateAndReturnAddCommand(addCommand);
         validateDescription(addTaskCommand, "go to bed");
         Assert.assertTrue(hasStartDateTime(addTaskCommand));
         Assert.assertFalse(hasEndDateTime(addTaskCommand));
-        Assert.assertEquals(getStartDateTime(addTaskCommand),
-            getStartDateTime("at 9pm"));
+        Assert.assertEquals(getStartDateTime(addTaskCommand), getStartDateTime("at 9pm"));
 
         addCommand = parser.build("play Goat Simulator from 4pm to 11pm");
         addTaskCommand = validateAndReturnAddCommand(addCommand);
         validateDescription(addTaskCommand, "play Goat Simulator");
         Assert.assertTrue(hasStartDateTime(addTaskCommand));
         Assert.assertTrue(hasEndDateTime(addTaskCommand));
-        Assert.assertEquals(getStartDateTime(addTaskCommand),
-            getStartDateTime("from 4pm to 11pm"));
-        Assert.assertEquals(getEndDateTime(addTaskCommand),
-            getEndDateTime("from 4pm to 11pm"));
+        Assert.assertEquals(getStartDateTime(addTaskCommand), getStartDateTime("from 4pm to 11pm"));
+        Assert.assertEquals(getEndDateTime(addTaskCommand), getEndDateTime("from 4pm to 11pm"));
 
         // Boundary case: with escape delimiters
         addCommand = parser.build("\"play Goat Simulator\" from 4pm to 11pm");
@@ -127,10 +116,8 @@ public class AddCommandParserTest {
         validateDescription(addTaskCommand, "play Goat Simulator");
         Assert.assertTrue(hasStartDateTime(addTaskCommand));
         Assert.assertTrue(hasEndDateTime(addTaskCommand));
-        Assert.assertEquals(getStartDateTime(addTaskCommand),
-            getStartDateTime("from 4pm to 11pm"));
-        Assert.assertEquals(getEndDateTime(addTaskCommand),
-            getEndDateTime("from 4pm to 11pm"));
+        Assert.assertEquals(getStartDateTime(addTaskCommand), getStartDateTime("from 4pm to 11pm"));
+        Assert.assertEquals(getEndDateTime(addTaskCommand), getEndDateTime("from 4pm to 11pm"));
 
     }
 
@@ -144,23 +131,20 @@ public class AddCommandParserTest {
         addCommand = parser.build("add from 5pm to 6pm");
         Assert.assertTrue(addCommand instanceof InvalidCommand);
 
+        addCommand = parser.build("from 5pm to 6pm");
+        Assert.assertTrue(addCommand instanceof InvalidCommand);
+
         // Boundary case: with delimiters, wrapped around nothing
         addCommand = parser.build("\"\" from 5pm to 6pm");
         Assert.assertTrue(addCommand instanceof InvalidCommand);
 
         // Boundary case: null
-        try {
-            addCommand = parser.build(null);
-        } catch (AssertionError e) {
-            Assert.assertTrue(true);
-        }
+        addCommand = parser.build(null);
+        Assert.assertTrue(addCommand instanceof InvalidCommand);
 
         // Boundary case: Empty string
-        try {
-            addCommand = parser.build("");
-        } catch (AssertionError e) {
-            Assert.assertTrue(true);
-        }
+        addCommand = parser.build("");
+        Assert.assertTrue(addCommand instanceof InvalidCommand);
 
     }
 
@@ -171,8 +155,7 @@ public class AddCommandParserTest {
         return (AddTaskCommand) cmd;
     }
 
-    private void validateDescription(AddTaskCommand addTaskCommand,
-        String expected) {
+    private void validateDescription(AddTaskCommand addTaskCommand, String expected) {
         Assert.assertEquals(addTaskCommand.getDescription(), expected);
     }
 

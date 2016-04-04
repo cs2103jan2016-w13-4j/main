@@ -40,10 +40,6 @@ public class DateTimeObject {
         return endDateTime;
     }
 
-    public boolean isTimeSpecified() {
-        return isTimeSpecified;
-    }
-
     public static class DateTimeObjectBuilder {
         private TaskType taskType = null;
         private LocalDateTime startDateTime = null;
@@ -63,27 +59,6 @@ public class DateTimeObject {
         public DateTimeObjectBuilder setEndDateTime(LocalDateTime ldt) {
             this.endDateTime = ldt;
             return this;
-        }
-
-        public DateTimeObjectBuilder setIsTimeSpecified(boolean isTimeSpecified) {
-            this.isTimeSpecified = isTimeSpecified;
-            return this;
-        }
-
-        public TaskType getTaskType() {
-            return taskType;
-        }
-
-        public LocalDateTime getStartDateTime() {
-            return startDateTime;
-        }
-
-        public LocalDateTime getEndDateTime() {
-            return endDateTime;
-        }
-
-        public boolean isTimeSpecified() {
-            return isTimeSpecified;
         }
 
         public DateTimeObject build() {

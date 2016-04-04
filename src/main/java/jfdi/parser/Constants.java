@@ -191,16 +191,20 @@ public class Constants {
     // parsing dates
     public static final ZoneId ZONE_ID = ZoneId.systemDefault();
 
-    protected static final String[] COMMAND_REGEXES = {REGEX_ADD, REGEX_LIST, REGEX_RENAME, REGEX_RENAME,
+    private static final String[] COMMAND_REGEXES = {REGEX_ADD, REGEX_LIST, REGEX_RENAME, REGEX_RENAME,
         REGEX_RESCHEDULE, REGEX_DELETE, REGEX_SEARCH, REGEX_MARK, REGEX_UNMARK, REGEX_ALIAS, REGEX_UNALIAS,
         REGEX_DIRECTORY, REGEX_USE, REGEX_MOVE, REGEX_UNDO, REGEX_HELP, REGEX_WILDCARD, REGEX_EXIT};
 
-    public static void main(String[] args) {
-
-        System.out.println("delete 1-10".matches(REGEX_DELETE_FORMAT));
-        System.out.println("mark 1".matches(REGEX_MARK_FORMAT));
-        System.out.println("12:34hrs, 23/12".matches(REGEX_DATE_FORMAT));
-        System.out.println("\\enter".matches(".*\\\\enter$"));
-        System.out.println((double) (5 / 2));
+    public static String[] getCommandRegexes() {
+        return COMMAND_REGEXES;
     }
+
+    /*
+     * public static void main(String[] args) {
+     * System.out.println("delete 1-10".matches(REGEX_DELETE_FORMAT));
+     * System.out.println("mark 1".matches(REGEX_MARK_FORMAT));
+     * System.out.println("12:34hrs, 23/12".matches(REGEX_DATE_FORMAT));
+     * System.out.println("\\enter".matches(".*\\\\enter$"));
+     * System.out.println((double) (5 / 2)); }
+     */
 }

@@ -50,9 +50,6 @@ public class DeleteCommandParser extends AbstractCommandParser {
      */
     @Override
     public Command build(String input) {
-        assert isValidInput(input)
-            && matchesCommandType(input, CommandType.delete);
-
         if (!isValidDeleteCommand(input)) {
             return createInvalidCommand(CommandType.delete, input);
         }
@@ -73,6 +70,6 @@ public class DeleteCommandParser extends AbstractCommandParser {
      * Checks to see if the given input is in a valid Delete format.
      */
     private boolean isValidDeleteCommand(String input) {
-        return input.trim().matches(Constants.REGEX_DELETE_FORMAT);
+        return isValidInput(input) && input.trim().matches(Constants.REGEX_DELETE_FORMAT);
     }
 }

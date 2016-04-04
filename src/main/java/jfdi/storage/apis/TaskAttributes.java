@@ -213,31 +213,9 @@ public class TaskAttributes implements Comparable<TaskAttributes> {
     }
 
     @Override
-    public int hashCode() {
-        if (getStartElseEndDate() == null) {
-            return super.hashCode();
-        }
-        return getStartElseEndDate().hashCode();
-    }
-
-    @Override
     public int compareTo(TaskAttributes taskAttributes) {
         assert getStartElseEndDate() != null && taskAttributes.getStartElseEndDate() != null;
         return getStartElseEndDate().compareTo(taskAttributes.getStartElseEndDate());
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (object == null || !(object instanceof TaskAttributes)) {
-            return false;
-        }
-        if (object == this) {
-            return true;
-        }
-
-        TaskAttributes taskAttributes = (TaskAttributes) object;
-        assert getStartElseEndDate() != null && taskAttributes.getStartElseEndDate() != null;
-        return this.getStartElseEndDate().equals(taskAttributes.getStartElseEndDate());
     }
 
 }

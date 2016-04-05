@@ -1,4 +1,5 @@
 // @@author A0130195M
+
 package jfdi.test.logic.interfaces;
 
 import jfdi.logic.interfaces.Command;

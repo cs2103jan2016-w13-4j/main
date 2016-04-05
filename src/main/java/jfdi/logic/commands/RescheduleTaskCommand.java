@@ -13,7 +13,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 /**
- * @@author Liu Xinan
+ * @author Liu Xinan
  */
 public class RescheduleTaskCommand extends Command {
 

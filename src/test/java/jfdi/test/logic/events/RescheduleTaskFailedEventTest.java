@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @@author Liu Xinan
+ * @author Liu Xinan
  */
 public class RescheduleTaskFailedEventTest {
 

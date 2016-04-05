@@ -4,7 +4,7 @@ import jfdi.logic.events.NoThanksEvent;
 import jfdi.logic.interfaces.Command;
 
 /**
- * @@author Liu Xinan
+ * @author Liu Xinan
  */
 public class NoCommand extends Command {
 

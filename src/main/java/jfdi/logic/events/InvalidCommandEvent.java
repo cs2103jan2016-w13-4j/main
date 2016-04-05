@@ -3,7 +3,7 @@ package jfdi.logic.events;
 import jfdi.parser.Constants.CommandType;
 
 /**
- * @@author Liu Xinan
+ * @author Liu Xinan
  */
 public class InvalidCommandEvent {
 

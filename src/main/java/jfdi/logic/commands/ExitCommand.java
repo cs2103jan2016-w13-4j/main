@@ -4,7 +4,7 @@ import jfdi.logic.events.ExitCalledEvent;
 import jfdi.logic.interfaces.Command;
 
 /**
- * @@author Liu Xinan
+ * @author Liu Xinan
  */
 public class ExitCommand extends Command {
 

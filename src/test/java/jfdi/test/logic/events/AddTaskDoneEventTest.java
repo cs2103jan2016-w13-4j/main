@@ -10,7 +10,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.junit.Assert.assertSame;
 
 /**
- * @@author Liu Xinan
+ * @author Liu Xinan
  */
 @RunWith(MockitoJUnitRunner.class)
 public class AddTaskDoneEventTest {

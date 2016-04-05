@@ -3,7 +3,7 @@ package jfdi.logic.events;
 import jfdi.logic.interfaces.Command;
 
 /**
- * @@author Liu Xinan
+ * @author Liu Xinan
  */
 public class CommandUndoneEvent {
 

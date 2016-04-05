@@ -13,7 +13,7 @@ import java.util.Stack;
 import java.util.logging.Logger;
 
 /**
- * @@author Liu Xinan
+ * @author Liu Xinan
  */
 public abstract class Command {
 

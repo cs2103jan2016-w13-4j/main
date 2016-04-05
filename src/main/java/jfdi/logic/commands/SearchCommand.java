@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.stream.Collectors;
 
 /**
- * @@author Liu Xinan
+ * @author Liu Xinan
  */
 public class SearchCommand extends Command {
 

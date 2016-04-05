@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
- * @@author Liu Xinan
+ * @author Liu Xinan
  */
 public class DeleteTaskCommand extends Command {
 

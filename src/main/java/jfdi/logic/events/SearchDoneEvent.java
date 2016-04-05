@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
- * @@author Liu Xinan
+ * @author Liu Xinan
  */
 public class SearchDoneEvent {
 

@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.mockito.Mock;
 
 /**
- * @@author Liu Xinan
+ * @author Liu Xinan
  */
 public abstract class CommonCommandTest {
 

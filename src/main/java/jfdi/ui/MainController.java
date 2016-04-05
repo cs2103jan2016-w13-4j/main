@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
+import java.util.stream.Collectors;
 
 import com.sun.javafx.scene.control.skin.ListViewSkin;
 import com.sun.javafx.scene.control.skin.VirtualFlow;
@@ -596,7 +597,9 @@ public class MainController {
 
         ArrayList<TaskAttributes> overdueList = new ArrayList<>(controlCenter.getOverdueTasks());
         ArrayList<TaskAttributes> upcomingList = new ArrayList<>(controlCenter.getUpcomingTasks());
-        ArrayList<TaskAttributes> othersList = new ArrayList<>(controlCenter.getIncompleteTasks());
+        ArrayList<TaskAttributes> othersList = controlCenter.getIncompleteTasks().stream()
+                .filter(task -> !task.isOverdue() && !task.isUpcoming())
+                .collect(Collectors.toCollection(ArrayList::new));
 
         importantList.add(Constants.HEADER_OVERDUE);
         for (TaskAttributes task : overdueList) {
@@ -617,12 +620,6 @@ public class MainController {
         }
 
         importantList.add(Constants.HEADER_OTHERS);
-        for (TaskAttributes item : overdueList) {
-            othersList.remove(item);
-        }
-        for (TaskAttributes item : upcomingList) {
-            othersList.remove(item);
-        }
         for (TaskAttributes task : othersList) {
             if (shouldHighLight && task.getDescription().equals(highLight.getDescription())) {
                 appendTaskToDisplayList(task, shouldCheckContext, shouldHighLight);

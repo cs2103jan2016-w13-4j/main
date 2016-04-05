@@ -45,7 +45,7 @@ public class RenameCommandParser extends AbstractCommandParser {
     @Override
     public Command build(String input) {
         if (!isValidRenameInput(input)) {
-            return createInvalidCommand(CommandType.rename, input);
+            return createInvalidCommand(CommandType.RENAME, input);
         }
 
         String originalInput = input;
@@ -56,7 +56,7 @@ public class RenameCommandParser extends AbstractCommandParser {
             input = setAndRemoveTaskId(input, renameCommandBuilder);
             setTaskDescription(input, renameCommandBuilder);
         } catch (NoTaskIdFoundException | BadTaskDescriptionException e) {
-            return createInvalidCommand(Constants.CommandType.rename, originalInput);
+            return createInvalidCommand(Constants.CommandType.RENAME, originalInput);
         }
 
         RenameTaskCommand renameCommand = renameCommandBuilder.build();

@@ -51,7 +51,7 @@ public class DeleteCommandParser extends AbstractCommandParser {
     @Override
     public Command build(String input) {
         if (!isValidDeleteCommand(input)) {
-            return createInvalidCommand(CommandType.delete, input);
+            return createInvalidCommand(CommandType.DELETE, input);
         }
         input = removeFirstWord(input);
         Builder deleteCommandBuilder = new Builder();
@@ -59,7 +59,7 @@ public class DeleteCommandParser extends AbstractCommandParser {
         try {
             taskIds.addAll(getTaskIds(input));
         } catch (BadTaskIdException e) {
-            return createInvalidCommand(CommandType.delete, input);
+            return createInvalidCommand(CommandType.DELETE, input);
         }
         deleteCommandBuilder.addIds(taskIds);
         DeleteTaskCommand deleteCommand = deleteCommandBuilder.build();

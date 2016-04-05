@@ -6,7 +6,6 @@ import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.exceptions.DuplicateTaskException;
 import jfdi.storage.exceptions.InvalidIdException;
-import jfdi.ui.UI;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,6 +25,10 @@ public class DeleteTaskCommand extends Command {
 
     public ArrayList<Integer> getScreenIds() {
         return screenIds;
+    }
+
+    public ArrayList<TaskAttributes> getDeletedTasks() {
+        return deletedTasks;
     }
 
     public static class Builder {
@@ -48,10 +51,10 @@ public class DeleteTaskCommand extends Command {
 
     }
 
+
+
     @Override
     public void execute() {
-        UI ui = UI.getInstance();
-
         ArrayList<Integer> taskIds = screenIds.stream().map(ui::getTaskId)
             .collect(Collectors.toCollection(ArrayList::new));
 

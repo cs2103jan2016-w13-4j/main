@@ -7,7 +7,6 @@ import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
-import jfdi.ui.UI;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,8 +53,6 @@ public class UnmarkTaskCommand extends Command {
 
     @Override
     public void execute() {
-        UI ui = UI.getInstance();
-
         ArrayList<Integer> taskIds = screenIds.stream().map(ui::getTaskId)
             .collect(Collectors.toCollection(ArrayList::new));
 

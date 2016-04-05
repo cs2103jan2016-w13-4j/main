@@ -23,6 +23,7 @@ public abstract class Command {
     protected static final Stack<Command> undoStack = new Stack<>();
     protected static final Stack<Command> redoStack = new Stack<>();
 
+    protected static UI ui = UI.getInstance();
     protected static InputParser parser = InputParser.getInstance();
     protected static MainStorage mainStorage = MainStorage.getInstance();
     protected static TaskDb taskDb = TaskDb.getInstance();
@@ -41,7 +42,7 @@ public abstract class Command {
      */
     public abstract void undo();
 
-    protected static void setRedoing(boolean redo) {
+    public static void setRedoing(boolean redo) {
         redoing = redo;
     }
 
@@ -53,7 +54,7 @@ public abstract class Command {
         return lastSuggestion;
     }
 
-    protected void pushToUndoStack() {
+    public void pushToUndoStack() {
         if (!redoing) {
             while (!redoStack.empty()) {
                 undoStack.push(redoStack.pop());
@@ -63,14 +64,18 @@ public abstract class Command {
         undoStack.push(this);
     }
 
-    protected void pushToRedoStack() {
+    public void pushToRedoStack() {
         redoStack.push(this);
     }
 
     //================================================================
-    // List of setters for testing.
+    // List of setters and getters for testing.
     //================================================================
 
+
+    public static void setUi(UI ui) {
+        Command.ui = ui;
+    }
 
     public static void setParser(InputParser parser) {
         Command.parser = parser;
@@ -86,5 +91,37 @@ public abstract class Command {
 
     public static void setAliasDb(AliasDb aliasDb) {
         Command.aliasDb = aliasDb;
+    }
+
+    public static Stack<Command> getUndoStack() {
+        return undoStack;
+    }
+
+    public static Stack<Command> getRedoStack() {
+        return redoStack;
+    }
+
+    public static UI getUi() {
+        return ui;
+    }
+
+    public static InputParser getParser() {
+        return parser;
+    }
+
+    public static MainStorage getMainStorage() {
+        return mainStorage;
+    }
+
+    public static TaskDb getTaskDb() {
+        return taskDb;
+    }
+
+    public static AliasDb getAliasDb() {
+        return aliasDb;
+    }
+
+    public static boolean isRedoing() {
+        return redoing;
     }
 }

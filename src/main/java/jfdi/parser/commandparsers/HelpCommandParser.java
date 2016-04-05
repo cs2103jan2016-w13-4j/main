@@ -30,7 +30,7 @@ public class HelpCommandParser extends AbstractCommandParser {
     @Override
     public Command build(String input) {
         if (!isValidHelpCommand(input)) {
-            return createInvalidCommand(CommandType.wildcard, input);
+            return createInvalidCommand(CommandType.WILDCARD, input);
         }
         Builder builder = new Builder();
         return builder.build();

@@ -83,13 +83,11 @@ public class DateTimeParser {
 
         TaskType taskType = getTaskType(input);
         input = formatDateTimeInput(input);
-        System.out.println("After formatting: " + input);
 
         LocalDateTime startDateTime = null;
         LocalDateTime endDateTime = null;
         switch (taskType) {
-            case event:
-                System.out.println("event");
+            case EVENT:
                 String[] splitInput = input.split("\\bto\\b");
                 String[] splitOriginalInput = originalInput.split("\\bto\\b");
                 assert splitInput.length == 2;
@@ -115,13 +113,13 @@ public class DateTimeParser {
                     throw new BadDateTimeException(input);
                 }
                 break;
-            case point:
+            case POINT:
                 startDateTime = getLocalDateTime(input);
                 if (!checkTimeSpecified(input)) {
                     startDateTime = setTime(startDateTime, Constants.TIME_DEFAULT);
                 }
                 break;
-            case deadline:
+            case DEADLINE:
                 endDateTime = getLocalDateTime(input);
                 if (!checkTimeSpecified(input)) {
                     endDateTime = setTime(endDateTime, Constants.TIME_DEFAULT);
@@ -153,26 +151,8 @@ public class DateTimeParser {
     // =========================================
 
     /**
-     * This method converts dates of the form {day}/{month}/{year} to
-     * {month}/{day}/{year}. This has to be done because the underlying parsing
-     * library, prettyTime, can only parse American dates.
-     *
-     * @param input
-     *            the date time String to be parsed.
-     * @return the same input String, except with day and month reversed, if
-     *         any.
-     */
-    private String toAmericanTime(String input) {
-        assert isValidDateTime(input);
-
-        return input.replaceAll("\\b(?<day>0?[1-9]|[12][\\d]|3[01])(?<delimiter1>[-/.])"
-            + "(?<month>0?[1-9]|1[0-2])((?<delimiter2>[-/.])(?<year>(19|20)?\\d\\d))?\\b",
-            "${month}${delimiter1}${day}${delimiter2}${year}");
-    }
-
-    /**
-     * This method formats the given date-time input into something readable by
-     * the underlying date-time parser.
+     * This method formats the dates in the given date-time input into something
+     * readable by the underlying date-time parser.
      *
      * @param input
      *            the date-time input.
@@ -205,9 +185,35 @@ public class DateTimeParser {
         return inputBuilder.toString();
     }
 
+    /**
+     * This method formats the times in the given date-time input into something
+     * readable by the underlying date-time parser.
+     *
+     * @param input
+     *            the date-time input.
+     * @return the formatted String.
+     */
     private String formatTime(String input) {
         input = input.replaceAll("(?i)(0?[1-9]|1[0-2])([0-5][0-9])([ :]?([a|p][m]))", "$1.$2$3");
         return input;
+    }
+
+    /**
+     * This method converts dates of the form {day}/{month}/{year} to
+     * {month}/{day}/{year}. This has to be done because the underlying parsing
+     * library, prettyTime, can only parse American dates.
+     *
+     * @param input
+     *            the date time String to be parsed.
+     * @return the same input String, except with day and month reversed, if
+     *         any.
+     */
+    private String toAmericanTime(String input) {
+        assert isValidDateTime(input);
+
+        return input.replaceAll("\\b(?<day>0?[1-9]|[12][\\d]|3[01])(?<delimiter1>[-/.])"
+            + "(?<month>0?[1-9]|1[0-2])((?<delimiter2>[-/.])(?<year>(19|20)?\\d\\d))?\\b",
+            "${month}${delimiter1}${day}${delimiter2}${year}");
     }
 
     /**
@@ -263,11 +269,11 @@ public class DateTimeParser {
     private TaskType getTaskType(String input) {
         assert isValidDateTime(input);
         if (input.matches(Constants.REGEX_EVENT_IDENTIFIER)) {
-            return TaskType.event;
+            return TaskType.EVENT;
         } else if (input.matches(Constants.REGEX_DEADLINE_IDENTIFIER)) {
-            return TaskType.deadline;
+            return TaskType.DEADLINE;
         } else {
-            return TaskType.point;
+            return TaskType.POINT;
         }
     }
 
@@ -297,31 +303,11 @@ public class DateTimeParser {
         return LocalDateTime.ofInstant(d.toInstant(), Constants.ZONE_ID);
     }
 
-    /**
-     * This method sets the time of a LocalDateTime object to the time
-     * specified.
-     *
-     * @param dateTime
-     *            the LocalDateTime object which time is to be changed.
-     * @param time
-     *            the time to change to.
-     * @return a LocalDateTime object with time changed.
-     */
     private LocalDateTime setTime(LocalDateTime dateTime, Constants.Time time) {
         return dateTime.withHour(time.hour).withMinute(time.minutes).withSecond(time.seconds)
             .withNano(time.nanoseconds);
     }
 
-    /**
-     * This method sets the time of a LocalDateTime object to the time
-     * specified.
-     *
-     * @param to
-     *            the LocalDateTime object which date is to be changed.
-     * @param from
-     *            the LocalDateTime with the new date to change to.
-     * @return a LocalDateTime object with date changed.
-     */
     private LocalDateTime setDate(LocalDateTime to, LocalDateTime from) {
         return to.withYear(from.getYear()).withMonth(from.getMonthValue()).withDayOfMonth(from.getDayOfMonth());
     }

@@ -70,6 +70,7 @@ public class DeleteHandler extends CommandHandler {
             int count = 0;
             int indexCount;
             String indices = "";
+            Collections.sort(deletedIds, Collections.reverseOrder());
             for (int screenId : deletedIds) {
                 indexCount = controller.indexMatch.get(screenId);
                 indices += "#" + String.valueOf(screenId);

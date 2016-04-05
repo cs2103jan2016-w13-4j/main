@@ -30,12 +30,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -340,7 +338,8 @@ public class TestMain extends ApplicationTest {
     public void testAddDuplicateTask() {
         int listSize = controller.importantList.size();
         StringProperty notiSize = new SimpleStringProperty(Integer.toString(listSize));
-        String expectedFeedback = String.format(Constants.UI_MESSAGE_ERROR, Constants.CMD_ERROR_CANT_ADD_DUPLICATE).trim();
+        String expectedFeedback = String.format(Constants.UI_MESSAGE_ERROR,
+                Constants.CMD_ERROR_CANT_ADD_DUPLICATE).trim();
 
         String taskName = "testing1";
         addTask(taskName);
@@ -359,7 +358,8 @@ public class TestMain extends ApplicationTest {
     public void testAddEmptyTask() {
         int listSize = controller.importantList.size();
         StringProperty notiSize = new SimpleStringProperty(Integer.toString(listSize));
-        String expectedFeedback = String.format(Constants.UI_MESSAGE_ERROR, Constants.CMD_ERROR_CANT_ADD_EMPTY).trim();
+        String expectedFeedback = String.format(Constants.UI_MESSAGE_ERROR,
+                Constants.CMD_ERROR_CANT_ADD_EMPTY).trim();
 
         addTask("\" \"");
 
@@ -399,106 +399,302 @@ public class TestMain extends ApplicationTest {
 
     private void type(char c) {
         switch (c) {
-        case 'a': doType(KeyCode.A); break;
-        case 'b': doType(KeyCode.B); break;
-        case 'c': doType(KeyCode.C); break;
-        case 'd': doType(KeyCode.D); break;
-        case 'e': doType(KeyCode.E); break;
-        case 'f': doType(KeyCode.F); break;
-        case 'g': doType(KeyCode.G); break;
-        case 'h': doType(KeyCode.H); break;
-        case 'i': doType(KeyCode.I); break;
-        case 'j': doType(KeyCode.J); break;
-        case 'k': doType(KeyCode.K); break;
-        case 'l': doType(KeyCode.L); break;
-        case 'm': doType(KeyCode.M); break;
-        case 'n': doType(KeyCode.N); break;
-        case 'o': doType(KeyCode.O); break;
-        case 'p': doType(KeyCode.P); break;
-        case 'q': doType(KeyCode.Q); break;
-        case 'r': doType(KeyCode.R); break;
-        case 's': doType(KeyCode.S); break;
-        case 't': doType(KeyCode.T); break;
-        case 'u': doType(KeyCode.U); break;
-        case 'v': doType(KeyCode.V); break;
-        case 'w': doType(KeyCode.W); break;
-        case 'x': doType(KeyCode.X); break;
-        case 'y': doType(KeyCode.Y); break;
-        case 'z': doType(KeyCode.Z); break;
-        case 'A': doType(KeyCode.SHIFT, KeyCode.A); break;
-        case 'B': doType(KeyCode.SHIFT, KeyCode.B); break;
-        case 'C': doType(KeyCode.SHIFT, KeyCode.C); break;
-        case 'D': doType(KeyCode.SHIFT, KeyCode.D); break;
-        case 'E': doType(KeyCode.SHIFT, KeyCode.E); break;
-        case 'F': doType(KeyCode.SHIFT, KeyCode.F); break;
-        case 'G': doType(KeyCode.SHIFT, KeyCode.G); break;
-        case 'H': doType(KeyCode.SHIFT, KeyCode.H); break;
-        case 'I': doType(KeyCode.SHIFT, KeyCode.I); break;
-        case 'J': doType(KeyCode.SHIFT, KeyCode.J); break;
-        case 'K': doType(KeyCode.SHIFT, KeyCode.K); break;
-        case 'L': doType(KeyCode.SHIFT, KeyCode.L); break;
-        case 'M': doType(KeyCode.SHIFT, KeyCode.M); break;
-        case 'N': doType(KeyCode.SHIFT, KeyCode.N); break;
-        case 'O': doType(KeyCode.SHIFT, KeyCode.O); break;
-        case 'P': doType(KeyCode.SHIFT, KeyCode.P); break;
-        case 'Q': doType(KeyCode.SHIFT, KeyCode.Q); break;
-        case 'R': doType(KeyCode.SHIFT, KeyCode.R); break;
-        case 'S': doType(KeyCode.SHIFT, KeyCode.S); break;
-        case 'T': doType(KeyCode.SHIFT, KeyCode.T); break;
-        case 'U': doType(KeyCode.SHIFT, KeyCode.U); break;
-        case 'V': doType(KeyCode.SHIFT, KeyCode.V); break;
-        case 'W': doType(KeyCode.SHIFT, KeyCode.W); break;
-        case 'X': doType(KeyCode.SHIFT, KeyCode.X); break;
-        case 'Y': doType(KeyCode.SHIFT, KeyCode.Y); break;
-        case 'Z': doType(KeyCode.SHIFT, KeyCode.Z); break;
-        case '`': doType(KeyCode.BACK_QUOTE); break;
-        case '0': doType(KeyCode.DIGIT0); break;
-        case '1': doType(KeyCode.DIGIT1); break;
-        case '2': doType(KeyCode.DIGIT2); break;
-        case '3': doType(KeyCode.DIGIT3); break;
-        case '4': doType(KeyCode.DIGIT4); break;
-        case '5': doType(KeyCode.DIGIT5); break;
-        case '6': doType(KeyCode.DIGIT6); break;
-        case '7': doType(KeyCode.DIGIT7); break;
-        case '8': doType(KeyCode.DIGIT8); break;
-        case '9': doType(KeyCode.DIGIT9); break;
-        case '-': doType(KeyCode.MINUS); break;
-        case '=': doType(KeyCode.EQUALS); break;
-        case '~': doType(KeyCode.SHIFT, KeyCode.BACK_QUOTE); break;
-        case '!': doType(KeyCode.SHIFT, KeyCode.DIGIT1); break;
-        case '@': doType(KeyCode.SHIFT, KeyCode.DIGIT2); break;
-        case '#': doType(KeyCode.SHIFT, KeyCode.DIGIT3); break;
-        case '$': doType(KeyCode.SHIFT, KeyCode.DIGIT4); break;
-        case '%': doType(KeyCode.SHIFT, KeyCode.DIGIT5); break;
-        case '^': doType(KeyCode.SHIFT, KeyCode.DIGIT6); break;
-        case '&': doType(KeyCode.SHIFT, KeyCode.DIGIT7); break;
-        case '*': doType(KeyCode.SHIFT, KeyCode.DIGIT8); break;
-        case '(': doType(KeyCode.SHIFT, KeyCode.DIGIT9); break;
-        case ')': doType(KeyCode.SHIFT, KeyCode.DIGIT0); break;
-        case '_': doType(KeyCode.SHIFT, KeyCode.MINUS); break;
-        case '+': doType(KeyCode.SHIFT, KeyCode.EQUALS); break;
-        case '\b': doType(KeyCode.BACK_SPACE); break;
-        case '\t': doType(KeyCode.TAB); break;
-        case '\n': doType(KeyCode.ENTER); break;
-        case '[': doType(KeyCode.OPEN_BRACKET); break;
-        case ']': doType(KeyCode.CLOSE_BRACKET); break;
-        case '\\': doType(KeyCode.BACK_SLASH); break;
-        case '{': doType(KeyCode.SHIFT, KeyCode.OPEN_BRACKET); break;
-        case '}': doType(KeyCode.SHIFT, KeyCode.CLOSE_BRACKET); break;
-        case '|': doType(KeyCode.SHIFT, KeyCode.BACK_SLASH); break;
-        case ';': doType(KeyCode.SEMICOLON); break;
-        case ':': doType(KeyCode.SHIFT, KeyCode.SEMICOLON); break;
-        case '\'': doType(KeyCode.QUOTE); break;
-        case '"': doType(KeyCode.SHIFT, KeyCode.QUOTE); break;
-        case ',': doType(KeyCode.COMMA); break;
-        case '<': doType(KeyCode.SHIFT, KeyCode.COMMA); break;
-        case '.': doType(KeyCode.PERIOD); break;
-        case '>': doType(KeyCode.SHIFT, KeyCode.PERIOD); break;
-        case '/': doType(KeyCode.SLASH); break;
-        case '?': doType(KeyCode.SHIFT, KeyCode.SLASH); break;
-        case ' ': doType(KeyCode.SPACE); break;
-        default:
-            throw new IllegalArgumentException("Cannot type character " + c);
+            case 'a':
+                doType(KeyCode.A);
+                break;
+            case 'b':
+                doType(KeyCode.B);
+                break;
+            case 'c':
+                doType(KeyCode.C);
+                break;
+            case 'd':
+                doType(KeyCode.D);
+                break;
+            case 'e':
+                doType(KeyCode.E);
+                break;
+            case 'f':
+                doType(KeyCode.F);
+                break;
+            case 'g':
+                doType(KeyCode.G);
+                break;
+            case 'h':
+                doType(KeyCode.H);
+                break;
+            case 'i':
+                doType(KeyCode.I);
+                break;
+            case 'j':
+                doType(KeyCode.J);
+                break;
+            case 'k':
+                doType(KeyCode.K);
+                break;
+            case 'l':
+                doType(KeyCode.L);
+                break;
+            case 'm':
+                doType(KeyCode.M);
+                break;
+            case 'n':
+                doType(KeyCode.N);
+                break;
+            case 'o':
+                doType(KeyCode.O);
+                break;
+            case 'p':
+                doType(KeyCode.P);
+                break;
+            case 'q':
+                doType(KeyCode.Q);
+                break;
+            case 'r':
+                doType(KeyCode.R);
+                break;
+            case 's':
+                doType(KeyCode.S);
+                break;
+            case 't':
+                doType(KeyCode.T);
+                break;
+            case 'u':
+                doType(KeyCode.U);
+                break;
+            case 'v':
+                doType(KeyCode.V);
+                break;
+            case 'w':
+                doType(KeyCode.W);
+                break;
+            case 'x':
+                doType(KeyCode.X);
+                break;
+            case 'y':
+                doType(KeyCode.Y);
+                break;
+            case 'z':
+                doType(KeyCode.Z);
+                break;
+            case 'A':
+                doType(KeyCode.SHIFT, KeyCode.A);
+                break;
+            case 'B':
+                doType(KeyCode.SHIFT, KeyCode.B);
+                break;
+            case 'C':
+                doType(KeyCode.SHIFT, KeyCode.C);
+                break;
+            case 'D':
+                doType(KeyCode.SHIFT, KeyCode.D);
+                break;
+            case 'E':
+                doType(KeyCode.SHIFT, KeyCode.E);
+                break;
+            case 'F':
+                doType(KeyCode.SHIFT, KeyCode.F);
+                break;
+            case 'G':
+                doType(KeyCode.SHIFT, KeyCode.G);
+                break;
+            case 'H':
+                doType(KeyCode.SHIFT, KeyCode.H);
+                break;
+            case 'I':
+                doType(KeyCode.SHIFT, KeyCode.I);
+                break;
+            case 'J':
+                doType(KeyCode.SHIFT, KeyCode.J);
+                break;
+            case 'K':
+                doType(KeyCode.SHIFT, KeyCode.K);
+                break;
+            case 'L':
+                doType(KeyCode.SHIFT, KeyCode.L);
+                break;
+            case 'M':
+                doType(KeyCode.SHIFT, KeyCode.M);
+                break;
+            case 'N':
+                doType(KeyCode.SHIFT, KeyCode.N);
+                break;
+            case 'O':
+                doType(KeyCode.SHIFT, KeyCode.O);
+                break;
+            case 'P':
+                doType(KeyCode.SHIFT, KeyCode.P);
+                break;
+            case 'Q':
+                doType(KeyCode.SHIFT, KeyCode.Q);
+                break;
+            case 'R':
+                doType(KeyCode.SHIFT, KeyCode.R);
+                break;
+            case 'S':
+                doType(KeyCode.SHIFT, KeyCode.S);
+                break;
+            case 'T':
+                doType(KeyCode.SHIFT, KeyCode.T);
+                break;
+            case 'U':
+                doType(KeyCode.SHIFT, KeyCode.U);
+                break;
+            case 'V':
+                doType(KeyCode.SHIFT, KeyCode.V);
+                break;
+            case 'W':
+                doType(KeyCode.SHIFT, KeyCode.W);
+                break;
+            case 'X':
+                doType(KeyCode.SHIFT, KeyCode.X);
+                break;
+            case 'Y':
+                doType(KeyCode.SHIFT, KeyCode.Y);
+                break;
+            case 'Z':
+                doType(KeyCode.SHIFT, KeyCode.Z);
+                break;
+            case '`':
+                doType(KeyCode.BACK_QUOTE);
+                break;
+            case '0':
+                doType(KeyCode.DIGIT0);
+                break;
+            case '1':
+                doType(KeyCode.DIGIT1);
+                break;
+            case '2':
+                doType(KeyCode.DIGIT2);
+                break;
+            case '3':
+                doType(KeyCode.DIGIT3);
+                break;
+            case '4':
+                doType(KeyCode.DIGIT4);
+                break;
+            case '5':
+                doType(KeyCode.DIGIT5);
+                break;
+            case '6':
+                doType(KeyCode.DIGIT6);
+                break;
+            case '7':
+                doType(KeyCode.DIGIT7);
+                break;
+            case '8':
+                doType(KeyCode.DIGIT8);
+                break;
+            case '9':
+                doType(KeyCode.DIGIT9);
+                break;
+            case '-':
+                doType(KeyCode.MINUS);
+                break;
+            case '=':
+                doType(KeyCode.EQUALS);
+                break;
+            case '~':
+                doType(KeyCode.SHIFT, KeyCode.BACK_QUOTE);
+                break;
+            case '!':
+                doType(KeyCode.SHIFT, KeyCode.DIGIT1);
+                break;
+            case '@':
+                doType(KeyCode.SHIFT, KeyCode.DIGIT2);
+                break;
+            case '#':
+                doType(KeyCode.SHIFT, KeyCode.DIGIT3);
+                break;
+            case '$':
+                doType(KeyCode.SHIFT, KeyCode.DIGIT4);
+                break;
+            case '%':
+                doType(KeyCode.SHIFT, KeyCode.DIGIT5);
+                break;
+            case '^':
+                doType(KeyCode.SHIFT, KeyCode.DIGIT6);
+                break;
+            case '&':
+                doType(KeyCode.SHIFT, KeyCode.DIGIT7);
+                break;
+            case '*':
+                doType(KeyCode.SHIFT, KeyCode.DIGIT8);
+                break;
+            case '(':
+                doType(KeyCode.SHIFT, KeyCode.DIGIT9);
+                break;
+            case ')':
+                doType(KeyCode.SHIFT, KeyCode.DIGIT0);
+                break;
+            case '_':
+                doType(KeyCode.SHIFT, KeyCode.MINUS);
+                break;
+            case '+':
+                doType(KeyCode.SHIFT, KeyCode.EQUALS);
+                break;
+            case '\b':
+                doType(KeyCode.BACK_SPACE);
+                break;
+            case '\t':
+                doType(KeyCode.TAB);
+                break;
+            case '\n':
+                doType(KeyCode.ENTER);
+                break;
+            case '[':
+                doType(KeyCode.OPEN_BRACKET);
+                break;
+            case ']':
+                doType(KeyCode.CLOSE_BRACKET);
+                break;
+            case '\\':
+                doType(KeyCode.BACK_SLASH);
+                break;
+            case '{':
+                doType(KeyCode.SHIFT, KeyCode.OPEN_BRACKET);
+                break;
+            case '}':
+                doType(KeyCode.SHIFT, KeyCode.CLOSE_BRACKET);
+                break;
+            case '|':
+                doType(KeyCode.SHIFT, KeyCode.BACK_SLASH);
+                break;
+            case ';':
+                doType(KeyCode.SEMICOLON);
+                break;
+            case ':':
+                doType(KeyCode.SHIFT, KeyCode.SEMICOLON);
+                break;
+            case '\'':
+                doType(KeyCode.QUOTE);
+                break;
+            case '"':
+                doType(KeyCode.SHIFT, KeyCode.QUOTE);
+                break;
+            case ',':
+                doType(KeyCode.COMMA);
+                break;
+            case '<':
+                doType(KeyCode.SHIFT, KeyCode.COMMA);
+                break;
+            case '.':
+                doType(KeyCode.PERIOD);
+                break;
+            case '>':
+                doType(KeyCode.SHIFT, KeyCode.PERIOD);
+                break;
+            case '/':
+                doType(KeyCode.SLASH);
+                break;
+            case '?':
+                doType(KeyCode.SHIFT, KeyCode.SLASH);
+                break;
+            case ' ':
+                doType(KeyCode.SPACE);
+                break;
+            default:
+                throw new IllegalArgumentException("Cannot type character " + c);
         }
     }
 

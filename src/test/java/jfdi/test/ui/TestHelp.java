@@ -4,12 +4,14 @@ import static org.junit.Assert.assertEquals;
 
 import org.testfx.util.WaitForAsyncUtils;
 
-public class TestHelp {
+public class TestHelp extends UiTest {
 
-    private static TestMain main;
+    TestHelp(TestMain main) {
+        super(main);
+    }
 
-    public static void run(TestMain testMain) {
-        main = testMain;
+    @Override
+    void run() {
         testHelpTaskDone();
     }
 
@@ -17,7 +19,7 @@ public class TestHelp {
      * Test "help" command and check if the help overlay correctly displays for
      * the user.
      */
-    public static void testHelpTaskDone() {
+    public void testHelpTaskDone() {
         main.execute("help");
         WaitForAsyncUtils.waitForFxEvents();
         assertEquals(true, main.helpContent.isVisible());

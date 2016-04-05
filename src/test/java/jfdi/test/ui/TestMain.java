@@ -261,9 +261,15 @@ public class TestMain extends ApplicationTest {
 
     @Test
     public void uiTests() {
-        TestWidgets.run(this);
-        TestAdd.run(this);
-        TestHelp.run(this);
+        UiTest[] tests = {
+            new TestWidgets(this),
+            new TestAdd(this),
+            new TestMark(this),
+            new TestHelp(this)
+        };
+        for (UiTest test : tests) {
+            test.run();
+        }
     }
 
     /*

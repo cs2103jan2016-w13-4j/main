@@ -2,16 +2,18 @@ package jfdi.test.ui;
 
 import static org.junit.Assert.assertNotNull;
 
-public class TestWidgets {
+public class TestWidgets extends UiTest {
 
-    private static TestMain main;
+    TestWidgets(TestMain main) {
+        super(main);
+    }
 
-    public static void run(TestMain testMain) {
-        main = testMain;
+    @Override
+    void run() {
         testWidgetsExist();
     }
 
-    public static void testWidgetsExist() {
+    public void testWidgetsExist() {
 
         final String errMsg = " %s cannot be retrieved!";
 

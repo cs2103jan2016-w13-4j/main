@@ -7,23 +7,26 @@ import jfdi.ui.Constants;
 
 import org.testfx.util.WaitForAsyncUtils;
 
-public class TestAdd {
+public class TestAdd extends UiTest {
 
-    private static TestMain main;
+    TestAdd(TestMain main) {
+        super(main);
+    }
 
-    public static void run(TestMain testMain) {
-        main = testMain;
+    @Override
+    void run() {
         testAddTaskDone();
         testAddDuplicateTask();
         testAddEmptyTask();
     }
+
 
     /*
      * Test a simple "add testing1" command and check if the task is added to
      * the incomplete list as an item, and check if the feedback displayed
      * matches the expected lines.
      */
-    public static void testAddTaskDone() {
+    public void testAddTaskDone() {
         String taskName = "testing1";
         int listSize = main.controller.importantList.size();
         StringProperty notiSize = new SimpleStringProperty(Integer.toString(listSize + 1));
@@ -43,7 +46,7 @@ public class TestAdd {
      * Test the "add testing1" command again to check if error for duplicated
      * task can be detected and reflected correctly
      */
-    public static void testAddDuplicateTask() {
+    public void testAddDuplicateTask() {
         int listSize = main.controller.importantList.size();
         StringProperty notiSize = new SimpleStringProperty(Integer.toString(listSize));
         String expectedFeedback = String.format(Constants.UI_MESSAGE_ERROR,
@@ -63,7 +66,7 @@ public class TestAdd {
      * Test an "add " command with empty description and check if the error is
      * correctly detected and reflected.
      */
-    public static void testAddEmptyTask() {
+    public void testAddEmptyTask() {
         int listSize = main.controller.importantList.size();
         StringProperty notiSize = new SimpleStringProperty(Integer.toString(listSize));
         String expectedFeedback = String.format(Constants.UI_MESSAGE_ERROR,
@@ -80,7 +83,7 @@ public class TestAdd {
     /*
      * Helper method
      */
-    private static void addTask(String taskName) {
+    private void addTask(String taskName) {
         main.execute(String.format("add %s", taskName));
     }
 

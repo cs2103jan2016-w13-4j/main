@@ -1,5 +1,7 @@
 package jfdi.test.ui;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -289,6 +291,18 @@ public class TestMain extends ApplicationTest {
 
     public void execute(String command) {
         type(command + '\n');
+    }
+
+    public void assertErrorMessage(String message) {
+        assertFeedbackMessage(String.format(Constants.UI_MESSAGE_ERROR, message));
+    }
+
+    public void assertResponseMessage(String message) {
+        assertFeedbackMessage(String.format(Constants.UI_MESSAGE_RESPONSE, message));
+    }
+
+    public void assertFeedbackMessage(String message) {
+        assertEquals(message.trim(), fbArea.getText());
     }
 
     private void type(String command) {

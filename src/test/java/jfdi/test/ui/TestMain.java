@@ -281,6 +281,12 @@ public class TestMain extends ApplicationTest {
         execute(String.format("add %s", taskName));
     }
 
+    public void addRandomTasks(int num) {
+        for (int i = 0; i < num; i++) {
+            addTask(String.valueOf(i));
+        }
+    }
+
     public void execute(String command) {
         type(command + '\n');
     }

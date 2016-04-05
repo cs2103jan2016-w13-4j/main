@@ -270,6 +270,7 @@ public class TestMain extends ApplicationTest {
             new TestList(this),
             new TestInputHistory(this),
             new TestMark(this),
+            new TestUnmark(this),
             new TestHelp(this)
         };
         for (UiTest test : tests) {

@@ -14,6 +14,7 @@ public class UnaliasFailedEventTest {
     private UnaliasFailedEvent.Error error = UnaliasFailedEvent.Error.NON_EXISTENT_ALIAS;
     private UnaliasFailedEvent event = new UnaliasFailedEvent(alias, error);
 
+    @Test
     public void getAlias() throws Exception {
         assertEquals(alias, event.getAlias());
     }

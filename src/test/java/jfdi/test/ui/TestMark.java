@@ -11,7 +11,7 @@ public class TestMark extends UiTest {
 
     @Override
     void run() {
-        main.addRandomTasks(10);
+        main.addRandomTasks(3);
         testMarkSingle();
         testMarkMultiple();
         testMarkNonExistent();
@@ -23,8 +23,8 @@ public class TestMark extends UiTest {
     }
 
     private void testMarkMultiple() {
-        main.execute("mark 8,9");
-        assertMarked(8, 9);
+        main.execute("mark 2, 3");
+        assertMarked(2, 3);
     }
 
     private void testMarkNonExistent() {
@@ -39,8 +39,8 @@ public class TestMark extends UiTest {
         }
     }
 
-    private ObservableList<String> getStyleClass(int id) {
-        return main.controller.importantList.get(id).getStyleClass();
+    private ObservableList<String> getStyleClass(int onScreenId) {
+        return main.controller.importantList.get(onScreenId - 1).getStyleClass();
     }
 
 }

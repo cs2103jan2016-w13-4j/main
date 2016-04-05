@@ -11,8 +11,8 @@ public class TestUnmark extends UiTest {
 
     @Override
     void run() {
-        main.addRandomTasks(10);
-        main.execute("mark 1-10");
+        main.addRandomTasks(3);
+        main.execute("mark 1-3");
         testUnmarkSingle();
         testUnmarkMultiple();
         testUnmarkNonExistent();
@@ -24,8 +24,8 @@ public class TestUnmark extends UiTest {
     }
 
     private void testUnmarkMultiple() {
-        main.execute("unmark 8,9");
-        assertUnmarked(8, 9);
+        main.execute("unmark 2,3");
+        assertUnmarked(2, 3);
     }
 
     private void testUnmarkNonExistent() {
@@ -40,8 +40,8 @@ public class TestUnmark extends UiTest {
         }
     }
 
-    private ObservableList<String> getStyleClass(int id) {
-        return main.controller.importantList.get(id).getStyleClass();
+    private ObservableList<String> getStyleClass(int onScreenId) {
+        return main.controller.importantList.get(onScreenId - 1).getStyleClass();
     }
 
 }

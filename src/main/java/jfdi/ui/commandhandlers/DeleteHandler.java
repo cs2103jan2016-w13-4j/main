@@ -46,10 +46,6 @@ public class DeleteHandler extends CommandHandler {
         // check size of id list == task list
 
         switch (e.getError()) {
-            case UNKNOWN:
-                controller.relayFb(Constants.CMD_ERROR_CANT_DELETE_UNKNOWN, MsgType.ERROR);
-                logger.fine(Constants.LOG_DELETE_FAIL_UNKNOWN);
-                break;
             case NON_EXISTENT_ID:
                 for (Integer screenId : e.getInvalidIds()) {
                     controller.relayFb(String.format(Constants.CMD_ERROR_CANT_DELETE_NO_ID, screenId), MsgType.ERROR);
@@ -70,6 +66,7 @@ public class DeleteHandler extends CommandHandler {
             int count = 0;
             int indexCount;
             String indices = "";
+            Collections.sort(deletedIds, Collections.reverseOrder());
             for (int screenId : deletedIds) {
                 indexCount = controller.indexMatch.get(screenId);
                 indices += "#" + String.valueOf(screenId);

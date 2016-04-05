@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.logic.events;
 
 import java.util.ArrayList;
@@ -8,7 +10,7 @@ import java.util.ArrayList;
 public class UnmarkTaskFailedEvent {
 
     public enum Error {
-        NON_EXISTENT_ID, UNKNOWN
+        NON_EXISTENT_ID
     }
 
     private ArrayList<Integer> screenIds;

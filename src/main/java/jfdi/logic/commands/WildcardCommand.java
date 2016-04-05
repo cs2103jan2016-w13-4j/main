@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.logic.commands;
 
 import jfdi.logic.events.NoSurpriseEvent;
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public class WildcardCommand extends Command {
 

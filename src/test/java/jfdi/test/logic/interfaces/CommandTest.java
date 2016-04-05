@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.test.logic.interfaces;
 
 import jfdi.logic.interfaces.Command;
@@ -20,7 +22,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 @RunWith(MockitoJUnitRunner.class)
 public class CommandTest {

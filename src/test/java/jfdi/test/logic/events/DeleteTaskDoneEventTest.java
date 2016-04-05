@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.test.logic.events;
 
 import jfdi.logic.events.DeleteTaskDoneEvent;
@@ -12,7 +14,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 @RunWith(MockitoJUnitRunner.class)
 public class DeleteTaskDoneEventTest {

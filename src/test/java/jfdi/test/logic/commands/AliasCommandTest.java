@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.test.logic.commands;
 
 import jfdi.logic.commands.AliasCommand;
@@ -13,7 +15,7 @@ import static org.mockito.Matchers.anyCollectionOf;
 import static org.mockito.Mockito.verify;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 @RunWith(MockitoJUnitRunner.class)
 public class AliasCommandTest extends CommonCommandTest {

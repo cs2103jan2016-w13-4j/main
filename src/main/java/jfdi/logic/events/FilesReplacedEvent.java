@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.logic.events;
 
 import jfdi.storage.exceptions.FilePathPair;
@@ -5,7 +7,7 @@ import jfdi.storage.exceptions.FilePathPair;
 import java.util.ArrayList;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public class FilesReplacedEvent {
 

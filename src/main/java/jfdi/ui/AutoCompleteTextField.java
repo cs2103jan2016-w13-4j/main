@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.ui;
 
 import javafx.geometry.Side;
@@ -15,7 +17,7 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public class AutoCompleteTextField extends TextField {
 

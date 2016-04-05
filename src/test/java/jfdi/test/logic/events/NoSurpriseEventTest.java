@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.test.logic.events;
 
 import jfdi.logic.events.NoSurpriseEvent;
@@ -6,7 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public class NoSurpriseEventTest {
 

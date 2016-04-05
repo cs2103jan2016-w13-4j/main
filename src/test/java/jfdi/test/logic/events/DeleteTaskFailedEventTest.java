@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.test.logic.events;
 
 import jfdi.logic.events.DeleteTaskFailedEvent;
@@ -9,7 +11,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public class DeleteTaskFailedEventTest {
 
@@ -26,8 +28,5 @@ public class DeleteTaskFailedEventTest {
     public void getError() throws Exception {
         DeleteTaskFailedEvent event1 = new DeleteTaskFailedEvent(invalidIds);
         assertEquals(DeleteTaskFailedEvent.Error.NON_EXISTENT_ID, event1.getError());
-
-        DeleteTaskFailedEvent event2 = new DeleteTaskFailedEvent();
-        assertEquals(DeleteTaskFailedEvent.Error.UNKNOWN, event2.getError());
     }
 }

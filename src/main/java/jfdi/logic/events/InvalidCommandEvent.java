@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.logic.events;
 
 import jfdi.parser.Constants.CommandType;

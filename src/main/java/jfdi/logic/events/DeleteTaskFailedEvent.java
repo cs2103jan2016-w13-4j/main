@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.logic.events;
 
 import java.util.ArrayList;
@@ -8,15 +10,11 @@ import java.util.ArrayList;
 public class DeleteTaskFailedEvent {
 
     public enum Error {
-        NON_EXISTENT_ID, UNKNOWN
+        NON_EXISTENT_ID
     }
 
     private ArrayList<Integer> invalidIds;
     private Error error;
-
-    public DeleteTaskFailedEvent() {
-        error = Error.UNKNOWN;
-    }
 
     public DeleteTaskFailedEvent(ArrayList<Integer> invalidIds) {
         error = Error.NON_EXISTENT_ID;

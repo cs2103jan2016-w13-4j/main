@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.test.logic.commands;
 
 import jfdi.logic.interfaces.Command;
@@ -12,7 +14,7 @@ import org.junit.Before;
 import org.mockito.Mock;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public abstract class CommonCommandTest {
 

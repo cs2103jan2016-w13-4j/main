@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.logic.commands;
 
 import jfdi.logic.events.FilesReplacedEvent;
@@ -8,7 +10,7 @@ import jfdi.storage.exceptions.FilesReplacedException;
 import jfdi.storage.exceptions.InvalidFilePathException;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public class UseDirectoryCommand extends Command {
 

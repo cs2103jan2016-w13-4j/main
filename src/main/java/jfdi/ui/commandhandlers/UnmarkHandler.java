@@ -67,10 +67,6 @@ public class UnmarkHandler extends CommandHandler {
     public void handleUnmarkTaskFailEvent(UnmarkTaskFailedEvent e) {
 
         switch (e.getError()) {
-            case UNKNOWN:
-                controller.relayFb(Constants.CMD_ERROR_CANT_UNMARK_UNKNOWN, MsgType.ERROR);
-                // logger.fine(Constants.LOG_DELETE_FAIL_UNKNOWN);
-                break;
             case NON_EXISTENT_ID:
                 // NEED TO CHANGE TO INDEX SOON????
                 for (Integer screenId : e.getInvalidIds()) {

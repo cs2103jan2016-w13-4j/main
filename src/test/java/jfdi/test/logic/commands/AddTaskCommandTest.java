@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.test.logic.commands;
 
 import jfdi.logic.commands.AddTaskCommand;
@@ -17,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 @RunWith(MockitoJUnitRunner.class)
 public class AddTaskCommandTest extends CommonCommandTest {

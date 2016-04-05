@@ -1,10 +1,12 @@
+// @@author A0130195M
+
 package jfdi.logic.commands;
 
 import jfdi.logic.events.HelpRequestedEvent;
 import jfdi.logic.interfaces.Command;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public class HelpCommand extends Command {
 

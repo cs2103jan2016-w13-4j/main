@@ -3,7 +3,7 @@ package jfdi.logic.events;
 import jfdi.storage.apis.TaskAttributes;
 
 /**
- * @author Liu Xinan
+ * @@author Liu Xinan
  */
 public class AddTaskDoneEvent {
 

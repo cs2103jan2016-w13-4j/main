@@ -7,7 +7,7 @@ import jfdi.parser.Constants.CommandType;
 import java.util.Optional;
 
 /**
- * @author Liu Xinan
+ * @@author Liu Xinan
  */
 public class InvalidCommand extends Command {
 

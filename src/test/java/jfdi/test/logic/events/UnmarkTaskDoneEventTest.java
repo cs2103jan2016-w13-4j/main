@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Liu Xinan
+ * @@author Liu Xinan
  */
 public class UnmarkTaskDoneEventTest {
 

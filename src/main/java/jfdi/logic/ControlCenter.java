@@ -20,7 +20,7 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
- * @author Liu Xinan
+ * @@author Liu Xinan
  */
 public class ControlCenter implements ILogic {
 

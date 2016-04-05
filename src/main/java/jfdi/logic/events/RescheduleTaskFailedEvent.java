@@ -3,7 +3,7 @@ package jfdi.logic.events;
 import java.time.LocalDateTime;
 
 /**
- * @author Liu Xinan
+ * @@author Liu Xinan
  */
 public class RescheduleTaskFailedEvent {
 

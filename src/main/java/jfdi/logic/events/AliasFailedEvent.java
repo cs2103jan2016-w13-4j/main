@@ -1,7 +1,7 @@
 package jfdi.logic.events;
 
 /**
- * @author Liu Xinan
+ * @@author Liu Xinan
  */
 public class AliasFailedEvent {
 

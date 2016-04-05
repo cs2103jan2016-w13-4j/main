@@ -13,7 +13,7 @@ import static org.mockito.Matchers.anyCollectionOf;
 import static org.mockito.Mockito.verify;
 
 /**
- * @author Liu Xinan
+ * @@author Liu Xinan
  */
 @RunWith(MockitoJUnitRunner.class)
 public class AliasCommandTest extends CommonCommandTest {

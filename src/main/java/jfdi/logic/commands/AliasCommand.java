@@ -9,7 +9,7 @@ import jfdi.storage.exceptions.InvalidAliasException;
 import jfdi.storage.exceptions.InvalidAliasParametersException;
 
 /**
- * @author Liu Xinan
+ * @@author Liu Xinan
  */
 public class AliasCommand extends Command {
 

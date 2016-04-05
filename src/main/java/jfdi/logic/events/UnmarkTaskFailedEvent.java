@@ -3,7 +3,7 @@ package jfdi.logic.events;
 import java.util.ArrayList;
 
 /**
- * @author Liu Xinan
+ * @@author Liu Xinan
  */
 public class UnmarkTaskFailedEvent {
 

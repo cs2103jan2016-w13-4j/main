@@ -5,7 +5,7 @@ import jfdi.logic.events.RedoFailedEvent;
 import jfdi.logic.interfaces.Command;
 
 /**
- * @author Liu Xinan
+ * @@author Liu Xinan
  */
 public class RedoCommand extends Command {
 

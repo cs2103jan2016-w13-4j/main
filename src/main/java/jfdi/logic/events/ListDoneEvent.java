@@ -6,7 +6,7 @@ import jfdi.storage.apis.TaskAttributes;
 import java.util.ArrayList;
 
 /**
- * @author Liu Xinan
+ * @@author Liu Xinan
  */
 public class ListDoneEvent {
 

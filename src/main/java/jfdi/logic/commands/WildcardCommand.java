@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 /**
- * @author Liu Xinan
+ * @@author Liu Xinan
  */
 public class WildcardCommand extends Command {
 

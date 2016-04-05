@@ -11,7 +11,7 @@ import java.util.HashSet;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Liu Xinan
+ * @@author Liu Xinan
  */
 public class SearchDoneEventTest {
 

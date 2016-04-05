@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 /**
- * @author Liu Xinan
+ * @@author Liu Xinan
  */
 @RunWith(MockitoJUnitRunner.class)
 public class AddTaskCommandTest extends CommonCommandTest {

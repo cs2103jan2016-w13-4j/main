@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.TreeSet;
 
 /**
- * @author Liu Xinan
+ * @@author Liu Xinan
  */
 public interface ILogic {
 

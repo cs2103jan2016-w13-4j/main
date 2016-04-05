@@ -10,7 +10,7 @@ import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
 
 /**
- * @author Liu Xinan
+ * @@author Liu Xinan
  */
 public class RenameTaskCommand extends Command {
 

@@ -23,16 +23,12 @@ public class AddTaskCommand extends Command {
     private String description;
     private Optional<LocalDateTime> startDateTime;
     private Optional<LocalDateTime> endDateTime;
-    private Duration[] reminders;
-    private String[] tags;
     private int id = -1;
 
     private AddTaskCommand(Builder builder) {
         this.description = builder.description;
         this.startDateTime = Optional.ofNullable(builder.startDateTime);
         this.endDateTime = Optional.ofNullable(builder.endDateTime);
-        this.reminders = builder.reminders.toArray(new Duration[0]);
-        this.tags = builder.tags.toArray(new String[0]);
     }
 
     public String getDescription() {
@@ -47,21 +43,11 @@ public class AddTaskCommand extends Command {
         return endDateTime;
     }
 
-    public Duration[] getReminders() {
-        return reminders;
-    }
-
-    public String[] getTags() {
-        return tags;
-    }
-
     public static class Builder {
 
         String description;
         LocalDateTime startDateTime;
         LocalDateTime endDateTime;
-        ArrayList<Duration> reminders = new ArrayList<>();
-        ArrayList<String> tags = new ArrayList<>();
 
         public Builder setDescription(String description) {
             this.description = description;
@@ -78,36 +64,6 @@ public class AddTaskCommand extends Command {
             return this;
         }
 
-        public Builder addReminder(Duration reminder) {
-            this.reminders.add(reminder);
-            return this;
-        }
-
-        public Builder addReminders(Collection<Duration> reminders) {
-            this.reminders.addAll(reminders);
-            return this;
-        }
-
-        public Builder setReminders(Collection<Duration> reminders) {
-            this.reminders = new ArrayList<>(reminders);
-            return this;
-        }
-
-        public Builder addTag(String tag) {
-            this.tags.add(tag);
-            return this;
-        }
-
-        public Builder addTags(Collection<String> tags) {
-            this.tags.addAll(tags);
-            return this;
-        }
-
-        public Builder setTags(Collection<String> tags) {
-            this.tags = new ArrayList<>(tags);
-            return this;
-        }
-
         public AddTaskCommand build() {
             return new AddTaskCommand(this);
         }
@@ -118,8 +74,8 @@ public class AddTaskCommand extends Command {
     public void execute() {
         TaskAttributes task = new TaskAttributes();
         task.setDescription(description);
-        startDateTime.ifPresent(start -> task.setStartDateTime(start));
-        endDateTime.ifPresent(end -> task.setEndDateTime(end));
+        startDateTime.ifPresent(task::setStartDateTime);
+        endDateTime.ifPresent(task::setEndDateTime);
         try {
             task.save();
             this.id = task.getId();
@@ -132,10 +88,7 @@ public class AddTaskCommand extends Command {
         } catch (DuplicateTaskException e) {
             eventBus.post(new AddTaskFailedEvent(
                 AddTaskFailedEvent.Error.DUPLICATED_TASK));
-        } catch (NoAttributesChangedException e) {
-            // Should not happen for creating tasks
-            assert false;
-        } catch (InvalidIdException e) {
+        } catch (NoAttributesChangedException | InvalidIdException e) {
             // Should not happen for creating tasks
             assert false;
         }

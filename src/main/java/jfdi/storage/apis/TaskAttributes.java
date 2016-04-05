@@ -223,13 +223,13 @@ public class TaskAttributes implements Comparable<TaskAttributes> {
     @Override
     public int hashCode() {
         // 17 and 37 are some randomly chosen, non-zero odd number
-        return new HashCodeBuilder(17, 37).
-                append(id).
-                append(description).
-                append(startDateTime).
-                append(endDateTime).
-                append(isCompleted).
-                toHashCode();
+        return new HashCodeBuilder(17, 37)
+                .append(id)
+                .append(description)
+                .append(startDateTime)
+                .append(endDateTime)
+                .append(isCompleted)
+                .toHashCode();
     }
 
     @Override

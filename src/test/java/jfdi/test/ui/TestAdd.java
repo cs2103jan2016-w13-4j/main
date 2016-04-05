@@ -5,8 +5,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import jfdi.ui.Constants;
 
-import org.testfx.util.WaitForAsyncUtils;
-
 public class TestAdd extends UiTest {
 
     TestAdd(TestMain main) {
@@ -18,6 +16,7 @@ public class TestAdd extends UiTest {
         testAddTaskDone();
         testAddDuplicateTask();
         testAddEmptyTask();
+        testAddUpcoming();
     }
 
 
@@ -33,11 +32,21 @@ public class TestAdd extends UiTest {
 
         main.addTask(taskName);
 
-        WaitForAsyncUtils.waitForFxEvents();
-
         main.assertResponseMessage(String.format(Constants.CMD_SUCCESS_ADDED, taskName));
         assertEquals(listSize + 1, main.controller.importantList.size());
         assertEquals(notiSize.getValue(), main.controller.incompletePlaceHdr.getValue());
+    }
+
+    public void testAddUpcoming() {
+        main.execute("list upcoming");
+        int originalListSize = main.getImportantListSize();
+        int originalNotiSize = Integer.parseInt(main.controller.upcomingPlaceHdr.getValueSafe());
+
+        main.addTask("something 2 hours later");
+        main.addTask("something 1 hour later");
+
+        assertEquals(originalListSize + 2, main.controller.importantList.size());
+        assertEquals(originalNotiSize + 2, Integer.parseInt(main.controller.upcomingPlaceHdr.getValue()));
     }
 
     /*
@@ -50,8 +59,6 @@ public class TestAdd extends UiTest {
 
         String taskName = "testing1";
         main.addTask(taskName);
-
-        WaitForAsyncUtils.waitForFxEvents();
 
         main.assertErrorMessage(Constants.CMD_ERROR_CANT_ADD_DUPLICATE);
         assertEquals(listSize, main.controller.importantList.size());
@@ -68,7 +75,6 @@ public class TestAdd extends UiTest {
 
         main.addTask("\" \"");
 
-        WaitForAsyncUtils.waitForFxEvents();
         main.assertErrorMessage(Constants.CMD_ERROR_CANT_ADD_EMPTY);
         assertEquals(listSize, main.controller.importantList.size());
         assertEquals(notiSize.getValue(), main.controller.incompletePlaceHdr.getValue());

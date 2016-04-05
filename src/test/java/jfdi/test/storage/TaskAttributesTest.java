@@ -79,6 +79,10 @@ public class TaskAttributesTest {
         TaskAttributes taskAttributes = new TaskAttributes();
         assertFalse(taskAttributes.isValid());
 
+        // An invalid TaskAttributes (e.g. blank description) should return false
+        taskAttributes.setDescription(" ");
+        assertFalse(taskAttributes.isValid());
+
         // A valid TaskAttributes should return true
         taskAttributes.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
         assertTrue(taskAttributes.isValid());

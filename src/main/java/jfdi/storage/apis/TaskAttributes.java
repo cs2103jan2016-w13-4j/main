@@ -172,7 +172,7 @@ public class TaskAttributes implements Comparable<TaskAttributes> {
     private void validateAttributes() throws InvalidTaskParametersException {
         ArrayList<String> errors = new ArrayList<String>();
 
-        if (description == null) {
+        if (description == null || description.trim().isEmpty()) {
             errors.add(Constants.MESSAGE_MISSING_DESCRIPTION);
         }
 

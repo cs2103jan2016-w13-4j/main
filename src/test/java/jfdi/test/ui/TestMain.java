@@ -268,6 +268,7 @@ public class TestMain extends ApplicationTest {
             new TestWidgets(this),
             new TestAdd(this),
             new TestList(this),
+            new TestInputHistory(this),
             new TestMark(this),
             new TestHelp(this)
         };

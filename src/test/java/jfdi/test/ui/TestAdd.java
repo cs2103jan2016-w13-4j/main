@@ -33,7 +33,7 @@ public class TestAdd extends UiTest {
         String expectedFeedback = String.format(Constants.UI_MESSAGE_RESPONSE,
                 String.format(Constants.CMD_SUCCESS_ADDED, taskName)).trim();
 
-        addTask(taskName);
+        main.addTask(taskName);
 
         WaitForAsyncUtils.waitForFxEvents();
 
@@ -53,7 +53,7 @@ public class TestAdd extends UiTest {
                 Constants.CMD_ERROR_CANT_ADD_DUPLICATE).trim();
 
         String taskName = "testing1";
-        addTask(taskName);
+        main.addTask(taskName);
 
         WaitForAsyncUtils.waitForFxEvents();
 
@@ -72,19 +72,12 @@ public class TestAdd extends UiTest {
         String expectedFeedback = String.format(Constants.UI_MESSAGE_ERROR,
                 Constants.CMD_ERROR_CANT_ADD_EMPTY).trim();
 
-        addTask("\" \"");
+        main.addTask("\" \"");
 
         WaitForAsyncUtils.waitForFxEvents();
         assertEquals(expectedFeedback, main.fbArea.getText());
         assertEquals(listSize, main.controller.importantList.size());
         assertEquals(notiSize.getValue(), main.controller.incompletePlaceHdr.getValue());
-    }
-
-    /*
-     * Helper method
-     */
-    private void addTask(String taskName) {
-        main.execute(String.format("add %s", taskName));
     }
 
 }

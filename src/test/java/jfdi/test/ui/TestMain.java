@@ -277,6 +277,10 @@ public class TestMain extends ApplicationTest {
      * Helper methods
      */
 
+    public void addTask(String taskName) {
+        execute(String.format("add %s", taskName));
+    }
+
     public void execute(String command) {
         type(command + '\n');
     }

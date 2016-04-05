@@ -68,7 +68,7 @@ public abstract class Command {
     }
 
     //================================================================
-    // List of setters for testing.
+    // List of setters and getters for testing.
     //================================================================
 
 
@@ -86,5 +86,33 @@ public abstract class Command {
 
     public static void setAliasDb(AliasDb aliasDb) {
         Command.aliasDb = aliasDb;
+    }
+
+    public static Stack<Command> getUndoStack() {
+        return undoStack;
+    }
+
+    public static Stack<Command> getRedoStack() {
+        return redoStack;
+    }
+
+    public static InputParser getParser() {
+        return parser;
+    }
+
+    public static MainStorage getMainStorage() {
+        return mainStorage;
+    }
+
+    public static TaskDb getTaskDb() {
+        return taskDb;
+    }
+
+    public static AliasDb getAliasDb() {
+        return aliasDb;
+    }
+
+    public static boolean isRedoing() {
+        return redoing;
     }
 }

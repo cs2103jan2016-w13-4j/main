@@ -1792,15 +1792,11 @@ public class DeleteTaskDoneEvent {
 public class DeleteTaskFailedEvent {
 
     public enum Error {
-        NON_EXISTENT_ID, UNKNOWN
+        NON_EXISTENT_ID
     }
 
     private ArrayList<Integer> invalidIds;
     private Error error;
-
-    public DeleteTaskFailedEvent() {
-        error = Error.UNKNOWN;
-    }
 
     public DeleteTaskFailedEvent(ArrayList<Integer> invalidIds) {
         error = Error.NON_EXISTENT_ID;
@@ -1962,7 +1958,7 @@ public class MarkTaskDoneEvent {
 public class MarkTaskFailedEvent {
 
     public enum Error {
-        NON_EXISTENT_ID, UNKNOWN
+        NON_EXISTENT_ID
     }
 
     private ArrayList<Integer> screenIds;
@@ -2344,7 +2340,7 @@ public class UnmarkTaskDoneEvent {
 public class UnmarkTaskFailedEvent {
 
     public enum Error {
-        NON_EXISTENT_ID, UNKNOWN
+        NON_EXISTENT_ID
     }
 
     private ArrayList<Integer> screenIds;
@@ -3102,9 +3098,6 @@ public class DeleteTaskFailedEventTest {
     public void getError() throws Exception {
         DeleteTaskFailedEvent event1 = new DeleteTaskFailedEvent(invalidIds);
         assertEquals(DeleteTaskFailedEvent.Error.NON_EXISTENT_ID, event1.getError());
-
-        DeleteTaskFailedEvent event2 = new DeleteTaskFailedEvent();
-        assertEquals(DeleteTaskFailedEvent.Error.UNKNOWN, event2.getError());
     }
 }
 ```

@@ -43,6 +43,10 @@ public class AddTaskCommand extends Command {
         return endDateTime;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public static class Builder {
 
         String description;

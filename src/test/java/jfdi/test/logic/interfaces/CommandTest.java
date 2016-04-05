@@ -8,8 +8,10 @@ import jfdi.storage.apis.TaskDb;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Optional;
 
@@ -18,6 +20,7 @@ import static org.junit.Assert.*;
 /**
  * @author Xinan
  */
+@RunWith(MockitoJUnitRunner.class)
 public class CommandTest {
 
     private Command command;
@@ -81,7 +84,7 @@ public class CommandTest {
 
         command.pushToRedoStack();
         command.pushToUndoStack();
-        assertEquals(currentSize + 3, Command.getUndoStack().size());
+        assertEquals(currentSize + 4, Command.getUndoStack().size());
     }
 
     @Test

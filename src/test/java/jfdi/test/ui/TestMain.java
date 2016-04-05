@@ -1,6 +1,7 @@
 package jfdi.test.ui;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -266,6 +267,7 @@ public class TestMain extends ApplicationTest {
         UiTest[] tests = {
             new TestWidgets(this),
             new TestAdd(this),
+            new TestList(this),
             new TestMark(this),
             new TestHelp(this)
         };
@@ -291,6 +293,14 @@ public class TestMain extends ApplicationTest {
 
     public void execute(String command) {
         type(command + '\n');
+    }
+
+    public void assertOnTab(Label tab, String tabName) {
+        assertTrue(tab.getStyleClass().contains(tabName + "TabOn"));
+    }
+
+    public void assertOnBox(Rectangle box) {
+        assertTrue(box.getStyleClass().contains("tabOn"));
     }
 
     public void assertErrorMessage(String message) {

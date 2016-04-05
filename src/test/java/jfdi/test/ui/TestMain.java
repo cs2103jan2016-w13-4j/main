@@ -267,6 +267,7 @@ public class TestMain extends ApplicationTest {
         UiTest[] tests = {
             new TestWidgets(this),
             new TestAdd(this),
+            new TestDelete(this),
             new TestList(this),
             new TestInputHistory(this),
             new TestMark(this),
@@ -282,6 +283,10 @@ public class TestMain extends ApplicationTest {
     /*
      * Helper methods
      */
+
+    public int getImportantListSize() {
+        return controller.importantList.filtered(item -> item.getItem() != null).size();
+    }
 
     public void addTask(String taskName) {
         execute(String.format("add %s", taskName));

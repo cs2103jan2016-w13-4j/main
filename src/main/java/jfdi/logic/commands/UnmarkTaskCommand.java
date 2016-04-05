@@ -54,8 +54,6 @@ public class UnmarkTaskCommand extends Command {
 
     @Override
     public void execute() {
-        UI ui = UI.getInstance();
-
         ArrayList<Integer> taskIds = screenIds.stream().map(ui::getTaskId)
             .collect(Collectors.toCollection(ArrayList::new));
 

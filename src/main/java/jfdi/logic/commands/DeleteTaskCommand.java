@@ -28,6 +28,10 @@ public class DeleteTaskCommand extends Command {
         return screenIds;
     }
 
+    public ArrayList<TaskAttributes> getDeletedTasks() {
+        return deletedTasks;
+    }
+
     public static class Builder {
 
         ArrayList<Integer> screenIds = new ArrayList<>();
@@ -48,10 +52,10 @@ public class DeleteTaskCommand extends Command {
 
     }
 
+
+
     @Override
     public void execute() {
-        UI ui = UI.getInstance();
-
         ArrayList<Integer> taskIds = screenIds.stream().map(ui::getTaskId)
             .collect(Collectors.toCollection(ArrayList::new));
 

@@ -101,7 +101,7 @@ public class RescheduleTaskCommand extends Command {
 
     @Override
     public void execute() {
-        int taskId = UI.getInstance().getTaskId(screenId);
+        int taskId = ui.getTaskId(screenId);
 
         try {
             TaskAttributes task = taskDb.getById(taskId);
@@ -136,7 +136,7 @@ public class RescheduleTaskCommand extends Command {
 
     @Override
     public void undo() {
-        int taskId = UI.getInstance().getTaskId(screenId);
+        int taskId = ui.getTaskId(screenId);
 
         try {
             TaskAttributes task = taskDb.getById(taskId);

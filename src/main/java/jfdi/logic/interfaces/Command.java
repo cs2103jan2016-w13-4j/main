@@ -23,6 +23,7 @@ public abstract class Command {
     protected static final Stack<Command> undoStack = new Stack<>();
     protected static final Stack<Command> redoStack = new Stack<>();
 
+    protected static UI ui = UI.getInstance();
     protected static InputParser parser = InputParser.getInstance();
     protected static MainStorage mainStorage = MainStorage.getInstance();
     protected static TaskDb taskDb = TaskDb.getInstance();
@@ -72,6 +73,10 @@ public abstract class Command {
     //================================================================
 
 
+    public static void setUi(UI ui) {
+        Command.ui = ui;
+    }
+
     public static void setParser(InputParser parser) {
         Command.parser = parser;
     }
@@ -94,6 +99,10 @@ public abstract class Command {
 
     public static Stack<Command> getRedoStack() {
         return redoStack;
+    }
+
+    public static UI getUi() {
+        return ui;
     }
 
     public static InputParser getParser() {

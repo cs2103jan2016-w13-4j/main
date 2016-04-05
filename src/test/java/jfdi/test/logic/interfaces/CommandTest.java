@@ -5,6 +5,7 @@ import jfdi.parser.InputParser;
 import jfdi.storage.apis.AliasDb;
 import jfdi.storage.apis.MainStorage;
 import jfdi.storage.apis.TaskDb;
+import jfdi.ui.UI;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +27,9 @@ public class CommandTest {
     private Command command;
 
     @Mock
+    private UI ui;
+
+    @Mock
     private MainStorage mainStorage;
 
     @Mock
@@ -40,6 +44,7 @@ public class CommandTest {
     @Before
     public void setUp() throws Exception {
         command = Mockito.mock(Command.class, Mockito.CALLS_REAL_METHODS);
+        Command.setUi(ui);
         Command.setMainStorage(mainStorage);
         Command.setTaskDb(taskDb);
         Command.setAliasDb(aliasDb);
@@ -48,6 +53,7 @@ public class CommandTest {
 
     @After
     public void tearDown() throws Exception {
+        Command.setUi(UI.getInstance());
         Command.setMainStorage(MainStorage.getInstance());
         Command.setTaskDb(TaskDb.getInstance());
         Command.setAliasDb(AliasDb.getInstance());

@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import jfdi.storage.Constants;
 import jfdi.storage.entities.Task;
 import jfdi.storage.exceptions.DuplicateTaskException;
@@ -216,6 +218,31 @@ public class TaskAttributes implements Comparable<TaskAttributes> {
     public int compareTo(TaskAttributes taskAttributes) {
         assert getStartElseEndDate() != null && taskAttributes.getStartElseEndDate() != null;
         return getStartElseEndDate().compareTo(taskAttributes.getStartElseEndDate());
+    }
+
+    @Override
+    public int hashCode() {
+        // 17 and 37 are some randomly chosen, non-zero odd number
+        return new HashCodeBuilder(17, 37).
+                append(id).
+                append(description).
+                append(startDateTime).
+                append(endDateTime).
+                append(isCompleted).
+                toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == null || !(object instanceof TaskAttributes)) {
+            return false;
+        }
+        if (object == this) {
+            return true;
+        }
+
+        TaskAttributes taskAttributes = (TaskAttributes) object;
+        return this.equalTo(taskAttributes.toEntity());
     }
 
 }

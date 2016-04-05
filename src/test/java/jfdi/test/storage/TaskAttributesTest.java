@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import jfdi.storage.Constants;
 import jfdi.storage.apis.MainStorage;
@@ -344,6 +345,73 @@ public class TaskAttributesTest {
         assertEquals(1, taskAttributes.indexOf(task2));
         assertEquals(2, taskAttributes.indexOf(task4));
         assertEquals(3, taskAttributes.indexOf(task3));
+    }
+
+    @Test
+    public void testHashingAndEquals() throws Exception {
+        // Create the first task (an event)
+        TaskAttributes task1 = new TaskAttributes();
+        task1.setId(1);
+        task1.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task1.setStartDateTime(LocalDateTime.now().minusDays(7));
+        task1.setEndDateTime(LocalDateTime.now().plusDays(7));
+
+        // Create a duplicate of task 1
+        TaskAttributes task1Duplicate = new TaskAttributes();
+        task1Duplicate.setId(1);
+        task1Duplicate.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task1Duplicate.setStartDateTime(LocalDateTime.now().minusDays(7));
+        task1Duplicate.setEndDateTime(LocalDateTime.now().plusDays(7));
+
+        // Assert that the task and its duplicate are equal and has the same hashCode
+        assertEquals(task1, task1Duplicate);
+        assertEquals(task1.hashCode(), task1Duplicate.hashCode());
+
+        // Create the second task (a point task)
+        TaskAttributes task2 = new TaskAttributes();
+        task2.setId(2);
+        task2.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task2.setStartDateTime(LocalDateTime.now().minusDays(6));
+
+        // Create a duplicate of the second task
+        TaskAttributes task2Duplicate = new TaskAttributes();
+        task2Duplicate.setId(2);
+        task2Duplicate.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task2Duplicate.setStartDateTime(LocalDateTime.now().minusDays(6));
+
+        // Assert that the task and its duplicate are equal and has the same hashCode
+        assertEquals(task2, task2Duplicate);
+        assertEquals(task2.hashCode(), task2Duplicate.hashCode());
+
+        // Create the third task (a deadline task)
+        TaskAttributes task3 = new TaskAttributes();
+        task3.setId(3);
+        task3.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task3.setEndDateTime(LocalDateTime.now().minusDays(4));
+
+        // Create a duplicate of the third task
+        TaskAttributes task3Duplicate = new TaskAttributes();
+        task3Duplicate.setId(3);
+        task3Duplicate.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
+        task3Duplicate.setEndDateTime(LocalDateTime.now().minusDays(4));
+
+        // Assert that the task and its duplicate are equal and has the same hashCode
+        assertEquals(task3, task3Duplicate);
+        assertEquals(task3.hashCode(), task3Duplicate.hashCode());
+
+        // Add the taskAttributes to a HashSet
+        TaskAttributes[] taskAttributes = {task1, task1Duplicate, task2, task2Duplicate, task3, task3Duplicate};
+        HashSet<TaskAttributes> taskAttributesSet = new HashSet<TaskAttributes>();
+        for (TaskAttributes task : taskAttributes) {
+            taskAttributesSet.add(task);
+        }
+
+        // The size of the HashSet should be the number of unique tasks
+        assertEquals(3, taskAttributesSet.size());
+
+        // Equals should return false if the compared object is of different type
+        assertFalse(task1.equals(null));
+        assertFalse(task1.equals(new String()));
     }
 
     /**

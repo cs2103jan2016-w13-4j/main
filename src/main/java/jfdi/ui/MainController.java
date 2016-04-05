@@ -360,36 +360,6 @@ public class MainController {
         inputHistory = new InputHistory();
     }
 
-    public void initNotiBubbles() {
-        updateNotiBubbles();
-        Service<Void> service = new Service<Void>() {
-            @Override
-            public Task<Void> createTask() {
-                return new Task<Void>() {
-                    @Override
-                    public Void call() throws Exception {
-                        // Background work
-                        final CountDownLatch latch = new CountDownLatch(1);
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    updateNotiBubbles();
-                                } finally {
-                                    latch.countDown();
-                                }
-                            }
-                        });
-                        latch.await();
-                        // Keep with the background work
-                        return null;
-                    }
-                };
-            }
-        };
-        service.start();
-    }
-
     public void initSurpriseOverlay(TaskAttributes task) {
         taskDesc.setText(task.getDescription());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy h:mma");

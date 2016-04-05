@@ -1,3 +1,4 @@
+// @@author A0130195M
 package jfdi.test.logic.events;
 
 import jfdi.logic.events.SearchDoneEvent;

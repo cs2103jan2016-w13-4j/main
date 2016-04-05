@@ -6,20 +6,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 
 import com.sun.javafx.scene.control.skin.ListViewSkin;
 import com.sun.javafx.scene.control.skin.VirtualFlow;
 
 import edu.emory.mathcs.backport.java.util.Collections;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.IndexedCell;
 import javafx.scene.control.Label;
@@ -182,6 +178,11 @@ public class MainController {
         noSurpriseOverlay.toFront();
         noSurpriseOverlay.setOpacity(1);
         System.out.println("HERE");
+    }
+
+    public int getFirstVisibleId() {
+        setFirstVisibleId();
+        return firstVisibleId;
     }
 
     public void switchTabSkin() {
@@ -358,36 +359,6 @@ public class MainController {
 
     private void initInputHistory() {
         inputHistory = new InputHistory();
-    }
-
-    public void initNotiBubbles() {
-        updateNotiBubbles();
-        Service<Void> service = new Service<Void>() {
-            @Override
-            public Task<Void> createTask() {
-                return new Task<Void>() {
-                    @Override
-                    public Void call() throws Exception {
-                        // Background work
-                        final CountDownLatch latch = new CountDownLatch(1);
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    updateNotiBubbles();
-                                } finally {
-                                    latch.countDown();
-                                }
-                            }
-                        });
-                        latch.await();
-                        // Keep with the background work
-                        return null;
-                    }
-                };
-            }
-        };
-        service.start();
     }
 
     public void initSurpriseOverlay(TaskAttributes task) {

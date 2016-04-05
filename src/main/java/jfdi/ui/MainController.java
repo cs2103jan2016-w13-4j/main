@@ -107,7 +107,7 @@ public class MainController {
     public Stage mainStage;
     public ControlCenter controlCenter = ControlCenter.getInstance();
     public ObservableList<ListItem> importantList;
-    // arraylist index against display index
+    // Match display index against ArrayList index
     public HashMap<Integer, Integer> indexMatch = new HashMap<>();
     public TaskAttributes highLight;
     public int highLightIndex;
@@ -231,9 +231,11 @@ public class MainController {
                 break;
             case OVERDUE:
                 listTasks(controlCenter.getOverdueTasks(), false, true);
+                sortDisplayList();
                 break;
             case UPCOMING:
                 listTasks(controlCenter.getUpcomingTasks(), false, true);
+                sortDisplayList();
                 break;
             case ALL:
                 listTasks(controlCenter.getAllTasks(), false, true);
@@ -600,7 +602,8 @@ public class MainController {
         ArrayList<TaskAttributes> othersList = controlCenter.getIncompleteTasks().stream()
                 .filter(task -> !task.isOverdue() && !task.isUpcoming())
                 .collect(Collectors.toCollection(ArrayList::new));
-
+        
+        Collections.sort(overdueList);
         importantList.add(Constants.HEADER_OVERDUE);
         for (TaskAttributes task : overdueList) {
             if (shouldHighLight && task.equals(highLight)) {
@@ -610,6 +613,7 @@ public class MainController {
             appendTaskToDisplayList(task, shouldCheckContext, false);
         }
 
+        Collections.sort(upcomingList);
         importantList.add(Constants.HEADER_UPCOMING);
         for (TaskAttributes task : upcomingList) {
             if (shouldHighLight && task.equals(highLight)) {

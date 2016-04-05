@@ -126,7 +126,7 @@ public class Constants {
     public static final String CMD_SUCCESS_MARKED_2 = "Tasks %s completed! Good job! :)";
     public static final String CMD_SUCCESS_MOVED = "The location of your files has been moved to %s ! :)";
     public static final String CMD_SUCCESS_RENAMED = "Task #%d renamed to - %s -! :)";
-    public static final String CMD_SUCCESS_RESCHEDULED = "Task #%d rescheduled! :)";
+    public static final String CMD_SUCCESS_RESCHEDULED = "Task #%d rescheduled and shifted to #%d ! :)";
     public static final String CMD_SUCCESS_SEARCH_1 = "Here are your search results for keyword - %s -! :)";
     public static final String CMD_SUCCESS_SEARCH_2 = "Here are your search results for keywords - %s -! :)";
     public static final String CMD_SUCCESS_SHOWDIRECTORY = "Your current directory is %s ";

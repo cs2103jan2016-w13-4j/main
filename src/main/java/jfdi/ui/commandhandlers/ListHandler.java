@@ -43,6 +43,7 @@ public class ListHandler extends CommandHandler {
         }
 
         controller.updateNotiBubbles();
+        controller.listMain.scrollTo(0);
         controller.relayFb(String.format(Constants.CMD_SUCCESS_LISTED, e.getListType()), MsgType.SUCCESS);
     }
 

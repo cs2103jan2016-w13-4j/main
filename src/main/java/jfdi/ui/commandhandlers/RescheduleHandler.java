@@ -21,25 +21,36 @@ public class RescheduleHandler extends CommandHandler {
 
     @Subscribe
     public void handleRescheduleTaskDoneEvent(RescheduleTaskDoneEvent e) {
-
-        int count = 0;
+        
         TaskAttributes task = e.getTask();
+
+        int countBef = findCurrentIndex(task);
+        
+        controller.transListCmd();
+        
+        if (controller.shouldSort()) {
+            controller.sortDisplayList();
+        }
+        
+        int countAft = findCurrentIndex(task);
+
+        logger.fine(String.format(Constants.LOG_RESCHED_SUCCESS, task.getId()));
+        controller.listMain.scrollTo(countAft);
+        controller.updateNotiBubbles();
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_RESCHEDULED, countBef, countAft), MsgType.SUCCESS);
+    }
+    
+    private int findCurrentIndex(TaskAttributes task) {
+        
+        int count = 0;
+        
         for (int i = 0; i < controller.importantList.size(); i++) {
             if (controller.getIdFromIndex(i) == task.getId()) {
-                controller.importantList.get(i).setTimeDate(task.getStartDateTime(), task.getEndDateTime());
                 count = i;
                 break;
             }
         }
-
-        if (controller.shouldSort()) {
-            controller.sortDisplayList();
-        }
-
-        logger.fine(String.format(Constants.LOG_RESCHED_SUCCESS, task.getId()));
-        controller.listMain.scrollTo(count);
-        controller.updateNotiBubbles();
-        controller.relayFb(String.format(Constants.CMD_SUCCESS_RESCHEDULED, count + 1), MsgType.SUCCESS);
+        return count + 1;
     }
 
     @Subscribe

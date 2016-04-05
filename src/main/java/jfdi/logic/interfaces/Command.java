@@ -41,7 +41,7 @@ public abstract class Command {
      */
     public abstract void undo();
 
-    protected static void setRedoing(boolean redo) {
+    public static void setRedoing(boolean redo) {
         redoing = redo;
     }
 
@@ -53,7 +53,7 @@ public abstract class Command {
         return lastSuggestion;
     }
 
-    protected void pushToUndoStack() {
+    public void pushToUndoStack() {
         if (!redoing) {
             while (!redoStack.empty()) {
                 undoStack.push(redoStack.pop());
@@ -63,7 +63,7 @@ public abstract class Command {
         undoStack.push(this);
     }
 
-    protected void pushToRedoStack() {
+    public void pushToRedoStack() {
         redoStack.push(this);
     }
 

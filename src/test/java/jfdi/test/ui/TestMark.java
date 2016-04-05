@@ -8,8 +8,11 @@ public class TestMark extends UiTest {
 
     @Override
     void run() {
-        // TODO Auto-generated method stub
+        testMarkDone();
+    }
 
+    private void testMarkDone() {
+        main.execute("mark 1");
     }
 
 }

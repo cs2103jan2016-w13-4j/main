@@ -184,6 +184,11 @@ public class MainController {
         System.out.println("HERE");
     }
 
+    public int getFirstVisibleId() {
+        setFirstVisibleId();
+        return firstVisibleId;
+    }
+
     public void switchTabSkin() {
         setAllTabsOff();
         switch (displayStatus) {

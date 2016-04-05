@@ -267,127 +267,16 @@ public class TestMain extends ApplicationTest {
 
     @Test
     public void uiTests() {
-        testWidgetsExist();
-        testAddTaskDone();
-        testAddDuplicateTask();
-        testAddEmptyTask();
-        testHelpTaskDone();
-    }
-
-    public void testWidgetsExist() {
-
-        final String errMsg = " %s cannot be retrieved!";
-
-        assertNotNull(String.format(errMsg, "incompleteBox"), incompleteBox);
-        assertNotNull(String.format(errMsg, "overdueBox"), overdueBox);
-        assertNotNull(String.format(errMsg, "upcomingBox"), upcomingBox);
-        assertNotNull(String.format(errMsg, "allBox"), allBox);
-        assertNotNull(String.format(errMsg, "completedBox"), completedBox);
-        assertNotNull(String.format(errMsg, "searchBox"), searchBox);
-        assertNotNull(String.format(errMsg, "surpriseBox"), surpriseBox);
-        assertNotNull(String.format(errMsg, "helpBox"), helpBox);
-        assertNotNull(String.format(errMsg, "incompleteTab"), incompleteTab);
-        assertNotNull(String.format(errMsg, "overdueTab"), overdueTab);
-        assertNotNull(String.format(errMsg, "upcomingTab"), upcomingTab);
-        assertNotNull(String.format(errMsg, "allTab"), allTab);
-        assertNotNull(String.format(errMsg, "completedTab"), completedTab);
-        assertNotNull(String.format(errMsg, "searchTab"), searchTab);
-        assertNotNull(String.format(errMsg, "surpriseTab"), surpriseTab);
-        assertNotNull(String.format(errMsg, "helpTab"), helpTab);
-        assertNotNull(String.format(errMsg, "incompleteCount"), incompleteCount);
-        assertNotNull(String.format(errMsg, "overdueCount"), overdueCount);
-        assertNotNull(String.format(errMsg, "upcomingCount"), upcomingCount);
-        assertNotNull(String.format(errMsg, "dayDisplayer"), dayDisplayer);
-        assertNotNull(String.format(errMsg, "listMain"), listMain);
-        assertNotNull(String.format(errMsg, "fbArea"), fbArea);
-        assertNotNull(String.format(errMsg, "cmdArea"), cmdArea);
-        assertNotNull(String.format(errMsg, "helpContent"), helpContent);
-        assertNotNull(String.format(errMsg, "surpriseOverlay"), surpriseOverlay);
-        assertNotNull(String.format(errMsg, "surpriseTitle"), surpriseTitle);
-        assertNotNull(String.format(errMsg, "taskDesc"), taskDesc);
-        assertNotNull(String.format(errMsg, "taskTime"), taskTime);
-        assertNotNull(String.format(errMsg, "surpriseBottom"), surpriseBottom);
-        assertNotNull(String.format(errMsg, "noSurpriseOverlay"), noSurpriseOverlay);
-    }
-
-    /*
-     * Test a simple "add testing1" command and check if the task is added to
-     * the incomplete list as an item, and check if the feedback displayed
-     * matches the expected lines.
-     */
-    public void testAddTaskDone() {
-        String taskName = "testing1";
-        int listSize = controller.importantList.size();
-        StringProperty notiSize = new SimpleStringProperty(Integer.toString(listSize + 1));
-        String expectedFeedback = String.format(Constants.UI_MESSAGE_RESPONSE,
-                String.format(Constants.CMD_SUCCESS_ADDED, taskName)).trim();
-
-        addTask(taskName);
-
-        WaitForAsyncUtils.waitForFxEvents();
-
-        assertEquals(expectedFeedback, fbArea.getText());
-        assertEquals(listSize + 1, controller.importantList.size());
-        assertEquals(notiSize.getValue(), controller.incompletePlaceHdr.getValue());
-    }
-
-    /*
-     * Test the "add testing1" command again to check if error for duplicated
-     * task can be detected and reflected correctly
-     */
-    public void testAddDuplicateTask() {
-        int listSize = controller.importantList.size();
-        StringProperty notiSize = new SimpleStringProperty(Integer.toString(listSize));
-        String expectedFeedback = String.format(Constants.UI_MESSAGE_ERROR,
-                Constants.CMD_ERROR_CANT_ADD_DUPLICATE).trim();
-
-        String taskName = "testing1";
-        addTask(taskName);
-
-        WaitForAsyncUtils.waitForFxEvents();
-
-        assertEquals(expectedFeedback, fbArea.getText());
-        assertEquals(listSize, controller.importantList.size());
-        assertEquals(notiSize.getValue(), controller.incompletePlaceHdr.getValue());
-    }
-
-    /*
-     * Test an "add " command with empty description and check if the error is
-     * correctly detected and reflected.
-     */
-    public void testAddEmptyTask() {
-        int listSize = controller.importantList.size();
-        StringProperty notiSize = new SimpleStringProperty(Integer.toString(listSize));
-        String expectedFeedback = String.format(Constants.UI_MESSAGE_ERROR,
-                Constants.CMD_ERROR_CANT_ADD_EMPTY).trim();
-
-        addTask("\" \"");
-
-        WaitForAsyncUtils.waitForFxEvents();
-        assertEquals(expectedFeedback, fbArea.getText());
-        assertEquals(listSize, controller.importantList.size());
-        assertEquals(notiSize.getValue(), controller.incompletePlaceHdr.getValue());
-    }
-
-    /*
-     * Test "help" command and check if the help overlay correctly displays for
-     * the user.
-     */
-    public void testHelpTaskDone() {
-        type("help\n");
-        WaitForAsyncUtils.waitForFxEvents();
-        assertEquals(true, helpContent.isVisible());
+        TestWidgets.run(this);
+        TestAdd.run(this);
+        TestHelp.run(this);
     }
 
     /*
      * Helper methods
      */
 
-    private void addTask(String taskName) {
-        execute(String.format("add %s", taskName));
-    }
-
-    private void execute(String command) {
+    public void execute(String command) {
         type(command + '\n');
     }
 
@@ -701,7 +590,7 @@ public class TestMain extends ApplicationTest {
     private void doType(KeyCode... keycodes) {
         if (keycodes.length > 1) {
             press(keycodes);
-        }
+        }this.
         type(keycodes);
     }
 }

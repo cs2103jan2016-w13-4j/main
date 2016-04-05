@@ -1,5 +1,6 @@
 package jfdi.test.ui;
 
+import javafx.collections.ObservableList;
 import jfdi.ui.Constants;
 
 public class TestMark extends UiTest {
@@ -33,7 +34,13 @@ public class TestMark extends UiTest {
     }
 
     private void assertMarked(int... ids) {
-        // TODO: Assert that the given IDs are marked
+        for (int id : ids) {
+            getStyleClass(id).contains("itemBoxDone");
+        }
+    }
+
+    private ObservableList<String> getStyleClass(int id) {
+        return main.controller.importantList.get(id).getStyleClass();
     }
 
 }

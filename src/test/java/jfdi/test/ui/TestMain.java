@@ -77,12 +77,12 @@ public class TestMain extends ApplicationTest {
     TextArea fbArea;
     AutoCompleteTextField cmdArea;
     ListView<HelpItem> helpContent;
-    VBox surpriseOverlay;
+    AnchorPane surpriseOverlay;
     Label surpriseTitle;
     Label taskDesc;
     Label taskTime;
     Label surpriseBottom;
-    ImageView noSurpriseOverlay;
+    AnchorPane noSurpriseOverlay;
 
     Stage stage;
     Scene scene;
@@ -248,12 +248,12 @@ public class TestMain extends ApplicationTest {
         fbArea = find("#fbArea");
         cmdArea = find("#cmdArea");
         helpContent = find("#helpContent");
-//        surpriseOverlay = find("#surpriseOverlay");
+        surpriseOverlay = find("#surpriseOverlay");
         surpriseTitle = find("#surpriseTitle");
         taskDesc = find("#taskDesc");
         taskTime = find("#taskTime");
         surpriseBottom = find("#surpriseBottom");
-//        noSurpriseOverlay = find("#noSurpriseOverlay");
+        noSurpriseOverlay = find("#noSurpriseOverlay");
     }
 
     /* To clear the ongoing events */
@@ -304,12 +304,12 @@ public class TestMain extends ApplicationTest {
         assertNotNull(String.format(errMsg, "fbArea"), fbArea);
         assertNotNull(String.format(errMsg, "cmdArea"), cmdArea);
         assertNotNull(String.format(errMsg, "helpContent"), helpContent);
-//        assertNotNull(String.format(errMsg, "surpriseOverlay"), surpriseOverlay);
+        assertNotNull(String.format(errMsg, "surpriseOverlay"), surpriseOverlay);
         assertNotNull(String.format(errMsg, "surpriseTitle"), surpriseTitle);
         assertNotNull(String.format(errMsg, "taskDesc"), taskDesc);
         assertNotNull(String.format(errMsg, "taskTime"), taskTime);
         assertNotNull(String.format(errMsg, "surpriseBottom"), surpriseBottom);
-//        assertNotNull(String.format(errMsg, "noSurpriseOverlay"), noSurpriseOverlay);
+        assertNotNull(String.format(errMsg, "noSurpriseOverlay"), noSurpriseOverlay);
     }
 
     /*

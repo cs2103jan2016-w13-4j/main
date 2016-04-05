@@ -35,7 +35,7 @@ public abstract class CommonCommandTest {
         Command.setParser(parser);
 
         AliasAttributes.setCommandRegex(InputParser.getInstance().getAllCommandRegexes());
-        parser.setAliases(AliasDb.getInstance().getAll());
+        InputParser.getInstance().setAliases(AliasDb.getInstance().getAll());
         MainStorage.getInstance().initialize();
         MainStorage.getInstance().use("./.test_data");
     }

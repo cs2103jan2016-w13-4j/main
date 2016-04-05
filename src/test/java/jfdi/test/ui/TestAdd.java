@@ -30,14 +30,12 @@ public class TestAdd extends UiTest {
         String taskName = "testing1";
         int listSize = main.controller.importantList.size();
         StringProperty notiSize = new SimpleStringProperty(Integer.toString(listSize + 1));
-        String expectedFeedback = String.format(Constants.UI_MESSAGE_RESPONSE,
-                String.format(Constants.CMD_SUCCESS_ADDED, taskName)).trim();
 
         main.addTask(taskName);
 
         WaitForAsyncUtils.waitForFxEvents();
 
-        assertEquals(expectedFeedback, main.fbArea.getText());
+        main.assertResponseMessage(String.format(Constants.CMD_SUCCESS_ADDED, taskName));
         assertEquals(listSize + 1, main.controller.importantList.size());
         assertEquals(notiSize.getValue(), main.controller.incompletePlaceHdr.getValue());
     }
@@ -49,15 +47,13 @@ public class TestAdd extends UiTest {
     public void testAddDuplicateTask() {
         int listSize = main.controller.importantList.size();
         StringProperty notiSize = new SimpleStringProperty(Integer.toString(listSize));
-        String expectedFeedback = String.format(Constants.UI_MESSAGE_ERROR,
-                Constants.CMD_ERROR_CANT_ADD_DUPLICATE).trim();
 
         String taskName = "testing1";
         main.addTask(taskName);
 
         WaitForAsyncUtils.waitForFxEvents();
 
-        assertEquals(expectedFeedback, main.fbArea.getText());
+        main.assertErrorMessage(Constants.CMD_ERROR_CANT_ADD_DUPLICATE);
         assertEquals(listSize, main.controller.importantList.size());
         assertEquals(notiSize.getValue(), main.controller.incompletePlaceHdr.getValue());
     }
@@ -69,13 +65,11 @@ public class TestAdd extends UiTest {
     public void testAddEmptyTask() {
         int listSize = main.controller.importantList.size();
         StringProperty notiSize = new SimpleStringProperty(Integer.toString(listSize));
-        String expectedFeedback = String.format(Constants.UI_MESSAGE_ERROR,
-                Constants.CMD_ERROR_CANT_ADD_EMPTY).trim();
 
         main.addTask("\" \"");
 
         WaitForAsyncUtils.waitForFxEvents();
-        assertEquals(expectedFeedback, main.fbArea.getText());
+        main.assertErrorMessage(Constants.CMD_ERROR_CANT_ADD_EMPTY);
         assertEquals(listSize, main.controller.importantList.size());
         assertEquals(notiSize.getValue(), main.controller.incompletePlaceHdr.getValue());
     }

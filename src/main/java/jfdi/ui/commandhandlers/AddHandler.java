@@ -48,10 +48,6 @@ public class AddHandler extends CommandHandler {
     public void handleAddTaskFailEvent(AddTaskFailedEvent e) {
 
         switch (e.getError()) {
-            case UNKNOWN:
-                controller.relayFb(Constants.CMD_ERROR_CANT_ADD_UNKNOWN, MsgType.ERROR);
-                logger.fine(String.format(Constants.LOG_ADD_FAIL_UNKNOWN));
-                break;
             case EMPTY_DESCRIPTION:
                 controller.relayFb(Constants.CMD_ERROR_CANT_ADD_EMPTY, MsgType.ERROR);
                 logger.fine(String.format(Constants.LOG_ADD_FAIL_EMPTY));

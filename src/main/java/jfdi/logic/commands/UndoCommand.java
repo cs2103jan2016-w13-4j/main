@@ -5,7 +5,7 @@ import jfdi.logic.events.UndoFailedEvent;
 import jfdi.logic.interfaces.Command;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public class UndoCommand extends Command {
 

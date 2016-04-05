@@ -1,7 +1,7 @@
 package jfdi.logic.events;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public class UndoFailedEvent {
 

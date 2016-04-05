@@ -6,7 +6,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public class InitializationFailedEventTest {
 

@@ -4,7 +4,7 @@ import jfdi.logic.ControlCenter;
 import jfdi.logic.interfaces.Command;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public class YesCommand extends Command {
 

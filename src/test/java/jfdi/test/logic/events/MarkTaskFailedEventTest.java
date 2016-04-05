@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public class MarkTaskFailedEventTest {
 

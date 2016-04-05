@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public class SurpriseEventTest {
 

@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 @RunWith(MockitoJUnitRunner.class)
 public class CommandTest {

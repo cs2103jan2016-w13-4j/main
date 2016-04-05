@@ -4,7 +4,7 @@ import jfdi.logic.events.InvalidCommandEvent;
 import jfdi.parser.Constants;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Xinan

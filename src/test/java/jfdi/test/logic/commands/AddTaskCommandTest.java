@@ -2,7 +2,6 @@ package jfdi.test.logic.commands;
 
 import jfdi.logic.commands.AddTaskCommand;
 import jfdi.logic.interfaces.Command;
-import jfdi.storage.apis.MainStorage;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.InvalidIdException;
@@ -14,7 +13,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.time.LocalDateTime;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 /**
  * @author Xinan

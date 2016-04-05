@@ -573,7 +573,7 @@ public class MainController {
         ArrayList<TaskAttributes> othersList = controlCenter.getIncompleteTasks().stream()
                 .filter(task -> !task.isOverdue() && !task.isUpcoming())
                 .collect(Collectors.toCollection(ArrayList::new));
-        
+
         if (!overdueList.isEmpty()) {
             Collections.sort(overdueList);
             importantList.add(Constants.HEADER_OVERDUE);

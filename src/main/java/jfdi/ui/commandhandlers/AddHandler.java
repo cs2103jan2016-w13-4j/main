@@ -22,7 +22,7 @@ public class AddHandler extends CommandHandler {
 
     @Subscribe
     public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {
-        
+
         TaskAttributes task = e.getTask();
 
         switch (controller.displayStatus) {
@@ -58,7 +58,7 @@ public class AddHandler extends CommandHandler {
             default:
                 break;
         }
-        
+
         controller.updateNotiBubbles();
         int index = findCurrentIndex(task);
         logger.fine(String.format(Constants.LOG_ADDED_SUCCESS, task.getId()));

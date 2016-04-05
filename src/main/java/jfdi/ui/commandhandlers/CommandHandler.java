@@ -38,11 +38,11 @@ public abstract class CommandHandler {
         UI.getEventBus().register(UnmarkHandler.getInstance());
         UI.getEventBus().register(UseDirHandler.getInstance());
     }
-    
+
     public int findCurrentIndex(TaskAttributes task) {
-        
+
         int count = 0;
-        
+
         for (int i = 0; i < controller.importantList.size(); i++) {
             if (controller.getIdFromIndex(i) == task.getId()) {
                 count = i;

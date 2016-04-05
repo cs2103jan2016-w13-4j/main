@@ -584,7 +584,7 @@ public class TestMain extends ApplicationTest {
     private void doType(KeyCode... keycodes) {
         if (keycodes.length > 1) {
             press(keycodes);
-        }this.
+        }
         type(keycodes);
     }
 }

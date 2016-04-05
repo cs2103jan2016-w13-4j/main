@@ -8,7 +8,6 @@ import jfdi.storage.exceptions.DuplicateTaskException;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
-import jfdi.ui.UI;
 
 /**
  * @author Liu Xinan

@@ -7,7 +7,6 @@ import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
-import jfdi.ui.UI;
 
 import java.util.ArrayList;
 import java.util.Collection;

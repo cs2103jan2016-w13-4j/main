@@ -603,33 +603,39 @@ public class MainController {
                 .filter(task -> !task.isOverdue() && !task.isUpcoming())
                 .collect(Collectors.toCollection(ArrayList::new));
         
-        Collections.sort(overdueList);
-        importantList.add(Constants.HEADER_OVERDUE);
-        for (TaskAttributes task : overdueList) {
-            if (shouldHighLight && task.equals(highLight)) {
-                appendTaskToDisplayList(task, shouldCheckContext, shouldHighLight);
-                continue;
+        if (!overdueList.isEmpty()) {
+            Collections.sort(overdueList);
+            importantList.add(Constants.HEADER_OVERDUE);
+            for (TaskAttributes task : overdueList) {
+                if (shouldHighLight && task.equals(highLight)) {
+                    appendTaskToDisplayList(task, shouldCheckContext, shouldHighLight);
+                    continue;
+                }
+                appendTaskToDisplayList(task, shouldCheckContext, false);
             }
-            appendTaskToDisplayList(task, shouldCheckContext, false);
         }
 
-        Collections.sort(upcomingList);
-        importantList.add(Constants.HEADER_UPCOMING);
-        for (TaskAttributes task : upcomingList) {
-            if (shouldHighLight && task.equals(highLight)) {
-                appendTaskToDisplayList(task, shouldCheckContext, shouldHighLight);
-                continue;
+        if (!upcomingList.isEmpty()) {
+            Collections.sort(upcomingList);
+            importantList.add(Constants.HEADER_UPCOMING);
+            for (TaskAttributes task : upcomingList) {
+                if (shouldHighLight && task.equals(highLight)) {
+                    appendTaskToDisplayList(task, shouldCheckContext, shouldHighLight);
+                    continue;
+                }
+                appendTaskToDisplayList(task, shouldCheckContext, false);
             }
-            appendTaskToDisplayList(task, shouldCheckContext, false);
         }
 
-        importantList.add(Constants.HEADER_OTHERS);
-        for (TaskAttributes task : othersList) {
-            if (shouldHighLight && task.getDescription().equals(highLight.getDescription())) {
-                appendTaskToDisplayList(task, shouldCheckContext, shouldHighLight);
-                continue;
+        if (!othersList.isEmpty()) {
+            importantList.add(Constants.HEADER_OTHERS);
+            for (TaskAttributes task : othersList) {
+                if (shouldHighLight && task.getDescription().equals(highLight.getDescription())) {
+                    appendTaskToDisplayList(task, shouldCheckContext, shouldHighLight);
+                    continue;
+                }
+                appendTaskToDisplayList(task, shouldCheckContext, false);
             }
-            appendTaskToDisplayList(task, shouldCheckContext, false);
         }
     }
 

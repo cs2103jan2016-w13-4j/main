@@ -39,19 +39,6 @@ public class RescheduleHandler extends CommandHandler {
         controller.updateNotiBubbles();
         controller.relayFb(String.format(Constants.CMD_SUCCESS_RESCHEDULED, countBef, countAft), MsgType.SUCCESS);
     }
-    
-    private int findCurrentIndex(TaskAttributes task) {
-        
-        int count = 0;
-        
-        for (int i = 0; i < controller.importantList.size(); i++) {
-            if (controller.getIdFromIndex(i) == task.getId()) {
-                count = i;
-                break;
-            }
-        }
-        return count + 1;
-    }
 
     @Subscribe
     public void handleRescheduleTaskFailEvent(RescheduleTaskFailedEvent e) {

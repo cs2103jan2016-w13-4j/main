@@ -22,26 +22,48 @@ public class AddHandler extends CommandHandler {
 
     @Subscribe
     public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {
-
-        if (controller.displayStatus.equals(ListStatus.SEARCH)) {
-            controller.switchContext(ListStatus.INCOMPLETE, true);
-        } else if (!controller.displayStatus.equals(ListStatus.ALL)) {
-            controller.switchContext(ListStatus.INCOMPLETE, false);
-        }
-
+        
         TaskAttributes task = e.getTask();
-        controller.appendTaskToDisplayList(task, true, false);
 
-        if (controller.shouldSort()) {
-            controller.sortDisplayList();
+        switch (controller.displayStatus) {
+            case INCOMPLETE:
+                controller.switchContext(ListStatus.INCOMPLETE, true);
+                break;
+            case OVERDUE:
+                if (task.isOverdue()) {
+                    controller.switchContext(ListStatus.OVERDUE, true);
+                } else {
+                    controller.switchContext(ListStatus.INCOMPLETE, true);
+                }
+                break;
+            case UPCOMING:
+                if (task.isUpcoming()) {
+                    controller.switchContext(ListStatus.UPCOMING, true);
+                } else {
+                    controller.switchContext(ListStatus.INCOMPLETE, true);
+                }
+                break;
+            case ALL:
+                controller.appendTaskToDisplayList(task, false, true);
+                break;
+            case COMPLETE:
+                controller.switchContext(ListStatus.INCOMPLETE, true);
+                break;
+            case SURPRISE:
+                controller.switchContext(ListStatus.INCOMPLETE, true);
+                break;
+            case SEARCH:
+                controller.switchContext(ListStatus.INCOMPLETE, true);
+                break;
+            default:
+                break;
         }
-
+        
         controller.updateNotiBubbles();
-
-        controller.listMain.scrollTo(controller.importantList.size() - 1);
-
-        controller.relayFb(String.format(Constants.CMD_SUCCESS_ADDED, task.getDescription()), MsgType.SUCCESS);
+        int index = findCurrentIndex(task);
         logger.fine(String.format(Constants.LOG_ADDED_SUCCESS, task.getId()));
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_ADDED, index, task.getDescription()), MsgType.SUCCESS);
+        controller.listMain.scrollTo(index);
     }
 
     @Subscribe

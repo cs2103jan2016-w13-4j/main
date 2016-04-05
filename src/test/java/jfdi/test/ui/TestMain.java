@@ -269,6 +269,7 @@ public class TestMain extends ApplicationTest {
         };
         for (UiTest test : tests) {
             test.run();
+            test.done();
         }
     }
 

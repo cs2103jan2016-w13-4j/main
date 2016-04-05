@@ -47,7 +47,7 @@ public class InputParser implements IParser {
     private static final String SOURCECLASS = InputParser.class.getName();
     private Collection<AliasAttributes> aliases = new ArrayList<AliasAttributes>();
     private HashMap<String, String> aliasMap = new HashMap<>();
-    private String currentInput = "";
+    private String originalInput = "";
 
     public static InputParser getInstance() {
         LOGGER.entering(SOURCECLASS, "getInstance");
@@ -65,10 +65,10 @@ public class InputParser implements IParser {
             throw new InvalidInputException(input);
         }
 
-        currentInput = input;
+        originalInput = input;
         input = trimInput(input);
 
-        // input is guaranteed to be at least one word long
+        // input is guaranteed to be at least one word long at this point
         String unaliasedInput = unalias(input);
         String firstWord = getFirstWord(unaliasedInput);
         CommandType commandType = ParserUtils.getCommandType(firstWord);
@@ -141,50 +141,48 @@ public class InputParser implements IParser {
         assert commandType != null && isValidInput(input);
 
         switch (commandType) {
-            case add:
+            case ADD:
                 return AddCommandParser.getInstance().build(input);
-            case list:
+            case LIST:
                 return ListCommandParser.getInstance().build(input);
-            case delete:
+            case DELETE:
                 return DeleteCommandParser.getInstance().build(input);
-            case rename:
+            case RENAME:
                 return RenameCommandParser.getInstance().build(input);
-            case reschedule:
+            case RESCHEDULE:
                 return RescheduleCommandParser.getInstance().build(input);
-            case search:
+            case SEARCH:
                 return SearchCommandParser.getInstance().build(input);
-            case mark:
+            case MARK:
                 return MarkCommandParser.getInstance().build(input);
-            case unmark:
+            case UNMARK:
                 return UnmarkCommandParser.getInstance().build(input);
-            case alias:
+            case ALIAS:
                 return AliasCommandParser.getInstance().build(input);
-            case unalias:
+            case UNALIAS:
                 return UnaliasCommandParser.getInstance().build(input);
-            case directory:
+            case DIRECTORY:
                 // In this case, we check to see if input is made up of just the
                 // command name. If it is not, parse it as an 'Add' command
                 // instead.
                 return isSingleWord(input) ? DirectoryCommandParser.getInstance().build(input) : AddCommandParser
                     .getInstance().build(input);
-            case move:
+            case MOVE:
                 return MoveCommandParser.getInstance().build(input);
-            case use:
+            case USE:
                 return UseCommandParser.getInstance().build(input);
-            case undo:
+            case UNDO:
                 return isSingleWord(input) ? UndoCommandParser.getInstance().build(input) : AddCommandParser
-                    .getInstance().build(currentInput);
-            case help:
+                    .getInstance().build(originalInput);
+            case HELP:
                 return isSingleWord(input) ? HelpCommandParser.getInstance().build(input) : AddCommandParser
-                    .getInstance().build(currentInput);
-            case wildcard:
+                    .getInstance().build(originalInput);
+            case WILDCARD:
                 return isSingleWord(input) ? WildcardCommandParser.getInstance().build(input) : AddCommandParser
-                    .getInstance().build(currentInput);
-            case exit:
+                    .getInstance().build(originalInput);
+            case EXIT:
                 return isSingleWord(input) ? ExitCommandParser.getInstance().build(input) : AddCommandParser
-                    .getInstance().build(currentInput);
-                // case invalid:
-                // return parseInvalidCommandInput(currentInput, input);
+                    .getInstance().build(originalInput);
             default:
                 return AddCommandParser.getInstance().build(input);
         }
@@ -193,34 +191,6 @@ public class InputParser implements IParser {
     // ===================================
     // Second Level of Abstraction
     // ===================================
-    /*
-     * private Command parseInvalidCommandInput(String currentInput, String
-     * input) { String firstWord = getFirstWord(currentInput); Set<String>
-     * keywords = getKeywords(); for (String keyword : keywords) { if
-     * (StringUtils.getLevenshteinDistance(firstWord, keyword) <= 2) {
-     * System.out.println(StringUtils.getLevenshteinDistance(firstWord,
-     * keyword)); String suggestedInput = currentInput.replaceAll("^" +
-     * firstWord, keyword); System.out.println(suggestedInput); return
-     * createInvalidCommand(CommandType.invalid, currentInput, suggestedInput);
-     * } } return AddCommandParser.getInstance().build(input); }
-     *//*
-        * private TreeSet<String> getKeywords() { TreeSet<String> keywords =
-        * Arrays
-        * .stream(InputParser.getInstance().getAllCommandRegexes().replaceAll
-        * ("\\W+", " ").split("\\s+")) .filter(part -> part.length() >
-        * 1).collect(Collectors.toCollection(TreeSet::new));
-        * aliases.stream().map
-        * (AliasAttributes::getAlias).forEach(keywords::add); return keywords; }
-        */
-    /*
-     * private InvalidCommand createInvalidCommand(CommandType commandType,
-     * String inputString, String suggestion) { InvalidCommand.Builder
-     * invalidCommandBuilder = new InvalidCommand.Builder();
-     * invalidCommandBuilder.setInputString(inputString);
-     * invalidCommandBuilder.setCommandType(commandType);
-     * invalidCommandBuilder.setSuggestion(suggestion); return
-     * invalidCommandBuilder.build(); }
-     */
 
     /**
      * This method checks if the given input is valid. A valid input is one that

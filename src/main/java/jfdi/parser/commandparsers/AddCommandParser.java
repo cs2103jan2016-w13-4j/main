@@ -54,7 +54,7 @@ public class AddCommandParser extends AbstractCommandParser {
      */
     public Command build(String input) {
         if (!isValidInput(input)) {
-            return createInvalidCommand(Constants.CommandType.add, input);
+            return createInvalidCommand(Constants.CommandType.ADD, input);
         }
 
         String originalInput = input;
@@ -63,7 +63,7 @@ public class AddCommandParser extends AbstractCommandParser {
             input = setAndRemoveDateTime(input, addCommandBuilder);
             setDescription(input, addCommandBuilder);
         } catch (BadDateTimeException | BadTaskDescriptionException e) {
-            return createInvalidCommand(Constants.CommandType.add, originalInput);
+            return createInvalidCommand(Constants.CommandType.ADD, originalInput);
         }
 
         AddTaskCommand addCommand = addCommandBuilder.build();

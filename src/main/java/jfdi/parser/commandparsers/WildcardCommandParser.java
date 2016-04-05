@@ -30,7 +30,7 @@ public class WildcardCommandParser extends AbstractCommandParser {
     @Override
     public Command build(String input) {
         if (!isValidWildCardCommand(input)) {
-            return createInvalidCommand(CommandType.wildcard, input);
+            return createInvalidCommand(CommandType.WILDCARD, input);
         }
         Builder builder = new Builder();
         return builder.build();

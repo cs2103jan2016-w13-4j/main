@@ -115,33 +115,33 @@ public class Constants {
 
     // A task can be any one of these task types
     public enum TaskType {
-        floating,
-        deadline,
-        event,
-        point,
-        repeated;
+        FLOATING,
+        DEADLINE,
+        EVENT,
+        POINT,
+        REPEATED;
     }
 
     // An enum containing all the commands available to the user
     public enum CommandType {
-        add,
-        delete,
-        rename,
-        reschedule,
-        list,
-        search,
-        mark,
-        unmark,
-        alias,
-        unalias,
-        directory,
-        move,
-        use,
-        undo,
-        help,
-        wildcard,
-        invalid,
-        exit;
+        ADD,
+        DELETE,
+        RENAME,
+        RESCHEDULE,
+        LIST,
+        SEARCH,
+        MARK,
+        UNMARK,
+        ALIAS,
+        UNALIAS,
+        DIRECTORY,
+        MOVE,
+        USE,
+        UNDO,
+        HELP,
+        WILDCARD,
+        INVALID,
+        EXIT;
     }
 
     public static final int INDEX_ACTION = 0;
@@ -167,10 +167,10 @@ public class Constants {
         public static final int DEFAULT_SECONDS = 0;
         public static final int DEFAULT_NANOSECONDS = 0;
 
-        public final int hour;
-        public final int minutes;
-        public final int seconds;
-        public final int nanoseconds;
+        public int hour;
+        public int minutes;
+        public int seconds;
+        public int nanoseconds;
 
         public Time(int hour, int minutes, int seconds, int nanoseconds) {
             this.hour = hour;
@@ -198,13 +198,4 @@ public class Constants {
     public static String[] getCommandRegexes() {
         return COMMAND_REGEXES;
     }
-
-    /*
-     * public static void main(String[] args) {
-     * System.out.println("delete 1-10".matches(REGEX_DELETE_FORMAT));
-     * System.out.println("mark 1".matches(REGEX_MARK_FORMAT));
-     * System.out.println("12:34hrs, 23/12".matches(REGEX_DATE_FORMAT));
-     * System.out.println("\\enter".matches(".*\\\\enter$"));
-     * System.out.println((double) (5 / 2)); }
-     */
 }

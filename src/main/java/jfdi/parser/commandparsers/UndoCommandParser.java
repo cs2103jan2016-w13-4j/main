@@ -30,7 +30,7 @@ public class UndoCommandParser extends AbstractCommandParser {
     @Override
     public Command build(String input) {
         if (!isValidUndoCommand(input)) {
-            return createInvalidCommand(CommandType.wildcard, input);
+            return createInvalidCommand(CommandType.WILDCARD, input);
         }
         Builder builder = new Builder();
         return builder.build();

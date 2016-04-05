@@ -10,6 +10,7 @@ import jfdi.parser.Constants.TaskType;
  * The DateTimeObject class encapsulates all the information relevant to the
  * datetime field of a user's input. This includes the task type (floating,
  * event, etc), the values of the start and end date time specified, and so on.
+ * Creating a DateTimeObject should only be done through the Builder subclass.
  *
  * @author Leonard Hio
  *
@@ -19,13 +20,11 @@ public class DateTimeObject {
     private TaskType taskType;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
-    private boolean isTimeSpecified;
 
     public DateTimeObject(DateTimeObjectBuilder builder) {
         this.taskType = builder.taskType;
         this.startDateTime = builder.startDateTime;
         this.endDateTime = builder.endDateTime;
-        this.isTimeSpecified = builder.isTimeSpecified;
     }
 
     public TaskType getTaskType() {
@@ -44,7 +43,6 @@ public class DateTimeObject {
         private TaskType taskType = null;
         private LocalDateTime startDateTime = null;
         private LocalDateTime endDateTime = null;
-        private boolean isTimeSpecified = false;
 
         public DateTimeObjectBuilder setTaskType(TaskType t) {
             this.taskType = t;

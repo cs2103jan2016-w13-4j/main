@@ -53,10 +53,10 @@ public class MarkCommandParser extends AbstractCommandParser {
     @Override
     public Command build(String input) {
         assert isValidInput(input)
-            && matchesCommandType(input, CommandType.mark);
+            && matchesCommandType(input, CommandType.MARK);
 
         if (!isValidMarkCommand(input)) {
-            return createInvalidCommand(CommandType.mark, input);
+            return createInvalidCommand(CommandType.MARK, input);
         }
         input = removeFirstWord(input);
         Builder markTaskCommandBuilder = new Builder();
@@ -64,7 +64,7 @@ public class MarkCommandParser extends AbstractCommandParser {
         try {
             taskIds = getTaskIds(input);
         } catch (BadTaskIdException e) {
-            return createInvalidCommand(CommandType.mark, input);
+            return createInvalidCommand(CommandType.MARK, input);
         }
         System.out.println(taskIds);
         markTaskCommandBuilder.addTaskIds(taskIds);

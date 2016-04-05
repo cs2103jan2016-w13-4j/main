@@ -174,7 +174,7 @@ public class AliasDb implements IDatabase {
      * This method checks if the given alias already exists in the program's
      * storage.
      *
-     * @param alias
+     * @param ALIAS
      *            the alias that we want to check
      * @return boolean indicating if the alias already exists
      */

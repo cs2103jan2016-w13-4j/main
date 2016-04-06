@@ -2,12 +2,15 @@ package jfdi.test.logic.commands;
 
 import jfdi.logic.commands.DirectoryCommand;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.*;
 
 /**
  * @author Liu Xinan
  */
+@RunWith(MockitoJUnitRunner.class)
 public class DirectoryCommandTest extends CommonCommandTest {
 
     @Test

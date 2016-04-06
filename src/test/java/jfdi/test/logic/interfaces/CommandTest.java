@@ -2,6 +2,7 @@
 
 package jfdi.test.logic.interfaces;
 
+import com.google.common.eventbus.EventBus;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.InputParser;
 import jfdi.storage.apis.AliasDb;
@@ -44,6 +45,9 @@ public class CommandTest {
     @Mock
     private InputParser parser;
 
+    @Mock
+    private EventBus eventBus;
+
     @Before
     public void setUp() throws Exception {
         command = Mockito.mock(Command.class, Mockito.CALLS_REAL_METHODS);
@@ -52,6 +56,7 @@ public class CommandTest {
         Command.setTaskDb(taskDb);
         Command.setAliasDb(aliasDb);
         Command.setParser(parser);
+        Command.setEventBus(eventBus);
     }
 
     @After
@@ -61,6 +66,7 @@ public class CommandTest {
         Command.setTaskDb(TaskDb.getInstance());
         Command.setAliasDb(AliasDb.getInstance());
         Command.setParser(InputParser.getInstance());
+        Command.setEventBus(UI.getEventBus());
         Command.setLastSuggestion(Optional.empty());
         Command.setRedoing(false);
     }
@@ -133,6 +139,11 @@ public class CommandTest {
     @Test
     public void getUI()  throws Exception {
         assertSame(ui, Command.getUI());
+    }
+
+    @Test
+    public void getEventBus() throws Exception {
+        assertSame(eventBus, Command.getEventBus());
     }
 
 }

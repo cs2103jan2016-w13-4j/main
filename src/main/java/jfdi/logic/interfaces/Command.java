@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public abstract class Command {
 
     protected static final Logger logger = JfdiLogger.getLogger();
-    protected static final EventBus eventBus = UI.getEventBus();
+    protected static EventBus eventBus = UI.getEventBus();
 
     protected static final Stack<Command> undoStack = new Stack<>();
     protected static final Stack<Command> redoStack = new Stack<>();
@@ -95,6 +95,10 @@ public abstract class Command {
         Command.aliasDb = aliasDb;
     }
 
+    public static void setEventBus(EventBus eventBus) {
+        Command.eventBus = eventBus;
+    }
+
     public static Stack<Command> getUndoStack() {
         return undoStack;
     }
@@ -121,6 +125,10 @@ public abstract class Command {
 
     public static AliasDb getAliasDb() {
         return aliasDb;
+    }
+
+    public static EventBus getEventBus() {
+        return eventBus;
     }
 
     public static boolean isRedoing() {

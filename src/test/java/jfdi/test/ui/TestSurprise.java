@@ -1,6 +1,7 @@
 package jfdi.test.ui;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import javafx.scene.input.KeyCode;
 
@@ -32,12 +33,13 @@ public class TestSurprise extends UiTest {
         main.execute("yay");
         main.assertOnBox(main.incompleteBox);
         main.assertOnTab(main.incompleteTab, "incomplete");
-        assertEquals(false, main.surpriseOverlay.isVisible());
-        
+        assertFalse(main.surpriseOverlay.isVisible());
+
+        main.type(KeyCode.F6);
         main.execute("nay");
         main.assertOnBox(main.surpriseBox);
         main.assertOnTab(main.surpriseTab, "surprise");
-        assertEquals(true, main.surpriseOverlay.isVisible());
+        assertTrue(main.surpriseOverlay.isVisible());
     }
 
 }

@@ -1,6 +1,7 @@
 package jfdi.test.ui;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.testfx.util.WaitForAsyncUtils;
 
@@ -22,9 +23,9 @@ public class TestHelp extends UiTest {
     public void testHelpTaskDone() {
         main.execute("help");
         WaitForAsyncUtils.waitForFxEvents();
-        assertEquals(true, main.helpContent.isVisible());
+        assertTrue(main.helpContent.isVisible());
     }
-    
+
     /*
      * Test "help" command and check if the help overlay correctly displays for
      * the user.
@@ -33,8 +34,7 @@ public class TestHelp extends UiTest {
         main.execute("help");
         main.execute("list");
         WaitForAsyncUtils.waitForFxEvents();
-        assertEquals(true, main.helpContent.isVisible());
+        assertFalse(main.helpContent.isVisible());
     }
-    
-    
+
 }

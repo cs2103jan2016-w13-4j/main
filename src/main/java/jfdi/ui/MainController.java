@@ -132,10 +132,13 @@ public class MainController {
 
     public void hideOverlays() {
         helpContent.toBack();
+        helpContent.setVisible(false);
         helpContent.setOpacity(0);
         surpriseOverlay.toBack();
+        surpriseOverlay.setVisible(false);
         surpriseOverlay.setOpacity(0);
         noSurpriseOverlay.toBack();
+        noSurpriseOverlay.setVisible(false);
         noSurpriseOverlay.setOpacity(0);
     }
 
@@ -168,18 +171,20 @@ public class MainController {
 
     public void showHelpDisplay() {
         helpContent.toFront();
+        helpContent.setVisible(true);
         helpContent.setOpacity(1);
     }
 
     public void showSurpriseDisplay() {
         surpriseOverlay.toFront();
+        surpriseOverlay.setVisible(true);
         surpriseOverlay.setOpacity(1);
     }
 
     public void showNoSurpriseDisplay() {
         noSurpriseOverlay.toFront();
+        noSurpriseOverlay.setVisible(true);
         noSurpriseOverlay.setOpacity(1);
-        System.out.println("HERE");
     }
 
     public int getFirstVisibleId() {

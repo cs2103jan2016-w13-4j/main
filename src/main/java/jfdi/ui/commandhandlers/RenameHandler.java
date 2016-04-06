@@ -25,11 +25,10 @@ public class RenameHandler extends CommandHandler {
     public void handleRenameTaskDoneEvent(RenameTaskDoneEvent e) {
 
         TaskAttributes task = e.getTask();
-        
+
         int displayIndex = findCurrentIndex(task);
         int arrayIndex = controller.indexMatch.get(displayIndex);
         controller.importantList.get(arrayIndex).setDescription(task.getDescription());
-
 
         logger.fine(String.format(Constants.LOG_RENAMED_SUCCESS, task.getId()));
         controller.listMain.scrollTo(arrayIndex);

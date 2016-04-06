@@ -36,6 +36,10 @@ public class MoveDirectoryCommand extends Command {
 
     }
 
+    public String getOldDirectory() {
+        return oldDirectory;
+    }
+
     public String getNewDirectory() {
         return newDirectory;
     }

@@ -1,3 +1,5 @@
+// @@author A0129538W
+
 package jfdi.ui.commandhandlers;
 
 import com.google.common.eventbus.Subscribe;
@@ -23,9 +25,7 @@ public class UseDirHandler extends CommandHandler {
     public void handleUseDirectoryDoneEvent(UseDirectoryDoneEvent e) {
 
         controller.switchContext(ListStatus.INCOMPLETE, true);
-        controller.relayFb(
-            String.format(Constants.CMD_SUCCESS_USED, e.getNewDirectory()),
-            MsgType.SUCCESS);
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_USED, e.getNewDirectory()), MsgType.SUCCESS);
         controller.updateNotiBubbles();
 
         controller.updateAutoCompleteList();
@@ -36,14 +36,12 @@ public class UseDirHandler extends CommandHandler {
 
         switch (e.getError()) {
             case UNKNOWN:
-                controller.relayFb(
-                    String.format(Constants.CMD_ERROR_USE_FAIL_UNKNOWN,
-                        e.getNewDirectory()), MsgType.ERROR);
+                controller.relayFb(String.format(Constants.CMD_ERROR_USE_FAIL_UNKNOWN, e.getNewDirectory()),
+                        MsgType.ERROR);
                 break;
             case INVALID_PATH:
-                controller.relayFb(
-                    String.format(Constants.CMD_ERROR_USE_FAIL_INVALID,
-                        e.getNewDirectory()), MsgType.ERROR);
+                controller.relayFb(String.format(Constants.CMD_ERROR_USE_FAIL_INVALID, e.getNewDirectory()),
+                        MsgType.ERROR);
                 break;
             default:
                 break;

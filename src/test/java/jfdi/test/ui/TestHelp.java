@@ -27,8 +27,8 @@ public class TestHelp extends UiTest {
     }
 
     /*
-     * Test "help" command and check if the help overlay correctly displays for
-     * the user.
+     * Test another command after "help" and check if the help overlay correctly
+     * hides in the display.
      */
     public void testAfterHelp() {
         main.execute("help");

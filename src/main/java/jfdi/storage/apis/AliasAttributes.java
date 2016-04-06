@@ -58,6 +58,13 @@ public class AliasAttributes {
     }
 
     /**
+     * @return the commandRegex
+     */
+    public static String getCommandRegex() {
+        return commandRegex;
+    }
+
+    /**
      * @return the alias
      */
     public String getAlias() {

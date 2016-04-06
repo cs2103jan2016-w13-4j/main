@@ -25,19 +25,16 @@ public class RenameHandler extends CommandHandler {
     public void handleRenameTaskDoneEvent(RenameTaskDoneEvent e) {
 
         TaskAttributes task = e.getTask();
-        int count = 0;
-        for (int i = 0; i < controller.importantList.size(); i++) {
-            if (controller.getIdFromIndex(i) == task.getId()) {
-                controller.importantList.get(i).setDescription(task.getDescription());
-                count = i;
-                break;
-            }
-        }
+        
+        int displayIndex = findCurrentIndex(task);
+        int arrayIndex = controller.indexMatch.get(displayIndex);
+        controller.importantList.get(arrayIndex).setDescription(task.getDescription());
+
 
         logger.fine(String.format(Constants.LOG_RENAMED_SUCCESS, task.getId()));
-        controller.listMain.scrollTo(count);
+        controller.listMain.scrollTo(arrayIndex);
         controller.updateNotiBubbles();
-        controller.relayFb(String.format(Constants.CMD_SUCCESS_RENAMED, count + 1, task.getDescription()),
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_RENAMED, displayIndex, task.getDescription()),
                 MsgType.SUCCESS);
     }
 

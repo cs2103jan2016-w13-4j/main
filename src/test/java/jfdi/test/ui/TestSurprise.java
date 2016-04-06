@@ -1,5 +1,7 @@
 package jfdi.test.ui;
 
+import static org.junit.Assert.assertEquals;
+
 import javafx.scene.input.KeyCode;
 
 public class TestSurprise extends UiTest {
@@ -28,9 +30,14 @@ public class TestSurprise extends UiTest {
         main.assertOnTab(main.surpriseTab, "surprise");
 
         main.execute("yay");
-        // TODO: add some asserts
+        main.assertOnBox(main.incompleteBox);
+        main.assertOnTab(main.incompleteTab, "incomplete");
+        assertEquals(false, main.surpriseOverlay.isVisible());
+        
         main.execute("nay");
-        // TODO: add some asserts
+        main.assertOnBox(main.surpriseBox);
+        main.assertOnTab(main.surpriseTab, "surprise");
+        assertEquals(true, main.surpriseOverlay.isVisible());
     }
 
 }

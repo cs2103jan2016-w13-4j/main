@@ -1,9 +1,8 @@
-<!-- @@author A0129538W -->
-
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.BorderPane?>
+<!-- @@author A0129538W -->
 
+<?import javafx.scene.layout.BorderPane?>
 
 <BorderPane maxHeight="690.0" maxWidth="670.0" minHeight="690.0" minWidth="670.0" prefHeight="690.0" prefWidth="670.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 

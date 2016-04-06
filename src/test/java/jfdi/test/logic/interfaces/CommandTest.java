@@ -130,4 +130,9 @@ public class CommandTest {
         assertSame(aliasDb, Command.getAliasDb());
     }
 
+    @Test
+    public void getUI()  throws Exception {
+        assertSame(ui, Command.getUI());
+    }
+
 }

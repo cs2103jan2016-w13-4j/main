@@ -53,11 +53,13 @@ public class ListCommand extends Command {
 
         switch (listType) {
             case COMPLETED:
-                tasks = tasks.stream().filter(TaskAttributes::isCompleted)
+                tasks = tasks.stream()
+                    .filter(TaskAttributes::isCompleted)
                     .collect(Collectors.toCollection(ArrayList::new));
                 break;
             case INCOMPLETE:
-                tasks = tasks.stream().filter(task -> !task.isCompleted())
+                tasks = tasks.stream()
+                    .filter(task -> !task.isCompleted())
                     .collect(Collectors.toCollection(ArrayList::new));
                 break;
             case OVERDUE:

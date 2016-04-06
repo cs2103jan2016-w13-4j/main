@@ -33,6 +33,10 @@ public class RenameTaskCommand extends Command {
         return description;
     }
 
+    public String getOldDescription() {
+        return oldDescription;
+    }
+
     public static class Builder {
 
         int screenId = -1;

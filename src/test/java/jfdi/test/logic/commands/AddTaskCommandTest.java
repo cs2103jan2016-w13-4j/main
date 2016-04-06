@@ -7,9 +7,7 @@ import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.apis.TaskDb;
 import jfdi.storage.exceptions.InvalidIdException;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -23,9 +21,6 @@ import static org.junit.Assert.assertNotEquals;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class AddTaskCommandTest extends CommonCommandTest {
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void testBuilder() throws Exception {

@@ -273,6 +273,7 @@ public class TestMain extends ApplicationTest {
             new TestInputHistory(this),
             new TestMark(this),
             new TestRename(this),
+            new TestReschedule(this),
             new TestSearch(this),
             new TestSurprise(this),
             new TestUnmark(this),

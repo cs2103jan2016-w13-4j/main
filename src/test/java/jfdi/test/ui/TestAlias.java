@@ -21,12 +21,12 @@ public class TestAlias extends UiTest {
      */
     public void testAliasDone() {
 
-        main.addTask("reschedule test tonight");
+        main.addTask("test tonight");
 
-        main.execute("alias reschedule res");
-        main.assertResponseMessage(String.format(Constants.CMD_SUCCESS_ALIAS, "res", "reschedule"));
+        main.execute("alias reschedule resch");
+        main.assertResponseMessage(String.format(Constants.CMD_SUCCESS_ALIAS, "resch", "reschedule"));
 
-        main.execute("res 1 tomorrow");
+        main.execute("resch 1 tomorrow");
         main.assertResponseMessage(String.format(Constants.CMD_SUCCESS_RESCHEDULED, 1, 1));
     }
 
@@ -35,13 +35,13 @@ public class TestAlias extends UiTest {
      * duplicated aliasing error following the testAliasDone test.
      */
     public void testDuplicatedAlias() {
-        main.execute("alias rename res");
-        main.assertErrorMessage(String.format(Constants.CMD_ERROR_CANT_ALIAS_DUPLICATED, "res"));
+        main.execute("alias rename resch");
+        main.assertErrorMessage(String.format(Constants.CMD_ERROR_CANT_ALIAS_DUPLICATED, "resch"));
     }
 
     /*
-     * Test a "alias invalid parameter" command and check if this is identified as
-     * a erroneous aliasing attempt with invalid parameters.
+     * Test a "alias invalid parameter" command and check if this is identified
+     * as a erroneous aliasing attempt with invalid parameters.
      */
     public void testInvalidParameter() {
         main.execute("alias invalid parameter");

@@ -22,7 +22,7 @@ public class TestSurprise extends UiTest {
         main.assertOnBox(main.surpriseBox);
         main.assertOnTab(main.surpriseTab, "surprise");
         main.assertErrorMessage(Constants.CMD_ERROR_SURP_FAIL_NO_TASKS);
-        
+
         main.type(KeyCode.F5);
         main.assertOnBox(main.completedBox);
         main.assertOnTab(main.completedTab, "completed");

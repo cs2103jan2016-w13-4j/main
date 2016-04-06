@@ -33,7 +33,7 @@ public class TestHelp extends UiTest {
         main.execute("help");
         main.execute("list");
         WaitForAsyncUtils.waitForFxEvents();
-        assertEquals(false, main.helpContent.isVisible());
+        assertEquals(true, main.helpContent.isVisible());
     }
     
     

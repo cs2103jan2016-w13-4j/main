@@ -28,14 +28,15 @@ public class TestAdd extends UiTest {
      */
     public void testAddTaskDone() {
         String taskName = "testing1";
-        int listSize = main.controller.importantList.size();
-        StringProperty notiSize = new SimpleStringProperty(Integer.toString(listSize + 1));
+        int listSize = main.getImportantListSize();
+        int notiSize = Integer.parseInt(main.controller.upcomingPlaceHdr.getValueSafe());
+        //StringProperty notiSize = new SimpleStringProperty(Integer.toString(listSize));
 
         main.addTask(taskName);
 
         main.assertResponseMessage(String.format(Constants.CMD_SUCCESS_ADDED, 1, taskName));
-        assertEquals(listSize + 2, main.controller.importantList.size());
-        assertEquals(notiSize.getValue(), main.controller.incompletePlaceHdr.getValue());
+        assertEquals(listSize + 1, main.getImportantListSize());
+        assertEquals(notiSize + 1, Integer.parseInt(main.controller.incompletePlaceHdr.getValue()));
     }
 
     public void testAddUpcoming() {
@@ -46,7 +47,7 @@ public class TestAdd extends UiTest {
         main.addTask("something 2 hours later");
         main.addTask("something 1 hour later");
 
-        assertEquals(originalListSize + 2, main.controller.importantList.size());
+        assertEquals(originalListSize + 2, main.getImportantListSize());
         assertEquals(originalNotiSize + 2, Integer.parseInt(main.controller.upcomingPlaceHdr.getValue()));
     }
 
@@ -55,14 +56,14 @@ public class TestAdd extends UiTest {
      * task can be detected and reflected correctly
      */
     public void testAddDuplicateTask() {
-        int listSize = main.controller.importantList.size();
-        StringProperty notiSize = new SimpleStringProperty(Integer.toString(listSize - 1));
+        int listSize = main.getImportantListSize();
+        StringProperty notiSize = new SimpleStringProperty(Integer.toString(listSize));
 
         String taskName = "testing1";
         main.addTask(taskName);
 
         main.assertErrorMessage(Constants.CMD_ERROR_CANT_ADD_DUPLICATE);
-        assertEquals(listSize, main.controller.importantList.size());
+        assertEquals(listSize, main.getImportantListSize());
         assertEquals(notiSize.getValue(), main.controller.incompletePlaceHdr.getValue());
     }
 
@@ -71,13 +72,13 @@ public class TestAdd extends UiTest {
      * correctly detected and reflected.
      */
     public void testAddEmptyTask() {
-        int listSize = main.controller.importantList.size();
-        StringProperty notiSize = new SimpleStringProperty(Integer.toString(listSize - 1));
+        int listSize = main.getImportantListSize();
+        StringProperty notiSize = new SimpleStringProperty(Integer.toString(listSize));
 
         main.addTask("\" \"");
 
         main.assertErrorMessage(Constants.CMD_ERROR_CANT_ADD_EMPTY);
-        assertEquals(listSize, main.controller.importantList.size());
+        assertEquals(listSize, main.getImportantListSize());
         assertEquals(notiSize.getValue(), main.controller.incompletePlaceHdr.getValue());
     }
 }

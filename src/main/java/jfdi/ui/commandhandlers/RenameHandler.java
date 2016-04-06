@@ -41,10 +41,6 @@ public class RenameHandler extends CommandHandler {
     public void handleRenameTaskFailEvent(RenameTaskFailedEvent e) {
 
         switch (e.getError()) {
-            case UNKNOWN:
-                controller.relayFb(Constants.CMD_ERROR_CANT_RENAME_UNKNOWN, MsgType.ERROR);
-                logger.fine(Constants.LOG_RENAME_FAIL_UNKNOWN);
-                break;
             case NON_EXISTENT_ID:
                 // NEED TO CHANGE TO INDEX SOON????
                 controller.relayFb(String.format(Constants.CMD_ERROR_CANT_RENAME_NO_ID, e.getScreenId()),

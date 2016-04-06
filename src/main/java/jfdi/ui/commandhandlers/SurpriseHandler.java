@@ -38,9 +38,6 @@ public class SurpriseHandler extends CommandHandler {
     public void handleNoSurpriseEvent(NoSurpriseEvent e) {
 
         switch (e.getError()) {
-            case UNKNOWN:
-                controller.relayFb(Constants.CMD_ERROR_SURP_FAIL_UNKNOWN, MsgType.ERROR);
-                break;
             case NO_TASKS:
                 controller.importantList.clear();
                 controller.switchContext(ListStatus.ALL, false);

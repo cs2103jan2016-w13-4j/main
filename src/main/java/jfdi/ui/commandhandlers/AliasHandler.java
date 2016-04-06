@@ -41,11 +41,6 @@ public class AliasHandler extends CommandHandler {
                         MsgType.ERROR);
                 // logger.fine(String.format(format, args));
                 break;
-            case UNKNOWN:
-                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_ALIAS_UNKNOWN, e.getCommand()),
-                        MsgType.ERROR);
-                // logger.fine(String.format(format, args));
-                break;
             default:
                 break;
         }

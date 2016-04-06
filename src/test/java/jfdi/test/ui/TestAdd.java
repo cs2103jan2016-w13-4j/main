@@ -9,7 +9,7 @@ import jfdi.ui.Constants;
 
 public class TestAdd extends UiTest {
 
-    TestAdd(TestMain main) {
+    TestAdd (TestMain main) {
         super(main);
     }
 

@@ -73,7 +73,7 @@ public class DeleteTaskCommand extends Command {
                     taskDb.destroy(id);
                 } catch (InvalidIdException e) {
                     // Should not happen
-                assert false;
+                    assert false;
                 }
             });
 

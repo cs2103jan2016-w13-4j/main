@@ -54,6 +54,7 @@ public class MoveDirectoryCommand extends Command {
             pushToUndoStack();
             eventBus.post(new MoveDirectoryDoneEvent(newDirectory));
         } catch (FilesReplacedException e) {
+            pushToUndoStack();
             eventBus.post(new MoveDirectoryDoneEvent(newDirectory));
             eventBus.post(new FilesReplacedEvent(newDirectory, e.getReplacedFilePairs()));
         } catch (InvalidFilePathException e) {

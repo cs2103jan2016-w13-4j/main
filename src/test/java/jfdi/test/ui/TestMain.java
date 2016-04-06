@@ -211,7 +211,7 @@ public class TestMain extends ApplicationTest {
          * TestFX provides many operations to retrieve elements from the loaded
          * GUI.
          */
-        return lookup(query).queryFirst();
+        return lookup(query).query();
     }
 
     @Before

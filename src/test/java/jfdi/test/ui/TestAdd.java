@@ -1,6 +1,7 @@
 package jfdi.test.ui;
 
 import static org.junit.Assert.assertEquals;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import jfdi.ui.Constants;
@@ -32,8 +33,8 @@ public class TestAdd extends UiTest {
 
         main.addTask(taskName);
 
-        main.assertResponseMessage(String.format(Constants.CMD_SUCCESS_ADDED, taskName));
-        assertEquals(listSize + 1, main.controller.importantList.size());
+        main.assertResponseMessage(String.format(Constants.CMD_SUCCESS_ADDED, 1, taskName));
+        assertEquals(listSize + 2, main.controller.importantList.size());
         assertEquals(notiSize.getValue(), main.controller.incompletePlaceHdr.getValue());
     }
 
@@ -55,7 +56,7 @@ public class TestAdd extends UiTest {
      */
     public void testAddDuplicateTask() {
         int listSize = main.controller.importantList.size();
-        StringProperty notiSize = new SimpleStringProperty(Integer.toString(listSize));
+        StringProperty notiSize = new SimpleStringProperty(Integer.toString(listSize - 1));
 
         String taskName = "testing1";
         main.addTask(taskName);
@@ -71,7 +72,7 @@ public class TestAdd extends UiTest {
      */
     public void testAddEmptyTask() {
         int listSize = main.controller.importantList.size();
-        StringProperty notiSize = new SimpleStringProperty(Integer.toString(listSize));
+        StringProperty notiSize = new SimpleStringProperty(Integer.toString(listSize - 1));
 
         main.addTask("\" \"");
 
@@ -79,5 +80,4 @@ public class TestAdd extends UiTest {
         assertEquals(listSize, main.controller.importantList.size());
         assertEquals(notiSize.getValue(), main.controller.incompletePlaceHdr.getValue());
     }
-
 }

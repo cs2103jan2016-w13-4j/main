@@ -37,7 +37,9 @@ public class AliasAttributesTest {
 
     @AfterClass
     public static void tearDownAfterClass() {
-        AliasAttributes.setCommandRegex(originalCommandRegex);
+        if (originalCommandRegex != null) {
+            AliasAttributes.setCommandRegex(originalCommandRegex);
+        }
     }
 
     @After

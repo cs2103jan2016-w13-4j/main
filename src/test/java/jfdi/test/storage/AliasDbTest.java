@@ -49,7 +49,9 @@ public class AliasDbTest {
     @AfterClass
     public static void tearDownAfterClass() {
         TestHelper.revertOriginalPreference(mainStorageInstance, originalPreference);
-        AliasAttributes.setCommandRegex(originalCommandRegex);
+        if (originalCommandRegex != null) {
+            AliasAttributes.setCommandRegex(originalCommandRegex);
+        }
     }
 
     @After

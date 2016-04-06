@@ -33,6 +33,10 @@ public class MarkTaskCommand extends Command {
         return screenIds;
     }
 
+    public ArrayList<Integer> getMarkedIds() {
+        return markedIds;
+    }
+
     public static class Builder {
 
         ArrayList<Integer> screenIds = new ArrayList<>();

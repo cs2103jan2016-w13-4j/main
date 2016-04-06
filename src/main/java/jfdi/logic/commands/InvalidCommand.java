@@ -42,6 +42,14 @@ public class InvalidCommand extends Command {
 
     }
 
+    public String getInputString() {
+        return inputString;
+    }
+
+    public CommandType getCommandType() {
+        return commandType;
+    }
+
     @Override
     public void execute() {
         // Invalid command always fail.

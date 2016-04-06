@@ -15,20 +15,14 @@ public class InvalidCommandEventTest {
 
     @Test
     public void getInputString() throws Exception {
-        InvalidCommandEvent event = new InvalidCommandEvent("WTF", null, null);
+        InvalidCommandEvent event = new InvalidCommandEvent("WTF", null);
         assertEquals("WTF", event.getInputString());
     }
 
     @Test
     public void getCommandType() throws Exception {
-        InvalidCommandEvent event = new InvalidCommandEvent("undo redo", Constants.CommandType.UNDO, "add undo redo");
+        InvalidCommandEvent event = new InvalidCommandEvent("undo redo", Constants.CommandType.UNDO);
         assertEquals(Constants.CommandType.UNDO, event.getCommandType());
-    }
-
-    @Test
-    public void getSuggestion() throws Exception {
-        InvalidCommandEvent event = new InvalidCommandEvent("list com", Constants.CommandType.LIST, "list completed");
-        assertEquals("list completed", event.getSuggestion());
     }
 
 }

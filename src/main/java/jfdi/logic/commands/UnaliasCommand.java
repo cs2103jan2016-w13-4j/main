@@ -60,6 +60,7 @@ public class UnaliasCommand extends Command {
     public void undo() {
         try {
             AliasAttributes oldAlias = new AliasAttributes(alias, command);
+
             oldAlias.save();
             parser.setAliases(aliasDb.getAll());
 

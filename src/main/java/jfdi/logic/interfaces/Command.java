@@ -103,7 +103,7 @@ public abstract class Command {
         return redoStack;
     }
 
-    public static UI getUi() {
+    public static UI getUI() {
         return ui;
     }
 

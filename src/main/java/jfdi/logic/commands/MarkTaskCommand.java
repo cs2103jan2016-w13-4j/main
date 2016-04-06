@@ -74,7 +74,7 @@ public class MarkTaskCommand extends Command {
                     LOGGER.warning("Task " + id + " is already completed.");
                 } catch (InvalidIdException e) {
                     // Should not happen!
-                assert false;
+                    assert false;
                 }
             });
 

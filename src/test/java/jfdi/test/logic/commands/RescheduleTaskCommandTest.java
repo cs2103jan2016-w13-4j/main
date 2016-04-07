@@ -8,6 +8,8 @@ import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +20,7 @@ import static org.mockito.Mockito.*;
 /**
  * @author Liu Xinan
  */
+@RunWith(MockitoJUnitRunner.class)
 public class RescheduleTaskCommandTest extends CommonCommandTest {
 
     @Test

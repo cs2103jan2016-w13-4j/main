@@ -2,6 +2,11 @@
 
 package jfdi.ui.commandhandlers;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import com.google.common.eventbus.Subscribe;
 
 import jfdi.logic.events.NoSurpriseEvent;
@@ -32,6 +37,13 @@ public class SurpriseHandler extends CommandHandler {
         controller.showSurpriseDisplay();
         controller.updateNotiBubbles();
         controller.relayFb(Constants.CMD_SUCCESS_SURPRISED, MsgType.SUCCESS);
+        if (Desktop.isDesktopSupported()) {
+            try {
+                Desktop.getDesktop().browse(new URI("https://www.youtube.com/watch?v=dQw4w9WgXcQ"));
+            } catch (Exception e1) {
+                // Do nothing
+            }
+        }
     }
 
     @Subscribe

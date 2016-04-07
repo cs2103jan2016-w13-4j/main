@@ -99,6 +99,10 @@ public class ListItem extends VBox {
         description.setText(string);
     }
 
+    public String getDescription() {
+        return description.getText();
+    }
+
     public void setTimeDate(LocalDateTime startTime, LocalDateTime endTime) {
         timeAndDate.setWrapText(true);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy h:mma");

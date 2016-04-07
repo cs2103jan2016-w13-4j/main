@@ -46,10 +46,7 @@ public class RescheduleHandler extends CommandHandler {
     public void handleRescheduleTaskFailEvent(RescheduleTaskFailedEvent e) {
 
         switch (e.getError()) {
-            case UNKNOWN:
-                controller.relayFb(Constants.CMD_ERROR_CANT_RESCHEDULE_UNKNOWN, MsgType.ERROR);
-                logger.fine(Constants.LOG_RESCHE_FAIL_UNKNOWN);
-                break;
+
             case NON_EXISTENT_ID:
                 // NEED TO CHANGE TO INDEX SOON????
                 controller.relayFb(String.format(Constants.CMD_ERROR_CANT_RESCHEDULE_NO_ID, e.getScreenId()),
@@ -57,8 +54,7 @@ public class RescheduleHandler extends CommandHandler {
                 logger.fine(Constants.LOG_RESCHE_FAIL_NOID);
                 break;
             case NO_CHANGES:
-                controller.relayFb(Constants.CMD_ERROR_CANT_RESCHEDULE_NO_CHANGES + e.getStartDateTime() + " - to - "
-                        + e.getEndDateTime() + " -!", MsgType.ERROR);
+                controller.relayFb(Constants.CMD_ERROR_CANT_RESCHEDULE_NO_CHANGES, MsgType.ERROR);
                 logger.fine(Constants.LOG_RESCHE_FAIL_NOCHANGE);
                 break;
             case DUPLICATED_TASK:

@@ -1,5 +1,6 @@
 package jfdi.test.ui;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import jfdi.ui.Constants;
@@ -30,8 +31,7 @@ public class TestRename extends UiTest {
 
         main.execute("rename 1 testing2");
         main.assertResponseMessage(String.format(Constants.CMD_SUCCESS_RENAMED, 1, "testing2"));
-        // assertEquals("testing2",
-        // main.listMain.getItems().get(1).getItem().getDescription());]
+        assertEquals("testing2", main.listMain.getItems().get(1).getDescription());
 
     }
 

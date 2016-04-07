@@ -33,9 +33,6 @@ public class UndoHandler extends CommandHandler {
     public void handleUndoFailedEvent(UndoFailedEvent e) {
 
         switch (e.getError()) {
-            case UNKNOWN:
-                controller.relayFb(Constants.CMD_ERROR_UNDO_FAIL_UNKNOWN, MsgType.ERROR);
-                break;
             case NONTHING_TO_UNDO:
                 controller.relayFb(Constants.CMD_ERROR_UNDO_FAIL_NO_TASKS, MsgType.ERROR);
                 break;

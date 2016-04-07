@@ -275,14 +275,16 @@ public class TestMain extends ApplicationTest {
             new TestRename(this),
             new TestReschedule(this),
             new TestSearch(this),
+            //new TestShowDirectory(this),
             new TestSurprise(this),
+            new TestUnalias(this),
             new TestUnmark(this),
-            new TestScrolling(this),
-            new TestSurprise(this),
             new TestHelp(this),
-            new TestScrolling(this)
+            new TestScrolling(this),
+            //new TestUndo(this)
         };
         for (UiTest test : tests) {
+            test.init();
             test.run();
             test.done();
         }

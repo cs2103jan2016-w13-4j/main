@@ -29,11 +29,6 @@ public class UnaliasHandler extends CommandHandler {
     public void handleUnaliasFailEvent(UnaliasFailedEvent e) {
 
         switch (e.getError()) {
-            case UNKNOWN:
-                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_UNALIAS_UNKNOWN, e.getAlias()),
-                        MsgType.ERROR);
-                // logger.fine(Constants.LOG_RESCHE_FAIL_UNKNOWN);
-                break;
             case NON_EXISTENT_ALIAS:
                 // NEED TO CHANGE TO INDEX SOON????
                 controller.relayFb(String.format(Constants.CMD_ERROR_CANT_UNALIAS_NO_ALIAS, e.getAlias()),

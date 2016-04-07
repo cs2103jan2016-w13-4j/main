@@ -88,7 +88,7 @@ public class Constants {
     public static final String CMD_ERROR_CANT_RENAME_DUPLICATE = "Save the trouble. This task already exists :)";
     public static final String CMD_ERROR_CANT_RESCHEDULE_UNKNOWN = "Some error occurred. Cannot reschedule task!";
     public static final String CMD_ERROR_CANT_RESCHEDULE_NO_ID = "Cannot reschedule task. The ID #%d does not exist!";
-    public static final String CMD_ERROR_CANT_RESCHEDULE_NO_CHANGES = "No difference between new and old schedule - ";
+    public static final String CMD_ERROR_CANT_RESCHEDULE_NO_CHANGES = "No difference between new and old schedule!";
     public static final String CMD_ERROR_CANT_RESCHEDULE_DUPLICATE = "Save the trouble. This task already exists :)";
     public static final String CMD_ERROR_CANT_UNALIAS_UNKNOWN = "Some error occurred. Cannot remove alias - %s -!";
     public static final String CMD_ERROR_CANT_UNALIAS_NO_ALIAS =

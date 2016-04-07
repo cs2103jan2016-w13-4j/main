@@ -92,7 +92,6 @@ public class UI implements IUserInterface {
                 showToUser(Constants.UI_MESSAGE_QUIT);
                 break;
             default:
-                showToUser(fb);
                 break;
         }
 

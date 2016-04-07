@@ -1,12 +1,12 @@
 package jfdi.test.logic.commands;
 
 import jfdi.logic.commands.MarkTaskCommand;
+import jfdi.logic.commands.UnmarkTaskCommand;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
  * @author Liu Xinan
  */
 @RunWith(MockitoJUnitRunner.class)
-public class MarkTaskCommandTest extends CommonCommandTest {
+public class UnmarkTaskCommandTest extends CommonCommandTest {
 
     @Test
     public void testBuilder() throws Exception {
@@ -29,17 +29,16 @@ public class MarkTaskCommandTest extends CommonCommandTest {
         ids.add(2);
         ids.add(3);
 
-        MarkTaskCommand command = new MarkTaskCommand.Builder()
+        UnmarkTaskCommand command = new UnmarkTaskCommand.Builder()
             .addTaskId(1)
             .addTaskIds(ids)
             .build();
 
         assertEquals(3, command.getScreenIds().size());
-
         assertTrue(command.getScreenIds().contains(1));
         assertTrue(command.getScreenIds().contains(2));
         assertTrue(command.getScreenIds().contains(3));
-        assertNull(command.getMarkedIds());
+        assertNull(command.getUnmarkedIds());
     }
 
     @Test
@@ -48,13 +47,13 @@ public class MarkTaskCommandTest extends CommonCommandTest {
         when(taskDb.hasId(1)).thenReturn(true);
         when(taskDb.getById(anyInt())).thenReturn(new TaskAttributes());
 
-        MarkTaskCommand command = new MarkTaskCommand.Builder()
+        UnmarkTaskCommand command = new UnmarkTaskCommand.Builder()
             .addTaskId(1)
             .build();
 
         command.execute();
 
-        assertEquals(1, command.getMarkedIds().size());
+        assertEquals(1, command.getUnmarkedIds().size());
     }
 
     @Test
@@ -62,14 +61,14 @@ public class MarkTaskCommandTest extends CommonCommandTest {
         when(ui.getTaskId(1)).thenReturn(1);
         when(taskDb.hasId(1)).thenReturn(true);
         when(taskDb.getById(anyInt())).thenReturn(new TaskAttributes());
-        doThrow(NoAttributesChangedException.class).when(taskDb).markAsComplete(anyInt());
+        doThrow(NoAttributesChangedException.class).when(taskDb).markAsIncomplete(anyInt());
 
-        MarkTaskCommand command = new MarkTaskCommand.Builder()
+        UnmarkTaskCommand command = new UnmarkTaskCommand.Builder()
             .addTaskId(1)
             .build();
 
         command.execute();
-        assertEquals(0, command.getMarkedIds().size());
+        assertEquals(0, command.getUnmarkedIds().size());
     }
 
     @Test
@@ -91,7 +90,7 @@ public class MarkTaskCommandTest extends CommonCommandTest {
         when(taskDb.getById(2)).thenReturn(task2);
         when(taskDb.getById(3)).thenReturn(task3);
 
-        MarkTaskCommand command = new MarkTaskCommand.Builder()
+        UnmarkTaskCommand command = new UnmarkTaskCommand.Builder()
             .addTaskId(1)
             .addTaskId(2)
             .addTaskId(3)
@@ -99,7 +98,7 @@ public class MarkTaskCommandTest extends CommonCommandTest {
 
         command.execute();
 
-        assertEquals(3, command.getMarkedIds().size());
+        assertEquals(3, command.getUnmarkedIds().size());
     }
 
     @Test
@@ -107,9 +106,9 @@ public class MarkTaskCommandTest extends CommonCommandTest {
         when(ui.getTaskId(1)).thenReturn(1);
         when(taskDb.hasId(1)).thenReturn(true);
         when(taskDb.getById(anyInt())).thenReturn(new TaskAttributes());
-        doThrow(InvalidIdException.class).when(taskDb).markAsComplete(anyInt());
+        doThrow(InvalidIdException.class).when(taskDb).markAsIncomplete(anyInt());
 
-        MarkTaskCommand command = new MarkTaskCommand.Builder()
+        UnmarkTaskCommand command = new UnmarkTaskCommand.Builder()
             .addTaskId(1)
             .build();
 
@@ -133,7 +132,7 @@ public class MarkTaskCommandTest extends CommonCommandTest {
         when(taskDb.getById(1)).thenReturn(task1);
         when(taskDb.getById(3)).thenReturn(task3);
 
-        MarkTaskCommand command = new MarkTaskCommand.Builder()
+        UnmarkTaskCommand command = new UnmarkTaskCommand.Builder()
             .addTaskId(1)
             .addTaskId(2)
             .addTaskId(3)
@@ -141,7 +140,7 @@ public class MarkTaskCommandTest extends CommonCommandTest {
 
         command.execute();
 
-        assertNull(command.getMarkedIds());
+        assertNull(command.getUnmarkedIds());
     }
 
     @Test
@@ -163,7 +162,7 @@ public class MarkTaskCommandTest extends CommonCommandTest {
         when(taskDb.getById(2)).thenReturn(task2);
         when(taskDb.getById(3)).thenReturn(task3);
 
-        MarkTaskCommand command = new MarkTaskCommand.Builder()
+        UnmarkTaskCommand command = new UnmarkTaskCommand.Builder()
             .addTaskId(1)
             .addTaskId(2)
             .addTaskId(3)
@@ -172,9 +171,9 @@ public class MarkTaskCommandTest extends CommonCommandTest {
         command.execute();
         command.undo();
 
-        verify(taskDb).markAsIncomplete(1);
-        verify(taskDb).markAsIncomplete(2);
-        verify(taskDb).markAsIncomplete(3);
+        verify(taskDb).markAsComplete(1);
+        verify(taskDb).markAsComplete(2);
+        verify(taskDb).markAsComplete(3);
     }
 
     @Test
@@ -182,9 +181,9 @@ public class MarkTaskCommandTest extends CommonCommandTest {
         when(ui.getTaskId(1)).thenReturn(1);
         when(taskDb.hasId(1)).thenReturn(true);
         when(taskDb.getById(anyInt())).thenReturn(new TaskAttributes());
-        doThrow(InvalidIdException.class).when(taskDb).markAsIncomplete(anyInt());
+        doThrow(InvalidIdException.class).when(taskDb).markAsComplete(anyInt());
 
-        MarkTaskCommand command = new MarkTaskCommand.Builder()
+        UnmarkTaskCommand command = new UnmarkTaskCommand.Builder()
             .addTaskId(1)
             .build();
 

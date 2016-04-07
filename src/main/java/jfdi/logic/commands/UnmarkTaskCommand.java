@@ -33,6 +33,10 @@ public class UnmarkTaskCommand extends Command {
         return screenIds;
     }
 
+    public ArrayList<Integer> getUnmarkedIds() {
+        return unmarkedIds;
+    }
+
     public static class Builder {
 
         ArrayList<Integer> screenIds = new ArrayList<>();

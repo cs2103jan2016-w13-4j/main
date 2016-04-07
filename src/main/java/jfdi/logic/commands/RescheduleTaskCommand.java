@@ -205,7 +205,6 @@ public class RescheduleTaskCommand extends Command {
             return shiftTime(dateTime);
         }
         assert false;
-        return null;
     }
 
     private LocalDateTime shiftTime(LocalDateTime originalDateTime) {

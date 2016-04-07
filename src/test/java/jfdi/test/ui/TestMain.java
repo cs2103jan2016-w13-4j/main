@@ -280,7 +280,8 @@ public class TestMain extends ApplicationTest {
             new TestUnalias(this),
             new TestUnmark(this),
             new TestHelp(this),
-            new TestScrolling(this)
+            new TestScrolling(this),
+            //new TestUndo(this)
         };
         for (UiTest test : tests) {
             test.run();

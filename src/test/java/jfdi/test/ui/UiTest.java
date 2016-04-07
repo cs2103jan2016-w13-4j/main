@@ -21,11 +21,12 @@ public abstract class UiTest {
         Platform.runLater(() -> ControlCenter.getInstance().handleInput(
                 String.format("use %s", tempDir.getAbsolutePath())));
         WaitForAsyncUtils.waitForFxEvents();
-        
+
     }
 
     public void done() {
-        Platform.runLater(() -> ControlCenter.getInstance().handleInput(String.format("use %s", originalDir)));
+        Platform.runLater(() -> ControlCenter.getInstance().handleInput(
+                String.format("use %s", originalDir)));
         WaitForAsyncUtils.waitForFxEvents();
     }
 

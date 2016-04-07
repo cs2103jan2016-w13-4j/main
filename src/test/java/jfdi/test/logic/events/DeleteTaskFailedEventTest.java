@@ -29,4 +29,12 @@ public class DeleteTaskFailedEventTest {
         DeleteTaskFailedEvent event1 = new DeleteTaskFailedEvent(invalidIds);
         assertEquals(DeleteTaskFailedEvent.Error.NON_EXISTENT_ID, event1.getError());
     }
+
+    @Test
+    public void testEnum() throws Exception {
+        for (DeleteTaskFailedEvent.Error error : DeleteTaskFailedEvent.Error.values()) {
+            // Force a full coverage on enums
+            DeleteTaskFailedEvent.Error.valueOf(error.toString());
+        }
+    }
 }

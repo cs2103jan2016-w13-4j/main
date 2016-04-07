@@ -18,4 +18,12 @@ public class RedoFailedEventTest {
         assertEquals(RedoFailedEvent.Error.NONTHING_TO_REDO, event.getError());
     }
 
+    @Test
+    public void testEnum() throws Exception {
+        for (RedoFailedEvent.Error error : RedoFailedEvent.Error.values()) {
+            // Force a full coverage on enums
+            RedoFailedEvent.Error.valueOf(error.toString());
+        }
+    }
+
 }

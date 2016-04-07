@@ -18,4 +18,12 @@ public class NoSurpriseEventTest {
         assertEquals(NoSurpriseEvent.Error.NO_TASKS, event.getError());
     }
 
+    @Test
+    public void testEnum() throws Exception {
+        for (NoSurpriseEvent.Error error : NoSurpriseEvent.Error.values()) {
+            // Force a full coverage on enums
+            NoSurpriseEvent.Error.valueOf(error.toString());
+        }
+    }
+
 }

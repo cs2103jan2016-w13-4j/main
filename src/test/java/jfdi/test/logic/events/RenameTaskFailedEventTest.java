@@ -32,4 +32,12 @@ public class RenameTaskFailedEventTest {
         assertEquals(RenameTaskFailedEvent.Error.DUPLICATED_TASK, event.getError());
     }
 
+    @Test
+    public void testEnum() throws Exception {
+        for (RenameTaskFailedEvent.Error error : RenameTaskFailedEvent.Error.values()) {
+            // Force a full coverage on enums
+            RenameTaskFailedEvent.Error.valueOf(error.toString());
+        }
+    }
+
 }

@@ -27,4 +27,12 @@ public class MoveDirectoryFailedEventTest {
         assertEquals(error, event.getError());
     }
 
+    @Test
+    public void testEnum() throws Exception {
+        for (MoveDirectoryFailedEvent.Error error : MoveDirectoryFailedEvent.Error.values()) {
+            // Force a full coverage on enums
+            MoveDirectoryFailedEvent.Error.valueOf(error.toString());
+        }
+    }
+
 }

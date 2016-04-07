@@ -46,7 +46,7 @@ public class AddHandler extends CommandHandler {
                 }
                 break;
             case ALL:
-                controller.appendTaskToDisplayList(task, false, true);
+                controller.appendTaskToDisplayList(task, true);
                 break;
             case COMPLETE:
                 controller.switchContext(ListStatus.INCOMPLETE, true);

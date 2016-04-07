@@ -40,7 +40,7 @@ public class InputHistory {
         addToPrevious(nextString);
         return nextString;
     }
-    
+
     /**
      * Clears the input history so that undo would not work
      */

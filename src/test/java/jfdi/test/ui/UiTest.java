@@ -22,8 +22,8 @@ public abstract class UiTest {
 
     public void init() {
         File tempDir = Files.createTempDir();
-        Platform.runLater(
-                () -> ControlCenter.getInstance().handleInput(String.format("use %s", tempDir.getAbsolutePath())));
+        Platform.runLater(() -> ControlCenter.getInstance().handleInput(
+                String.format("use %s", tempDir.getAbsolutePath())));
         WaitForAsyncUtils.waitForFxEvents();
         testDir = tempDir.getAbsolutePath();
     }

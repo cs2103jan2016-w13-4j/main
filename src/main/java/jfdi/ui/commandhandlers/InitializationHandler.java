@@ -36,9 +36,6 @@ public class InitializationHandler extends CommandHandler {
     public void handleInitializationFailedEvent(InitializationFailedEvent e) {
 
         switch (e.getError()) {
-            case UNKNOWN:
-                controller.relayFb(Constants.CMD_ERROR_INIT_FAIL_UNKNOWN, MsgType.ERROR);
-                break;
             case INVALID_PATH:
                 controller.relayFb(String.format(Constants.CMD_ERROR_INIT_FAIL_INVALID, e.getPath()), MsgType.ERROR);
                 break;

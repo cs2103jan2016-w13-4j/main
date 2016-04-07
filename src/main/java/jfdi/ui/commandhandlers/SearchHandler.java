@@ -26,7 +26,7 @@ public class SearchHandler extends CommandHandler {
         // check size of result and keyword > 0
 
         controller.switchContext(ListStatus.SEARCH, false);
-        controller.listTasks(e.getResults(), false, true);
+        controller.listTasks(e.getResults(), true);
         controller.switchTabSkin();
         controller.updateNotiBubbles();
         createSearchFb(e);

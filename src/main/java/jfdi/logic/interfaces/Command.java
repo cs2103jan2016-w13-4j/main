@@ -2,17 +2,17 @@
 
 package jfdi.logic.interfaces;
 
+import java.util.Stack;
+import java.util.logging.Logger;
+
 import com.google.common.eventbus.EventBus;
+
 import jfdi.common.utilities.JfdiLogger;
 import jfdi.parser.InputParser;
 import jfdi.storage.apis.AliasDb;
 import jfdi.storage.apis.MainStorage;
 import jfdi.storage.apis.TaskDb;
 import jfdi.ui.UI;
-
-import java.util.Optional;
-import java.util.Stack;
-import java.util.logging.Logger;
 
 /**
  * @author Liu Xinan

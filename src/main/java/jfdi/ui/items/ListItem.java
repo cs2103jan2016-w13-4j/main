@@ -54,6 +54,7 @@ public class ListItem extends VBox {
             loader.load();
 
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -65,6 +66,7 @@ public class ListItem extends VBox {
             loader.load();
 
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

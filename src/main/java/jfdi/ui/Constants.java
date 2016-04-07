@@ -53,53 +53,33 @@ public class Constants {
         SUCCESS, WARNING, ERROR, EXIT
     }
 
-    public enum CallType {
-        DISPLAY, INTERNAL
-    }
-
-    public static final String CMD_ERROR_CANT_ADD_UNKNOWN = "Some stupid error occurred. Cannot add task!";
     public static final String CMD_ERROR_CANT_ADD_EMPTY = "Cannot add an empty task!";
     public static final String CMD_ERROR_CANT_ADD_DUPLICATE = "Save the trouble. This task already exists :)";
     public static final String CMD_ERROR_CANT_ALIAS_INVALID = "- %s - is an invalid alias for - %s -";
     public static final String CMD_ERROR_CANT_ALIAS_DUPLICATED = " - %s - is an duplicated alias.";
-    public static final String CMD_ERROR_CANT_ALIAS_UNKNOWN =
-            "Some stupid error occurred. Cannot create alias for - %s -!";
     public static final String CMD_ERROR_CANT_DELETE_NO_ID = "Some stupid error occurred. Cannot delete task(s)!";
-    public static final String CMD_ERROR_CANT_DELETE_UNKNOWN = "Cannot delete task. The ID #%d does not exist!";
-    public static final String CMD_ERROR_INIT_FAIL_UNKNOWN = "Some stupid error occurred. Cannot initialize JFDI!";
     public static final String CMD_ERROR_INIT_FAIL_INVALID = "The folder %s doesn't work. Choose another one!";
     // replaced should be user command completed and backup files in directory.
     public static final String CMD_ERROR_INIT_FAIL_REPLACED = "Your file %s was moved to %s.";
     public static final String CMD_ERROR_CANT_MARK_NO_ID = "Cannot mark task as completed. The ID #%d does not exist!!";
-    public static final String CMD_ERROR_CANT_MARK_UNKNOWN = "Some stupid error occurred. Cannot mark task(s) as done!";
-    public static final String CMD_ERROR_MOVE_FAIL_UNKNOWN = "Some stupid error occurred. Cannot move files to %s!";
     public static final String CMD_ERROR_MOVE_FAIL_INVALID = "Cannot move to the folder %s . Choose another one!";
     public static final String CMD_ERROR_MOVE_FAIL_REPLACED =
             "The folder %s is occupied. File has been moved to %s instead!";
-    public static final String CMD_ERROR_SURP_FAIL_UNKNOWN = "I can't even surprise you...I am such a failure! :(";
     public static final String CMD_ERROR_SURP_FAIL_NO_TASKS =
             "There's really nothing much that you can do now.. take a rest or add more tasks! :D";
-    public static final String CMD_ERROR_REDO_FAIL_UNKNOWN =
-            "Some stupid error occurred. Cannot redo the previous task!";
     public static final String CMD_ERROR_REDO_FAIL_NO_TASKS = "Cannot find any previous task to redo!";
-    public static final String CMD_ERROR_CANT_RENAME_UNKNOWN = "Some stupid error occurred. Cannot rename task!";
     public static final String CMD_ERROR_CANT_RENAME_NO_ID = "Cannot rename task. The ID #%d does not exist!";
     public static final String CMD_ERROR_CANT_RENAME_NO_CHANGES = "No difference between new and old name - %s -!";
     public static final String CMD_ERROR_CANT_RENAME_DUPLICATE = "Save the trouble. This task already exists :)";
-    public static final String CMD_ERROR_CANT_RESCHEDULE_UNKNOWN = "Some error occurred. Cannot reschedule task!";
     public static final String CMD_ERROR_CANT_RESCHEDULE_NO_ID = "Cannot reschedule task. The ID #%d does not exist!";
     public static final String CMD_ERROR_CANT_RESCHEDULE_NO_CHANGES = "No difference between new and old schedule!";
     public static final String CMD_ERROR_CANT_RESCHEDULE_DUPLICATE = "Save the trouble. This task already exists :)";
-    public static final String CMD_ERROR_CANT_UNALIAS_UNKNOWN = "Some error occurred. Cannot remove alias - %s -!";
     public static final String CMD_ERROR_CANT_UNALIAS_NO_ALIAS =
             "Cannot remove alias. The alias - %s - does not exist!";
-    public static final String CMD_ERROR_UNDO_FAIL_UNKNOWN =
-            "Some stupid error occurred. Cannot undo the previous task!";
     public static final String CMD_ERROR_UNDO_FAIL_NO_TASKS = "Cannot find any previous task to undo!";
     public static final String CMD_ERROR_CANT_UNMARK_NO_ID = "Cannot unmark task. The ID #%d does not exist!!";
-    public static final String CMD_ERROR_CANT_UNMARK_UNKNOWN = "Some stupid error occurred. Cannot unmark task(s)!";
-    public static final String CMD_ERROR_USE_FAIL_UNKNOWN = "Some stupid error occurred. Cannot use files at %s!";
-    public static final String CMD_ERROR_USE_FAIL_INVALID = "Cannot use the data at %s . Choose another one!";
+    public static final String CMD_ERROR_USE_FAIL_INVALID =
+            "Cannot use the data at %s . Choose another one!";
     public static final String CMD_ERROR_USE_FAIL_REPLACED =
             "The folder %s contains invalid files. Data has been moved to %s instead!";
 
@@ -133,22 +113,18 @@ public class Constants {
     public static final String LOG_USER_EXIT = "Exited from JFDI.";
     public static final String LOG_INVALID_COMMAND = "Invalid command detected.";
     public static final String LOG_ADDED_SUCCESS = "Displayed successful add event for task #%d.";
-    public static final String LOG_ADD_FAIL_UNKNOWN = "Unknown error detected for adding.";
     public static final String LOG_ADD_FAIL_EMPTY = "An task failed to add due to empty description.";
     public static final String LOG_ADD_FAIL_DUPLICATE = "A duplicate task was not added.";
     public static final String LOG_DELETED_SUCCESS = "Displayed successful delete event for task #%d.";
     public static final String LOG_UI_LIST = "The current list of task to be displayed is : ";
     public static final String LOG_LOGIC_LIST = "The list of task received from Logic is : ";
     public static final String LOG_IDINDEX_LIST = "The current mapping of On-screen ID and Storage ID is : ";
-    public static final String LOG_DELETE_FAIL_UNKNOWN = "Unknown error detected for deleting.";
     public static final String LOG_DELETE_FAIL_NOID = "An non-existent ID was queried for delete.";
     public static final String LOG_RENAMED_SUCCESS = "Displayed successful rename event for task #%d.";
-    public static final String LOG_RENAME_FAIL_UNKNOWN = "Unknown error detected for renaming.";
     public static final String LOG_RENAME_FAIL_NOID = "An non-existent ID was queried for rename.";
     public static final String LOG_RENAME_FAIL_NOCHANGE = "A renaming with no change was queried.";
     public static final String LOG_RENAME_FAIL_DUPLICATE = "A task was not renamed as a duplicate task exists.";
     public static final String LOG_RESCHED_SUCCESS = "Displayed successful reschedule event for task #%d.";
-    public static final String LOG_RESCHE_FAIL_UNKNOWN = "Unknown error detected for reschduling.";
     public static final String LOG_RESCHE_FAIL_NOID = "An non-existent ID was queried for reschedule.";
     public static final String LOG_RESCHE_FAIL_NOCHANGE = "A rescheduling with no change was queried.";
     public static final String LOG_RESCHE_FAIL_DUPLICATE = "A task was not rescheduled as a duplicate task exists.";

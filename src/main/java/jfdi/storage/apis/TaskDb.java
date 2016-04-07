@@ -120,7 +120,6 @@ public class TaskDb implements IDatabase {
      *            the object containing the desired attributes of the task
      */
     private void create(TaskAttributes taskAttributes) {
-        assert taskAttributes.getId() == null;
         Task task = taskAttributes.toEntity();
         task.setId(nextId++);
         taskAttributes.setId(task.getId());
@@ -143,7 +142,6 @@ public class TaskDb implements IDatabase {
      */
     private void update(TaskAttributes taskAttributes) throws NoAttributesChangedException,
             InvalidIdException {
-        assert taskAttributes != null;
         Task task = getTaskById(taskAttributes.getId());
         assert task != null;
         validateAttributesHasChanged(taskAttributes, task);
@@ -165,7 +163,6 @@ public class TaskDb implements IDatabase {
      */
     private void validateAttributesHasChanged(TaskAttributes taskAttributes, Task task)
             throws NoAttributesChangedException {
-        assert taskAttributes != null && task != null;
         if (taskAttributes.equalTo(task)) {
             throw new NoAttributesChangedException();
         }
@@ -233,7 +230,6 @@ public class TaskDb implements IDatabase {
      *             if the given id does not exist in the database
      */
     private Task getTaskById(Integer id) throws InvalidIdException {
-        assert id != null;
         if (taskList.get(id) == null) {
             throw new InvalidIdException(id);
         }
@@ -309,7 +305,6 @@ public class TaskDb implements IDatabase {
      *            the ID of the task that is to be moved
      */
     private void softDelete(Integer id) {
-        assert id != null;
         Task task = taskList.remove(id);
         deletedTaskList.put(task.getId(), task);
     }
@@ -343,7 +338,6 @@ public class TaskDb implements IDatabase {
      *             if a task with similar attributes already exists in the database
      */
     private void undelete(Integer id) throws DuplicateTaskException {
-        assert id != null;
         TaskAttributes taskAttributes = new TaskAttributes(deletedTaskList.get(id));
         validateIsNotDuplicateTask(taskAttributes);
         Task task = deletedTaskList.remove(id);
@@ -441,7 +435,6 @@ public class TaskDb implements IDatabase {
      *            the array of tasks that we want to populate the program with
      */
     private void populateTaskList(Task[] taskArray) {
-        assert taskArray != null;
         reset();
         for (Task task : taskArray) {
             task.setId(nextId++);

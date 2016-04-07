@@ -52,4 +52,5 @@ public class WildcardCommand extends Command {
     public void undo() {
         assert false;
     }
+
 }

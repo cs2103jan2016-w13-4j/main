@@ -18,12 +18,18 @@ public class SearchCommand extends Command {
 
     private HashSet<String> keywords;
 
+    private ArrayList<TaskAttributes> results;
+
     private SearchCommand(Builder builder) {
         this.keywords = builder.keywords;
     }
 
     public HashSet<String> getKeywords() {
         return keywords;
+    }
+
+    public ArrayList<TaskAttributes> getResults() {
+        return results;
     }
 
     public static class Builder {
@@ -48,12 +54,11 @@ public class SearchCommand extends Command {
 
     @Override
     public void execute() {
-        ArrayList<TaskAttributes> results = new ArrayList<>();
+        results = new ArrayList<>();
         results.addAll(getFullMatches());
         results.addAll(getPartialMatches());
 
         eventBus.post(new SearchDoneEvent(results, keywords));
-        System.out.println(results);
     }
 
     private ArrayList<TaskAttributes> getFullMatches() {

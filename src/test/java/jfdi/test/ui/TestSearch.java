@@ -43,12 +43,12 @@ public class TestSearch extends UiTest {
         main.execute("search testing 2");
 
         main.assertResponseMessage(String.format(Constants.CMD_SUCCESS_SEARCH_2, "2 and testing"));
-        assertEquals(1, main.getImportantListSize());
+        assertEquals(4, main.getImportantListSize());
 
         main.execute("search test testing 2");
 
         main.assertResponseMessage(String.format(Constants.CMD_SUCCESS_SEARCH_2, "2, test and testing"));
-        assertEquals(0, main.getImportantListSize());
+        assertEquals(7, main.getImportantListSize());
     }
 
 }

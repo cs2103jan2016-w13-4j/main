@@ -29,7 +29,6 @@ public abstract class CommandHandler {
         UI.getEventBus().register(ListHandler.getInstance());
         UI.getEventBus().register(MarkHandler.getInstance());
         UI.getEventBus().register(MoveDirHandler.getInstance());
-        UI.getEventBus().register(RedoHandler.getInstance());
         UI.getEventBus().register(RenameHandler.getInstance());
         UI.getEventBus().register(RescheduleHandler.getInstance());
         UI.getEventBus().register(SearchHandler.getInstance());

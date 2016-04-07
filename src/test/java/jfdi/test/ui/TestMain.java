@@ -267,14 +267,20 @@ public class TestMain extends ApplicationTest {
         UiTest[] tests = {
             new TestWidgets(this),
             new TestAdd(this),
+            new TestAlias(this),
             new TestDelete(this),
             new TestList(this),
             new TestInputHistory(this),
             new TestMark(this),
+            new TestRename(this),
+            new TestReschedule(this),
+            new TestSearch(this),
+            new TestSurprise(this),
             new TestUnmark(this),
             new TestScrolling(this),
             new TestSurprise(this),
-            new TestHelp(this)
+            new TestHelp(this),
+            new TestScrolling(this)
         };
         for (UiTest test : tests) {
             test.run();

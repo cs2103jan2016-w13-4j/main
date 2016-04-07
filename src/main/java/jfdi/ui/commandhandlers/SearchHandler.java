@@ -43,6 +43,7 @@ public class SearchHandler extends CommandHandler {
             for (String key : e.getKeywords()) {
                 controller.searchCmd += key + " ";
                 searchKeyWords += key;
+                count++;
                 if (count == e.getKeywords().size() - 1) {
                     searchKeyWords += " and ";
                 } else if (!(count == e.getKeywords().size())) {

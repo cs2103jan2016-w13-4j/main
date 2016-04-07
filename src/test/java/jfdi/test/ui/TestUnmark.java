@@ -26,6 +26,11 @@ public class TestUnmark extends UiTest {
     private void testUnmarkMultiple() {
         main.execute("unmark 2,3");
         assertUnmarked(2, 3);
+
+        main.execute("mark 1-3");
+
+        main.execute("unmark 1-3");
+        assertUnmarked(1, 2, 3);
     }
 
     private void testUnmarkNonExistent() {

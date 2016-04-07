@@ -4,6 +4,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import javafx.scene.input.KeyCode;
+import jfdi.ui.Constants;
 
 public class TestSurprise extends UiTest {
 
@@ -17,10 +18,10 @@ public class TestSurprise extends UiTest {
     }
 
     private void testSurprise() {
-        // TODO: assert feedbacks
         main.type(KeyCode.F6);
         main.assertOnBox(main.surpriseBox);
         main.assertOnTab(main.surpriseTab, "surprise");
+        main.assertErrorMessage(Constants.CMD_ERROR_SURP_FAIL_NO_TASKS);
 
         main.type(KeyCode.F5);
         main.assertOnBox(main.completedBox);
@@ -34,12 +35,14 @@ public class TestSurprise extends UiTest {
         main.assertOnBox(main.incompleteBox);
         main.assertOnTab(main.incompleteTab, "incomplete");
         assertFalse(main.surpriseOverlay.isVisible());
+        main.assertResponseMessage(Constants.CMD_SUCCESS_SURPRISED_YAY);
 
         main.type(KeyCode.F6);
         main.execute("nay");
         main.assertOnBox(main.surpriseBox);
         main.assertOnTab(main.surpriseTab, "surprise");
         assertTrue(main.surpriseOverlay.isVisible());
+        main.assertErrorMessage(Constants.CMD_ERROR_SURP_FAIL_NO_TASKS);
     }
 
 }

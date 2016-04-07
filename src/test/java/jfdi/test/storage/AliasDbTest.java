@@ -30,12 +30,14 @@ public class AliasDbTest {
     private static AliasDb aliasDbInstance = null;
     private static MainStorage mainStorageInstance = null;
     private static String originalPreference = null;
+    private static String originalCommandRegex = null;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         testDirectory = Files.createTempDirectory(Constants.TEST_DIRECTORY_NAME);
         testDirectoryString = testDirectory.toString();
         aliasDbInstance = AliasDb.getInstance();
+        originalCommandRegex = AliasAttributes.getCommandRegex();
         AliasAttributes.setCommandRegex(Constants.TEST_COMMAND_REGEX);
         mainStorageInstance = MainStorage.getInstance();
         originalPreference = mainStorageInstance.getPreferredDirectory();
@@ -47,6 +49,9 @@ public class AliasDbTest {
     @AfterClass
     public static void tearDownAfterClass() {
         TestHelper.revertOriginalPreference(mainStorageInstance, originalPreference);
+        if (originalCommandRegex != null) {
+            AliasAttributes.setCommandRegex(originalCommandRegex);
+        }
     }
 
     @After

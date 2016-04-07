@@ -54,10 +54,6 @@ public class ControlCenter implements ILogic {
             command = new InvalidCommand.Builder().build();
         }
         command.execute();
-
-        if (!(command instanceof InvalidCommand)) {
-            Command.setLastSuggestion(Optional.empty());
-        }
     }
 
     @Override

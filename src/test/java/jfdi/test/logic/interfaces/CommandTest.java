@@ -67,7 +67,6 @@ public class CommandTest {
         Command.setAliasDb(AliasDb.getInstance());
         Command.setParser(InputParser.getInstance());
         Command.setEventBus(UI.getEventBus());
-        Command.setLastSuggestion(Optional.empty());
         Command.setRedoing(false);
     }
 
@@ -77,14 +76,6 @@ public class CommandTest {
         assertEquals(true, Command.isRedoing());
         Command.setRedoing(false);
         assertEquals(false, Command.isRedoing());
-    }
-
-    @Test
-    public void testLastSuggestion() throws Exception {
-        Command.setLastSuggestion(Optional.of("list"));
-        assertEquals(Optional.of("list"), Command.getLastSuggestion());
-        Command.setLastSuggestion(Optional.of("undo"));
-        assertEquals(Optional.of("undo"), Command.getLastSuggestion());
     }
 
     @Test

@@ -48,14 +48,6 @@ public abstract class Command {
         redoing = redo;
     }
 
-    public static void setLastSuggestion(Optional<String> suggestion) {
-        lastSuggestion = suggestion;
-    }
-
-    public static Optional<String> getLastSuggestion() {
-        return lastSuggestion;
-    }
-
     public void pushToUndoStack() {
         if (!redoing) {
             while (!redoStack.empty()) {

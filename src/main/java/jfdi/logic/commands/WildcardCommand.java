@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
  */
 public class WildcardCommand extends Command {
 
+    private TaskAttributes lucky;
+
     private WildcardCommand(Builder builder) {}
 
     public static class Builder {
@@ -24,6 +26,10 @@ public class WildcardCommand extends Command {
             return new WildcardCommand(this);
         }
 
+    }
+
+    public TaskAttributes getLucky() {
+        return lucky;
     }
 
     @Override
@@ -35,7 +41,7 @@ public class WildcardCommand extends Command {
         SecureRandom random = new SecureRandom();
 
         if (!incompleteTasks.isEmpty()) {
-            TaskAttributes lucky = incompleteTasks.get(random.nextInt(incompleteTasks.size()));
+            lucky = incompleteTasks.get(random.nextInt(incompleteTasks.size()));
             eventBus.post(new SurpriseEvent(lucky));
         } else {
             eventBus.post(new NoSurpriseEvent(NoSurpriseEvent.Error.NO_TASKS));
@@ -44,6 +50,7 @@ public class WildcardCommand extends Command {
 
     @Override
     public void undo() {
-        throw new UnsupportedOperationException();
+        assert false;
     }
+
 }

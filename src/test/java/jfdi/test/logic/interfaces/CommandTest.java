@@ -2,6 +2,7 @@
 
 package jfdi.test.logic.interfaces;
 
+import com.google.common.eventbus.EventBus;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.InputParser;
 import jfdi.storage.apis.AliasDb;
@@ -15,8 +16,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
@@ -44,6 +43,9 @@ public class CommandTest {
     @Mock
     private InputParser parser;
 
+    @Mock
+    private EventBus eventBus;
+
     @Before
     public void setUp() throws Exception {
         command = Mockito.mock(Command.class, Mockito.CALLS_REAL_METHODS);
@@ -52,6 +54,7 @@ public class CommandTest {
         Command.setTaskDb(taskDb);
         Command.setAliasDb(aliasDb);
         Command.setParser(parser);
+        Command.setEventBus(eventBus);
     }
 
     @After
@@ -61,7 +64,7 @@ public class CommandTest {
         Command.setTaskDb(TaskDb.getInstance());
         Command.setAliasDb(AliasDb.getInstance());
         Command.setParser(InputParser.getInstance());
-        Command.setLastSuggestion(Optional.empty());
+        Command.setEventBus(UI.getEventBus());
         Command.setRedoing(false);
     }
 
@@ -71,14 +74,6 @@ public class CommandTest {
         assertEquals(true, Command.isRedoing());
         Command.setRedoing(false);
         assertEquals(false, Command.isRedoing());
-    }
-
-    @Test
-    public void testLastSuggestion() throws Exception {
-        Command.setLastSuggestion(Optional.of("list"));
-        assertEquals(Optional.of("list"), Command.getLastSuggestion());
-        Command.setLastSuggestion(Optional.of("undo"));
-        assertEquals(Optional.of("undo"), Command.getLastSuggestion());
     }
 
     @Test
@@ -128,6 +123,16 @@ public class CommandTest {
     @Test
     public void getAliasDb() throws Exception {
         assertSame(aliasDb, Command.getAliasDb());
+    }
+
+    @Test
+    public void getUI()  throws Exception {
+        assertSame(ui, Command.getUI());
+    }
+
+    @Test
+    public void getEventBus() throws Exception {
+        assertSame(eventBus, Command.getEventBus());
     }
 
 }

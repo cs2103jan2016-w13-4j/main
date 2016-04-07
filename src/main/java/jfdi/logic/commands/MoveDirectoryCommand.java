@@ -36,6 +36,10 @@ public class MoveDirectoryCommand extends Command {
 
     }
 
+    public String getOldDirectory() {
+        return oldDirectory;
+    }
+
     public String getNewDirectory() {
         return newDirectory;
     }
@@ -50,6 +54,7 @@ public class MoveDirectoryCommand extends Command {
             pushToUndoStack();
             eventBus.post(new MoveDirectoryDoneEvent(newDirectory));
         } catch (FilesReplacedException e) {
+            pushToUndoStack();
             eventBus.post(new MoveDirectoryDoneEvent(newDirectory));
             eventBus.post(new FilesReplacedEvent(newDirectory, e.getReplacedFilePairs()));
         } catch (InvalidFilePathException e) {

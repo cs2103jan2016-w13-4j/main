@@ -18,12 +18,18 @@ public class SearchCommand extends Command {
 
     private HashSet<String> keywords;
 
+    private ArrayList<TaskAttributes> results;
+
     private SearchCommand(Builder builder) {
         this.keywords = builder.keywords;
     }
 
     public HashSet<String> getKeywords() {
         return keywords;
+    }
+
+    public ArrayList<TaskAttributes> getResults() {
+        return results;
     }
 
     public static class Builder {
@@ -48,8 +54,15 @@ public class SearchCommand extends Command {
 
     @Override
     public void execute() {
-        Collection<TaskAttributes> allTasks = taskDb.getAll();
-        ArrayList<TaskAttributes> results = allTasks.stream().filter(task -> {
+        results = new ArrayList<>();
+        results.addAll(getFullMatches());
+        results.addAll(getPartialMatches());
+
+        eventBus.post(new SearchDoneEvent(results, keywords));
+    }
+
+    private ArrayList<TaskAttributes> getFullMatches() {
+        return taskDb.getAll().stream().filter(task -> {
             for (String keyword : keywords) {
                 if (!task.getDescription().matches(String.format("(?i:.*\\b%s\\b.*)", keyword))) {
                     return false;
@@ -57,8 +70,18 @@ public class SearchCommand extends Command {
             }
             return true;
         }).collect(Collectors.toCollection(ArrayList::new));
-        eventBus.post(new SearchDoneEvent(results, keywords));
-        System.out.println(results);
+    }
+
+    private ArrayList<TaskAttributes> getPartialMatches() {
+        return taskDb.getAll().stream().filter(task -> {
+            int matches = 0;
+            for (String keyword : keywords) {
+                if (task.getDescription().matches(String.format("(?i:.*\\b%s\\b.*)", keyword))) {
+                    matches++;
+                }
+            }
+            return matches != 0 && matches != keywords.size();
+        }).collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override

@@ -5,10 +5,7 @@ package jfdi.logic.commands;
 import jfdi.logic.events.UnaliasDoneEvent;
 import jfdi.logic.events.UnaliasFailedEvent;
 import jfdi.logic.interfaces.Command;
-import jfdi.storage.apis.AliasAttributes;
-import jfdi.storage.exceptions.DuplicateAliasException;
 import jfdi.storage.exceptions.InvalidAliasException;
-import jfdi.storage.exceptions.InvalidAliasParametersException;
 
 /**
  * @author Liu Xinan
@@ -16,7 +13,6 @@ import jfdi.storage.exceptions.InvalidAliasParametersException;
 public class UnaliasCommand extends Command {
 
     private String alias;
-    private String command;
 
     private UnaliasCommand(Builder builder) {
         this.alias = builder.alias;
@@ -44,8 +40,6 @@ public class UnaliasCommand extends Command {
     @Override
     public void execute() {
         try {
-            command = aliasDb.getCommandFromAlias(alias);
-
             aliasDb.destroy(alias);
             parser.setAliases(aliasDb.getAll());
 
@@ -59,12 +53,11 @@ public class UnaliasCommand extends Command {
     @Override
     public void undo() {
         try {
-            AliasAttributes oldAlias = new AliasAttributes(alias, command);
-            oldAlias.save();
+            aliasDb.undestroy(alias);
             parser.setAliases(aliasDb.getAll());
 
             pushToRedoStack();
-        } catch (InvalidAliasParametersException | DuplicateAliasException e) {
+        } catch (InvalidAliasException e) {
             assert false;
         }
     }

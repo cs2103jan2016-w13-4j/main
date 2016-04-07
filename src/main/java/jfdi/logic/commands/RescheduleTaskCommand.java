@@ -57,6 +57,14 @@ public class RescheduleTaskCommand extends Command {
         return endDateTime;
     }
 
+    public LocalDateTime getOldStartDateTime() {
+        return oldStartDateTime;
+    }
+
+    public LocalDateTime getOldEndDateTime() {
+        return oldEndDateTime;
+    }
+
     public static class Builder {
 
         int screenId;
@@ -189,15 +197,13 @@ public class RescheduleTaskCommand extends Command {
     }
 
     private LocalDateTime getShiftedDateTime(LocalDateTime dateTime) {
-        if (isShiftedDateSpecified && isShiftedTimeSpecified) {
-            return shiftedDateTime;
-        } else if (isShiftedDateSpecified && !isShiftedTimeSpecified) {
+        if (isShiftedDateSpecified && !isShiftedTimeSpecified) {
             return shiftDate(dateTime);
         } else if (!isShiftedDateSpecified && isShiftedTimeSpecified) {
             return shiftTime(dateTime);
+        } else {
+            return shiftedDateTime;
         }
-        assert false;
-        return null;
     }
 
     private LocalDateTime shiftTime(LocalDateTime originalDateTime) {

@@ -5,5 +5,4 @@ package jfdi.logic.events;
 /**
  * @author Liu Xinan
  */
-public class HelpRequestedEvent {
-}
+public class HelpRequestedEvent {}

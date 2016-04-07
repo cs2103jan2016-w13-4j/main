@@ -33,6 +33,10 @@ public class RenameTaskCommand extends Command {
         return description;
     }
 
+    public String getOldDescription() {
+        return oldDescription;
+    }
+
     public static class Builder {
 
         int screenId = -1;
@@ -49,9 +53,6 @@ public class RenameTaskCommand extends Command {
         }
 
         public RenameTaskCommand build() {
-            if (screenId == -1) {
-                throw new IllegalStateException("You must set the task ID for rename!");
-            }
             return new RenameTaskCommand(this);
         }
 
@@ -71,16 +72,17 @@ public class RenameTaskCommand extends Command {
             pushToUndoStack();
             eventBus.post(new RenameTaskDoneEvent(task));
         } catch (InvalidIdException e) {
-            eventBus
-                .post(new RenameTaskFailedEvent(screenId, description, RenameTaskFailedEvent.Error.NON_EXISTENT_ID));
+            eventBus.post(new RenameTaskFailedEvent(screenId, description,
+                          RenameTaskFailedEvent.Error.NON_EXISTENT_ID));
+        } catch (NoAttributesChangedException e) {
+            eventBus.post(new RenameTaskFailedEvent(screenId, description,
+                          RenameTaskFailedEvent.Error.NO_CHANGES));
+        } catch (DuplicateTaskException e) {
+            eventBus.post(new RenameTaskFailedEvent(screenId, description,
+                          RenameTaskFailedEvent.Error.DUPLICATED_TASK));
         } catch (InvalidTaskParametersException e) {
             // Should not happen
             assert false;
-        } catch (NoAttributesChangedException e) {
-            eventBus.post(new RenameTaskFailedEvent(screenId, description, RenameTaskFailedEvent.Error.NO_CHANGES));
-        } catch (DuplicateTaskException e) {
-            eventBus
-                .post(new RenameTaskFailedEvent(screenId, description, RenameTaskFailedEvent.Error.DUPLICATED_TASK));
         }
     }
 
@@ -96,7 +98,7 @@ public class RenameTaskCommand extends Command {
 
             pushToRedoStack();
         } catch (InvalidIdException | NoAttributesChangedException | InvalidTaskParametersException
-            | DuplicateTaskException e) {
+               | DuplicateTaskException e) {
             assert false;
         }
     }

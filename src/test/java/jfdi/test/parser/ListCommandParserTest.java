@@ -68,23 +68,6 @@ public class ListCommandParserTest {
     }
 
     @Test
-    public void testAliases() {
-        Command cmd = parser.build("list aliases");
-        ListCommand listCommand = validateAndReturnListCommand(cmd);
-        validateListType(listCommand, ListType.ALIASES);
-
-        // Boundary case: capitalised list keyword
-        cmd = parser.build("LiSt ALiASes");
-        listCommand = validateAndReturnListCommand(cmd);
-        validateListType(listCommand, ListType.ALIASES);
-
-        // Boundary case: alternative spelling + capitalisation
-        cmd = parser.build("LiSt ALiAs");
-        listCommand = validateAndReturnListCommand(cmd);
-        validateListType(listCommand, ListType.ALIASES);
-    }
-
-    @Test
     public void testOverdue() {
         Command cmd = parser.build("list overdue");
         ListCommand listCommand = validateAndReturnListCommand(cmd);

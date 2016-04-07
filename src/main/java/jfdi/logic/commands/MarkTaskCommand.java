@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  */
 public class MarkTaskCommand extends Command {
 
-    private static final Logger LOGGER = JfdiLogger.getLogger();
+    private static final Logger logger = JfdiLogger.getLogger();
 
     private ArrayList<Integer> screenIds;
     private ArrayList<Integer> markedIds;
@@ -31,6 +31,10 @@ public class MarkTaskCommand extends Command {
 
     public ArrayList<Integer> getScreenIds() {
         return screenIds;
+    }
+
+    public ArrayList<Integer> getMarkedIds() {
+        return markedIds;
     }
 
     public static class Builder {
@@ -71,10 +75,10 @@ public class MarkTaskCommand extends Command {
                     taskDb.markAsComplete(id);
                     markedIds.add(id);
                 } catch (NoAttributesChangedException e) {
-                    LOGGER.warning("Task " + id + " is already completed.");
+                    logger.warning("Task " + id + " is already completed.");
                 } catch (InvalidIdException e) {
                     // Should not happen!
-                assert false;
+                    assert false;
                 }
             });
 

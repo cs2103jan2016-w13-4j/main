@@ -16,6 +16,7 @@ import jfdi.storage.exceptions.DuplicateAliasException;
 import jfdi.storage.exceptions.InvalidAliasParametersException;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -23,13 +24,22 @@ public class AliasAttributesTest {
 
     private static Path testDirectory = null;
     private static AliasDb aliasDbInstance = null;
+    private static String originalCommandRegex = null;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         testDirectory = Files.createTempDirectory(Constants.TEST_DIRECTORY_NAME);
         aliasDbInstance = AliasDb.getInstance();
+        originalCommandRegex = AliasAttributes.getCommandRegex();
         AliasAttributes.setCommandRegex(Constants.TEST_COMMAND_REGEX);
         MainStorage.getInstance().load(testDirectory.toString());
+    }
+
+    @AfterClass
+    public static void tearDownAfterClass() {
+        if (originalCommandRegex != null) {
+            AliasAttributes.setCommandRegex(originalCommandRegex);
+        }
     }
 
     @After

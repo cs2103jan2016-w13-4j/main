@@ -2,6 +2,7 @@
 
 package jfdi.test.logic.commands;
 
+import com.google.common.eventbus.EventBus;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.InputParser;
 import jfdi.storage.apis.AliasAttributes;
@@ -11,12 +12,20 @@ import jfdi.storage.apis.TaskDb;
 import jfdi.ui.UI;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  * @author Liu Xinan
  */
+@RunWith(MockitoJUnitRunner.class)
 public abstract class CommonCommandTest {
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     @Mock
     protected UI ui;
@@ -33,6 +42,9 @@ public abstract class CommonCommandTest {
     @Mock
     protected InputParser parser;
 
+    @Mock
+    protected EventBus eventBus;
+
     @Before
     public void setUp() throws Exception {
         Command.setUi(ui);
@@ -40,6 +52,7 @@ public abstract class CommonCommandTest {
         Command.setTaskDb(taskDb);
         Command.setAliasDb(aliasDb);
         Command.setParser(parser);
+        Command.setEventBus(eventBus);
 
         AliasAttributes.setCommandRegex(InputParser.getInstance().getAllCommandRegexes());
         InputParser.getInstance().setAliases(AliasDb.getInstance().getAll());
@@ -54,6 +67,7 @@ public abstract class CommonCommandTest {
         Command.setTaskDb(TaskDb.getInstance());
         Command.setAliasDb(AliasDb.getInstance());
         Command.setParser(InputParser.getInstance());
+        Command.setEventBus(UI.getEventBus());
     }
 
 }

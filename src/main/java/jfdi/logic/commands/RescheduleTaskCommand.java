@@ -57,6 +57,14 @@ public class RescheduleTaskCommand extends Command {
         return endDateTime;
     }
 
+    public LocalDateTime getOldStartDateTime() {
+        return oldStartDateTime;
+    }
+
+    public LocalDateTime getOldEndDateTime() {
+        return oldEndDateTime;
+    }
+
     public static class Builder {
 
         int screenId;

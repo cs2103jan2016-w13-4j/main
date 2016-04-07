@@ -13,6 +13,7 @@ import jfdi.storage.apis.MainStorage;
 public abstract class UiTest {
 
     protected TestMain main;
+    protected String testDir;
     protected String originalDir = MainStorage.getInstance().getCurrentDirectory();
 
     UiTest(TestMain main) {
@@ -21,15 +22,14 @@ public abstract class UiTest {
 
     public void init() {
         File tempDir = Files.createTempDir();
-        Platform.runLater(() -> ControlCenter.getInstance().handleInput(
-                String.format("use %s", tempDir.getAbsolutePath())));
+        Platform.runLater(
+                () -> ControlCenter.getInstance().handleInput(String.format("use %s", tempDir.getAbsolutePath())));
         WaitForAsyncUtils.waitForFxEvents();
-
+        testDir = tempDir.getAbsolutePath();
     }
 
     public void done() {
-        Platform.runLater(() -> ControlCenter.getInstance().handleInput(
-                String.format("use %s", originalDir)));
+        Platform.runLater(() -> ControlCenter.getInstance().handleInput(String.format("use %s", originalDir)));
         WaitForAsyncUtils.waitForFxEvents();
     }
 

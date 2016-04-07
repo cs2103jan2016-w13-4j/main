@@ -18,7 +18,7 @@ public class TestShowDirectory extends UiTest {
      */
     public void testShowDirectory() {
         main.execute("directory");
-        main.assertResponseMessage(String.format(Constants.CMD_SUCCESS_SHOWDIRECTORY, originalDir));
+        main.assertResponseMessage(String.format(Constants.CMD_SUCCESS_SHOWDIRECTORY, testDir));
     }
 
 }

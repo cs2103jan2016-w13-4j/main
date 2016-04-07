@@ -40,6 +40,14 @@ public class InputHistory {
         addToPrevious(nextString);
         return nextString;
     }
+    
+    /**
+     * Clears the input history so that undo would not work
+     */
+    public void clearHistory() {
+        previousStack.clear();
+        nextStack.clear();
+    }
 
     /**
      * Adds a new input to the input history.

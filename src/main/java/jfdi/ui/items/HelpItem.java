@@ -25,7 +25,6 @@ public class HelpItem extends VBox {
             loader.setController(this);
             loader.load();
         } catch (IOException e) {
-            e.printStackTrace();
         }
 
         this.description.setWrapText(true);

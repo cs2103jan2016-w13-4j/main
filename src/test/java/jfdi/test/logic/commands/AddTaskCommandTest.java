@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.doThrow;
 
 /**
  * @author Liu Xinan
@@ -87,7 +89,7 @@ public class AddTaskCommandTest extends CommonCommandTest {
     }
 
     @Test
-    public void testUndo() throws Exception {
+    public void testUndo_successful() throws Exception {
         AddTaskCommand command = new AddTaskCommand.Builder()
             .setDescription("undo")
             .build();
@@ -102,6 +104,18 @@ public class AddTaskCommandTest extends CommonCommandTest {
 
         thrown.expect(InvalidIdException.class);
         TaskDb.getInstance().getById(id);
+    }
+
+    @Test
+    public void testUndo_unsuccessful() throws Exception {
+        doThrow(InvalidIdException.class).when(taskDb).destroy(anyInt());
+
+        AddTaskCommand command = new AddTaskCommand.Builder()
+            .setDescription("undo")
+            .build();
+
+        thrown.expect(AssertionError.class);
+        command.undo();
     }
 
 }

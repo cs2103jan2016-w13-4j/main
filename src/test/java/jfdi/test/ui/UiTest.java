@@ -17,6 +17,9 @@ public abstract class UiTest {
 
     UiTest(TestMain main) {
         this.main = main;
+    }
+
+    public void init() {
         File tempDir = Files.createTempDir();
         Platform.runLater(() -> ControlCenter.getInstance().handleInput(
                 String.format("use %s", tempDir.getAbsolutePath())));

@@ -283,6 +283,7 @@ public class TestMain extends ApplicationTest {
             new TestScrolling(this)
         };
         for (UiTest test : tests) {
+            test.init();
             test.run();
             test.done();
         }

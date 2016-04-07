@@ -197,14 +197,13 @@ public class RescheduleTaskCommand extends Command {
     }
 
     private LocalDateTime getShiftedDateTime(LocalDateTime dateTime) {
-        if (isShiftedDateSpecified && isShiftedTimeSpecified) {
-            return shiftedDateTime;
-        } else if (isShiftedDateSpecified && !isShiftedTimeSpecified) {
+        if (isShiftedDateSpecified && !isShiftedTimeSpecified) {
             return shiftDate(dateTime);
         } else if (!isShiftedDateSpecified && isShiftedTimeSpecified) {
             return shiftTime(dateTime);
+        } else {
+            return shiftedDateTime;
         }
-        assert false;
     }
 
     private LocalDateTime shiftTime(LocalDateTime originalDateTime) {

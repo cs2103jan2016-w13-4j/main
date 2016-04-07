@@ -62,9 +62,11 @@ public class SearchCommand extends Command {
         results = taskDb.getAll().stream()
                 .map(this::constructCandidate)
                 .filter(this::isValidCandidate)
-                .sorted(this::candidateCompareTo)
+                .sorted(this::candidateCompare)
                 .map(ImmutableTriple::getRight)
                 .collect(Collectors.toCollection(ArrayList::new));
+
+        logger.info(String.format("Search completed. %d results found.", results.size()));
 
         eventBus.post(new SearchDoneEvent(results, keywords));
     }
@@ -95,8 +97,8 @@ public class SearchCommand extends Command {
                 );
     }
 
-    private int candidateCompareTo(ImmutableTriple<Long, Integer, TaskAttributes> left,
-                                   ImmutableTriple<Long, Integer, TaskAttributes> right) {
+    private int candidateCompare(ImmutableTriple<Long, Integer, TaskAttributes> left,
+                                 ImmutableTriple<Long, Integer, TaskAttributes> right) {
 
         if (left.getLeft() > right.getLeft()) {
             return -1;

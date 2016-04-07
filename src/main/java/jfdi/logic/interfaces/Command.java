@@ -10,7 +10,6 @@ import jfdi.storage.apis.MainStorage;
 import jfdi.storage.apis.TaskDb;
 import jfdi.ui.UI;
 
-import java.util.Optional;
 import java.util.Stack;
 import java.util.logging.Logger;
 

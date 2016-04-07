@@ -353,19 +353,22 @@ public class TaskAttributesTest {
 
     @Test
     public void testHashingAndEquals() throws Exception {
+        LocalDateTime startDateTime = LocalDateTime.now().minusDays(7);
+        LocalDateTime endDateTime = LocalDateTime.now().plusDays(7);
+
         // Create the first task (an event)
         TaskAttributes task1 = new TaskAttributes();
         task1.setId(1);
         task1.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
-        task1.setStartDateTime(LocalDateTime.now().minusDays(7));
-        task1.setEndDateTime(LocalDateTime.now().plusDays(7));
+        task1.setStartDateTime(startDateTime);
+        task1.setEndDateTime(endDateTime);
 
         // Create a duplicate of task 1
         TaskAttributes task1Duplicate = new TaskAttributes();
         task1Duplicate.setId(1);
         task1Duplicate.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
-        task1Duplicate.setStartDateTime(LocalDateTime.now().minusDays(7));
-        task1Duplicate.setEndDateTime(LocalDateTime.now().plusDays(7));
+        task1Duplicate.setStartDateTime(startDateTime);
+        task1Duplicate.setEndDateTime(endDateTime);
 
         // Assert that the task and its duplicate are equal and has the same hashCode
         assertEquals(task1, task1Duplicate);
@@ -375,13 +378,13 @@ public class TaskAttributesTest {
         TaskAttributes task2 = new TaskAttributes();
         task2.setId(2);
         task2.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
-        task2.setStartDateTime(LocalDateTime.now().minusDays(6));
+        task2.setStartDateTime(startDateTime);
 
         // Create a duplicate of the second task
         TaskAttributes task2Duplicate = new TaskAttributes();
         task2Duplicate.setId(2);
         task2Duplicate.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
-        task2Duplicate.setStartDateTime(LocalDateTime.now().minusDays(6));
+        task2Duplicate.setStartDateTime(startDateTime);
 
         // Assert that the task and its duplicate are equal and has the same hashCode
         assertEquals(task2, task2Duplicate);
@@ -391,13 +394,13 @@ public class TaskAttributesTest {
         TaskAttributes task3 = new TaskAttributes();
         task3.setId(3);
         task3.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
-        task3.setEndDateTime(LocalDateTime.now().minusDays(4));
+        task3.setEndDateTime(endDateTime);
 
         // Create a duplicate of the third task
         TaskAttributes task3Duplicate = new TaskAttributes();
         task3Duplicate.setId(3);
         task3Duplicate.setDescription(Constants.TEST_TASK_DESCRIPTION_1);
-        task3Duplicate.setEndDateTime(LocalDateTime.now().minusDays(4));
+        task3Duplicate.setEndDateTime(endDateTime);
 
         // Assert that the task and its duplicate are equal and has the same hashCode
         assertEquals(task3, task3Duplicate);

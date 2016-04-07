@@ -26,15 +26,15 @@ import java.util.stream.Collectors;
  */
 public class ControlCenter implements ILogic {
 
-    private static ControlCenter ourInstance = new ControlCenter();
+    private static ControlCenter ourInstance;
 
-    private final EventBus eventBus = UI.getEventBus();
+    private static EventBus eventBus = UI.getEventBus();
 
-    private MainStorage mainStorage = MainStorage.getInstance();
-    private TaskDb taskDb = TaskDb.getInstance();
-    private AliasDb aliasDb = AliasDb.getInstance();
+    private static MainStorage mainStorage = MainStorage.getInstance();
+    private static TaskDb taskDb = TaskDb.getInstance();
+    private static AliasDb aliasDb = AliasDb.getInstance();
 
-    private InputParser parser = InputParser.getInstance();
+    private static InputParser parser = InputParser.getInstance();
 
     private ControlCenter() {
         initStorage();
@@ -42,6 +42,9 @@ public class ControlCenter implements ILogic {
     }
 
     public static ControlCenter getInstance() {
+        if (ourInstance == null) {
+            ourInstance = new ControlCenter();
+        }
         return ourInstance;
     }
 
@@ -122,22 +125,31 @@ public class ControlCenter implements ILogic {
     }
 
     //================================================================
-    // List of setters for testing.
+    // Methods for testing.
     //================================================================
 
-    public void setParser(InputParser parser) {
-        this.parser = parser;
+    public static void removeInstance() {
+        ourInstance = null;
     }
 
-    public void setMainStorage(MainStorage mainStorage) {
-        this.mainStorage = mainStorage;
+    public static void setParser(InputParser parser) {
+        ControlCenter.parser = parser;
     }
 
-    public void setTaskDb(TaskDb taskDb) {
-        this.taskDb = taskDb;
+    public static void setMainStorage(MainStorage mainStorage) {
+        ControlCenter.mainStorage = mainStorage;
     }
 
-    public void setAliasDb(AliasDb aliasDb) {
-        this.aliasDb = aliasDb;
+    public static void setTaskDb(TaskDb taskDb) {
+        ControlCenter.taskDb = taskDb;
     }
+
+    public static void setAliasDb(AliasDb aliasDb) {
+        ControlCenter.aliasDb = aliasDb;
+    }
+
+    public static void setEventBus(EventBus eventBus) {
+        ControlCenter.eventBus = eventBus;
+    }
+
 }

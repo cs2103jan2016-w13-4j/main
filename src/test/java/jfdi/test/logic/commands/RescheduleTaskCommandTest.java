@@ -143,9 +143,12 @@ public class RescheduleTaskCommandTest extends CommonCommandTest {
 
     @Test
     public void testExecute_shiftingEventTask_bothDateTimeSpecified_successful() throws Exception {
+        LocalDateTime oldStartDateTime = LocalDateTime.now();
+        LocalDateTime oldEndDateTime = oldStartDateTime.plusHours(1);
+
         TaskAttributes event = mock(TaskAttributes.class);
-        when(event.getStartDateTime()).thenReturn(LocalDateTime.now());
-        when(event.getEndDateTime()).thenReturn(LocalDateTime.now().plusHours(1));
+        when(event.getStartDateTime()).thenReturn(oldStartDateTime);
+        when(event.getEndDateTime()).thenReturn(oldEndDateTime);
         when(ui.getTaskId(4)).thenReturn(4);
         when(taskDb.getById(4)).thenReturn(event);
 

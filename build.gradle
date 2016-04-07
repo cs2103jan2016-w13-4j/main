@@ -36,6 +36,12 @@ dependencies {
   testCompile 'org.mockito:mockito-core:1.+'
 }
 
+test {
+  testLogging {
+    exceptionFormat = 'full'
+  }
+}
+
 checkstyle {
   toolVersion '6.16.1'
 }

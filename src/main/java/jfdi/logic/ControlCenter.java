@@ -17,7 +17,6 @@ import jfdi.ui.UI;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 

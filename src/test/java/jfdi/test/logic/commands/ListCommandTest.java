@@ -3,7 +3,6 @@ package jfdi.test.logic.commands;
 import jfdi.logic.commands.ListCommand;
 import jfdi.logic.events.ListDoneEvent;
 import jfdi.storage.apis.TaskAttributes;
-import jfdi.storage.entities.Task;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +11,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;

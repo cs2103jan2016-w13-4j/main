@@ -5,10 +5,7 @@ package jfdi.logic.commands;
 import jfdi.logic.events.UnaliasDoneEvent;
 import jfdi.logic.events.UnaliasFailedEvent;
 import jfdi.logic.interfaces.Command;
-import jfdi.storage.apis.AliasAttributes;
-import jfdi.storage.exceptions.DuplicateAliasException;
 import jfdi.storage.exceptions.InvalidAliasException;
-import jfdi.storage.exceptions.InvalidAliasParametersException;
 
 /**
  * @author Liu Xinan

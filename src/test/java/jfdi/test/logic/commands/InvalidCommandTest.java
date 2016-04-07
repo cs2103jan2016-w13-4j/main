@@ -5,8 +5,10 @@ import jfdi.logic.events.InvalidCommandEvent;
 import jfdi.parser.Constants;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.verify;
 
 /**
  * @author Liu Xinan

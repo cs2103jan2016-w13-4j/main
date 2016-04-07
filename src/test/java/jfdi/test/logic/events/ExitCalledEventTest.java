@@ -3,7 +3,7 @@ package jfdi.test.logic.events;
 import jfdi.logic.events.ExitCalledEvent;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Xinan

@@ -4,11 +4,11 @@ import java.io.File;
 
 import org.testfx.util.WaitForAsyncUtils;
 
+import com.google.common.io.Files;
+
 import javafx.application.Platform;
 import jfdi.logic.ControlCenter;
 import jfdi.storage.apis.MainStorage;
-
-import com.google.common.io.Files;
 
 public abstract class UiTest {
 
@@ -21,6 +21,7 @@ public abstract class UiTest {
         Platform.runLater(() -> ControlCenter.getInstance().handleInput(
                 String.format("use %s", tempDir.getAbsolutePath())));
         WaitForAsyncUtils.waitForFxEvents();
+        
     }
 
     public void done() {

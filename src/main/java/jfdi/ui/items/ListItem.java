@@ -98,6 +98,10 @@ public class ListItem extends VBox {
         description.setWrapText(true);
         description.setText(string);
     }
+    
+    public String getDescription() {
+        return description.getText();
+    }
 
     public void setTimeDate(LocalDateTime startTime, LocalDateTime endTime) {
         timeAndDate.setWrapText(true);

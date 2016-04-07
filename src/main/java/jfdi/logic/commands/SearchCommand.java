@@ -75,7 +75,7 @@ public class SearchCommand extends Command {
 
         long rank = Arrays.stream(parts)
                 .map(stemmer::stem)
-                .filter(this::isMatched)
+                .filter(this::isKeyword)
                 .count();
 
         return new ImmutableTriple<Long, Integer, TaskAttributes>(rank, wordCount, task);
@@ -85,13 +85,13 @@ public class SearchCommand extends Command {
         return candidate.getLeft() > 0;
     }
 
-    private boolean isMatched(String word) {
+    private boolean isKeyword(String word) {
         return keywords.stream()
                 .map(stemmer::stem)
                 .reduce(
-                    false,
-                    (matched, keyword) -> matched || word.equalsIgnoreCase(keyword),
-                    (previouslyMatched, nowMatched) -> previouslyMatched || nowMatched
+                        false,
+                        (isMatched, keyword) -> isMatched || word.equalsIgnoreCase(keyword),
+                        (isPreviouslyMatched, isNowMatched) -> isPreviouslyMatched || isNowMatched
                 );
     }
 

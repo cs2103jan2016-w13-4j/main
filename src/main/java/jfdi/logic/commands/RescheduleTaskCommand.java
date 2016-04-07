@@ -164,8 +164,6 @@ public class RescheduleTaskCommand extends Command {
     }
 
     private void shiftStartAndEndDateTimes(TaskAttributes task) {
-        assert shiftedDateTime != null;
-        assert isShiftedDateSpecified || isShiftedTimeSpecified;
         LocalDateTime taskStart = task.getStartDateTime();
         LocalDateTime taskEnd = task.getEndDateTime();
 
@@ -179,7 +177,7 @@ public class RescheduleTaskCommand extends Command {
             startDateTime = getShiftedDateTime(task.getStartDateTime());
             endDateTime = null;
 
-        } else if (taskStart == null && taskEnd != null) {
+        } else if (taskStart == null) {
             // Shift deadline task
             startDateTime = null;
             endDateTime = getShiftedDateTime(task.getEndDateTime());
@@ -197,9 +195,10 @@ public class RescheduleTaskCommand extends Command {
     }
 
     private LocalDateTime getShiftedDateTime(LocalDateTime dateTime) {
-        if (isShiftedDateSpecified && !isShiftedTimeSpecified) {
+        // At least one of them must be true
+        if (!isShiftedTimeSpecified) {
             return shiftDate(dateTime);
-        } else if (!isShiftedDateSpecified && isShiftedTimeSpecified) {
+        } else if (!isShiftedDateSpecified) {
             return shiftTime(dateTime);
         } else {
             return shiftedDateTime;
@@ -207,12 +206,10 @@ public class RescheduleTaskCommand extends Command {
     }
 
     private LocalDateTime shiftTime(LocalDateTime originalDateTime) {
-        assert originalDateTime != null && shiftedDateTime != null;
         return LocalDateTime.of(originalDateTime.toLocalDate(), shiftedDateTime.toLocalTime());
     }
 
     private LocalDateTime shiftDate(LocalDateTime originalDateTime) {
-        assert originalDateTime != null && shiftedDateTime != null;
         return LocalDateTime.of(shiftedDateTime.toLocalDate(), originalDateTime.toLocalTime());
     }
 

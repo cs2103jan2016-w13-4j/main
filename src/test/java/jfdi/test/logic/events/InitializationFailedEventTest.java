@@ -26,4 +26,12 @@ public class InitializationFailedEventTest {
         InitializationFailedEvent event = new InitializationFailedEvent(error, path);
         assertEquals(path, event.getPath());
     }
+
+    @Test
+    public void testEnum() throws Exception {
+        for (InitializationFailedEvent.Error error : InitializationFailedEvent.Error.values()) {
+            // Force a full coverage on enums
+            InitializationFailedEvent.Error.valueOf(error.toString());
+        }
+    }
 }

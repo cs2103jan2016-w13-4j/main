@@ -28,4 +28,12 @@ public class AliasFailedEventTest {
     public void getError() throws Exception {
         assertEquals(AliasFailedEvent.Error.DUPLICATED_ALIAS, event.getError());
     }
+
+    @Test
+    public void testEnum() throws Exception {
+        for (AliasFailedEvent.Error error : AliasFailedEvent.Error.values()) {
+            // Force a full coverage on enums
+            AliasFailedEvent.Error.valueOf(error.toString());
+        }
+    }
 }

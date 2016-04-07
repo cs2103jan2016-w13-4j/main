@@ -95,7 +95,6 @@ public class UnmarkTaskCommand extends Command {
             try {
                 taskDb.markAsComplete(id);
 
-                pushToRedoStack();
             } catch (NoAttributesChangedException | InvalidIdException e) {
                 assert false;
             }

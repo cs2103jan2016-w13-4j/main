@@ -86,7 +86,6 @@ public class AliasCommand extends Command {
             aliasDb.destroy(alias);
             parser.setAliases(aliasDb.getAll());
 
-            pushToRedoStack();
         } catch (InvalidAliasException e) {
             // Should not happen
             assert false;

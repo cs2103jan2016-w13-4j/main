@@ -102,7 +102,6 @@ public class AddTaskCommand extends Command {
         try {
             taskDb.destroy(id);
 
-            pushToRedoStack();
         } catch (InvalidIdException e) {
             // Should not happen for creating tasks
             assert false;

@@ -93,7 +93,5 @@ public class DeleteTaskCommand extends Command {
                 assert false;
             }
         });
-
-        pushToRedoStack();
     }
 }

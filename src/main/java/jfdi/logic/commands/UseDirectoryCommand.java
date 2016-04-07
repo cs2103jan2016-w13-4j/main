@@ -68,7 +68,6 @@ public class UseDirectoryCommand extends Command {
             mainStorage.use(oldDirectory);
             parser.setAliases(aliasDb.getAll());
 
-            pushToRedoStack();
         } catch (FilesReplacedException e) {
             eventBus.post(new FilesReplacedEvent(oldDirectory, e.getReplacedFilePairs()));
         } catch (InvalidFilePathException e) {

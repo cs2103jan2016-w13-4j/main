@@ -65,15 +65,6 @@ public class CommandTest {
         Command.setAliasDb(AliasDb.getInstance());
         Command.setParser(InputParser.getInstance());
         Command.setEventBus(UI.getEventBus());
-        Command.setRedoing(false);
-    }
-
-    @Test
-    public void testRedoing() throws Exception {
-        Command.setRedoing(true);
-        assertEquals(true, Command.isRedoing());
-        Command.setRedoing(false);
-        assertEquals(false, Command.isRedoing());
     }
 
     @Test
@@ -86,23 +77,22 @@ public class CommandTest {
         command.pushToUndoStack();
         assertEquals(currentSize + 2, Command.getUndoStack().size());
 
-        command.pushToRedoStack();
         command.pushToUndoStack();
-        assertEquals(currentSize + 4, Command.getUndoStack().size());
+        assertEquals(currentSize + 3, Command.getUndoStack().size());
     }
 
     @Test
-    public void pushToRedoStack() throws Exception {
-        int currentSize = Command.getRedoStack().size();
+    public void clearUndoStack() throws Exception {
+        command.pushToUndoStack();
+        command.pushToUndoStack();
+        command.pushToUndoStack();
+        command.pushToUndoStack();
+        command.pushToUndoStack();
+        command.pushToUndoStack();
 
-        command.pushToRedoStack();
-        assertEquals(currentSize + 1, Command.getRedoStack().size());
+        Command.clearUndoStack();
 
-        command.pushToRedoStack();
-        assertEquals(currentSize + 2, Command.getRedoStack().size());
-
-        command.pushToRedoStack();
-        assertEquals(currentSize + 3, Command.getRedoStack().size());
+        assertEquals(0, Command.getUndoStack().size());
     }
 
     @Test

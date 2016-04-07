@@ -67,7 +67,6 @@ public class MoveDirectoryCommand extends Command {
         try {
             mainStorage.changeDirectory(oldDirectory);
 
-            pushToRedoStack();
         } catch (InvalidFilePathException e) {
             assert false;
         } catch (FilesReplacedException e) {

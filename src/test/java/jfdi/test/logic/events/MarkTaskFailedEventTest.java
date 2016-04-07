@@ -41,4 +41,12 @@ public class MarkTaskFailedEventTest {
         assertEquals(error, event.getError());
     }
 
+    @Test
+    public void testEnum() throws Exception {
+        for (MarkTaskFailedEvent.Error error : MarkTaskFailedEvent.Error.values()) {
+            // Force a full coverage on enums
+            MarkTaskFailedEvent.Error.valueOf(error.toString());
+        }
+    }
+
 }

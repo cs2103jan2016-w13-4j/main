@@ -26,4 +26,12 @@ public class UnaliasFailedEventTest {
         assertEquals(error, event.getError());
     }
 
+    @Test
+    public void testEnum() throws Exception {
+        for (UnaliasFailedEvent.Error error : UnaliasFailedEvent.Error.values()) {
+            // Force a full coverage on enums
+            UnaliasFailedEvent.Error.valueOf(error.toString());
+        }
+    }
+
 }

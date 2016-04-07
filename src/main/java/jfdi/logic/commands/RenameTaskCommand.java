@@ -95,8 +95,6 @@ public class RenameTaskCommand extends Command {
 
             task.setDescription(oldDescription);
             task.save();
-
-            pushToRedoStack();
         } catch (InvalidIdException | NoAttributesChangedException | InvalidTaskParametersException
                | DuplicateTaskException e) {
             assert false;

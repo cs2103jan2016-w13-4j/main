@@ -89,6 +89,12 @@ public class CommandTest {
         command.pushToRedoStack();
         command.pushToUndoStack();
         assertEquals(currentSize + 4, Command.getUndoStack().size());
+
+        command.pushToRedoStack();
+        Command.setRedoing(true);
+        command.pushToUndoStack();
+        assertEquals(currentSize + 5, Command.getUndoStack().size());
+        Command.setRedoing(false);
     }
 
     @Test

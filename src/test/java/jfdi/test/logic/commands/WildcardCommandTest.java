@@ -5,6 +5,8 @@ import jfdi.logic.events.NoSurpriseEvent;
 import jfdi.logic.events.SurpriseEvent;
 import jfdi.storage.apis.TaskAttributes;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 
@@ -16,6 +18,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author Liu Xinan
  */
+@RunWith(MockitoJUnitRunner.class)
 public class WildcardCommandTest extends CommonCommandTest {
 
     @Test

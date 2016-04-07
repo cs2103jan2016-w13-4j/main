@@ -23,16 +23,12 @@ public abstract class Command {
     protected static EventBus eventBus = UI.getEventBus();
 
     protected static final Stack<Command> undoStack = new Stack<>();
-    protected static final Stack<Command> redoStack = new Stack<>();
 
     protected static UI ui = UI.getInstance();
     protected static InputParser parser = InputParser.getInstance();
     protected static MainStorage mainStorage = MainStorage.getInstance();
     protected static TaskDb taskDb = TaskDb.getInstance();
     protected static AliasDb aliasDb = AliasDb.getInstance();
-
-    private static boolean redoing = false;
-    private static Optional<String> lastSuggestion = Optional.empty();
 
     /**
      * Executes the command.
@@ -44,22 +40,8 @@ public abstract class Command {
      */
     public abstract void undo();
 
-    public static void setRedoing(boolean redo) {
-        redoing = redo;
-    }
-
     public void pushToUndoStack() {
-        if (!redoing) {
-            while (!redoStack.empty()) {
-                undoStack.push(redoStack.pop());
-            }
-        }
-
         undoStack.push(this);
-    }
-
-    public void pushToRedoStack() {
-        redoStack.push(this);
     }
 
     //================================================================
@@ -95,8 +77,8 @@ public abstract class Command {
         return undoStack;
     }
 
-    public static Stack<Command> getRedoStack() {
-        return redoStack;
+    public static void clearUndoStack() {
+        undoStack.clear();
     }
 
     public static UI getUI() {
@@ -123,7 +105,4 @@ public abstract class Command {
         return eventBus;
     }
 
-    public static boolean isRedoing() {
-        return redoing;
-    }
 }

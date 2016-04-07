@@ -98,7 +98,5 @@ public class MarkTaskCommand extends Command {
                 assert false;
             }
         });
-
-        pushToRedoStack();
     }
 }

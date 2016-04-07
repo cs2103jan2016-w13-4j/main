@@ -156,7 +156,6 @@ public class RescheduleTaskCommand extends Command {
             task.setEndDateTime(oldEndDateTime);
             task.save();
 
-            pushToRedoStack();
         } catch (InvalidIdException | InvalidTaskParametersException | NoAttributesChangedException
             | DuplicateTaskException e) {
             assert false;

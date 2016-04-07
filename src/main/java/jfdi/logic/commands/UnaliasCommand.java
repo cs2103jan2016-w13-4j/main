@@ -56,7 +56,6 @@ public class UnaliasCommand extends Command {
             aliasDb.undestroy(alias);
             parser.setAliases(aliasDb.getAll());
 
-            pushToRedoStack();
         } catch (InvalidAliasException e) {
             assert false;
         }

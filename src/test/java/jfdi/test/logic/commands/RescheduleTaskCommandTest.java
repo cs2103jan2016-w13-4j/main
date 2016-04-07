@@ -36,6 +36,8 @@ public class RescheduleTaskCommandTest extends CommonCommandTest {
         assertEquals(1, command.getScreenId());
         assertEquals(startDateTime, command.getStartDateTime());
         assertEquals(endDateTime, command.getEndDateTime());
+        assertNull(command.getOldStartDateTime());
+        assertNull(command.getOldEndDateTime());
         assertTrue(command.isShiftedDateSpecified());
         assertTrue(command.isShiftedTimeSpecified());
     }
@@ -183,6 +185,8 @@ public class RescheduleTaskCommandTest extends CommonCommandTest {
 
         command.execute();
 
+        assertEquals(oldStartDateTime, command.getOldStartDateTime());
+        assertEquals(oldEndDateTime, command.getOldEndDateTime());
         verify(task).setStartDateTime(startDateTime);
         verify(task).setEndDateTime(endDateTime);
         verify(task).save();

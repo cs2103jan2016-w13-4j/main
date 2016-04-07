@@ -65,7 +65,7 @@ public class TestReschedule extends UiTest {
      * exactly the same as another task.
      */
     public void testReschDuplicatedTask() {
-        
+
         assertEquals(ListStatus.OVERDUE.toString(), main.controller.displayStatus.toString());
 
         main.addTask("scheduling from yesterday 7am to 8pm");

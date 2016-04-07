@@ -277,8 +277,8 @@ public class TestMain extends ApplicationTest {
             new TestSearch(this),
             //new TestShowDirectory(this),
             new TestSurprise(this),
+            new TestUnalias(this),
             new TestUnmark(this),
-            new TestScrolling(this),
             new TestHelp(this),
             new TestScrolling(this)
         };
@@ -294,10 +294,6 @@ public class TestMain extends ApplicationTest {
 
     public int getImportantListSize() {
         return controller.importantList.filtered(item -> item.getItem() != null).size();
-    }
-    
-    public String getDirectory() {
-        return originalStorageDirectory;
     }
 
     public void addTask(String taskName) {

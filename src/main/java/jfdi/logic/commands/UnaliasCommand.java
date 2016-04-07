@@ -26,6 +26,10 @@ public class UnaliasCommand extends Command {
         return alias;
     }
 
+    public String getCommand() {
+        return command;
+    }
+
     public static class Builder {
 
         String alias;

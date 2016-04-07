@@ -197,7 +197,6 @@ public class FileManager {
      *         the destination directory
      */
     private static ArrayList<FilePathPair> moveFilesTo(ArrayList<Path> filePaths, String destination) {
-        assert filePaths != null && destination != null;
         ArrayList<FilePathPair> movedFiles = new ArrayList<FilePathPair>();
 
         // For each file path that exists, we backup the file and add it to the list of moved files
@@ -222,7 +221,6 @@ public class FileManager {
      * @return FilePathPair if a backup was made, null otherwise
      */
     private static FilePathPair moveAndBackup(Path source, Path destination) {
-        assert source != null && destination != null;
         FilePathPair filePathPair = null;
 
         if (Files.exists(destination)) {
@@ -249,7 +247,6 @@ public class FileManager {
      * @return a backup file extension
      */
     private static String getBackupExtension(int i) {
-        assert i >= 0;
         if (i == 0) {
             return Constants.EXTENSION_BACKUP;
         }
@@ -267,7 +264,6 @@ public class FileManager {
      *         required by the program
      */
     private static boolean canUseDirectory(File directory) {
-        assert directory != null;
         return directory.canExecute() && directory.canWrite();
     }
 

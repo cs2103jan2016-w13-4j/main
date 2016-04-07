@@ -2,6 +2,7 @@ package jfdi.test.logic.commands;
 
 import jfdi.logic.commands.DeleteTaskCommand;
 import jfdi.storage.apis.TaskAttributes;
+import jfdi.storage.exceptions.InvalidIdException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -107,7 +108,21 @@ public class DeleteTaskCommandTest extends CommonCommandTest {
     }
 
     @Test
-    public void testUndo() throws Exception {
+    public void testExecute_shouldNotHappen_successful() throws Exception {
+        when(ui.getTaskId(1)).thenReturn(1);
+        when(taskDb.hasId(1)).thenReturn(true);
+        doThrow(InvalidIdException.class).when(taskDb).getById(1);
+
+        DeleteTaskCommand command = new DeleteTaskCommand.Builder()
+            .addId(1)
+            .build();
+
+        thrown.expect(AssertionError.class);
+        command.execute();
+    }
+
+    @Test
+    public void testUndo_successful() throws Exception {
         TaskAttributes task1 = new TaskAttributes();
         TaskAttributes task2 = new TaskAttributes();
         TaskAttributes task3 = new TaskAttributes();
@@ -137,6 +152,25 @@ public class DeleteTaskCommandTest extends CommonCommandTest {
         verify(taskDb).destroy(1);
         verify(taskDb).destroy(2);
         verify(taskDb).destroy(3);
+    }
+
+    @Test
+    public void testUndo_unsuccessful() throws Exception {
+        when(ui.getTaskId(1)).thenReturn(1);
+        when(taskDb.hasId(1)).thenReturn(true);
+        when(taskDb.getById(anyInt())).thenReturn(new TaskAttributes());
+        doThrow(InvalidIdException.class).when(taskDb).undestroy(anyInt());
+
+        DeleteTaskCommand command = new DeleteTaskCommand.Builder()
+            .addId(1)
+            .build();
+
+        command.execute();
+
+        assertEquals(1, command.getDeletedTasks().size());
+
+        thrown.expect(AssertionError.class);
+        command.undo();
     }
 
 }

@@ -191,7 +191,7 @@ public class MainController {
         setFirstVisibleId();
         return firstVisibleId;
     }
-    
+
     public void clearInputHistory() {
         inputHistory.clearHistory();
     }

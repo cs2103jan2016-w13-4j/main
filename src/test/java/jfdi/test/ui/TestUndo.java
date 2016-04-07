@@ -22,6 +22,7 @@ public class TestUndo extends UiTest {
      */
     public void testUndoNothing() {
         main.controller.clearInputHistory();
+        //Command.clearUndoStack;
         main.execute("undo");
         main.assertErrorMessage(Constants.CMD_ERROR_UNDO_FAIL_NO_TASKS);
     }

@@ -40,6 +40,10 @@ public class UseDirectoryCommand extends Command {
         return newDirectory;
     }
 
+    public String getOldDirectory() {
+        return oldDirectory;
+    }
+
     @Override
     public void execute() {
         try {
@@ -65,7 +69,9 @@ public class UseDirectoryCommand extends Command {
             parser.setAliases(aliasDb.getAll());
 
             pushToRedoStack();
-        } catch (InvalidFilePathException | FilesReplacedException e) {
+        } catch (FilesReplacedException e) {
+            eventBus.post(new FilesReplacedEvent(oldDirectory, e.getReplacedFilePairs()));
+        } catch (InvalidFilePathException e) {
             assert false;
         }
     }

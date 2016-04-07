@@ -16,7 +16,6 @@ import jfdi.storage.exceptions.InvalidAliasParametersException;
 public class UnaliasCommand extends Command {
 
     private String alias;
-    private String command;
 
     private UnaliasCommand(Builder builder) {
         this.alias = builder.alias;
@@ -24,10 +23,6 @@ public class UnaliasCommand extends Command {
 
     public String getAlias() {
         return alias;
-    }
-
-    public String getCommand() {
-        return command;
     }
 
     public static class Builder {
@@ -48,8 +43,6 @@ public class UnaliasCommand extends Command {
     @Override
     public void execute() {
         try {
-            command = aliasDb.getCommandFromAlias(alias);
-
             aliasDb.destroy(alias);
             parser.setAliases(aliasDb.getAll());
 
@@ -63,13 +56,11 @@ public class UnaliasCommand extends Command {
     @Override
     public void undo() {
         try {
-            AliasAttributes oldAlias = new AliasAttributes(alias, command);
-
-            oldAlias.save();
+            aliasDb.undestroy(alias);
             parser.setAliases(aliasDb.getAll());
 
             pushToRedoStack();
-        } catch (InvalidAliasParametersException | DuplicateAliasException e) {
+        } catch (InvalidAliasException e) {
             assert false;
         }
     }

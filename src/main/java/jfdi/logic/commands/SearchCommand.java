@@ -5,8 +5,11 @@ package jfdi.logic.commands;
 import jfdi.logic.events.SearchDoneEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
+import opennlp.tools.stemmer.PorterStemmer;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.stream.Collectors;
@@ -15,6 +18,8 @@ import java.util.stream.Collectors;
  * @author Liu Xinan
  */
 public class SearchCommand extends Command {
+
+    private static final PorterStemmer stemmer = new PorterStemmer();
 
     private HashSet<String> keywords;
 
@@ -54,34 +59,54 @@ public class SearchCommand extends Command {
 
     @Override
     public void execute() {
-        results = new ArrayList<>();
-        results.addAll(getFullMatches());
-        results.addAll(getPartialMatches());
+        results = taskDb.getAll().stream()
+                .map(this::constructCandidate)
+                .filter(this::isValidCandidate)
+                .sorted(this::candidateCompare)
+                .map(ImmutableTriple::getRight)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        logger.info(String.format("Search completed. %d results found.", results.size()));
 
         eventBus.post(new SearchDoneEvent(results, keywords));
     }
 
-    private ArrayList<TaskAttributes> getFullMatches() {
-        return taskDb.getAll().stream().filter(task -> {
-            for (String keyword : keywords) {
-                if (!task.getDescription().matches(String.format("(?i:.*\\b%s\\b.*)", keyword))) {
-                    return false;
-                }
-            }
-            return true;
-        }).collect(Collectors.toCollection(ArrayList::new));
+    private ImmutableTriple<Long, Integer, TaskAttributes> constructCandidate(TaskAttributes task) {
+        String[] parts = task.getDescription().split("\\s+");
+        int wordCount = parts.length;
+
+        long rank = Arrays.stream(parts)
+                .map(stemmer::stem)
+                .filter(this::isKeyword)
+                .count();
+
+        return new ImmutableTriple<Long, Integer, TaskAttributes>(rank, wordCount, task);
     }
 
-    private ArrayList<TaskAttributes> getPartialMatches() {
-        return taskDb.getAll().stream().filter(task -> {
-            int matches = 0;
-            for (String keyword : keywords) {
-                if (task.getDescription().matches(String.format("(?i:.*\\b%s\\b.*)", keyword))) {
-                    matches++;
-                }
-            }
-            return matches != 0 && matches != keywords.size();
-        }).collect(Collectors.toCollection(ArrayList::new));
+    private boolean isValidCandidate(ImmutableTriple<Long, Integer, TaskAttributes> candidate) {
+        return candidate.getLeft() > 0;
+    }
+
+    private boolean isKeyword(String word) {
+        return keywords.stream()
+                .map(stemmer::stem)
+                .reduce(
+                        false,
+                        (isMatched, keyword) -> isMatched || word.equalsIgnoreCase(keyword),
+                        (isPreviouslyMatched, isNowMatched) -> isPreviouslyMatched || isNowMatched
+                );
+    }
+
+    private int candidateCompare(ImmutableTriple<Long, Integer, TaskAttributes> left,
+                                 ImmutableTriple<Long, Integer, TaskAttributes> right) {
+
+        if (left.getLeft() > right.getLeft()) {
+            return -1;
+        } else if (left.getLeft() < right.getLeft()) {
+            return 1;
+        } else {
+            return left.getMiddle() - right.getMiddle();
+        }
     }
 
     @Override

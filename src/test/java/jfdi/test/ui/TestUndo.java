@@ -2,6 +2,7 @@ package jfdi.test.ui;
 
 import static org.junit.Assert.assertEquals;
 
+import jfdi.logic.interfaces.Command;
 import jfdi.ui.Constants;
 
 public class TestUndo extends UiTest {
@@ -21,6 +22,8 @@ public class TestUndo extends UiTest {
      * the correct error message is returned.
      */
     public void testUndoNothing() {
+        main.controller.clearInputHistory();
+        Command.clearUndoStack();
         main.execute("undo");
         main.assertErrorMessage(Constants.CMD_ERROR_UNDO_FAIL_NO_TASKS);
     }

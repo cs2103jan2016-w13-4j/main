@@ -34,10 +34,6 @@ public class MoveDirHandler extends CommandHandler {
     public void handleMoveDirectoryFailEvent(MoveDirectoryFailedEvent e) {
 
         switch (e.getError()) {
-            case UNKNOWN:
-                controller.relayFb(String.format(Constants.CMD_ERROR_MOVE_FAIL_UNKNOWN, e.getNewDirectory()),
-                        MsgType.ERROR);
-                break;
             case INVALID_PATH:
                 controller.relayFb(String.format(Constants.CMD_ERROR_MOVE_FAIL_INVALID, e.getNewDirectory()),
                         MsgType.ERROR);

@@ -192,6 +192,10 @@ public class MainController {
         return firstVisibleId;
     }
 
+    public void clearInputHistory() {
+        inputHistory.clearHistory();
+    }
+
     public void switchTabSkin() {
         setAllTabsOff();
         switch (displayStatus) {
@@ -235,21 +239,21 @@ public class MainController {
     public void transListCmd() {
         switch (displayStatus) {
             case INCOMPLETE:
-                listTasks(controlCenter.getIncompleteTasks(), false, true);
+                listTasks(controlCenter.getIncompleteTasks(), true);
                 break;
             case OVERDUE:
-                listTasks(controlCenter.getOverdueTasks(), false, true);
+                listTasks(controlCenter.getOverdueTasks(), true);
                 sortDisplayList();
                 break;
             case UPCOMING:
-                listTasks(controlCenter.getUpcomingTasks(), false, true);
+                listTasks(controlCenter.getUpcomingTasks(), true);
                 sortDisplayList();
                 break;
             case ALL:
-                listTasks(controlCenter.getAllTasks(), false, true);
+                listTasks(controlCenter.getAllTasks(), true);
                 break;
             case COMPLETE:
-                listTasks(controlCenter.getCompletedTasks(), false, true);
+                listTasks(controlCenter.getCompletedTasks(), true);
                 break;
             case SEARCH:
                 displayList(searchCmd);
@@ -259,7 +263,7 @@ public class MainController {
                 break;
             case SURPRISE_YAY:
                 hideOverlays();
-                listTasks(controlCenter.getIncompleteTasks(), false, true);
+                listTasks(controlCenter.getIncompleteTasks(), true);
                 doSurpriseYay();
                 break;
             case HELP:
@@ -273,7 +277,7 @@ public class MainController {
     private void doSurpriseYay() {
         importantList.clear();
         indexMatch.clear();
-        splitIncompleteList(controlCenter.getIncompleteTasks(), false, true);
+        splitIncompleteList(controlCenter.getIncompleteTasks(), true);
         displayStatus = ListStatus.INCOMPLETE;
         switchTabSkin();
         listMain.scrollTo(highLightIndex);
@@ -381,16 +385,6 @@ public class MainController {
                 // Deadline Tasks
                 String end = formatter.format(task.getEndDateTime());
                 taskTime.setText(String.format(Constants.ITEM_DEADLINE, end));
-            }
-        } else {
-            String start = formatter.format(task.getStartDateTime());
-            if (task.getEndDateTime() == null) {
-                // Point Tasks
-                taskTime.setText(String.format(Constants.ITEM_POINT_TASK, start));
-            } else {
-                // Event Tasks
-                String end = formatter.format(task.getEndDateTime());
-                taskTime.setText(String.format(Constants.ITEM_EVENT_TASK, start, end));
             }
         }
     }
@@ -552,7 +546,7 @@ public class MainController {
      * @param tasks
      *            the ArrayList of tasks to be displayed
      */
-    public void listTasks(ArrayList<TaskAttributes> tasks, boolean shouldCheckContext, boolean shouldClear) {
+    public void listTasks(ArrayList<TaskAttributes> tasks, boolean shouldClear) {
 
         if (shouldClear) {
             importantList.clear();
@@ -564,16 +558,15 @@ public class MainController {
         }
 
         if (displayStatus.equals(ListStatus.INCOMPLETE)) {
-            splitIncompleteList(tasks, shouldCheckContext, false);
+            splitIncompleteList(tasks, false);
         } else {
             for (TaskAttributes task : tasks) {
-                appendTaskToDisplayList(task, shouldCheckContext, false);
+                appendTaskToDisplayList(task, false);
             }
         }
     }
 
-    private void splitIncompleteList(ArrayList<TaskAttributes> items, boolean shouldCheckContext,
-            boolean shouldHighLight) {
+    private void splitIncompleteList(ArrayList<TaskAttributes> items, boolean shouldHighLight) {
 
         ArrayList<TaskAttributes> overdueList = new ArrayList<>(controlCenter.getOverdueTasks());
         ArrayList<TaskAttributes> upcomingList = new ArrayList<>(controlCenter.getUpcomingTasks());
@@ -586,10 +579,10 @@ public class MainController {
             importantList.add(Constants.HEADER_OVERDUE);
             for (TaskAttributes task : overdueList) {
                 if (shouldHighLight && task.equals(highLight)) {
-                    appendTaskToDisplayList(task, shouldCheckContext, shouldHighLight);
+                    appendTaskToDisplayList(task, shouldHighLight);
                     continue;
                 }
-                appendTaskToDisplayList(task, shouldCheckContext, false);
+                appendTaskToDisplayList(task, false);
             }
         }
 
@@ -598,10 +591,10 @@ public class MainController {
             importantList.add(Constants.HEADER_UPCOMING);
             for (TaskAttributes task : upcomingList) {
                 if (shouldHighLight && task.equals(highLight)) {
-                    appendTaskToDisplayList(task, shouldCheckContext, shouldHighLight);
+                    appendTaskToDisplayList(task, shouldHighLight);
                     continue;
                 }
-                appendTaskToDisplayList(task, shouldCheckContext, false);
+                appendTaskToDisplayList(task, false);
             }
         }
 
@@ -609,10 +602,10 @@ public class MainController {
             importantList.add(Constants.HEADER_OTHERS);
             for (TaskAttributes task : othersList) {
                 if (shouldHighLight && task.getDescription().equals(highLight.getDescription())) {
-                    appendTaskToDisplayList(task, shouldCheckContext, shouldHighLight);
+                    appendTaskToDisplayList(task, shouldHighLight);
                     continue;
                 }
-                appendTaskToDisplayList(task, shouldCheckContext, false);
+                appendTaskToDisplayList(task, false);
             }
         }
     }
@@ -627,10 +620,7 @@ public class MainController {
      * @param shouldHighLight
      *            flag for item highlighting
      */
-    public void appendTaskToDisplayList(TaskAttributes task, boolean shouldCheckContext, boolean shouldHighLight) {
-        if (shouldCheckContext && !isSameContext(task)) {
-            return;
-        }
+    public void appendTaskToDisplayList(TaskAttributes task, boolean shouldHighLight) {
 
         ListItem listItem;
         int index = indexMatch.size() + 1;
@@ -658,35 +648,11 @@ public class MainController {
         ArrayList<TaskAttributes> taskList = new ArrayList<TaskAttributes>();
         importantList.forEach(listItem -> taskList.add(listItem.getItem()));
         Collections.sort(taskList);
-        listTasks(taskList, false, true);
+        listTasks(taskList, true);
     }
 
     public boolean shouldSort() {
         return displayStatus.equals(ListStatus.OVERDUE) || displayStatus.equals(ListStatus.UPCOMING);
-    }
-
-    private boolean isSameContext(TaskAttributes task) {
-        switch (displayStatus) {
-            case ALL:
-                return true;
-            case SEARCH:
-                return false;
-            case SURPRISE:
-                return false;
-            case HELP:
-                return false;
-            case COMPLETE:
-                return task.isCompleted();
-            case INCOMPLETE:
-                return !task.isCompleted();
-            case OVERDUE:
-                return task.isOverdue();
-            case UPCOMING:
-                return task.isUpcoming();
-            default:
-                assert false;
-                return false;
-        }
     }
 
     public void switchContext(ListStatus status, Boolean isListing) {

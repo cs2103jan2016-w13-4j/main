@@ -66,26 +66,26 @@ public class Constants {
     public static final String REGEX_TIME_NORMAL = "(?i)(0?[1-9]|1[0-2])([.:]?([0-5][0-9]))?[ :]?([a|p][m])";
     public static final String REGEX_TIME_RELATIVE = "((?i)((this )?(morning|afternoon|evening)|(to)?night|midnight))";
 
-    public static final String REGEX_RELATIVE_DATE_1 = "(?i)(tomorrow|yesterday|today|now)";
-    public static final String REGEX_RELATIVE_DATE_2 = String.format(
+    public static final String REGEX_DATE_RELATIVE_1 = "(?i)(tomorrow|yesterday|today|now)";
+    public static final String REGEX_DATE_RELATIVE_2 = String.format(
         "(?i)((((the )?next|this|last) %s)|((the )?next |this |last )?%s)", REGEX_DATE_ATTRIBUTES, REGEX_DAYS_TEXTUAL);
-    public static final String REGEX_RELATIVE_DATE_3 = String.format(
+    public static final String REGEX_DATE_RELATIVE_3 = String.format(
         "(\\d+ (%s|%s) (?i)(later|before|after|from now))", REGEX_DATE_ATTRIBUTES, REGEX_TIME_ATTRIBUTES);
-    public static final String REGEX_RELATIVE_DATE_4 = String.format("(?i)(in )?\\d+ (%s|%s)'?( time)?",
+    public static final String REGEX_DATE_RELATIVE_4 = String.format("(?i)(in )?\\d+ (%s|%s)'?( time)?",
         REGEX_TIME_ATTRIBUTES, REGEX_DATE_ATTRIBUTES);
 
-    public static final String REGEX_RELATIVE_DATE = String.format("(%s|%s|%s|%s)", REGEX_RELATIVE_DATE_1,
-        REGEX_RELATIVE_DATE_2, REGEX_RELATIVE_DATE_3, REGEX_RELATIVE_DATE_4);
+    public static final String REGEX_DATE_RELATIVE = String.format("(%s|%s|%s|%s)", REGEX_DATE_RELATIVE_1,
+        REGEX_DATE_RELATIVE_2, REGEX_DATE_RELATIVE_3, REGEX_DATE_RELATIVE_4);
 
-    public static final String REGEX_ABSOLUTE_DATE_DDMMYYYY = String.format("\\b%s[-/.]%s([-/.]%s)?\\b",
+    public static final String REGEX_DATE_ABSOLUTE_DDMMYYYY = String.format("\\b%s[-/.]%s([-/.]%s)?\\b",
         REGEX_DAYS_NUMERIC, REGEX_MONTHS_NUMERIC, REGEX_YEARS);
-    public static final String REGEX_ABSOLUTE_DATE_DDMONTHYYYY = String.format("\\b%s[-/. ]%s([-/. ]%s)?\\b",
+    public static final String REGEX_DATE_ABSOLUTE_DDMONTHYYYY = String.format("\\b%s[-/. ]%s([-/. ]%s)?\\b",
         REGEX_DAYS_NUMERIC, REGEX_MONTHS_TEXTUAL, REGEX_YEARS);
 
     // Formats for date, time, and date-time in Regex (built from date and time
     // related Regex Strings)
-    public static final String REGEX_DATE_FORMAT = String.format("(%s|%s|%s)", REGEX_ABSOLUTE_DATE_DDMMYYYY,
-        REGEX_ABSOLUTE_DATE_DDMONTHYYYY, REGEX_RELATIVE_DATE);
+    public static final String REGEX_DATE_FORMAT = String.format("(%s|%s|%s)", REGEX_DATE_ABSOLUTE_DDMMYYYY,
+        REGEX_DATE_ABSOLUTE_DDMONTHYYYY, REGEX_DATE_RELATIVE);
     public static final String REGEX_TIME_FORMAT = String.format("(%s|%s|%s)", REGEX_TIME_MILITARY, REGEX_TIME_NORMAL,
         REGEX_TIME_RELATIVE);
     public static final String REGEX_DATE_TIME_FORMAT_DATE_FIRST = String.format("(%s,? %s)", REGEX_DATE_FORMAT,

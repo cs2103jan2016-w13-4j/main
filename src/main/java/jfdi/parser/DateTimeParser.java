@@ -128,7 +128,7 @@ public class DateTimeParser {
             input.replaceAll("\\b(?<days>" + Constants.REGEX_DAYS_NUMERIC + ")[-/. ](?<months>"
                 + Constants.REGEX_MONTHS_TEXTUAL + ")[-/. ]" + "(?<year>\\d\\d)\\b", "${days} ${months} 20${year}");
         StringBuilder inputBuilder = new StringBuilder(input);
-        Pattern dateFormatPattern = Pattern.compile(Constants.REGEX_ABSOLUTE_DATE_DDMMYYYY);
+        Pattern dateFormatPattern = Pattern.compile(Constants.REGEX_DATE_ABSOLUTE_DDMMYYYY);
         Matcher dateFormatMatcher = dateFormatPattern.matcher(input);
         while (dateFormatMatcher.find()) {
             int start = dateFormatMatcher.start();
@@ -136,7 +136,7 @@ public class DateTimeParser {
             inputBuilder.replace(start, end, inputBuilder.substring(start, end).replaceAll("[.-]", "/"));
         }
 
-        Pattern dateFormatPattern2 = Pattern.compile(Constants.REGEX_ABSOLUTE_DATE_DDMONTHYYYY);
+        Pattern dateFormatPattern2 = Pattern.compile(Constants.REGEX_DATE_ABSOLUTE_DDMONTHYYYY);
         Matcher dateFormatMatcher2 = dateFormatPattern2.matcher(input);
         while (dateFormatMatcher2.find()) {
             int start = dateFormatMatcher2.start();

@@ -36,7 +36,6 @@ public class UnaliasCommandParser extends AbstractCommandParser {
         }
 
         Builder builder = new Builder();
-        System.out.println(input);
         String alias = null;
 
         alias = getAlias(input);

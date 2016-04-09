@@ -181,7 +181,7 @@ public class RescheduleCommandParser extends AbstractCommandParser {
             rescheduleCommandBuilder.setShiftedTimeSpecified(true);
         }
 
-        pattern = Pattern.compile(Constants.REGEX_DATE_FORMAT);
+        pattern = Pattern.compile(Constants.REGEX_DATE_FORMAT + "|" + Constants.REGEX_TIME_RELATIVE);
         matcher = pattern.matcher(input);
         if (matcher.find()) {
             rescheduleCommandBuilder.setShiftedDateSpecified(true);

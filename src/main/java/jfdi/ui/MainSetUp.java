@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.logging.Logger;
 
-import javax.swing.ImageIcon;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -20,6 +18,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
+import javax.swing.ImageIcon;
+
 import jfdi.common.utilities.JfdiLogger;
 
 public class MainSetUp extends Application {
@@ -73,7 +74,7 @@ public class MainSetUp extends Application {
                 params[0] = java.awt.Image.class;
                 Method setDockIconImage = util.getMethod("setDockIconImage", params);
                 setDockIconImage.invoke(application,
-                        new ImageIcon(UI.class.getResource(Constants.URL_LOGO_PATH)).getImage());
+                    new ImageIcon(UI.class.getResource(Constants.URL_LOGO_PATH)).getImage());
             } catch (Exception e) {
                 logger.info("Not OS X");
             }

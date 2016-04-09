@@ -31,6 +31,7 @@ public class DateTimeParser {
     private static DateTimeParser dateTimeParser;
     private static final String SOURCECLASS = DateTimeParser.class.getName();
     private static final Logger LOGGER = JfdiLogger.getLogger();
+    private String originalInput = "";
 
     public static DateTimeParser getInstance() {
         return dateTimeParser == null ? dateTimeParser = new DateTimeParser() : dateTimeParser;
@@ -53,7 +54,7 @@ public class DateTimeParser {
             LOGGER.throwing(SOURCECLASS, "parseDateTime", new BadDateTimeException(input));
             throw new BadDateTimeException(input);
         }
-
+        originalInput = input;
         DateTimeObject dateTimeObject = buildDateTimeObject(input);
 
         return dateTimeObject;
@@ -78,7 +79,6 @@ public class DateTimeParser {
      */
     private DateTimeObject buildDateTimeObject(String input) throws BadDateTimeException {
         assert isValidDateTime(input);
-        String originalInput = input;
         DateTimeObjectBuilder dateTimeObjectBuilder = new DateTimeObjectBuilder();
 
         TaskType taskType = getTaskType(input);
@@ -86,52 +86,14 @@ public class DateTimeParser {
 
         LocalDateTime startDateTime = null;
         LocalDateTime endDateTime = null;
-        switch (taskType) {
-            case EVENT:
-                String[] splitInput = input.split("\\bto\\b");
-                String[] splitOriginalInput = originalInput.split("\\bto\\b");
-                assert splitInput.length == 2;
-                startDateTime = getLocalDateTime(splitInput[0]);
-                endDateTime = getLocalDateTime(splitInput[1]);
-                if (!checkTimeSpecified(originalInput)) {
-                    startDateTime = setTime(startDateTime, Constants.TIME_BEGINNING_OF_DAY);
-                    endDateTime = setTime(endDateTime, Constants.TIME_END_OF_DAY);
-                } else {
-                    if (!checkTimeSpecified(splitOriginalInput[0])) {
-                        startDateTime = setTime(startDateTime, Constants.TIME_DEFAULT);
-                    }
-                    if (!checkTimeSpecified(splitOriginalInput[1])) {
-                        endDateTime = setTime(endDateTime, Constants.TIME_DEFAULT);
-                    }
-                    if (!checkDateSpecified(splitOriginalInput[1])) {
-                        System.out.println(true);
-                        endDateTime = setDate(endDateTime, startDateTime);
-                    }
-                }
-                if (startDateTime.compareTo(endDateTime) > 0) {
-                    LOGGER.throwing(SOURCECLASS, "buildDateTimeObject", new BadDateTimeException(input));
-                    throw new BadDateTimeException(input);
-                }
-                break;
-            case POINT:
-                startDateTime = getLocalDateTime(input);
-                if (!checkTimeSpecified(input)) {
-                    startDateTime = setTime(startDateTime, Constants.TIME_DEFAULT);
-                }
-                break;
-            case DEADLINE:
-                endDateTime = getLocalDateTime(input);
-                if (!checkTimeSpecified(input)) {
-                    endDateTime = setTime(endDateTime, Constants.TIME_DEFAULT);
-                }
-                break;
-            default:
-                break;
-        }
+
+        LocalDateTime[] startEndDateTime = new LocalDateTime[2];
+
+        setStartEndDateTime(startEndDateTime, input, taskType);
 
         dateTimeObjectBuilder.setTaskType(taskType);
-        dateTimeObjectBuilder.setStartDateTime(startDateTime);
-        dateTimeObjectBuilder.setEndDateTime(endDateTime);
+        dateTimeObjectBuilder.setStartDateTime(startEndDateTime[0]);
+        dateTimeObjectBuilder.setEndDateTime(startEndDateTime[1]);
 
         DateTimeObject dateTimeObject = dateTimeObjectBuilder.build();
 
@@ -166,7 +128,7 @@ public class DateTimeParser {
             input.replaceAll("\\b(?<days>" + Constants.REGEX_DAYS_NUMERIC + ")[-/. ](?<months>"
                 + Constants.REGEX_MONTHS_TEXTUAL + ")[-/. ]" + "(?<year>\\d\\d)\\b", "${days} ${months} 20${year}");
         StringBuilder inputBuilder = new StringBuilder(input);
-        Pattern dateFormatPattern = Pattern.compile(Constants.REGEX_ABSOLUTE_DATE_DDMMYYYY);
+        Pattern dateFormatPattern = Pattern.compile(Constants.REGEX_DATE_ABSOLUTE_DDMMYYYY);
         Matcher dateFormatMatcher = dateFormatPattern.matcher(input);
         while (dateFormatMatcher.find()) {
             int start = dateFormatMatcher.start();
@@ -174,7 +136,7 @@ public class DateTimeParser {
             inputBuilder.replace(start, end, inputBuilder.substring(start, end).replaceAll("[.-]", "/"));
         }
 
-        Pattern dateFormatPattern2 = Pattern.compile(Constants.REGEX_ABSOLUTE_DATE_DDMONTHYYYY);
+        Pattern dateFormatPattern2 = Pattern.compile(Constants.REGEX_DATE_ABSOLUTE_DDMONTHYYYY);
         Matcher dateFormatMatcher2 = dateFormatPattern2.matcher(input);
         while (dateFormatMatcher2.find()) {
             int start = dateFormatMatcher2.start();
@@ -196,6 +158,70 @@ public class DateTimeParser {
     private String formatTime(String input) {
         input = input.replaceAll("(?i)(0?[1-9]|1[0-2])([0-5][0-9])([ :]?([a|p][m]))", "$1.$2$3");
         return input;
+    }
+
+    /**
+     * This method extracts the start date time and end date time found in the
+     * input and sets the startEndDateTime array to its correct LocalDateTime
+     * value.
+     *
+     * @param startEndDateTime
+     *            the array of length 2 where startEndDateTime[0] stores the
+     *            start date time and startEndDateTime[1] stores the end date
+     *            time.
+     * @param input
+     *            the string input from which date times are to be extracted.
+     * @param taskType
+     *            determines whether the type of the task is to be event, point,
+     *            floating, etc.
+     * @throws BadDateTimeException
+     *             if the end date time is earlier than the start date time.
+     */
+    private void setStartEndDateTime(LocalDateTime[] startEndDateTime, String input, TaskType taskType)
+        throws BadDateTimeException {
+        assert startEndDateTime.length == 2;
+
+        switch (taskType) {
+            case EVENT:
+                String[] splitInput = input.split("\\bto\\b");
+                String[] splitOriginalInput = originalInput.split("\\bto\\b");
+                assert splitInput.length == 2;
+                startEndDateTime[0] = getLocalDateTime(splitInput[0]);
+                startEndDateTime[1] = getLocalDateTime(splitInput[1]);
+                if (!checkTimeSpecified(originalInput)) {
+                    startEndDateTime[0] = setTime(startEndDateTime[0], Constants.TIME_BEGINNING_OF_DAY);
+                    startEndDateTime[1] = setTime(startEndDateTime[1], Constants.TIME_END_OF_DAY);
+                } else {
+                    if (!checkTimeSpecified(splitOriginalInput[0])) {
+                        startEndDateTime[0] = setTime(startEndDateTime[0], Constants.TIME_DEFAULT);
+                    }
+                    if (!checkTimeSpecified(splitOriginalInput[1])) {
+                        startEndDateTime[1] = setTime(startEndDateTime[1], Constants.TIME_DEFAULT);
+                    }
+                    if (!checkDateSpecified(splitOriginalInput[1])) {
+                        startEndDateTime[1] = setDate(startEndDateTime[1], startEndDateTime[0]);
+                    }
+                }
+                if (startEndDateTime[0].compareTo(startEndDateTime[1]) > 0) {
+                    LOGGER.throwing(SOURCECLASS, "buildDateTimeObject", new BadDateTimeException(input));
+                    throw new BadDateTimeException(input);
+                }
+                break;
+            case POINT:
+                startEndDateTime[0] = getLocalDateTime(input);
+                if (!checkTimeSpecified(input)) {
+                    startEndDateTime[0] = setTime(startEndDateTime[0], Constants.TIME_DEFAULT);
+                }
+                break;
+            case DEADLINE:
+                startEndDateTime[1] = getLocalDateTime(input);
+                if (!checkTimeSpecified(input)) {
+                    startEndDateTime[1] = setTime(startEndDateTime[1], Constants.TIME_DEFAULT);
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     /**

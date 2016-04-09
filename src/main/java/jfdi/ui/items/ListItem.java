@@ -138,10 +138,6 @@ public class ListItem extends VBox {
         // UNSTRIKE IF IT IS PREVIOUSLY STRIKED
     }
 
-    public Boolean getMark() {
-        return this.mark;
-    }
-
     public void strikeOut() {
         this.getStyleClass().setAll("itemBoxDone");
     }

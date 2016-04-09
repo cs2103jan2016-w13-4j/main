@@ -36,12 +36,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import jfdi.storage.apis.MainStorage;
-import jfdi.ui.AutoCompleteTextField;
 import jfdi.ui.Constants;
 import jfdi.ui.IUserInterface;
 import jfdi.ui.MainController;
 import jfdi.ui.MainSetUp;
 import jfdi.ui.UI;
+import jfdi.ui.items.AutoCompleteTextField;
 import jfdi.ui.items.HelpItem;
 import jfdi.ui.items.ListItem;
 
@@ -265,13 +265,13 @@ public class TestMain extends ApplicationTest {
     @Test
     public void uiTests() {
         UiTest[] tests =
-            {new TestWidgets(this), new TestAdd(this), new TestAlias(this), new TestDelete(this),
-             new TestList(this), new TestInputHistory(this), new TestInvalidCmd(this), new TestMark(this),
-             new TestMoveDirectory(this), new TestRename(this), new TestReschedule(this), new TestSearch(this),
-             new TestShowDirectory(this), new TestSurprise(this), new TestUnalias(this), new TestUndo(this),
-             new TestUnmark(this),
-             // new TestUseDirectory(this),
-             new TestHelp(this), new TestScrolling(this) };
+            {new TestWidgets(this),
+            // new TestInitialization(this),
+            new TestAdd(this), new TestAlias(this), new TestDelete(this), new TestList(this),
+            new TestInputHistory(this), new TestInvalidCmd(this), new TestMark(this), new TestMoveDirectory(this),
+            new TestRename(this), new TestReschedule(this), new TestSearch(this), new TestShowDirectory(this),
+            new TestSurprise(this), new TestUnalias(this), new TestUndo(this), new TestUnmark(this),
+            new TestUseDirectory(this), new TestHelp(this), new TestScrolling(this) };
         for (UiTest test : tests) {
             test.init();
             test.run();

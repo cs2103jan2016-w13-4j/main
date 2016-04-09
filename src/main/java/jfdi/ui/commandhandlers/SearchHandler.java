@@ -35,11 +35,14 @@ public class SearchHandler extends CommandHandler {
 
     private void createSearchFb(SearchDoneEvent e) {
         controller.searchCmd = Constants.CTRL_CMD_SEARCH;
+        String searchKeyWords = "";
         if (e.getKeywords().size() == 1) {
+            controller.searchCmd += e.getKeywords().toArray()[0];
+            searchKeyWords += e.getKeywords().toArray()[0];
             controller.relayFb(String.format(Constants.CMD_SUCCESS_SEARCH_1, e.getKeywords()), MsgType.SUCCESS);
         } else {
             int count = 0;
-            String searchKeyWords = "";
+
             for (String key : e.getKeywords()) {
                 controller.searchCmd += key + " ";
                 searchKeyWords += key;
@@ -52,5 +55,6 @@ public class SearchHandler extends CommandHandler {
             }
             controller.relayFb(String.format(Constants.CMD_SUCCESS_SEARCH_2, searchKeyWords), MsgType.SUCCESS);
         }
+        System.out.println(controller.searchCmd);
     }
 }

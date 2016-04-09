@@ -3,8 +3,8 @@
 package jfdi.logic.commands;
 
 import jfdi.logic.events.FilesReplacedEvent;
-import jfdi.logic.events.MoveDirectoryFailedEvent;
 import jfdi.logic.events.UseDirectoryDoneEvent;
+import jfdi.logic.events.UseDirectoryFailedEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.exceptions.FilesReplacedException;
 import jfdi.storage.exceptions.InvalidFilePathException;
@@ -58,7 +58,7 @@ public class UseDirectoryCommand extends Command {
             eventBus.post(new UseDirectoryDoneEvent(newDirectory));
             eventBus.post(new FilesReplacedEvent(newDirectory, e.getReplacedFilePairs()));
         } catch (InvalidFilePathException e) {
-            eventBus.post(new MoveDirectoryFailedEvent(newDirectory, MoveDirectoryFailedEvent.Error.INVALID_PATH));
+            eventBus.post(new UseDirectoryFailedEvent(newDirectory, UseDirectoryFailedEvent.Error.INVALID_PATH));
         }
     }
 

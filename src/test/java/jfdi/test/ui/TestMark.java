@@ -31,6 +31,7 @@ public class TestMark extends UiTest {
         int taskId = 999;
         main.execute(String.format("mark %d", taskId));
         main.assertErrorMessage(String.format(Constants.CMD_ERROR_CANT_MARK_NO_ID, taskId));
+        main.execute("list completed");
     }
 
     private void assertMarked(int... ids) {

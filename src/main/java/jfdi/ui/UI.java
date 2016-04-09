@@ -27,13 +27,10 @@ public class UI implements IUserInterface {
     @Override
     public void init() {
 
-        // showToUser(UI_MESSAGE_INIT);
-
         // Initialize Logic
         logic = ControlCenter.getInstance();
+        controller.setLogicControlCentre(logic);
         prepareListeners();
-
-        // showToUser(UI_MESSAGE_INITED);
     }
 
     @Override
@@ -72,7 +69,6 @@ public class UI implements IUserInterface {
 
     @Override
     public void displayFeedback(String fb, MsgType type) {
-        controller.clearFb();
         appendFeedback(fb, type);
     }
 

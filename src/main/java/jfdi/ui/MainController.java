@@ -32,11 +32,15 @@ import jfdi.logic.ControlCenter;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.ui.Constants.ListStatus;
 import jfdi.ui.Constants.MsgType;
-import jfdi.ui.commandhandlers.CommandHandler;
+import jfdi.ui.items.AutoCompleteTextField;
 import jfdi.ui.items.HelpItem;
 import jfdi.ui.items.ListItem;
 
 public class MainController {
+
+    /*///////////////*
+     * FXML ELEMENTS *
+     *///////////////*/
 
     @FXML
     public Rectangle incompleteBox;
@@ -99,28 +103,50 @@ public class MainController {
     @FXML
     public AnchorPane noSurpriseOverlay;
 
+
+    /*//////////////////*
+     * MEMBER VARIABLES *
+     *//////////////////*/
+
     public MainSetUp main;
     public IUserInterface ui;
-    public CommandHandler cmdHandler;
     public Stage mainStage;
-    public ControlCenter controlCenter = ControlCenter.getInstance();
+    public ControlCenter controlCenter;
+
+    // Stores the content of the on-Screen display list
     public ObservableList<ListItem> importantList;
-    // Match display index against ArrayList index
+
+    // Maps on-Screen display index against ArrayList index
     public HashMap<Integer, Integer> indexMatch = new HashMap<>();
+
+    // Keeps track of the last TaskAttribute variable and
+    // its on-screen index that needs to be highlighted
     public TaskAttributes highLight;
     public int highLightIndex;
+
     public ListStatus displayStatus = ListStatus.INCOMPLETE;
     public ListStatus beforeHelp = ListStatus.INCOMPLETE;
+
+    // Keeps tracks of the latest searchCmd for screen
+    // refreshing purposes
     public String searchCmd;
-    public boolean isUpdate = false;
+
+    // Keeps track of the count displayed in the notification bubbles
     public StringProperty incompletePlaceHdr = new SimpleStringProperty();
     public StringProperty overduePlaceHdr = new SimpleStringProperty();
     public StringProperty upcomingPlaceHdr = new SimpleStringProperty();
 
+    // Stores the content of the HELP overlay
     private ObservableList<HelpItem> helpList;
+
     private InputHistory inputHistory;
+
+    // For scroll-bar testing
     private int firstVisibleId;
 
+    /**
+     * Initializes all on-screen display components.
+     */
     public void initialize() {
         initDate();
         initImportantList();
@@ -130,6 +156,9 @@ public class MainController {
         initInputHistory();
     }
 
+    /**
+     * Places all overlays to the back of the main display.
+     */
     public void hideOverlays() {
         helpContent.toBack();
         helpContent.setVisible(false);
@@ -142,51 +171,102 @@ public class MainController {
         noSurpriseOverlay.setOpacity(0);
     }
 
+    /**
+     * Erases all content in the input bar.
+     */
     public void clearCmdArea() {
         cmdArea.clear();
     }
 
+    /**
+     * Erases all content in the feedback areas.
+     */
+    public void clearFb() {
+        fbArea.clear();
+    }
+
+    /**
+     * Relays the content of the feedback message to UI for
+     * formatting according to the message type.
+     * @param fb
+     *          the content of the feedback message
+     * @param type
+     *            the type of the message to be displayed
+     *            such as SUCCESS, ERROR, WARNING etc.
+     */
+    public void relayFb(String fb, MsgType type) {
+        clearFb();
+        ui.displayFeedback(fb, type);
+    }
+
+    /**
+     * Relays the content of the feedback message to UI for
+     * formatting according to the message type without clearing
+     * the feedback area
+     * @param fb
+     *          the content of the feedback message
+     * @param type
+     *            the type of the message to be displayed
+     *            such as SUCCESS, ERROR, WARNING etc.
+     */
+    public void appendFb(String fb, MsgType type) {
+        ui.appendFeedback(fb, type);
+    }
+
+    /**
+     * Trims the feedback message and displays it in the
+     * feedback area.
+     * @param fb
+     *          the formatted feedback message
+     */
     public void displayFb(String fb) {
         fbArea.appendText(fb);
         String trimmedText = fbArea.getText().trim();
         fbArea.setText(trimmedText);
     }
 
-    public void relayFb(String fb, MsgType type) {
-        clearFb();
-        ui.displayFeedback(fb, type);
-    }
-
-    public void appendFb(String fb, MsgType type) {
-        ui.appendFeedback(fb, type);
-    }
-
-    public void clearFb() {
-        fbArea.clear();
-    }
-
+    /**
+     * For internally inputing command to trigger changes
+     * to the main display list.
+     * @param cmd
+     *           the internal command to be executed
+     */
     public void displayList(String cmd) {
         ui.processInput(cmd);
     }
 
+    /**
+     * Brings the help overlay in front of the main display
+     */
     public void showHelpDisplay() {
         helpContent.toFront();
         helpContent.setVisible(true);
         helpContent.setOpacity(1);
     }
 
+    /**
+     * Brings the surprise overlay in front of the main display
+     */
     public void showSurpriseDisplay() {
         surpriseOverlay.toFront();
         surpriseOverlay.setVisible(true);
         surpriseOverlay.setOpacity(1);
     }
 
+    /**
+     * Brings the noSurprise overlay in front of the main display
+     */
     public void showNoSurpriseDisplay() {
         noSurpriseOverlay.toFront();
         noSurpriseOverlay.setVisible(true);
         noSurpriseOverlay.setOpacity(1);
     }
 
+    /**
+     * Getter for the first index visible on the on-screen main
+     * display list
+     * @return the topmost visible on-screen index
+     */
     public int getFirstVisibleId() {
         setFirstVisibleId();
         return firstVisibleId;
@@ -292,12 +372,12 @@ public class MainController {
         this.ui = ui;
     }
 
-    public void setCmdHandler(CommandHandler cmdHandler) {
-        this.cmdHandler = cmdHandler;
-    }
-
     public void setStage(Stage stage) {
         this.mainStage = stage;
+    }
+
+    public void setLogicControlCentre(ControlCenter controlCenter) {
+        this.controlCenter = controlCenter;
     }
 
     public int getIdFromIndex(int index) {

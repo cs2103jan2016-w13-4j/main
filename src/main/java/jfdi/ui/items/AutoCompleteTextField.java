@@ -1,6 +1,6 @@
 // @@author A0130195M
 
-package jfdi.ui;
+package jfdi.ui.items;
 
 import javafx.geometry.Side;
 import javafx.scene.control.ContextMenu;
@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import jfdi.ui.UI;
 
 import java.util.LinkedList;
 import java.util.List;

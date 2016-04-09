@@ -3,17 +3,16 @@ package jfdi.ui.commandhandlers;
 import java.util.logging.Logger;
 
 import jfdi.common.utilities.JfdiLogger;
+import jfdi.storage.apis.TaskAttributes;
 import jfdi.ui.MainController;
 import jfdi.ui.UI;
+
+//@@author A0129538W
 
 public abstract class CommandHandler {
 
     public static Logger logger = JfdiLogger.getLogger();
     public MainController controller = UI.getInstance().controller;
-
-    protected void refreshDisplay() {
-        controller.listMain.refresh();
-    }
 
     public void setController(MainController ctrl) {
         controller = ctrl;
@@ -30,7 +29,6 @@ public abstract class CommandHandler {
         UI.getEventBus().register(ListHandler.getInstance());
         UI.getEventBus().register(MarkHandler.getInstance());
         UI.getEventBus().register(MoveDirHandler.getInstance());
-        UI.getEventBus().register(RedoHandler.getInstance());
         UI.getEventBus().register(RenameHandler.getInstance());
         UI.getEventBus().register(RescheduleHandler.getInstance());
         UI.getEventBus().register(SearchHandler.getInstance());
@@ -40,5 +38,18 @@ public abstract class CommandHandler {
         UI.getEventBus().register(UndoHandler.getInstance());
         UI.getEventBus().register(UnmarkHandler.getInstance());
         UI.getEventBus().register(UseDirHandler.getInstance());
+    }
+
+    public int findCurrentIndex(TaskAttributes task) {
+
+        int count = 0;
+
+        for (int i = 0; i < controller.importantList.size(); i++) {
+            if (controller.getIdFromIndex(i) == task.getId()) {
+                count = i;
+                break;
+            }
+        }
+        return count + 1;
     }
 }

@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.test.logic.events;
 
 import jfdi.logic.events.AliasFailedEvent;
@@ -6,7 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public class AliasFailedEventTest {
 
@@ -25,5 +27,13 @@ public class AliasFailedEventTest {
     @Test
     public void getError() throws Exception {
         assertEquals(AliasFailedEvent.Error.DUPLICATED_ALIAS, event.getError());
+    }
+
+    @Test
+    public void testEnum() throws Exception {
+        for (AliasFailedEvent.Error error : AliasFailedEvent.Error.values()) {
+            // Force a full coverage on enums
+            AliasFailedEvent.Error.valueOf(error.toString());
+        }
     }
 }

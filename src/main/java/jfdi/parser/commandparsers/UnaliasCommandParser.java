@@ -32,11 +32,10 @@ public class UnaliasCommandParser extends AbstractCommandParser {
     @Override
     public Command build(String input) {
         if (!isValidFormat(input)) {
-            return createInvalidCommand(Constants.CommandType.unalias, input);
+            return createInvalidCommand(Constants.CommandType.UNALIAS, input);
         }
 
         Builder builder = new Builder();
-        System.out.println(input);
         String alias = null;
 
         alias = getAlias(input);

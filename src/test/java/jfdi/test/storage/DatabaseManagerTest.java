@@ -44,6 +44,11 @@ public class DatabaseManagerTest {
         assertTrue(TestHelper.hasSameElements(expectedFilePaths, obtainedFilePaths));
     }
 
+    @Test(expected = AssertionError.class)
+    public void testSetNullFilePaths() {
+        DatabaseManager.setAllFilePaths(null);
+    }
+
     @Test
     public void testLoadAllDatabases() throws Exception {
         // Set all the file paths

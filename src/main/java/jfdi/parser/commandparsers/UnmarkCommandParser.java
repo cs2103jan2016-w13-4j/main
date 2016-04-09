@@ -54,10 +54,10 @@ public class UnmarkCommandParser extends AbstractCommandParser {
     @Override
     public Command build(String input) {
         assert isValidInput(input)
-            && matchesCommandType(input, CommandType.unmark);
+            && matchesCommandType(input, CommandType.UNMARK);
 
         if (!isValidUnmarkCommand(input)) {
-            return createInvalidCommand(CommandType.unmark, input);
+            return createInvalidCommand(CommandType.UNMARK, input);
         }
         input = removeFirstWord(input);
         Builder unmarkTaskCommandBuilder = new Builder();
@@ -65,7 +65,7 @@ public class UnmarkCommandParser extends AbstractCommandParser {
         try {
             taskIds = getTaskIds(input);
         } catch (BadTaskIdException e) {
-            return createInvalidCommand(CommandType.unmark, input);
+            return createInvalidCommand(CommandType.UNMARK, input);
         }
         unmarkTaskCommandBuilder.addTaskIds(taskIds);
         UnmarkTaskCommand unmarkTaskCommand = unmarkTaskCommandBuilder.build();

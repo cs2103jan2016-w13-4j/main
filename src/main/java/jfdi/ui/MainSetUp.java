@@ -1,3 +1,5 @@
+// @@author A0129538W
+
 package jfdi.ui;
 
 import java.io.IOException;
@@ -125,9 +127,9 @@ public class MainSetUp extends Application {
         controller.setUi(ui);
 
         controller.hideOverlays();
-        controller.displayList(Constants.CTRL_CMD_OVERDUE);
-        controller.displayList(Constants.CTRL_CMD_UPCOMING);
-        controller.displayList(Constants.CTRL_CMD_INCOMPLETE);
+        controller.updateNotiBubbles();
+        controller.transListCmd();
+        controller.switchTabSkin();
         initThread();
         ui.displayWelcome();
     }

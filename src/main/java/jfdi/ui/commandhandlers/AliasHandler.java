@@ -1,3 +1,5 @@
+// @@author A0129538W
+
 package jfdi.ui.commandhandlers;
 
 import com.google.common.eventbus.Subscribe;
@@ -20,23 +22,13 @@ public class AliasHandler extends CommandHandler {
 
     @Subscribe
     public void handleAliasDoneEvent(AliasDoneEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-
-            return;
-        }
 
         controller.relayFb(String.format(Constants.CMD_SUCCESS_ALIAS, e.getAlias(), e.getCommand()), MsgType.SUCCESS);
-
         controller.updateAutoCompleteList();
     }
 
     @Subscribe
     public void handleAliasFailEvent(AliasFailedEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         switch (e.getError()) {
             case INVALID_PARAMETERS:
@@ -46,11 +38,6 @@ public class AliasHandler extends CommandHandler {
                 break;
             case DUPLICATED_ALIAS:
                 controller.relayFb(String.format(Constants.CMD_ERROR_CANT_ALIAS_DUPLICATED, e.getAlias()),
-                        MsgType.ERROR);
-                // logger.fine(String.format(format, args));
-                break;
-            case UNKNOWN:
-                controller.relayFb(String.format(Constants.CMD_ERROR_CANT_ALIAS_UNKNOWN, e.getCommand()),
                         MsgType.ERROR);
                 // logger.fine(String.format(format, args));
                 break;

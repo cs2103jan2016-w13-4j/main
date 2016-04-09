@@ -23,7 +23,6 @@ import jfdi.parser.exceptions.BadTaskIdException;
  *
  */
 public abstract class AbstractCommandParser {
-    protected String userInput;
 
     /**
      * This method is used to build a command object based on the input String.
@@ -59,6 +58,7 @@ public abstract class AbstractCommandParser {
      * @return the trimmed subString
      */
     protected String getTrimmedSubstringInRange(String input, int startIndex, int endIndex) {
+        assert isValidInput(input) && startIndex <= endIndex && startIndex >= 0 && endIndex <= input.length();
         return input.substring(startIndex, endIndex).trim();
     }
 
@@ -73,6 +73,8 @@ public abstract class AbstractCommandParser {
      *         found, an empty ArrayList is returned.
      */
     protected Collection<Integer> getTaskIds(String input) throws BadTaskIdException {
+        assert isValidInput(input);
+
         Set<Integer> taskIdsForDeletion = new HashSet<Integer>();
         input = input.replaceAll("(\\d+)[ ]*-[ ]*(\\d+)", "$1-$2");
         input = input.replaceAll("[ ]+", ",");
@@ -150,6 +152,7 @@ public abstract class AbstractCommandParser {
     }
 
     protected boolean matchesCommandType(String input, CommandType commandType) {
+        assert isValidInput(input);
         return ParserUtils.getCommandType(getFirstWord(input)).equals(commandType);
     }
 
@@ -170,6 +173,7 @@ public abstract class AbstractCommandParser {
     }
 
     protected boolean isSingleWord(String input) {
+        assert isValidInput(input);
         return input.trim().split(Constants.REGEX_WHITESPACE).length == 1;
     }
 }

@@ -37,6 +37,10 @@ public class ListCommandParserTest {
         cmd = parser.build("LiSt");
         listCommand = validateAndReturnListCommand(cmd);
         validateListType(listCommand, ListType.INCOMPLETE);
+
+        cmd = parser.build("LiSt incomplete");
+        listCommand = validateAndReturnListCommand(cmd);
+        validateListType(listCommand, ListType.INCOMPLETE);
     }
 
     @Test
@@ -61,23 +65,6 @@ public class ListCommandParserTest {
         cmd = parser.build("LiSt CoMplETEd");
         listCommand = validateAndReturnListCommand(cmd);
         validateListType(listCommand, ListType.COMPLETED);
-    }
-
-    @Test
-    public void testAliases() {
-        Command cmd = parser.build("list aliases");
-        ListCommand listCommand = validateAndReturnListCommand(cmd);
-        validateListType(listCommand, ListType.ALIASES);
-
-        // Boundary case: capitalised list keyword
-        cmd = parser.build("LiSt ALiASes");
-        listCommand = validateAndReturnListCommand(cmd);
-        validateListType(listCommand, ListType.ALIASES);
-
-        // Boundary case: alternative spelling + capitalisation
-        cmd = parser.build("LiSt ALiAs");
-        listCommand = validateAndReturnListCommand(cmd);
-        validateListType(listCommand, ListType.ALIASES);
     }
 
     @Test

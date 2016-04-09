@@ -1,3 +1,5 @@
+// @@author A0129538W
+
 package jfdi.ui.commandhandlers;
 
 import com.google.common.eventbus.Subscribe;
@@ -22,42 +24,56 @@ public class AddHandler extends CommandHandler {
 
     @Subscribe
     public void handleAddTaskDoneEvent(AddTaskDoneEvent e) {
-        System.out.println(controller.displayStatus);
-
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
-
-        if (controller.displayStatus.equals(ListStatus.SEARCH)) {
-            controller.switchContext(ListStatus.INCOMPLETE, true);
-        } else if (!controller.displayStatus.equals(ListStatus.ALL)) {
-            controller.switchContext(ListStatus.INCOMPLETE, false);
-        }
 
         TaskAttributes task = e.getTask();
-        controller.appendTaskToDisplayList(task, true);
-        if (controller.shouldSort()) {
-            controller.sortDisplayList();
+
+        switch (controller.displayStatus) {
+            case INCOMPLETE:
+                controller.switchContext(ListStatus.INCOMPLETE, true);
+                break;
+            case OVERDUE:
+                if (task.isOverdue()) {
+                    controller.switchContext(ListStatus.OVERDUE, true);
+                } else {
+                    controller.switchContext(ListStatus.INCOMPLETE, true);
+                }
+                break;
+            case UPCOMING:
+                if (task.isUpcoming()) {
+                    controller.switchContext(ListStatus.UPCOMING, true);
+                } else {
+                    controller.switchContext(ListStatus.INCOMPLETE, true);
+                }
+                break;
+            case ALL:
+                controller.appendTaskToDisplayList(task, true);
+                break;
+            case COMPLETE:
+                controller.switchContext(ListStatus.INCOMPLETE, true);
+                break;
+            case SURPRISE:
+                controller.switchContext(ListStatus.INCOMPLETE, true);
+                break;
+            case SEARCH:
+                controller.switchContext(ListStatus.INCOMPLETE, true);
+                break;
+            default:
+                break;
         }
+
         controller.updateNotiBubbles();
-        controller.listMain.scrollTo(controller.importantList.size() - 1);
-        controller.relayFb(String.format(Constants.CMD_SUCCESS_ADDED, task.getDescription()), MsgType.SUCCESS);
+        int index = findCurrentIndex(task);
+        controller.listMain.scrollTo(index); // not working properly for
+                                             // overdue, upcoming and search
+                                             // when index > 5
         logger.fine(String.format(Constants.LOG_ADDED_SUCCESS, task.getId()));
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_ADDED, index, task.getDescription()), MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleAddTaskFailEvent(AddTaskFailedEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         switch (e.getError()) {
-            case UNKNOWN:
-                controller.relayFb(Constants.CMD_ERROR_CANT_ADD_UNKNOWN, MsgType.ERROR);
-                logger.fine(String.format(Constants.LOG_ADD_FAIL_UNKNOWN));
-                break;
             case EMPTY_DESCRIPTION:
                 controller.relayFb(Constants.CMD_ERROR_CANT_ADD_EMPTY, MsgType.ERROR);
                 logger.fine(String.format(Constants.LOG_ADD_FAIL_EMPTY));

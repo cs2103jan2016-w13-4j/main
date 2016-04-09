@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.test.logic.events;
 
 import jfdi.logic.events.MarkTaskFailedEvent;
@@ -9,7 +11,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public class MarkTaskFailedEventTest {
 
@@ -37,6 +39,14 @@ public class MarkTaskFailedEventTest {
     public void getError() throws Exception {
         MarkTaskFailedEvent event = new MarkTaskFailedEvent(screenIds, invalidIds);
         assertEquals(error, event.getError());
+    }
+
+    @Test
+    public void testEnum() throws Exception {
+        for (MarkTaskFailedEvent.Error error : MarkTaskFailedEvent.Error.values()) {
+            // Force a full coverage on enums
+            MarkTaskFailedEvent.Error.valueOf(error.toString());
+        }
     }
 
 }

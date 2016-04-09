@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.test.logic.events;
 
 import jfdi.logic.events.AddTaskDoneEvent;
@@ -10,7 +12,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import static org.junit.Assert.assertSame;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 @RunWith(MockitoJUnitRunner.class)
 public class AddTaskDoneEventTest {

@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.test.logic.events;
 
 import jfdi.logic.events.FilesReplacedEvent;
@@ -11,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public class FilesReplacedEventTest {
 

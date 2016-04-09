@@ -1,3 +1,5 @@
+// @@author A0129538W
+
 package jfdi.ui.commandhandlers;
 
 import com.google.common.eventbus.Subscribe;
@@ -22,31 +24,20 @@ public class SurpriseHandler extends CommandHandler {
 
     @Subscribe
     public void handleSurpriseEvent(SurpriseEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
-        //controller.importantList.clear();
+        controller.highLight = e.getTask();
         controller.initSurpriseOverlay(e.getTask());
         controller.switchContext(ListStatus.ALL, false);
         controller.switchContext(ListStatus.SURPRISE, false);
-        controller.relayFb(Constants.CMD_SUCCESS_SURPRISED, MsgType.SUCCESS);
-        controller.updateNotiBubbles();
         controller.showSurpriseDisplay();
+        controller.updateNotiBubbles();
+        controller.relayFb(Constants.CMD_SUCCESS_SURPRISED, MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleNoSurpriseEvent(NoSurpriseEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         switch (e.getError()) {
-            case UNKNOWN:
-                controller.relayFb(Constants.CMD_ERROR_SURP_FAIL_UNKNOWN, MsgType.ERROR);
-                break;
             case NO_TASKS:
                 controller.importantList.clear();
                 controller.switchContext(ListStatus.ALL, false);

@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.logic.commands;
 
 import jfdi.logic.events.RenameTaskDoneEvent;
@@ -8,7 +10,6 @@ import jfdi.storage.exceptions.DuplicateTaskException;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.InvalidTaskParametersException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
-import jfdi.ui.UI;
 
 /**
  * @author Liu Xinan
@@ -32,6 +33,10 @@ public class RenameTaskCommand extends Command {
         return description;
     }
 
+    public String getOldDescription() {
+        return oldDescription;
+    }
+
     public static class Builder {
 
         int screenId = -1;
@@ -48,9 +53,6 @@ public class RenameTaskCommand extends Command {
         }
 
         public RenameTaskCommand build() {
-            if (screenId == -1) {
-                throw new IllegalStateException("You must set the task ID for rename!");
-            }
             return new RenameTaskCommand(this);
         }
 
@@ -58,7 +60,8 @@ public class RenameTaskCommand extends Command {
 
     @Override
     public void execute() {
-        int taskId = UI.getInstance().getTaskId(screenId);
+        int taskId = ui.getTaskId(screenId);
+
         try {
             TaskAttributes task = taskDb.getById(taskId);
             oldDescription = task.getDescription();
@@ -69,32 +72,31 @@ public class RenameTaskCommand extends Command {
             pushToUndoStack();
             eventBus.post(new RenameTaskDoneEvent(task));
         } catch (InvalidIdException e) {
-            eventBus
-                .post(new RenameTaskFailedEvent(screenId, description, RenameTaskFailedEvent.Error.NON_EXISTENT_ID));
+            eventBus.post(new RenameTaskFailedEvent(screenId, description,
+                          RenameTaskFailedEvent.Error.NON_EXISTENT_ID));
+        } catch (NoAttributesChangedException e) {
+            eventBus.post(new RenameTaskFailedEvent(screenId, description,
+                          RenameTaskFailedEvent.Error.NO_CHANGES));
+        } catch (DuplicateTaskException e) {
+            eventBus.post(new RenameTaskFailedEvent(screenId, description,
+                          RenameTaskFailedEvent.Error.DUPLICATED_TASK));
         } catch (InvalidTaskParametersException e) {
             // Should not happen
             assert false;
-        } catch (NoAttributesChangedException e) {
-            eventBus.post(new RenameTaskFailedEvent(screenId, description, RenameTaskFailedEvent.Error.NO_CHANGES));
-        } catch (DuplicateTaskException e) {
-            eventBus
-                .post(new RenameTaskFailedEvent(screenId, description, RenameTaskFailedEvent.Error.DUPLICATED_TASK));
         }
     }
 
     @Override
     public void undo() {
-        int taskId = UI.getInstance().getTaskId(screenId);
+        int taskId = ui.getTaskId(screenId);
 
         try {
             TaskAttributes task = taskDb.getById(taskId);
 
             task.setDescription(oldDescription);
             task.save();
-
-            pushToRedoStack();
         } catch (InvalidIdException | NoAttributesChangedException | InvalidTaskParametersException
-            | DuplicateTaskException e) {
+               | DuplicateTaskException e) {
             assert false;
         }
     }

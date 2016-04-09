@@ -1,3 +1,5 @@
+// @@author A0129538W
+
 package jfdi.ui.items;
 
 import java.io.IOException;
@@ -18,15 +20,13 @@ public class HelpItem extends VBox {
     public HelpItem(String des, String cmd) {
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                    Constants.URL_HELP_PATH));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(Constants.URL_HELP_PATH));
             loader.setRoot(this);
             loader.setController(this);
             loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         this.description.setWrapText(true);
         this.command.setWrapText(true);

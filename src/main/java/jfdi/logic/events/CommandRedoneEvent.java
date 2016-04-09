@@ -1,9 +1,11 @@
+// @@author A0130195M
+
 package jfdi.logic.events;
 
 import jfdi.logic.interfaces.Command;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public class CommandRedoneEvent {
 

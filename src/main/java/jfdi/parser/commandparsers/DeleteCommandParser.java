@@ -50,11 +50,8 @@ public class DeleteCommandParser extends AbstractCommandParser {
      */
     @Override
     public Command build(String input) {
-        assert isValidInput(input)
-            && matchesCommandType(input, CommandType.delete);
-
         if (!isValidDeleteCommand(input)) {
-            return createInvalidCommand(CommandType.delete, input);
+            return createInvalidCommand(CommandType.DELETE, input);
         }
         input = removeFirstWord(input);
         Builder deleteCommandBuilder = new Builder();
@@ -62,7 +59,7 @@ public class DeleteCommandParser extends AbstractCommandParser {
         try {
             taskIds.addAll(getTaskIds(input));
         } catch (BadTaskIdException e) {
-            return createInvalidCommand(CommandType.delete, input);
+            return createInvalidCommand(CommandType.DELETE, input);
         }
         deleteCommandBuilder.addIds(taskIds);
         DeleteTaskCommand deleteCommand = deleteCommandBuilder.build();
@@ -73,6 +70,6 @@ public class DeleteCommandParser extends AbstractCommandParser {
      * Checks to see if the given input is in a valid Delete format.
      */
     private boolean isValidDeleteCommand(String input) {
-        return input.trim().matches(Constants.REGEX_DELETE_FORMAT);
+        return isValidInput(input) && input.trim().matches(Constants.REGEX_DELETE_FORMAT);
     }
 }

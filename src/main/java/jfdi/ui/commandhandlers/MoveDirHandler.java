@@ -1,3 +1,5 @@
+// @@author A0129538W
+
 package jfdi.ui.commandhandlers;
 
 import com.google.common.eventbus.Subscribe;
@@ -21,30 +23,17 @@ public class MoveDirHandler extends CommandHandler {
 
     @Subscribe
     public void handleMoveDirectoryDoneEvent(MoveDirectoryDoneEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         controller.switchContext(ListStatus.INCOMPLETE, true);
-        controller.relayFb(String.format(Constants.CMD_SUCCESS_MOVED, e.getNewDirectory()), MsgType.SUCCESS);
-        controller.updateNotiBubbles();
-
         controller.updateAutoCompleteList();
+        controller.updateNotiBubbles();
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_MOVED, e.getNewDirectory()), MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleMoveDirectoryFailEvent(MoveDirectoryFailedEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         switch (e.getError()) {
-            case UNKNOWN:
-                controller.relayFb(String.format(Constants.CMD_ERROR_MOVE_FAIL_UNKNOWN, e.getNewDirectory()),
-                        MsgType.ERROR);
-                break;
             case INVALID_PATH:
                 controller.relayFb(String.format(Constants.CMD_ERROR_MOVE_FAIL_INVALID, e.getNewDirectory()),
                         MsgType.ERROR);

@@ -23,41 +23,41 @@ public class ParserUtils {
     public static CommandType getCommandType(String input) {
         assert input.split(Constants.REGEX_WHITESPACE).length == 1;
         if (input.matches(Constants.REGEX_ADD)) {
-            return CommandType.add;
+            return CommandType.ADD;
         } else if (input.matches(Constants.REGEX_LIST)) {
-            return CommandType.list;
+            return CommandType.LIST;
         } else if (input.matches(Constants.REGEX_DELETE)) {
-            return CommandType.delete;
+            return CommandType.DELETE;
         } else if (input.matches(Constants.REGEX_RENAME)) {
-            return CommandType.rename;
+            return CommandType.RENAME;
         } else if (input.matches(Constants.REGEX_RESCHEDULE)) {
-            return CommandType.reschedule;
+            return CommandType.RESCHEDULE;
         } else if (input.matches(Constants.REGEX_SEARCH)) {
-            return CommandType.search;
+            return CommandType.SEARCH;
         } else if (input.matches(Constants.REGEX_MARK)) {
-            return CommandType.mark;
+            return CommandType.MARK;
         } else if (input.matches(Constants.REGEX_UNMARK)) {
-            return CommandType.unmark;
+            return CommandType.UNMARK;
         } else if (input.matches(Constants.REGEX_ALIAS)) {
-            return CommandType.alias;
+            return CommandType.ALIAS;
         } else if (input.matches(Constants.REGEX_UNALIAS)) {
-            return CommandType.unalias;
+            return CommandType.UNALIAS;
         } else if (input.matches(Constants.REGEX_DIRECTORY)) {
-            return CommandType.directory;
+            return CommandType.DIRECTORY;
         } else if (input.matches(Constants.REGEX_MOVE)) {
-            return CommandType.move;
+            return CommandType.MOVE;
         } else if (input.matches(Constants.REGEX_USE)) {
-            return CommandType.use;
+            return CommandType.USE;
         } else if (input.matches(Constants.REGEX_UNDO)) {
-            return CommandType.undo;
+            return CommandType.UNDO;
         } else if (input.matches(Constants.REGEX_HELP)) {
-            return CommandType.help;
+            return CommandType.HELP;
         } else if (input.matches(Constants.REGEX_WILDCARD)) {
-            return CommandType.wildcard;
+            return CommandType.WILDCARD;
         } else if (input.matches(Constants.REGEX_EXIT)) {
-            return CommandType.exit;
+            return CommandType.EXIT;
         } else {
-            return CommandType.invalid;
+            return CommandType.INVALID;
         }
 
     }

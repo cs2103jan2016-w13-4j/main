@@ -1,10 +1,10 @@
+// @@author A0130195M
+
 package jfdi.logic.commands;
 
 import jfdi.logic.events.InvalidCommandEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.parser.Constants.CommandType;
-
-import java.util.Optional;
 
 /**
  * @author Liu Xinan
@@ -13,19 +13,16 @@ public class InvalidCommand extends Command {
 
     private String inputString;
     private CommandType commandType;
-    private String suggestion;
 
     private InvalidCommand(Builder builder) {
         this.inputString = builder.inputString;
         this.commandType = builder.commandType;
-        this.suggestion = builder.suggestion;
     }
 
     public static class Builder {
 
         String inputString = "";
         CommandType commandType = null;
-        String suggestion = "";
 
         public Builder setInputString(String inputString) {
             this.inputString = inputString;
@@ -37,22 +34,24 @@ public class InvalidCommand extends Command {
             return this;
         }
 
-        public Builder setSuggestion(String suggestion) {
-            this.suggestion = suggestion;
-            return this;
-        }
-
         public InvalidCommand build() {
             return new InvalidCommand(this);
         }
 
     }
 
+    public String getInputString() {
+        return inputString;
+    }
+
+    public CommandType getCommandType() {
+        return commandType;
+    }
+
     @Override
     public void execute() {
         // Invalid command always fail.
-        setLastSuggestion(Optional.of(suggestion));
-        eventBus.post(new InvalidCommandEvent(inputString, commandType, suggestion));
+        eventBus.post(new InvalidCommandEvent(inputString, commandType));
     }
 
     @Override

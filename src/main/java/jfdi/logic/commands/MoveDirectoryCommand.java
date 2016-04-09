@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.logic.commands;
 
 import jfdi.logic.events.FilesReplacedEvent;
@@ -8,7 +10,7 @@ import jfdi.storage.exceptions.FilesReplacedException;
 import jfdi.storage.exceptions.InvalidFilePathException;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public class MoveDirectoryCommand extends Command {
 
@@ -34,6 +36,10 @@ public class MoveDirectoryCommand extends Command {
 
     }
 
+    public String getOldDirectory() {
+        return oldDirectory;
+    }
+
     public String getNewDirectory() {
         return newDirectory;
     }
@@ -48,6 +54,7 @@ public class MoveDirectoryCommand extends Command {
             pushToUndoStack();
             eventBus.post(new MoveDirectoryDoneEvent(newDirectory));
         } catch (FilesReplacedException e) {
+            pushToUndoStack();
             eventBus.post(new MoveDirectoryDoneEvent(newDirectory));
             eventBus.post(new FilesReplacedEvent(newDirectory, e.getReplacedFilePairs()));
         } catch (InvalidFilePathException e) {
@@ -60,7 +67,6 @@ public class MoveDirectoryCommand extends Command {
         try {
             mainStorage.changeDirectory(oldDirectory);
 
-            pushToRedoStack();
         } catch (InvalidFilePathException e) {
             assert false;
         } catch (FilesReplacedException e) {

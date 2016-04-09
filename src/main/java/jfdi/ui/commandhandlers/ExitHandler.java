@@ -1,3 +1,5 @@
+// @@author A0129538W
+
 package jfdi.ui.commandhandlers;
 
 import com.google.common.eventbus.Subscribe;
@@ -18,10 +20,6 @@ public class ExitHandler extends CommandHandler {
 
     @Subscribe
     public void handleExitCalledEvent(ExitCalledEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         System.out.printf("\nMoriturus te saluto.\n");
         System.exit(0);

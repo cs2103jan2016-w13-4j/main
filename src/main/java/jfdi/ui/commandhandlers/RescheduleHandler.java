@@ -1,3 +1,5 @@
+// @@author A0129538W
+
 package jfdi.ui.commandhandlers;
 
 import com.google.common.eventbus.Subscribe;
@@ -21,41 +23,30 @@ public class RescheduleHandler extends CommandHandler {
 
     @Subscribe
     public void handleRescheduleTaskDoneEvent(RescheduleTaskDoneEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
-        int count = 0;
         TaskAttributes task = e.getTask();
-        for (int i = 0; i < controller.importantList.size(); i++) {
-            if (controller.getIdFromIndex(i) == task.getId()) {
-                controller.importantList.get(i).setTimeDate(task.getStartDateTime(), task.getEndDateTime());
-                count = i;
-                break;
-            }
-        }
+
+        int countBef = findCurrentIndex(task);
+
+        controller.transListCmd();
+
         if (controller.shouldSort()) {
             controller.sortDisplayList();
         }
+
+        int countAft = findCurrentIndex(task);
+
         logger.fine(String.format(Constants.LOG_RESCHED_SUCCESS, task.getId()));
+        controller.listMain.scrollTo(countAft);
         controller.updateNotiBubbles();
-        controller.listMain.scrollTo(count);
-        controller.relayFb(String.format(Constants.CMD_SUCCESS_RESCHEDULED, count + 1), MsgType.SUCCESS);
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_RESCHEDULED, countBef, countAft), MsgType.SUCCESS);
     }
 
     @Subscribe
     public void handleRescheduleTaskFailEvent(RescheduleTaskFailedEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         switch (e.getError()) {
-            case UNKNOWN:
-                controller.relayFb(Constants.CMD_ERROR_CANT_RESCHEDULE_UNKNOWN, MsgType.ERROR);
-                logger.fine(Constants.LOG_RESCHE_FAIL_UNKNOWN);
-                break;
+
             case NON_EXISTENT_ID:
                 // NEED TO CHANGE TO INDEX SOON????
                 controller.relayFb(String.format(Constants.CMD_ERROR_CANT_RESCHEDULE_NO_ID, e.getScreenId()),
@@ -63,8 +54,7 @@ public class RescheduleHandler extends CommandHandler {
                 logger.fine(Constants.LOG_RESCHE_FAIL_NOID);
                 break;
             case NO_CHANGES:
-                controller.relayFb(Constants.CMD_ERROR_CANT_RESCHEDULE_NO_CHANGES + e.getStartDateTime() + " - to - "
-                        + e.getEndDateTime() + " -!", MsgType.ERROR);
+                controller.relayFb(Constants.CMD_ERROR_CANT_RESCHEDULE_NO_CHANGES, MsgType.ERROR);
                 logger.fine(Constants.LOG_RESCHE_FAIL_NOCHANGE);
                 break;
             case DUPLICATED_TASK:

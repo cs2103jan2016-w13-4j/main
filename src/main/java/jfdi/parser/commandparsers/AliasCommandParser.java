@@ -34,7 +34,7 @@ public class AliasCommandParser extends AbstractCommandParser {
     @Override
     public Command build(String input) {
         if (!isValidFormat(input)) {
-            return createInvalidCommand(Constants.CommandType.alias, input);
+            return createInvalidCommand(Constants.CommandType.ALIAS, input);
         }
         Builder builder = new Builder();
         String command = null;
@@ -103,7 +103,7 @@ public class AliasCommandParser extends AbstractCommandParser {
     }
 
     private boolean isPartOfCommandKeyword(String alias) {
-        return ParserUtils.getCommandType(alias).equals(CommandType.invalid);
+        return ParserUtils.getCommandType(alias).equals(CommandType.INVALID);
     }
 
     // ===================================

@@ -1,3 +1,5 @@
+// @@author A0129538W
+
 package jfdi.ui.commandhandlers;
 
 import com.google.common.eventbus.Subscribe;
@@ -20,10 +22,6 @@ public class HelpHandler extends CommandHandler {
 
     @Subscribe
     public void handleHelpRequestEvent(HelpRequestedEvent e) {
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         controller.switchContext(ListStatus.HELP, false);
         controller.showHelpDisplay();

@@ -12,7 +12,7 @@ plugins {
 }
 
 group 'cs2103jan2016-w13-4j'
-version '0.2'
+version '0.4'
 
 mainClassName = "jfdi.ui.MainSetUp"
 
@@ -28,10 +28,18 @@ dependencies {
   compile 'org.ocpsoft.prettytime:prettytime-nlp:3.2.7.Final'
   compile 'commons-io:commons-io:2.4'
   compile 'org.apache.commons:commons-lang3:3.3.2'
-  
+  compile 'org.apache.opennlp:opennlp-tools:1.6.0'
+
   testCompile 'junit:junit:4.12'
-  testCompile 'org.loadui:testFx:3.1.2'
+  testCompile 'org.testfx:testfx-core:4.0.+'
+  testCompile 'org.testfx:testfx-junit:4.0.+'
   testCompile 'org.mockito:mockito-core:1.+'
+}
+
+test {
+  testLogging {
+    exceptionFormat = 'full'
+  }
 }
 
 checkstyle {

@@ -1,3 +1,5 @@
+// @@author A0129538W
+
 package jfdi.ui.commandhandlers;
 
 import com.google.common.eventbus.Subscribe;
@@ -20,34 +22,31 @@ public class ListHandler extends CommandHandler {
 
     @Subscribe
     public void handleListDoneEvent(ListDoneEvent e) {
-        controller.updateBubble(e);
-        if (controller.isInternalCall()) {
-            // Add any method calls strictly for internal calls here
-            return;
-        }
 
         switch (e.getListType()) {
             case ALL:
-                controller.switchContext(ListStatus.ALL, false);
+                controller.switchContext(ListStatus.ALL, true);
                 break;
             case COMPLETED:
-                controller.switchContext(ListStatus.COMPLETE, false);
+                controller.switchContext(ListStatus.COMPLETE, true);
                 break;
             case INCOMPLETE:
-                controller.switchContext(ListStatus.INCOMPLETE, false);
+                controller.switchContext(ListStatus.INCOMPLETE, true);
                 break;
             case OVERDUE:
-                controller.switchContext(ListStatus.OVERDUE, false);
+                controller.switchContext(ListStatus.OVERDUE, true);
                 break;
             case UPCOMING:
-                controller.switchContext(ListStatus.UPCOMING, false);
+                controller.switchContext(ListStatus.UPCOMING, true);
                 break;
             default:
                 break;
 
         }
-        controller.listTasks(e.getItems(), false);
-        controller.relayFb(Constants.CMD_SUCCESS_LISTED, MsgType.SUCCESS);
+
+        controller.updateNotiBubbles();
+        controller.listMain.scrollTo(0);
+        controller.relayFb(String.format(Constants.CMD_SUCCESS_LISTED, e.getListType()), MsgType.SUCCESS);
     }
 
 }

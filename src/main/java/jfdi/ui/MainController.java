@@ -1,3 +1,5 @@
+// @@author A0129538W
+
 package jfdi.ui;
 
 import java.text.DateFormat;
@@ -5,20 +7,17 @@ import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.concurrent.CountDownLatch;
+import java.util.HashMap;
+import java.util.stream.Collectors;
 
 import com.sun.javafx.scene.control.skin.ListViewSkin;
 import com.sun.javafx.scene.control.skin.VirtualFlow;
 
 import edu.emory.mathcs.backport.java.util.Collections;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.IndexedCell;
 import javafx.scene.control.Label;
@@ -31,9 +30,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import jfdi.common.utilities.JFDIRobot;
 import jfdi.logic.ControlCenter;
-import jfdi.logic.events.ListDoneEvent;
 import jfdi.storage.apis.TaskAttributes;
-import jfdi.ui.Constants.CallType;
 import jfdi.ui.Constants.ListStatus;
 import jfdi.ui.Constants.MsgType;
 import jfdi.ui.commandhandlers.CommandHandler;
@@ -109,6 +106,10 @@ public class MainController {
     public Stage mainStage;
     public ControlCenter controlCenter = ControlCenter.getInstance();
     public ObservableList<ListItem> importantList;
+    // Match display index against ArrayList index
+    public HashMap<Integer, Integer> indexMatch = new HashMap<>();
+    public TaskAttributes highLight;
+    public int highLightIndex;
     public ListStatus displayStatus = ListStatus.INCOMPLETE;
     public ListStatus beforeHelp = ListStatus.INCOMPLETE;
     public String searchCmd;
@@ -120,7 +121,6 @@ public class MainController {
     private ObservableList<HelpItem> helpList;
     private InputHistory inputHistory;
     private int firstVisibleId;
-    private LinkedList<CallType> callQueue = new LinkedList<CallType>();
 
     public void initialize() {
         initDate();
@@ -133,10 +133,13 @@ public class MainController {
 
     public void hideOverlays() {
         helpContent.toBack();
+        helpContent.setVisible(false);
         helpContent.setOpacity(0);
         surpriseOverlay.toBack();
+        surpriseOverlay.setVisible(false);
         surpriseOverlay.setOpacity(0);
         noSurpriseOverlay.toBack();
+        noSurpriseOverlay.setVisible(false);
         noSurpriseOverlay.setOpacity(0);
     }
 
@@ -164,24 +167,34 @@ public class MainController {
     }
 
     public void displayList(String cmd) {
-        triggerDisplayCall();
         ui.processInput(cmd);
     }
 
     public void showHelpDisplay() {
         helpContent.toFront();
+        helpContent.setVisible(true);
         helpContent.setOpacity(1);
     }
 
     public void showSurpriseDisplay() {
         surpriseOverlay.toFront();
+        surpriseOverlay.setVisible(true);
         surpriseOverlay.setOpacity(1);
     }
 
     public void showNoSurpriseDisplay() {
         noSurpriseOverlay.toFront();
+        noSurpriseOverlay.setVisible(true);
         noSurpriseOverlay.setOpacity(1);
-        System.out.println("HERE");
+    }
+
+    public int getFirstVisibleId() {
+        setFirstVisibleId();
+        return firstVisibleId;
+    }
+
+    public void clearInputHistory() {
+        inputHistory.clearHistory();
     }
 
     public void switchTabSkin() {
@@ -227,19 +240,21 @@ public class MainController {
     public void transListCmd() {
         switch (displayStatus) {
             case INCOMPLETE:
-                listTasks(controlCenter.getIncompleteTasks(), false);
+                listTasks(controlCenter.getIncompleteTasks(), true);
                 break;
             case OVERDUE:
-                listTasks(controlCenter.getOverdueTasks(), false);
+                listTasks(controlCenter.getOverdueTasks(), true);
+                sortDisplayList();
                 break;
             case UPCOMING:
-                listTasks(controlCenter.getUpcomingTasks(), false);
+                listTasks(controlCenter.getUpcomingTasks(), true);
+                sortDisplayList();
                 break;
             case ALL:
-                listTasks(controlCenter.getAllTasks(), false);
+                listTasks(controlCenter.getAllTasks(), true);
                 break;
             case COMPLETE:
-                listTasks(controlCenter.getCompletedTasks(), false);
+                listTasks(controlCenter.getCompletedTasks(), true);
                 break;
             case SEARCH:
                 displayList(searchCmd);
@@ -247,12 +262,27 @@ public class MainController {
             case SURPRISE:
                 showSurpriseDisplay();
                 break;
+            case SURPRISE_YAY:
+                hideOverlays();
+                listTasks(controlCenter.getIncompleteTasks(), true);
+                doSurpriseYay();
+                break;
             case HELP:
                 hideOverlays();
                 break;
             default:
                 break;
         }
+    }
+
+    private void doSurpriseYay() {
+        importantList.clear();
+        indexMatch.clear();
+        splitIncompleteList(controlCenter.getIncompleteTasks(), true);
+        displayStatus = ListStatus.INCOMPLETE;
+        switchTabSkin();
+        listMain.scrollTo(highLightIndex);
+        relayFb(Constants.CMD_SUCCESS_SURPRISED_YAY, MsgType.SUCCESS);
     }
 
     public void setMainApp(MainSetUp main) {
@@ -272,22 +302,13 @@ public class MainController {
     }
 
     public int getIdFromIndex(int index) {
-        if (index < 0 || importantList.size() - 1 < index) {
+        if (index < 0 || indexMatch.size() - 1 < index) {
             return -1;
         }
-        return importantList.get(index).getItem().getId();
-    }
 
-    public boolean isInternalCall() {
-        return !callQueue.isEmpty() && callQueue.remove() == CallType.INTERNAL;
-    }
+        int actualIndex = indexMatch.get(index + 1);
 
-    public void triggerInternalCall() {
-        callQueue.add(CallType.INTERNAL);
-    }
-
-    private void triggerDisplayCall() {
-        callQueue.add(CallType.DISPLAY);
+        return importantList.get(actualIndex).getItem().getId();
     }
 
     /***************************
@@ -354,36 +375,6 @@ public class MainController {
         inputHistory = new InputHistory();
     }
 
-    public void initNotiBubbles() {
-        updateNotiBubbles();
-        Service<Void> service = new Service<Void>() {
-            @Override
-            public Task<Void> createTask() {
-                return new Task<Void>() {
-                    @Override
-                    public Void call() throws Exception {
-                        // Background work
-                        final CountDownLatch latch = new CountDownLatch(1);
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    updateNotiBubbles();
-                                } finally {
-                                    latch.countDown();
-                                }
-                            }
-                        });
-                        latch.await();
-                        // Keep with the background work
-                        return null;
-                    }
-                };
-            }
-        };
-        service.start();
-    }
-
     public void initSurpriseOverlay(TaskAttributes task) {
         taskDesc.setText(task.getDescription());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy h:mma");
@@ -395,16 +386,6 @@ public class MainController {
                 // Deadline Tasks
                 String end = formatter.format(task.getEndDateTime());
                 taskTime.setText(String.format(Constants.ITEM_DEADLINE, end));
-            }
-        } else {
-            String start = formatter.format(task.getStartDateTime());
-            if (task.getEndDateTime() == null) {
-                // Point Tasks
-                taskTime.setText(String.format(Constants.ITEM_POINT_TASK, start));
-            } else {
-                // Event Tasks
-                String end = formatter.format(task.getEndDateTime());
-                taskTime.setText(String.format(Constants.ITEM_EVENT_TASK, start, end));
             }
         }
     }
@@ -568,10 +549,67 @@ public class MainController {
      * @param tasks
      *            the ArrayList of tasks to be displayed
      */
-    public void listTasks(ArrayList<TaskAttributes> tasks, boolean shouldCheckContext) {
-        importantList.clear();
-        for (TaskAttributes task : tasks) {
-            appendTaskToDisplayList(task, shouldCheckContext);
+    public void listTasks(ArrayList<TaskAttributes> tasks, boolean shouldClear) {
+
+        if (shouldClear) {
+            importantList.clear();
+            indexMatch.clear();
+        }
+
+        if (tasks.isEmpty()) {
+            return;
+        }
+
+        if (displayStatus.equals(ListStatus.INCOMPLETE)) {
+            splitIncompleteList(tasks, false);
+        } else {
+            for (TaskAttributes task : tasks) {
+                appendTaskToDisplayList(task, false);
+            }
+        }
+    }
+
+    private void splitIncompleteList(ArrayList<TaskAttributes> items, boolean shouldHighLight) {
+
+        ArrayList<TaskAttributes> overdueList = new ArrayList<>(controlCenter.getOverdueTasks());
+        ArrayList<TaskAttributes> upcomingList = new ArrayList<>(controlCenter.getUpcomingTasks());
+        ArrayList<TaskAttributes> othersList = controlCenter.getIncompleteTasks().stream()
+                .filter(task -> !task.isOverdue() && !task.isUpcoming())
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        if (!overdueList.isEmpty()) {
+            Collections.sort(overdueList);
+            importantList.add(Constants.HEADER_OVERDUE);
+            for (TaskAttributes task : overdueList) {
+                if (shouldHighLight && task.equals(highLight)) {
+                    appendTaskToDisplayList(task, shouldHighLight);
+                    continue;
+                }
+                appendTaskToDisplayList(task, false);
+            }
+        }
+
+        if (!upcomingList.isEmpty()) {
+            Collections.sort(upcomingList);
+            importantList.add(Constants.HEADER_UPCOMING);
+            for (TaskAttributes task : upcomingList) {
+                if (shouldHighLight && task.equals(highLight)) {
+                    appendTaskToDisplayList(task, shouldHighLight);
+                    continue;
+                }
+                appendTaskToDisplayList(task, false);
+            }
+        }
+
+        if (!othersList.isEmpty()) {
+            importantList.add(Constants.HEADER_OTHERS);
+            for (TaskAttributes task : othersList) {
+                if (shouldHighLight && task.getDescription().equals(highLight.getDescription())) {
+                    appendTaskToDisplayList(task, shouldHighLight);
+                    continue;
+                }
+                appendTaskToDisplayList(task, false);
+            }
         }
     }
 
@@ -580,60 +618,44 @@ public class MainController {
      *
      * @param task
      *            the task to be appended
+     * @param shouldCheckContext
+     *            flag for context checking
+     * @param shouldHighLight
+     *            flag for item highlighting
      */
-    public void appendTaskToDisplayList(TaskAttributes task, boolean shouldCheckContext) {
-        if (shouldCheckContext && !isSameContext(task)) {
-            return;
-        }
+    public void appendTaskToDisplayList(TaskAttributes task, boolean shouldHighLight) {
 
-        int onScreenId = importantList.size() + 1;
         ListItem listItem;
+        int index = indexMatch.size() + 1;
 
         if (task.isCompleted()) {
-            listItem = new ListItem(onScreenId, task, true);
+            listItem = new ListItem(index, task, true);
             importantList.add(listItem);
             importantList.get(importantList.size() - 1).strikeOut();
             listItem.strikeOut();
         } else {
-            listItem = new ListItem(onScreenId, task, false);
+            listItem = new ListItem(index, task, false);
             importantList.add(listItem);
-            importantList.get(importantList.size() - 1).getStyleClass().add("itemBox");
+            if (shouldHighLight) {
+                importantList.get(importantList.size() - 1).getStyleClass().add("itemBoxYay");
+                highLightIndex = importantList.get(importantList.size() - 1).getIndex();
+
+            } else {
+                importantList.get(importantList.size() - 1).getStyleClass().add("itemBox");
+            }
         }
+        indexMatch.put(index, importantList.size() - 1);
     }
 
     public void sortDisplayList() {
         ArrayList<TaskAttributes> taskList = new ArrayList<TaskAttributes>();
         importantList.forEach(listItem -> taskList.add(listItem.getItem()));
         Collections.sort(taskList);
-        listTasks(taskList, false);
+        listTasks(taskList, true);
     }
 
     public boolean shouldSort() {
         return displayStatus.equals(ListStatus.OVERDUE) || displayStatus.equals(ListStatus.UPCOMING);
-    }
-
-    private boolean isSameContext(TaskAttributes task) {
-        switch (displayStatus) {
-            case ALL:
-                return true;
-            case SEARCH:
-                return false;
-            case SURPRISE:
-                return false;
-            case HELP:
-                return false;
-            case COMPLETE:
-                return task.isCompleted();
-            case INCOMPLETE:
-                return !task.isCompleted();
-            case OVERDUE:
-                return task.isOverdue();
-            case UPCOMING:
-                return task.isUpcoming();
-            default:
-                assert false;
-                return false;
-        }
     }
 
     public void switchContext(ListStatus status, Boolean isListing) {
@@ -641,26 +663,10 @@ public class MainController {
             beforeHelp = displayStatus;
         }
         displayStatus = status;
+
         if (isListing) {
             transListCmd();
         }
         switchTabSkin();
-    }
-
-    public void updateBubble(ListDoneEvent e) {
-        Integer count = e.getItems().size();
-        switch (e.getListType()) {
-            case INCOMPLETE:
-                incompletePlaceHdr.set(count.toString());
-                break;
-            case OVERDUE:
-                overduePlaceHdr.set(count.toString());
-                break;
-            case UPCOMING:
-                upcomingPlaceHdr.set(count.toString());
-                break;
-            default:
-                break;
-        }
     }
 }

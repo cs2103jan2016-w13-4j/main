@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.logic.commands;
 
 import jfdi.logic.events.ListDoneEvent;
@@ -16,7 +18,6 @@ public class ListCommand extends Command {
         ALL,
         COMPLETED,
         INCOMPLETE,
-        ALIASES,
         OVERDUE,
         UPCOMING
     }
@@ -51,17 +52,15 @@ public class ListCommand extends Command {
             .collect(Collectors.toCollection(ArrayList::new));
 
         switch (listType) {
-            case ALL:
-                break;
             case COMPLETED:
-                tasks = tasks.stream().filter(TaskAttributes::isCompleted)
+                tasks = tasks.stream()
+                    .filter(TaskAttributes::isCompleted)
                     .collect(Collectors.toCollection(ArrayList::new));
                 break;
             case INCOMPLETE:
-                tasks = tasks.stream().filter(task -> !task.isCompleted())
+                tasks = tasks.stream()
+                    .filter(task -> !task.isCompleted())
                     .collect(Collectors.toCollection(ArrayList::new));
-                break;
-            case ALIASES:
                 break;
             case OVERDUE:
                 tasks = taskDb.getOverdue().stream()
@@ -76,6 +75,7 @@ public class ListCommand extends Command {
             default:
                 break;
         }
+
         eventBus.post(new ListDoneEvent(listType, tasks));
     }
 

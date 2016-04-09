@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.logic.commands;
 
 import jfdi.logic.events.NoSurpriseEvent;
@@ -10,9 +12,11 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public class WildcardCommand extends Command {
+
+    private TaskAttributes lucky;
 
     private WildcardCommand(Builder builder) {}
 
@@ -24,6 +28,10 @@ public class WildcardCommand extends Command {
 
     }
 
+    public TaskAttributes getLucky() {
+        return lucky;
+    }
+
     @Override
     public void execute() {
         ArrayList<TaskAttributes> incompleteTasks = taskDb.getAll().stream()
@@ -33,7 +41,7 @@ public class WildcardCommand extends Command {
         SecureRandom random = new SecureRandom();
 
         if (!incompleteTasks.isEmpty()) {
-            TaskAttributes lucky = incompleteTasks.get(random.nextInt(incompleteTasks.size()));
+            lucky = incompleteTasks.get(random.nextInt(incompleteTasks.size()));
             eventBus.post(new SurpriseEvent(lucky));
         } else {
             eventBus.post(new NoSurpriseEvent(NoSurpriseEvent.Error.NO_TASKS));
@@ -42,6 +50,7 @@ public class WildcardCommand extends Command {
 
     @Override
     public void undo() {
-        throw new UnsupportedOperationException();
+        assert false;
     }
+
 }

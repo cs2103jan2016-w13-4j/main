@@ -1,3 +1,5 @@
+//@@author A0121621Y
+
 package jfdi.ui;
 
 import java.util.Stack;
@@ -37,6 +39,14 @@ public class InputHistory {
         String nextString = nextStack.pop();
         addToPrevious(nextString);
         return nextString;
+    }
+
+    /**
+     * Clears the input history so that undo would not work
+     */
+    public void clearHistory() {
+        previousStack.clear();
+        nextStack.clear();
     }
 
     /**

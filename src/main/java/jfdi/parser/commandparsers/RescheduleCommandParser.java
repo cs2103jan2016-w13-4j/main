@@ -46,7 +46,7 @@ public class RescheduleCommandParser extends AbstractCommandParser {
     @Override
     public Command build(String input) {
         if (!isValidRescheduleInput(input)) {
-            return createInvalidCommand(CommandType.reschedule, input);
+            return createInvalidCommand(CommandType.RESCHEDULE, input);
         }
 
         String originalInput = input;
@@ -57,7 +57,7 @@ public class RescheduleCommandParser extends AbstractCommandParser {
             input = setAndRemoveTaskId(input, rescheduleCommandBuilder);
             setTaskDateTime(input, rescheduleCommandBuilder);
         } catch (NoTaskIdFoundException | BadDateTimeException e) {
-            return createInvalidCommand(Constants.CommandType.reschedule, originalInput);
+            return createInvalidCommand(Constants.CommandType.RESCHEDULE, originalInput);
         }
 
         setIsDateTimeSpecified(input, rescheduleCommandBuilder);
@@ -139,7 +139,7 @@ public class RescheduleCommandParser extends AbstractCommandParser {
             // Since we are parsing an input that strictly matches
             // DATE_TIME_FORMAT, dateTimeString should be parsed as a point
             // task, with only start date time.
-            assert dateTimeObject.getTaskType().equals(Constants.TaskType.point);
+            assert dateTimeObject.getTaskType().equals(Constants.TaskType.POINT);
             assert dateTimeObject.getStartDateTime() != null && dateTimeObject.getEndDateTime() == null;
             builder.setShiftedDateTime(dateTimeObject.getStartDateTime());
 
@@ -181,7 +181,7 @@ public class RescheduleCommandParser extends AbstractCommandParser {
             rescheduleCommandBuilder.setShiftedTimeSpecified(true);
         }
 
-        pattern = Pattern.compile(Constants.REGEX_DATE_FORMAT);
+        pattern = Pattern.compile(Constants.REGEX_DATE_FORMAT + "|" + Constants.REGEX_TIME_RELATIVE);
         matcher = pattern.matcher(input);
         if (matcher.find()) {
             rescheduleCommandBuilder.setShiftedDateSpecified(true);

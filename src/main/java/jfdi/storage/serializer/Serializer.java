@@ -22,9 +22,7 @@ public class Serializer {
      * builder here.
      */
     static {
-        if (gson == null) {
-            gson = new GsonBuilder().setPrettyPrinting().create();
-        }
+        gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
     /**

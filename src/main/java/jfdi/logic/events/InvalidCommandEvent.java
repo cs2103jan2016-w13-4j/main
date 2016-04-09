@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.logic.events;
 
 import jfdi.parser.Constants.CommandType;
@@ -9,12 +11,10 @@ public class InvalidCommandEvent {
 
     private String inputString;
     private CommandType commandType;
-    private String suggestion;
 
-    public InvalidCommandEvent(String inputString, CommandType commandType, String suggestion) {
+    public InvalidCommandEvent(String inputString, CommandType commandType) {
         this.inputString = inputString;
         this.commandType = commandType;
-        this.suggestion = suggestion;
     }
 
     public String getInputString() {
@@ -23,10 +23,6 @@ public class InvalidCommandEvent {
 
     public CommandType getCommandType() {
         return commandType;
-    }
-
-    public String getSuggestion() {
-        return suggestion;
     }
 
 }

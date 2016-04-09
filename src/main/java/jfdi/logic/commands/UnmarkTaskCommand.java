@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.logic.commands;
 
 import jfdi.common.utilities.JfdiLogger;
@@ -7,7 +9,6 @@ import jfdi.logic.interfaces.Command;
 import jfdi.storage.apis.TaskAttributes;
 import jfdi.storage.exceptions.InvalidIdException;
 import jfdi.storage.exceptions.NoAttributesChangedException;
-import jfdi.ui.UI;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,6 +33,10 @@ public class UnmarkTaskCommand extends Command {
         return screenIds;
     }
 
+    public ArrayList<Integer> getUnmarkedIds() {
+        return unmarkedIds;
+    }
+
     public static class Builder {
 
         ArrayList<Integer> screenIds = new ArrayList<>();
@@ -54,8 +59,6 @@ public class UnmarkTaskCommand extends Command {
 
     @Override
     public void execute() {
-        UI ui = UI.getInstance();
-
         ArrayList<Integer> taskIds = screenIds.stream().map(ui::getTaskId)
             .collect(Collectors.toCollection(ArrayList::new));
 
@@ -92,7 +95,6 @@ public class UnmarkTaskCommand extends Command {
             try {
                 taskDb.markAsComplete(id);
 
-                pushToRedoStack();
             } catch (NoAttributesChangedException | InvalidIdException e) {
                 assert false;
             }

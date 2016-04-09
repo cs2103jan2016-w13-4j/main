@@ -42,7 +42,7 @@ public class SearchCommandParser extends AbstractCommandParser {
     public Command build(String input) {
 
         if (!isValidSearchInput(input)) {
-            return createInvalidCommand(CommandType.search, input);
+            return createInvalidCommand(CommandType.SEARCH, input);
         }
 
         SearchCommand.Builder builder = new SearchCommand.Builder();
@@ -50,7 +50,7 @@ public class SearchCommandParser extends AbstractCommandParser {
         try {
             keywords = getKeywords(input);
         } catch (InvalidInputException e) {
-            return createInvalidCommand(CommandType.search, input);
+            return createInvalidCommand(CommandType.SEARCH, input);
         }
         builder.addKeywords(keywords);
         return builder.build();

@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.test.logic.events;
 
 import jfdi.logic.events.RescheduleTaskFailedEvent;
@@ -9,7 +11,7 @@ import java.time.LocalDateTime;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public class RescheduleTaskFailedEventTest {
 
@@ -44,6 +46,14 @@ public class RescheduleTaskFailedEventTest {
     public void getError() throws Exception {
         RescheduleTaskFailedEvent event = new RescheduleTaskFailedEvent(screenId, startDateTime, endDateTime, error);
         assertEquals(error, event.getError());
+    }
+
+    @Test
+    public void testEnum() throws Exception {
+        for (RescheduleTaskFailedEvent.Error error : RescheduleTaskFailedEvent.Error.values()) {
+            // Force a full coverage on enums
+            RescheduleTaskFailedEvent.Error.valueOf(error.toString());
+        }
     }
 
 }

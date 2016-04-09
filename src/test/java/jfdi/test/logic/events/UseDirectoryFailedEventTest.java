@@ -1,3 +1,5 @@
+// @@author A0130195M
+
 package jfdi.test.logic.events;
 
 import jfdi.logic.events.UseDirectoryFailedEvent;
@@ -6,7 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author Xinan
+ * @author Liu Xinan
  */
 public class UseDirectoryFailedEventTest {
 
@@ -23,6 +25,14 @@ public class UseDirectoryFailedEventTest {
     public void getError() throws Exception {
         UseDirectoryFailedEvent event = new UseDirectoryFailedEvent(newDirectory, error);
         assertEquals(error, event.getError());
+    }
+
+    @Test
+    public void testEnum() throws Exception {
+        for (UseDirectoryFailedEvent.Error error : UseDirectoryFailedEvent.Error.values()) {
+            // Force a full coverage on enums
+            UseDirectoryFailedEvent.Error.valueOf(error.toString());
+        }
     }
 
 }

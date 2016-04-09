@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import jfdi.storage.Constants;
 import jfdi.storage.entities.Task;
 import jfdi.storage.exceptions.DuplicateTaskException;
@@ -170,7 +172,7 @@ public class TaskAttributes implements Comparable<TaskAttributes> {
     private void validateAttributes() throws InvalidTaskParametersException {
         ArrayList<String> errors = new ArrayList<String>();
 
-        if (description == null) {
+        if (description == null || description.trim().isEmpty()) {
             errors.add(Constants.MESSAGE_MISSING_DESCRIPTION);
         }
 
@@ -213,17 +215,21 @@ public class TaskAttributes implements Comparable<TaskAttributes> {
     }
 
     @Override
-    public int hashCode() {
-        if (getStartElseEndDate() == null) {
-            return super.hashCode();
-        }
-        return getStartElseEndDate().hashCode();
-    }
-
-    @Override
     public int compareTo(TaskAttributes taskAttributes) {
         assert getStartElseEndDate() != null && taskAttributes.getStartElseEndDate() != null;
         return getStartElseEndDate().compareTo(taskAttributes.getStartElseEndDate());
+    }
+
+    @Override
+    public int hashCode() {
+        // 17 and 37 are some randomly chosen, non-zero odd number
+        return new HashCodeBuilder(17, 37)
+                .append(id)
+                .append(description)
+                .append(startDateTime)
+                .append(endDateTime)
+                .append(isCompleted)
+                .toHashCode();
     }
 
     @Override
@@ -236,8 +242,7 @@ public class TaskAttributes implements Comparable<TaskAttributes> {
         }
 
         TaskAttributes taskAttributes = (TaskAttributes) object;
-        assert getStartElseEndDate() != null && taskAttributes.getStartElseEndDate() != null;
-        return this.getStartElseEndDate().equals(taskAttributes.getStartElseEndDate());
+        return this.equalTo(taskAttributes.toEntity());
     }
 
 }

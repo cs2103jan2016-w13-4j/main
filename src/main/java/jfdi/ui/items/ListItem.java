@@ -29,23 +29,43 @@ public class ListItem extends VBox {
     private Boolean mark;
     private Boolean isHeader = false;
 
-    public ListItem(int index, TaskAttributes task, boolean bln) {
+    /**
+     * Constructor for task list items
+     *
+     * @param index
+     *            the on-screen index
+     * @param task
+     *            the task to be displayed
+     * @param isCompleted
+     *            flag for indicating the incomplete/completed
+     *
+     */
+    public ListItem(int index, TaskAttributes task, boolean isCompleted) {
         loadView();
         setIndex(index);
         setItem(task);
-        if (bln) {
+        if (isCompleted) {
             setMarkT();
         } else {
             setMarkF();
         }
     }
 
+    /**
+     * Constructor for header list items
+     *
+     * @param name
+     *            name of the header
+     */
     public ListItem(String name) {
         loadHeaderView();
         setName(name);
         isHeader = true;
     }
 
+    /**
+     * Loads the view and controller of the ListItem fxml files.
+     */
     private void loadView() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(Constants.URL_ITEM_PATH));
@@ -58,6 +78,9 @@ public class ListItem extends VBox {
         }
     }
 
+    /**
+     * Loads the view and controller of the ListHeader fxml files.
+     */
     private void loadHeaderView() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(Constants.URL_HEADER_PATH));
@@ -70,39 +93,59 @@ public class ListItem extends VBox {
         }
     }
 
+    /**
+     * Sets the name of the item. (For list headers)
+     *
+     * @param name
+     *            name of the item
+     */
     private void setName(String name) {
         this.name = name;
         headerName.setText(this.name);
     }
 
+    /**
+     * Sets the on-screen index of the item. (For list items)
+     *
+     * @param index
+     *            on-screen index of the item
+     */
     public void setIndex(int index) {
         this.index = index;
         rowIndex.setText(String.format(Constants.ITEM_ROW_INDEX, this.index));
     }
 
-    public int getIndex() {
-        return this.index;
-    }
-
+    /**
+     * Sets the task object to be displayed. (For list items)
+     *
+     * @param task
+     *            task to be displayed
+     */
     public void setItem(TaskAttributes task) {
         this.item = task;
         setDescription(item.getDescription());
         setTimeDate(task.getStartDateTime(), task.getEndDateTime());
     }
 
-    public TaskAttributes getItem() {
-        return this.item;
-    }
-
+    /**
+     * Sets the description of the item. (For list items)
+     *
+     * @param string
+     *            description of the task (cannot be null)
+     */
     public void setDescription(String string) {
         description.setWrapText(true);
         description.setText(string);
     }
 
-    public String getDescription() {
-        return description.getText();
-    }
-
+    /**
+     * Sets the date and time of the item. (For list items)
+     *
+     * @param startTime
+     *            start time of the task (can be null)
+     * @param endTime
+     *            end time of the task (can be null)
+     */
     public void setTimeDate(LocalDateTime startTime, LocalDateTime endTime) {
         timeAndDate.setWrapText(true);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy h:mma");
@@ -128,25 +171,65 @@ public class ListItem extends VBox {
         }
     }
 
+    /**
+     * Sets the task as incomplete. (For list items)
+     */
     public void setMarkT() {
-        this.mark = true;
-        // NEED TO BE ABLE TO STRIKE OUT THE TASK
+        this.setMark(true);
     }
 
+    /**
+     * Sets the task as completed. (For list items)
+     */
     public void setMarkF() {
-        this.mark = false;
-        // UNSTRIKE IF IT IS PREVIOUSLY STRIKED
+        this.setMark(false);
     }
 
+    /**
+     * Set the completed status for the task. (For list items)
+     *
+     * @param mark
+     *            flag for representing completed status
+     */
+    private void setMark(Boolean mark) {
+        this.mark = mark;
+    }
+
+    /**
+     * Sets the task as stroke-out on display. (For list items)
+     */
     public void strikeOut() {
         this.getStyleClass().setAll("itemBoxDone");
     }
 
+    /**
+     * Remove the strike-out on the task on display if previously stroked. (For
+     * list items)
+     */
     public void removeStrike() {
         this.getStyleClass().setAll("itemBox");
     }
 
+    /**
+     * Get Methods for private variables
+     */
     public boolean getIsHeader() {
         return isHeader;
+    }
+
+    public int getIndex() {
+        return this.index;
+    }
+
+    public String getDescription() {
+        return description.getText();
+    }
+
+    public TaskAttributes getItem() {
+        return this.item;
+    }
+
+    public Boolean getMark() {
+        return mark;
     }
 }

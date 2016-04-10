@@ -28,7 +28,7 @@ public class RenameHandler extends CommandHandler {
 
         int displayIndex = findCurrentIndex(task);
         int arrayIndex = controller.indexMatch.get(displayIndex);
-        controller.importantList.get(arrayIndex).setDescription(task.getDescription());
+        controller.importantList.get(arrayIndex).setItem(task);
 
         logger.fine(String.format(Constants.LOG_RENAMED_SUCCESS, task.getId()));
         controller.listMain.scrollTo(arrayIndex);
@@ -42,7 +42,6 @@ public class RenameHandler extends CommandHandler {
 
         switch (e.getError()) {
             case NON_EXISTENT_ID:
-                // NEED TO CHANGE TO INDEX SOON????
                 controller.relayFb(String.format(Constants.CMD_ERROR_CANT_RENAME_NO_ID, e.getScreenId()),
                         MsgType.ERROR);
                 logger.fine(Constants.LOG_RENAME_FAIL_NOID);

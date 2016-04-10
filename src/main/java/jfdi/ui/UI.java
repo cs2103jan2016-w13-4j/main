@@ -68,6 +68,12 @@ public class UI implements IUserInterface {
     }
 
     @Override
+    public void relayToLogic(String input) {
+        // Relay user input to logic and wait for reply
+        logic.handleInput(input);
+    }
+
+    @Override
     public void displayFeedback(String fb, MsgType type) {
         appendFeedback(fb, type);
     }
@@ -98,30 +104,41 @@ public class UI implements IUserInterface {
         return controller.getIdFromIndex(onScreenId - 1);
     }
 
-    /***************************
-     *** LEVEL 1 Abstraction ***
-     ***************************/
-
-    private void prepareListeners() {
-        CommandHandler.registerEvents();
+    /**
+     * Calls method to execute actions for an "ENTER" keyboard input.
+     */
+    public void triggerEnter() {
+        controller.enterRoutine();
     }
 
-    private void showToUser(String string) {
-        controller.displayFb(string);
-        System.out.println(string);
-    }
-
-    @Override
-    public void relayToLogic(String input) {
-        // Relay user input to logic and wait for reply
-        logic.handleInput(input);
-    }
-
+    /**
+     * Getter for the eventBus object (for Logic use)
+     *
+     * @return event bus object.
+     */
     public static EventBus getEventBus() {
         return eventBus;
     }
 
-    public void triggerEnter() {
-        controller.enterRoutine();
+    /***************************
+     *** LEVEL 1 Abstraction ***
+     ***************************/
+
+    /**
+     * Calls method to register all command handlers.
+     */
+    private void prepareListeners() {
+        CommandHandler.registerEvents();
+    }
+
+    /**
+     * Calls method to display feedback on the screen.
+     *
+     * @param string
+     *            feedback to be displayed
+     */
+    private void showToUser(String string) {
+        controller.displayFb(string);
+        System.out.println(string);
     }
 }

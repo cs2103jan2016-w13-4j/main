@@ -6,9 +6,6 @@ import jfdi.ui.items.ListItem;
 
 public class Constants {
 
-    public static final char ARROW_UP = 0x25b2;
-    public static final char ARROW_DOWN = 0x25bC;
-
     public static final String PRODUCT_NAME = "J.F.D.I.";
 
     public static final String UI_MESSAGE_GREETING = "\nJ.F.D.I. : Hello there! Nice to see you again! :)";
@@ -56,7 +53,6 @@ public class Constants {
     public static final String CMD_ERROR_CANT_ALIAS_DUPLICATED = " - %s - is an duplicated alias.";
     public static final String CMD_ERROR_CANT_DELETE_NO_ID = "Some stupid error occurred. Cannot delete task(s)!";
     public static final String CMD_ERROR_INIT_FAIL_INVALID = "The folder %s doesn't work. Choose another one!";
-    // replaced should be user command completed and backup files in directory.
     public static final String CMD_ERROR_INIT_FAIL_REPLACED = "Your file %s was moved to %s.";
     public static final String CMD_ERROR_CANT_MARK_NO_ID = "Cannot mark task as completed. The ID #%d does not exist!!";
     public static final String CMD_ERROR_MOVE_FAIL_INVALID = "Cannot move to the folder %s . Choose another one!";
@@ -126,6 +122,9 @@ public class Constants {
     public static final String LOG_RESCHE_FAIL_NOCHANGE = "A rescheduling with no change was queried.";
     public static final String LOG_RESCHE_FAIL_DUPLICATE = "A task was not rescheduled as a duplicate task exists.";
 
+
+    public static final char ARROW_UP = 0x25b2;
+    public static final char ARROW_DOWN = 0x25bC;
     public static final String HELP_HOT_KEYS_DESC = "Navigate the tabs using hot keys";
     public static final String HELP_HOT_KEYS_COMMAND = "Incomplete <F1> / Overdue <F2> / Upcoming <F3> "
             + "/ All <F4> / Completed <F5> / Surprise <F6> / Help <F7>";

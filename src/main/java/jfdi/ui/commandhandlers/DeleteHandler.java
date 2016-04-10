@@ -28,7 +28,10 @@ public class DeleteHandler extends CommandHandler {
     public void handleDeleteTaskDoneEvent(DeleteTaskDoneEvent e) {
 
         // check size of list of ids > 0
+        assert e.getDeletedIds().size() > 0;
+
         // check size of id list == task list
+        assert e.getDeletedIds().size() == e.getDeletedTasks().size();
 
         ArrayList<Integer> deletedIds = e.getDeletedIds();
         Collections.sort(deletedIds);
@@ -45,7 +48,7 @@ public class DeleteHandler extends CommandHandler {
     public void handleDeleteTaskFailEvent(DeleteTaskFailedEvent e) {
 
         // check size of list of ids > 0
-        // check size of id list == task list
+        assert e.getInvalidIds().size() > 0;
 
         switch (e.getError()) {
             case NON_EXISTENT_ID:

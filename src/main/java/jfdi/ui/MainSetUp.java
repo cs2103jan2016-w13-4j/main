@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.logging.Logger;
 
+import javax.swing.ImageIcon;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -18,9 +20,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
-import javax.swing.ImageIcon;
-
 import jfdi.common.utilities.JfdiLogger;
 
 public class MainSetUp extends Application {
@@ -59,6 +58,9 @@ public class MainSetUp extends Application {
      *** LEVEL 1 Abstraction ***
      ***************************/
 
+    /**
+     * Set the logo image for the application.
+     */
     private void setLogo() {
         primaryStage.getIcons().add(new Image(Constants.URL_LOGO_PATH));
 
@@ -74,13 +76,16 @@ public class MainSetUp extends Application {
                 params[0] = java.awt.Image.class;
                 Method setDockIconImage = util.getMethod("setDockIconImage", params);
                 setDockIconImage.invoke(application,
-                    new ImageIcon(UI.class.getResource(Constants.URL_LOGO_PATH)).getImage());
+                        new ImageIcon(UI.class.getResource(Constants.URL_LOGO_PATH)).getImage());
             } catch (Exception e) {
                 logger.info("Not OS X");
             }
         }
     }
 
+    /**
+     * Load .ttf files of all fonts used in the application.
+     */
     private void loadFonts() {
 
         Font.loadFont(MainSetUp.class.getResource("/ui/fonts/HammersmithOne.ttf").toExternalForm(), 12);
@@ -88,6 +93,9 @@ public class MainSetUp extends Application {
         Font.loadFont(MainSetUp.class.getResource("/ui/fonts/Lucida Console.ttf").toExternalForm(), 24);
     }
 
+    /**
+     * Initiates the root layout and sets the primary scene for the application.
+     */
     private void initRootLayout() throws IOException {
 
         rootLayout = (BorderPane) FXMLLoader.load(getClass().getResource(Constants.URL_ROOT_PATH));
@@ -101,6 +109,9 @@ public class MainSetUp extends Application {
 
     }
 
+    /**
+     * Initiates the visible display of the application.
+     */
     private void initView() throws IOException, InterruptedException {
 
         IUserInterface ui = UI.getInstance();
@@ -130,6 +141,9 @@ public class MainSetUp extends Application {
         ui.displayWelcome();
     }
 
+    /**
+     * Initiates the background thread for updating the notification bubbles.
+     */
     private void initThread() {
 
         Task<Void> task = new Task<Void>() {

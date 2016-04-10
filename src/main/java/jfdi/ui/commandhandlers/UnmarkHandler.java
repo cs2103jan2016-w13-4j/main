@@ -37,6 +37,22 @@ public class UnmarkHandler extends CommandHandler {
         unmarkTaskOnList(undoneIds);
     }
 
+    @Subscribe
+    public void handleUnmarkTaskFailEvent(UnmarkTaskFailedEvent e) {
+
+        switch (e.getError()) {
+            case NON_EXISTENT_ID:
+                // NEED TO CHANGE TO INDEX SOON????
+                for (Integer screenId : e.getInvalidIds()) {
+                    controller.relayFb(String.format(Constants.CMD_ERROR_CANT_UNMARK_NO_ID, screenId), MsgType.ERROR);
+                }
+                // logger.fine(Constants.LOG_DELETE_FAIL_NOID);
+                break;
+            default:
+                break;
+        }
+    }
+
     private void unmarkTaskOnList(ArrayList<Integer> undoneIds) {
 
         if (undoneIds.size() == 1) {
@@ -62,22 +78,6 @@ public class UnmarkHandler extends CommandHandler {
             }
             controller.listMain.scrollTo(undoneIds.get(0));
             controller.relayFb(String.format(Constants.CMD_SUCCESS_UNMARKED_2, indices), MsgType.SUCCESS);
-        }
-    }
-
-    @Subscribe
-    public void handleUnmarkTaskFailEvent(UnmarkTaskFailedEvent e) {
-
-        switch (e.getError()) {
-            case NON_EXISTENT_ID:
-                // NEED TO CHANGE TO INDEX SOON????
-                for (Integer screenId : e.getInvalidIds()) {
-                    controller.relayFb(String.format(Constants.CMD_ERROR_CANT_UNMARK_NO_ID, screenId), MsgType.ERROR);
-                }
-                // logger.fine(Constants.LOG_DELETE_FAIL_NOID);
-                break;
-            default:
-                break;
         }
     }
 }

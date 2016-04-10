@@ -4,7 +4,6 @@ package jfdi.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -38,9 +37,9 @@ import jfdi.ui.items.ListItem;
 
 public class MainController {
 
-    /*///////////////*
-     * FXML ELEMENTS *
-     *///////////////*/
+    /*********************
+     *** FXML ELEMENTS ***
+     *********************/
 
     @FXML
     public Rectangle incompleteBox;
@@ -103,10 +102,9 @@ public class MainController {
     @FXML
     public AnchorPane noSurpriseOverlay;
 
-
-    /*//////////////////*
-     * MEMBER VARIABLES *
-     *//////////////////*/
+    /************************
+     *** Member Variables ***
+     ************************/
 
     public MainSetUp main;
     public IUserInterface ui;
@@ -143,6 +141,10 @@ public class MainController {
 
     // For scroll-bar testing
     private int firstVisibleId;
+
+    /**********************
+     *** Public Methods ***
+     **********************/
 
     /**
      * Initializes all on-screen display components.
@@ -186,13 +188,14 @@ public class MainController {
     }
 
     /**
-     * Relays the content of the feedback message to UI for
-     * formatting according to the message type.
+     * Relays the content of the feedback message to UI for formatting according
+     * to the message type.
+     *
      * @param fb
-     *          the content of the feedback message
+     *            the content of the feedback message
      * @param type
-     *            the type of the message to be displayed
-     *            such as SUCCESS, ERROR, WARNING etc.
+     *            the type of the message to be displayed such as SUCCESS,
+     *            ERROR, WARNING etc.
      */
     public void relayFb(String fb, MsgType type) {
         clearFb();
@@ -200,24 +203,24 @@ public class MainController {
     }
 
     /**
-     * Relays the content of the feedback message to UI for
-     * formatting according to the message type without clearing
-     * the feedback area
+     * Relays the content of the feedback message to UI for formatting according
+     * to the message type without clearing the feedback area
+     *
      * @param fb
-     *          the content of the feedback message
+     *            the content of the feedback message
      * @param type
-     *            the type of the message to be displayed
-     *            such as SUCCESS, ERROR, WARNING etc.
+     *            the type of the message to be displayed such as SUCCESS,
+     *            ERROR, WARNING etc.
      */
     public void appendFb(String fb, MsgType type) {
         ui.appendFeedback(fb, type);
     }
 
     /**
-     * Trims the feedback message and displays it in the
-     * feedback area.
+     * Trims the feedback message and displays it in the feedback area.
+     *
      * @param fb
-     *          the formatted feedback message
+     *            the formatted feedback message
      */
     public void displayFb(String fb) {
         fbArea.appendText(fb);
@@ -226,17 +229,18 @@ public class MainController {
     }
 
     /**
-     * For internally inputing command to trigger changes
-     * to the main display list.
+     * For internally inputing command to trigger changes to the main display
+     * list.
+     *
      * @param cmd
-     *           the internal command to be executed
+     *            the internal command to be executed
      */
     public void displayList(String cmd) {
         ui.processInput(cmd);
     }
 
     /**
-     * Brings the help overlay in front of the main display
+     * Brings the help overlay in front of the main display.
      */
     public void showHelpDisplay() {
         helpContent.toFront();
@@ -245,7 +249,7 @@ public class MainController {
     }
 
     /**
-     * Brings the surprise overlay in front of the main display
+     * Brings the surprise overlay in front of the main display.
      */
     public void showSurpriseDisplay() {
         surpriseOverlay.toFront();
@@ -254,7 +258,7 @@ public class MainController {
     }
 
     /**
-     * Brings the noSurprise overlay in front of the main display
+     * Brings the noSurprise overlay in front of the main display.
      */
     public void showNoSurpriseDisplay() {
         noSurpriseOverlay.toFront();
@@ -263,8 +267,8 @@ public class MainController {
     }
 
     /**
-     * Getter for the first index visible on the on-screen main
-     * display list
+     * Getter for the first index visible on the on-screen main display list.
+     *
      * @return the topmost visible on-screen index
      */
     public int getFirstVisibleId() {
@@ -272,10 +276,17 @@ public class MainController {
         return firstVisibleId;
     }
 
+    /**
+     * Clears up the input history stack maintained by the UI.
+     */
     public void clearInputHistory() {
         inputHistory.clearHistory();
     }
 
+    /**
+     * Switches the highlighting tab according to the current status of the
+     * on-screen list display.
+     */
     public void switchTabSkin() {
         setAllTabsOff();
         switch (displayStatus) {
@@ -316,6 +327,11 @@ public class MainController {
         }
     }
 
+    /**
+     * Translates the current status of the on-screen list display to its
+     * respective listing commands and executes it for the purpose of refreshing
+     * the on-screen display.
+     */
     public void transListCmd() {
         switch (displayStatus) {
             case INCOMPLETE:
@@ -354,32 +370,95 @@ public class MainController {
         }
     }
 
-    private void doSurpriseYay() {
-        importantList.clear();
-        indexMatch.clear();
-        splitIncompleteList(controlCenter.getIncompleteTasks(), true);
-        displayStatus = ListStatus.INCOMPLETE;
+    /**
+     * Sets the display list to the given ArrayList of tasks which match the
+     * context.
+     *
+     * @param tasks
+     *            the ArrayList of tasks to be displayed
+     */
+    public void listTasks(ArrayList<TaskAttributes> tasks, boolean shouldClear) {
+
+        if (shouldClear) {
+            importantList.clear();
+            indexMatch.clear();
+        }
+
+        if (tasks.isEmpty()) {
+            return;
+        }
+
+        if (displayStatus.equals(ListStatus.INCOMPLETE)) {
+            splitIncompleteList(tasks, false);
+        } else {
+            for (TaskAttributes task : tasks) {
+                appendTaskToDisplayList(task, false);
+            }
+        }
+    }
+
+    /**
+     * Appends a task to the list of tasks displayed.
+     *
+     * @param task
+     *            the task to be appended
+     * @param shouldCheckContext
+     *            flag for context checking
+     * @param shouldHighLight
+     *            flag for item highlighting
+     */
+    public void appendTaskToDisplayList(TaskAttributes task, boolean shouldHighLight) {
+
+        ListItem listItem;
+        int index = indexMatch.size() + 1;
+
+        if (task.isCompleted()) {
+            listItem = new ListItem(index, task, true);
+            importantList.add(listItem);
+            importantList.get(importantList.size() - 1).strikeOut();
+            listItem.strikeOut();
+        } else {
+            listItem = new ListItem(index, task, false);
+            importantList.add(listItem);
+            if (shouldHighLight) {
+                importantList.get(importantList.size() - 1).getStyleClass().add("itemBoxYay");
+                highLightIndex = importantList.get(importantList.size() - 1).getIndex();
+
+            } else {
+                importantList.get(importantList.size() - 1).getStyleClass().add("itemBox");
+            }
+        }
+        indexMatch.put(index, importantList.size() - 1);
+    }
+
+    /**
+     * Switches the status of the list view to intended one.
+     *
+     * @param status
+     *            the intended list status
+     * @param isListing
+     *            flag for item listing
+     */
+    public void switchContext(ListStatus status, Boolean isListing) {
+        if (status.equals(ListStatus.HELP)) {
+            beforeHelp = displayStatus;
+        }
+        displayStatus = status;
+
+        if (isListing) {
+            transListCmd();
+        }
         switchTabSkin();
-        listMain.scrollTo(highLightIndex);
-        relayFb(Constants.CMD_SUCCESS_SURPRISED_YAY, MsgType.SUCCESS);
     }
 
-    public void setMainApp(MainSetUp main) {
-        this.main = main;
-    }
-
-    public void setUi(IUserInterface ui) {
-        this.ui = ui;
-    }
-
-    public void setStage(Stage stage) {
-        this.mainStage = stage;
-    }
-
-    public void setLogicControlCentre(ControlCenter controlCenter) {
-        this.controlCenter = controlCenter;
-    }
-
+    /**
+     * Translates an on-screen display index of a task to its respective task
+     * storage ID
+     *
+     * @param index
+     *            the on-screen display index of a task
+     * @return the storage ID of the task with the given on-screen display index
+     */
     public int getIdFromIndex(int index) {
         if (index < 0 || indexMatch.size() - 1 < index) {
             return -1;
@@ -390,17 +469,112 @@ public class MainController {
         return importantList.get(actualIndex).getItem().getId();
     }
 
+    /**
+     * Updates the notification bubbles on display.
+     */
+    public void updateNotiBubbles() {
+        incompletePlaceHdr.set(String.valueOf(controlCenter.getIncompleteTasks().size()));
+        overduePlaceHdr.set(String.valueOf(controlCenter.getOverdueTasks().size()));
+        upcomingPlaceHdr.set(String.valueOf(controlCenter.getUpcomingTasks().size()));
+    }
+
+    /**
+     * Updates the set of keywords stored in the AutoComplete list.
+     */
+    public void updateAutoCompleteList() {
+        cmdArea.setKeywords(ControlCenter.getInstance().getKeywords());
+    }
+
+    /**
+     * Checks if the list to be displayed should be sorted.
+     *
+     * @return flag for list sorting
+     */
+    public boolean shouldSort() {
+        return displayStatus.equals(ListStatus.OVERDUE) || displayStatus.equals(ListStatus.UPCOMING);
+    }
+
+    /**
+     * Sorts the list of tasks on display.
+     */
+    public void sortDisplayList() {
+        ArrayList<TaskAttributes> taskList = new ArrayList<TaskAttributes>();
+        importantList.forEach(listItem -> taskList.add(listItem.getItem()));
+        Collections.sort(taskList);
+        listTasks(taskList, true);
+    }
+
+    /**
+     * Executes the actions after an "ENTER" keyboard input.
+     */
+    public void enterRoutine() {
+        cmdArea.hidePopup();
+        String text = cmdArea.getText();
+        UI.getInstance().processInput(text);
+        inputHistory.addInput(text);
+        cmdArea.clear();
+    }
+
+    /**
+     * Links this controller instance to the only instance of MainSetUp.
+     *
+     * @param main
+     *            the MainSetUp instance of the project
+     */
+    public void setMainApp(MainSetUp main) {
+        this.main = main;
+    }
+
+    /**
+     * Links this controller instance to the only instance of IUserInterface.
+     *
+     * @param ui
+     *            the IUserInterface instance of the project
+     */
+    public void setUi(IUserInterface ui) {
+        this.ui = ui;
+    }
+
+    /**
+     * Allows this controller to have access to the primary stage of this
+     * project.
+     *
+     * @param stage
+     *            the primary stage of this project
+     */
+    public void setStage(Stage stage) {
+        this.mainStage = stage;
+    }
+
+    /**
+     * Allows this controller to have access to the ControlCenter of the Logic
+     * component in this project.
+     *
+     * @param controlCenter
+     *            the ControlCenter of the Logic component
+     */
+    public void setLogicControlCentre(ControlCenter controlCenter) {
+        this.controlCenter = controlCenter;
+    }
+
     /***************************
      *** LEVEL 1 Abstraction ***
      ***************************/
 
-    public void initDate() {
+    /**
+     * Initiates the date-displaying Label element.
+     */
+    private void initDate() {
 
         DateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy");
         Calendar cal = Calendar.getInstance();
         dayDisplayer.setText(dateFormat.format(cal.getTime()));
     }
 
+    /**
+     * Initiates the ListView element of main display list by bonding it to an
+     * observableList object.
+     */
     private void initImportantList() {
 
         listMain.setFocusTraversable(false);
@@ -408,12 +582,18 @@ public class MainController {
         listMain.setItems(importantList);
     }
 
+    /**
+     * Initiates the feedback area TextArea element.
+     */
     private void initFbArea() {
         fbArea.setFocusTraversable(false);
         fbArea.setEditable(false);
         fbArea.setStyle("-fx-text-fill: #eeeeee;");
     }
 
+    /**
+     * Initiates the command area AutoCompleteTextField element.
+     */
     private void initCmdArea() {
         cmdArea.setPromptText(Constants.CTRL_CMD_PROMPT_TEXT);
         handleKeyPressedEvents();
@@ -421,6 +601,9 @@ public class MainController {
         updateAutoCompleteList();
     }
 
+    /**
+     * Initiates the help content that will be shown upon an input "help".
+     */
     private void initHelpList() {
         helpList = FXCollections.observableArrayList();
         helpList.add(new HelpItem(Constants.HELP_HOT_KEYS_DESC, Constants.HELP_HOT_KEYS_COMMAND));
@@ -450,202 +633,34 @@ public class MainController {
         helpContent.setItems(helpList);
     }
 
+    /**
+     * Initiates the input history storage of the UI.
+     */
     private void initInputHistory() {
         inputHistory = new InputHistory();
     }
 
-    public void initSurpriseOverlay(TaskAttributes task) {
-        taskDesc.setText(task.getDescription());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy h:mma");
-        if (task.getStartDateTime() == null) {
-            if (task.getEndDateTime() == null) {
-                // Floating Tasks
-                taskTime.setText(Constants.ITEM_NO_TIMEDATE);
-            } else {
-                // Deadline Tasks
-                String end = formatter.format(task.getEndDateTime());
-                taskTime.setText(String.format(Constants.ITEM_DEADLINE, end));
-            }
-        }
-    }
-
-    /***************************
-     *** LEVEL 2 Abstraction ***
-     ***************************/
-
-    public void updateAutoCompleteList() {
-        cmdArea.setKeywords(ControlCenter.getInstance().getKeywords());
-    }
-
-    private void setAllTabsOff() {
-        incompleteBox.getStyleClass().setAll("tabOff");
-        incompleteTab.getStyleClass().setAll("incompleteTab");
-        overdueBox.getStyleClass().setAll("tabOff");
-        overdueTab.getStyleClass().setAll("overdueTab");
-        upcomingBox.getStyleClass().setAll("tabOff");
-        upcomingTab.getStyleClass().setAll("upcomingTab");
-        allBox.getStyleClass().setAll("tabOff");
-        allTab.getStyleClass().setAll("allTab");
-        completedBox.getStyleClass().setAll("tabOff");
-        completedTab.getStyleClass().setAll("completedTab");
-        searchBox.getStyleClass().setAll("tabOff");
-        searchTab.getStyleClass().setAll("searchTab");
-        surpriseBox.getStyleClass().setAll("tabOff");
-        surpriseTab.getStyleClass().setAll("surpriseTab");
-        helpBox.getStyleClass().setAll("tabOff");
-        helpTab.getStyleClass().setAll("helpTab");
-    }
-
-    @FXML
-    private void handleKeyPressedEvents() {
-
-        cmdArea.setOnKeyPressed((keyEvent) -> {
-            KeyCode code = keyEvent.getCode();
-
-            if (code == KeyCode.ENTER) {
-                enterRoutine();
-            } else if (code == KeyCode.UP) {
-                getPreviousInput();
-            } else if (code == KeyCode.DOWN) {
-                getNextInput();
-            } else if (code == KeyCode.PAGE_DOWN) {
-                scrollDown();
-            } else if (code == KeyCode.PAGE_UP) {
-                scrollUp();
-            } else if (code == KeyCode.TAB) {
-                cmdArea.selectFirst();
-            } else if (code == KeyCode.F1) {
-                displayList(Constants.CTRL_CMD_INCOMPLETE);
-            } else if (code == KeyCode.F2) {
-                displayList(Constants.CTRL_CMD_OVERDUE);
-            } else if (code == KeyCode.F3) {
-                displayList(Constants.CTRL_CMD_UPCOMING);
-            } else if (code == KeyCode.F4) {
-                displayList(Constants.CTRL_CMD_ALL);
-            } else if (code == KeyCode.F5) {
-                displayList(Constants.CTRL_CMD_COMPLETE);
-            } else if (code == KeyCode.F6) {
-                displayList(Constants.CTRL_CMD_SURPRISE);
-            } else if (code == KeyCode.F7) {
-                displayList(Constants.CTRL_CMD_HELP);
-            } else {
-                return;
-            }
-
-            keyEvent.consume();
-
-            /*
-             * Not needed yet! // Tab event is sent to UI whenever tab is hit if
-             * (code == KeyCode.TAB) { ui.passKeyEvent(code); // consume the tab
-             * space left in the command area keyEvent.consume(); }
-             */
-        });
-    }
-
     /**
-     * Disable the scroll bar when it appears (Edit if necessary)
+     * Executes actions for a "yay" input after "surprise" event.
      */
-    private void disableScrollBarCmd() {
-        cmdArea.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (cmdArea.lookup(".scroll-bar") != null) {
-                ScrollBar scrollBarv = (ScrollBar) cmdArea.lookup(".scroll-bar");
-                scrollBarv.setDisable(false);
-                scrollBarv.setId("command-scroll-bar");
-            }
-        });
-    }
-
-    public void updateNotiBubbles() {
-        incompletePlaceHdr.set(String.valueOf(controlCenter.getIncompleteTasks().size()));
-        overduePlaceHdr.set(String.valueOf(controlCenter.getOverdueTasks().size()));
-        upcomingPlaceHdr.set(String.valueOf(controlCenter.getUpcomingTasks().size()));
-    }
-
-    /***************************
-     *** LEVEL 3 Abstraction ***
-     ***************************/
-
-    void enterRoutine() {
-        cmdArea.hidePopup();
-        String text = cmdArea.getText();
-        UI.getInstance().processInput(text);
-        inputHistory.addInput(text);
-        cmdArea.clear();
-    }
-
-    private void getNextInput() {
-        String nextInput = inputHistory.getNext();
-        if (nextInput != null) {
-            cmdArea.setText(nextInput);
-            cmdArea.hidePopup();
-            cmdArea.positionCaret(nextInput.length());
-        }
-    }
-
-    private void getPreviousInput() {
-        String previousInput = inputHistory.getPrevious();
-        if (previousInput != null) {
-            cmdArea.setText(previousInput);
-            cmdArea.hidePopup();
-            cmdArea.positionCaret(previousInput.length());
-        }
-    }
-
-    private void scrollUp() {
-        setFirstVisibleId();
-        ListView<?> listView = getCurrentListView();
-        listView.scrollTo(firstVisibleId - 1);
-    }
-
-    private void scrollDown() {
-        setFirstVisibleId();
-        ListView<?> listView = getCurrentListView();
-        listView.scrollTo(firstVisibleId + 1);
-    }
-
-    private ListView<?> getCurrentListView() {
-        if (displayStatus.equals(ListStatus.HELP)) {
-            return helpContent;
-        }
-        return listMain;
-    }
-
-    public void setFirstVisibleId() {
-        ListViewSkin<?> listViewSkin = (ListViewSkin<?>) getCurrentListView().getSkin();
-        VirtualFlow<?> virtualFlow = (VirtualFlow<?>) listViewSkin.getChildren().get(0);
-        IndexedCell<?> firstVisibleCell = virtualFlow.getFirstVisibleCellWithinViewPort();
-        if (firstVisibleCell != null) {
-            firstVisibleId = firstVisibleCell.getIndex();
-        }
+    private void doSurpriseYay() {
+        importantList.clear();
+        indexMatch.clear();
+        splitIncompleteList(controlCenter.getIncompleteTasks(), true);
+        displayStatus = ListStatus.INCOMPLETE;
+        switchTabSkin();
+        listMain.scrollTo(highLightIndex);
+        relayFb(Constants.CMD_SUCCESS_SURPRISED_YAY, MsgType.SUCCESS);
     }
 
     /**
-     * Sets the display list to the given ArrayList of tasks which match the
-     * context.
+     * Splits the incomplete list into OVERDUE, UPCOMING and OTHERS.
      *
-     * @param tasks
-     *            the ArrayList of tasks to be displayed
+     * @param items
+     *            the list of tasks to be on display
+     * @param shouldHighLight
+     *            flag for item highlighting
      */
-    public void listTasks(ArrayList<TaskAttributes> tasks, boolean shouldClear) {
-
-        if (shouldClear) {
-            importantList.clear();
-            indexMatch.clear();
-        }
-
-        if (tasks.isEmpty()) {
-            return;
-        }
-
-        if (displayStatus.equals(ListStatus.INCOMPLETE)) {
-            splitIncompleteList(tasks, false);
-        } else {
-            for (TaskAttributes task : tasks) {
-                appendTaskToDisplayList(task, false);
-            }
-        }
-    }
-
     private void splitIncompleteList(ArrayList<TaskAttributes> items, boolean shouldHighLight) {
 
         ArrayList<TaskAttributes> overdueList = new ArrayList<>(controlCenter.getOverdueTasks());
@@ -691,59 +706,152 @@ public class MainController {
     }
 
     /**
-     * Appends a task to the list of tasks displayed.
-     *
-     * @param task
-     *            the task to be appended
-     * @param shouldCheckContext
-     *            flag for context checking
-     * @param shouldHighLight
-     *            flag for item highlighting
+     * Shifts the list view on display to start with the indicated index.
      */
-    public void appendTaskToDisplayList(TaskAttributes task, boolean shouldHighLight) {
+    private void setFirstVisibleId() {
+        ListViewSkin<?> listViewSkin = (ListViewSkin<?>) getCurrentListView().getSkin();
+        VirtualFlow<?> virtualFlow = (VirtualFlow<?>) listViewSkin.getChildren().get(0);
+        IndexedCell<?> firstVisibleCell = virtualFlow.getFirstVisibleCellWithinViewPort();
+        if (firstVisibleCell != null) {
+            firstVisibleId = firstVisibleCell.getIndex();
+        }
+    }
 
-        ListItem listItem;
-        int index = indexMatch.size() + 1;
+    /***************************
+     *** LEVEL 2 Abstraction ***
+     ***************************/
 
-        if (task.isCompleted()) {
-            listItem = new ListItem(index, task, true);
-            importantList.add(listItem);
-            importantList.get(importantList.size() - 1).strikeOut();
-            listItem.strikeOut();
-        } else {
-            listItem = new ListItem(index, task, false);
-            importantList.add(listItem);
-            if (shouldHighLight) {
-                importantList.get(importantList.size() - 1).getStyleClass().add("itemBoxYay");
-                highLightIndex = importantList.get(importantList.size() - 1).getIndex();
+    /**
+     * Turns all tabs off (Dark color with light font).
+     */
+    private void setAllTabsOff() {
+        incompleteBox.getStyleClass().setAll("tabOff");
+        incompleteTab.getStyleClass().setAll("incompleteTab");
+        overdueBox.getStyleClass().setAll("tabOff");
+        overdueTab.getStyleClass().setAll("overdueTab");
+        upcomingBox.getStyleClass().setAll("tabOff");
+        upcomingTab.getStyleClass().setAll("upcomingTab");
+        allBox.getStyleClass().setAll("tabOff");
+        allTab.getStyleClass().setAll("allTab");
+        completedBox.getStyleClass().setAll("tabOff");
+        completedTab.getStyleClass().setAll("completedTab");
+        searchBox.getStyleClass().setAll("tabOff");
+        searchTab.getStyleClass().setAll("searchTab");
+        surpriseBox.getStyleClass().setAll("tabOff");
+        surpriseTab.getStyleClass().setAll("surpriseTab");
+        helpBox.getStyleClass().setAll("tabOff");
+        helpTab.getStyleClass().setAll("helpTab");
+    }
 
+    /**
+     * Handles the events triggered by relevant keyboard inputs.
+     */
+    @FXML
+    private void handleKeyPressedEvents() {
+
+        cmdArea.setOnKeyPressed((keyEvent) -> {
+            KeyCode code = keyEvent.getCode();
+
+            if (code == KeyCode.ENTER) {
+                enterRoutine();
+            } else if (code == KeyCode.UP) {
+                getPreviousInput();
+            } else if (code == KeyCode.DOWN) {
+                getNextInput();
+            } else if (code == KeyCode.PAGE_DOWN) {
+                scrollDown();
+            } else if (code == KeyCode.PAGE_UP) {
+                scrollUp();
+            } else if (code == KeyCode.TAB) {
+                cmdArea.selectFirst();
+            } else if (code == KeyCode.F1) {
+                displayList(Constants.CTRL_CMD_INCOMPLETE);
+            } else if (code == KeyCode.F2) {
+                displayList(Constants.CTRL_CMD_OVERDUE);
+            } else if (code == KeyCode.F3) {
+                displayList(Constants.CTRL_CMD_UPCOMING);
+            } else if (code == KeyCode.F4) {
+                displayList(Constants.CTRL_CMD_ALL);
+            } else if (code == KeyCode.F5) {
+                displayList(Constants.CTRL_CMD_COMPLETE);
+            } else if (code == KeyCode.F6) {
+                displayList(Constants.CTRL_CMD_SURPRISE);
+            } else if (code == KeyCode.F7) {
+                displayList(Constants.CTRL_CMD_HELP);
             } else {
-                importantList.get(importantList.size() - 1).getStyleClass().add("itemBox");
+                return;
             }
-        }
-        indexMatch.put(index, importantList.size() - 1);
+
+            keyEvent.consume();
+        });
     }
 
-    public void sortDisplayList() {
-        ArrayList<TaskAttributes> taskList = new ArrayList<TaskAttributes>();
-        importantList.forEach(listItem -> taskList.add(listItem.getItem()));
-        Collections.sort(taskList);
-        listTasks(taskList, true);
+    /**
+     * Disable the scroll bar in the command area when it appears.
+     */
+    private void disableScrollBarCmd() {
+        cmdArea.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (cmdArea.lookup(".scroll-bar") != null) {
+                ScrollBar scrollBarv = (ScrollBar) cmdArea.lookup(".scroll-bar");
+                scrollBarv.setDisable(false);
+                scrollBarv.setId("command-scroll-bar");
+            }
+        });
     }
 
-    public boolean shouldSort() {
-        return displayStatus.equals(ListStatus.OVERDUE) || displayStatus.equals(ListStatus.UPCOMING);
+    /***************************
+     *** LEVEL 3 Abstraction ***
+     ***************************/
+
+    /**
+     * Sets the next input in the input history in the command area.
+     */
+    private void getNextInput() {
+        String nextInput = inputHistory.getNext();
+        if (nextInput != null) {
+            cmdArea.setText(nextInput);
+            cmdArea.hidePopup();
+            cmdArea.positionCaret(nextInput.length());
+        }
     }
 
-    public void switchContext(ListStatus status, Boolean isListing) {
-        if (status.equals(ListStatus.HELP)) {
-            beforeHelp = displayStatus;
+    /**
+     * Sets the previous input in the input history in the command area.
+     */
+    private void getPreviousInput() {
+        String previousInput = inputHistory.getPrevious();
+        if (previousInput != null) {
+            cmdArea.setText(previousInput);
+            cmdArea.hidePopup();
+            cmdArea.positionCaret(previousInput.length());
         }
-        displayStatus = status;
+    }
 
-        if (isListing) {
-            transListCmd();
+    /**
+     * Performs the scroll-up action.
+     */
+    private void scrollUp() {
+        setFirstVisibleId();
+        ListView<?> listView = getCurrentListView();
+        listView.scrollTo(firstVisibleId - 1);
+    }
+
+    /**
+     * Performs the scroll-down action.
+     */
+    private void scrollDown() {
+        setFirstVisibleId();
+        ListView<?> listView = getCurrentListView();
+        listView.scrollTo(firstVisibleId + 1);
+    }
+
+    /**
+     * @return the current list content on-display under the overlays
+     */
+    private ListView<?> getCurrentListView() {
+        if (displayStatus.equals(ListStatus.HELP)) {
+            return helpContent;
         }
-        switchTabSkin();
+        return listMain;
     }
 }

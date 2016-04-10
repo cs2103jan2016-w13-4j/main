@@ -45,8 +45,12 @@ public class UnaliasCommand extends Command {
 
             pushToUndoStack();
             eventBus.post(new UnaliasDoneEvent(alias));
+
+            logger.info("Alias deleted: " + alias);
         } catch (InvalidAliasException e) {
             eventBus.post(new UnaliasFailedEvent(alias, UnaliasFailedEvent.Error.NON_EXISTENT_ALIAS));
+
+            logger.info("Delete alias failed: Invalid alias");
         }
     }
 
@@ -56,6 +60,7 @@ public class UnaliasCommand extends Command {
             aliasDb.undestroy(alias);
             parser.setAliases(aliasDb.getAll());
 
+            logger.info("Undo deleting alias: Adding alias " + alias + " back");
         } catch (InvalidAliasException e) {
             assert false;
         }

@@ -71,15 +71,23 @@ public class RenameTaskCommand extends Command {
 
             pushToUndoStack();
             eventBus.post(new RenameTaskDoneEvent(task));
+
+            logger.info("Task #" + taskId + " renamed to " + description);
         } catch (InvalidIdException e) {
             eventBus.post(new RenameTaskFailedEvent(screenId, description,
                           RenameTaskFailedEvent.Error.NON_EXISTENT_ID));
+
+            logger.warning("Rename task failed: Invalid task id");
         } catch (NoAttributesChangedException e) {
             eventBus.post(new RenameTaskFailedEvent(screenId, description,
                           RenameTaskFailedEvent.Error.NO_CHANGES));
+
+            logger.warning("Rename task failed: Task description not changed");
         } catch (DuplicateTaskException e) {
             eventBus.post(new RenameTaskFailedEvent(screenId, description,
                           RenameTaskFailedEvent.Error.DUPLICATED_TASK));
+
+            logger.warning("Rename task failed: Duplicate task");
         } catch (InvalidTaskParametersException e) {
             // Should not happen
             assert false;
@@ -95,6 +103,8 @@ public class RenameTaskCommand extends Command {
 
             task.setDescription(oldDescription);
             task.save();
+
+            logger.info("Undo renaming: renaming task #" + taskId + " back to " + oldDescription);
         } catch (InvalidIdException | NoAttributesChangedException | InvalidTaskParametersException
                | DuplicateTaskException e) {
             assert false;

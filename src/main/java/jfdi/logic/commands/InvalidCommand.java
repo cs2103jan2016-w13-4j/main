@@ -52,6 +52,8 @@ public class InvalidCommand extends Command {
     public void execute() {
         // Invalid command always fail.
         eventBus.post(new InvalidCommandEvent(inputString, commandType));
+
+        logger.warning("Invalid command received: " + inputString);
     }
 
     @Override

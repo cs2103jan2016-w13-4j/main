@@ -74,6 +74,8 @@ public class MarkTaskCommand extends Command {
                     markedTasks.add(taskDb.getById(id));
                     taskDb.markAsComplete(id);
                     markedIds.add(id);
+
+                    logger.info("Task marked: #" + id);
                 } catch (NoAttributesChangedException e) {
                     logger.warning("Task " + id + " is already completed.");
                 } catch (InvalidIdException e) {
@@ -86,6 +88,8 @@ public class MarkTaskCommand extends Command {
             eventBus.post(new MarkTaskDoneEvent(screenIds, markedTasks));
         } else {
             eventBus.post(new MarkTaskFailedEvent(screenIds, invalidIds));
+
+            logger.warning("Some invalid id(s) supplied. Not marking any tasks as done.");
         }
     }
 
@@ -94,6 +98,8 @@ public class MarkTaskCommand extends Command {
         markedIds.stream().forEach(id -> {
             try {
                 taskDb.markAsIncomplete(id);
+
+                logger.info("Undo marking task: #" + id);
             } catch (NoAttributesChangedException | InvalidIdException e) {
                 assert false;
             }

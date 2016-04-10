@@ -130,18 +130,26 @@ public class RescheduleTaskCommand extends Command {
 
             pushToUndoStack();
             eventBus.post(new RescheduleTaskDoneEvent(task));
+
+            logger.info("Task #" + taskId + " rescheduled.");
         } catch (InvalidIdException e) {
             eventBus.post(new RescheduleTaskFailedEvent(screenId, startDateTime, endDateTime,
                 RescheduleTaskFailedEvent.Error.NON_EXISTENT_ID));
+
+            logger.warning("Reschedule failed: Invalid id");
         } catch (InvalidTaskParametersException e) {
             // Should not happen
             assert false;
         } catch (NoAttributesChangedException e) {
             eventBus.post(new RescheduleTaskFailedEvent(screenId, startDateTime, endDateTime,
                 RescheduleTaskFailedEvent.Error.NO_CHANGES));
+
+            logger.warning("Reschedule failed: Date time not changed");
         } catch (DuplicateTaskException e) {
             eventBus.post(new RescheduleTaskFailedEvent(screenId, startDateTime, endDateTime,
                 RescheduleTaskFailedEvent.Error.DUPLICATED_TASK));
+
+            logger.warning("Reschedule failed: Duplicate task");
         }
     }
 
@@ -156,6 +164,7 @@ public class RescheduleTaskCommand extends Command {
             task.setEndDateTime(oldEndDateTime);
             task.save();
 
+            logger.info("Undo rescheduling: rescheduled back #" + taskId);
         } catch (InvalidIdException | InvalidTaskParametersException | NoAttributesChangedException
             | DuplicateTaskException e) {
             assert false;
@@ -167,25 +176,26 @@ public class RescheduleTaskCommand extends Command {
         LocalDateTime taskEnd = task.getEndDateTime();
 
         if (taskStart == null && taskEnd == null) {
-            // Set floating task to point task
             startDateTime = shiftedDateTime;
             endDateTime = null;
 
+            logger.info("Shifting a floating task to a point task.");
         } else if (taskStart != null && taskEnd == null) {
-            // Shift point task
             startDateTime = getShiftedDateTime(task.getStartDateTime());
             endDateTime = null;
 
+            logger.info("Shifting point task.");
         } else if (taskStart == null) {
-            // Shift deadline task
             startDateTime = null;
             endDateTime = getShiftedDateTime(task.getEndDateTime());
 
+            logger.info("Shifting deadline task.");
         } else {
-            // Shift event, preserving duration
             Duration eventDuration = Duration.between(taskStart, taskEnd);
             startDateTime = getShiftedDateTime(task.getStartDateTime());
             endDateTime = startDateTime.plus(eventDuration);
+
+            logger.info("Shifting event task.");
         }
     }
 

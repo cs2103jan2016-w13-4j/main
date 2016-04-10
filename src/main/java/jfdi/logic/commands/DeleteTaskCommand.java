@@ -69,8 +69,8 @@ public class DeleteTaskCommand extends Command {
             taskIds.forEach(id -> {
                 try {
                     deletedTasks.add(taskDb.getById(id));
-                    logger.info("Deleting task #" + id);
                     taskDb.destroy(id);
+                    logger.info("Task deleted: #" + id);
                 } catch (InvalidIdException e) {
                     // Should not happen
                     assert false;
@@ -89,6 +89,8 @@ public class DeleteTaskCommand extends Command {
         deletedTasks.stream().forEach(task -> {
             try {
                 taskDb.undestroy(task.getId());
+
+                logger.info("Undo deleting task: #" + task.getId());
             } catch (InvalidIdException | DuplicateTaskException e) {
                 assert false;
             }

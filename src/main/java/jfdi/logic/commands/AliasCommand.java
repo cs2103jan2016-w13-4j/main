@@ -73,10 +73,13 @@ public class AliasCommand extends Command {
 
             pushToUndoStack();
             eventBus.post(new AliasDoneEvent(command, alias));
+            logger.info("Aliased " + command + " to " + alias);
         } catch (InvalidAliasParametersException e) {
             eventBus.post(new AliasFailedEvent(command, alias, AliasFailedEvent.Error.INVALID_PARAMETERS));
+            logger.warning("Alias not saved: Invalid alias");
         } catch (DuplicateAliasException e) {
             eventBus.post(new AliasFailedEvent(command, alias, AliasFailedEvent.Error.DUPLICATED_ALIAS));
+            logger.warning("Alias not saved: Duplicate alias");
         }
     }
 
@@ -86,6 +89,7 @@ public class AliasCommand extends Command {
             aliasDb.destroy(alias);
             parser.setAliases(aliasDb.getAll());
 
+            logger.info("Undo add alias: Deleting alias:" + alias);
         } catch (InvalidAliasException e) {
             // Should not happen
             assert false;

@@ -430,7 +430,8 @@ public class TaskAttributesTest {
                 1,
                 Constants.TEST_TASK_DESCRIPTION_1,
                 Constants.TEST_TASK_STARTDATETIME,
-                Constants.TEST_TASK_ENDDATETIME
+                Constants.TEST_TASK_ENDDATETIME,
+                false
                 );
         return task;
     }

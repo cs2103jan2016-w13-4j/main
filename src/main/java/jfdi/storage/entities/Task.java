@@ -20,7 +20,8 @@ public class Task {
     private LocalDateTime endDateTime = null;
     private boolean isCompleted = false;
 
-    public Task(Integer id, String description, LocalDateTime startDateTime, LocalDateTime endDateTime, boolean isCompleted) {
+    public Task(Integer id, String description, LocalDateTime startDateTime, LocalDateTime endDateTime,
+            boolean isCompleted) {
         this.id = id;
         this.description = description;
         this.startDateTime = startDateTime;

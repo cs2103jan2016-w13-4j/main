@@ -102,7 +102,7 @@ public class MainStorage implements IStorage {
     private void setCurrentDirectory(String currentDirectory) {
         assert currentDirectory != null;
         Path absolutePath = Paths.get(currentDirectory).toAbsolutePath();
-        this.currentDirectory = absolutePath.toString();
+        this.currentDirectory = absolutePath.normalize().toString();
         logger.fine(String.format(Constants.MESSAGE_LOG_SET_DIRECTORY, absolutePath));
     }
 

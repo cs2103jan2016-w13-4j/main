@@ -75,6 +75,8 @@ public class UnmarkTaskCommand extends Command {
                     taskDb.markAsIncomplete(id);
 
                     unmarkedIds.add(id);
+
+                    logger.info("Task unmarked: #" + id);
                 } catch (NoAttributesChangedException e) {
                     LOGGER.warning("Task " + id + " was not completed.");
                 } catch (InvalidIdException e) {
@@ -86,6 +88,8 @@ public class UnmarkTaskCommand extends Command {
             eventBus.post(new UnmarkTaskDoneEvent(screenIds, unmarkedTasks));
         } else {
             eventBus.post(new UnmarkTaskFailedEvent(screenIds, invalidIds));
+
+            logger.warning("Some invalid id(s) supplied. Not marking any tasks as incomplete.");
         }
     }
 
@@ -95,6 +99,7 @@ public class UnmarkTaskCommand extends Command {
             try {
                 taskDb.markAsComplete(id);
 
+                logger.info("Undo unmarking task: #" + id);
             } catch (NoAttributesChangedException | InvalidIdException e) {
                 assert false;
             }

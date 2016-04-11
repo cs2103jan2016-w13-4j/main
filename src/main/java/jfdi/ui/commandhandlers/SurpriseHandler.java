@@ -2,6 +2,8 @@
 
 package jfdi.ui.commandhandlers;
 
+import java.time.format.DateTimeFormatter;
+
 import com.google.common.eventbus.Subscribe;
 
 import jfdi.logic.events.NoSurpriseEvent;
@@ -26,7 +28,7 @@ public class SurpriseHandler extends CommandHandler {
     public void handleSurpriseEvent(SurpriseEvent e) {
 
         controller.highLight = e.getTask();
-        controller.initSurpriseOverlay(e.getTask());
+        editSurpriseOverlay(e.getTask());
         controller.switchContext(ListStatus.ALL, false);
         controller.switchContext(ListStatus.SURPRISE, false);
         controller.showSurpriseDisplay();
@@ -42,7 +44,7 @@ public class SurpriseHandler extends CommandHandler {
                 controller.importantList.clear();
                 controller.switchContext(ListStatus.ALL, false);
                 controller.switchContext(ListStatus.SURPRISE, false);
-                controller.initSurpriseOverlay(new TaskAttributes());
+                editSurpriseOverlay(new TaskAttributes());
                 controller.showSurpriseDisplay();
                 controller.showNoSurpriseDisplay();
                 controller.relayFb(Constants.CMD_ERROR_SURP_FAIL_NO_TASKS, MsgType.ERROR);
@@ -50,6 +52,21 @@ public class SurpriseHandler extends CommandHandler {
                 break;
             default:
                 break;
+        }
+    }
+
+    private void editSurpriseOverlay(TaskAttributes task) {
+        controller.taskDesc.setText(task.getDescription());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy h:mma");
+        if (task.getStartDateTime() == null) {
+            if (task.getEndDateTime() == null) {
+                // Floating Tasks
+                controller.taskTime.setText(Constants.ITEM_NO_TIMEDATE);
+            } else {
+                // Deadline Tasks
+                String end = formatter.format(task.getEndDateTime());
+                controller.taskTime.setText(String.format(Constants.ITEM_DEADLINE, end));
+            }
         }
     }
 }

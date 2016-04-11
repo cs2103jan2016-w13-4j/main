@@ -53,12 +53,18 @@ public class MoveDirectoryCommand extends Command {
 
             pushToUndoStack();
             eventBus.post(new MoveDirectoryDoneEvent(newDirectory));
+
+            logger.info("Program data moved to " + newDirectory);
         } catch (FilesReplacedException e) {
             pushToUndoStack();
             eventBus.post(new MoveDirectoryDoneEvent(newDirectory));
             eventBus.post(new FilesReplacedEvent(newDirectory, e.getReplacedFilePairs()));
+
+            logger.warning("Destination files replaced.");
         } catch (InvalidFilePathException e) {
             eventBus.post(new MoveDirectoryFailedEvent(newDirectory, MoveDirectoryFailedEvent.Error.INVALID_PATH));
+
+            logger.warning("Invalid file path specified.");
         }
     }
 
@@ -67,6 +73,7 @@ public class MoveDirectoryCommand extends Command {
         try {
             mainStorage.changeDirectory(oldDirectory);
 
+            logger.info("Undo moving directory: Moving back to " + oldDirectory);
         } catch (InvalidFilePathException e) {
             assert false;
         } catch (FilesReplacedException e) {

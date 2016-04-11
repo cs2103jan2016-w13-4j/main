@@ -28,8 +28,12 @@ public class UndoCommand extends Command {
             lastUndoableCommand.undo();
 
             eventBus.post(new CommandUndoneEvent(lastUndoableCommand.getClass()));
+
+            logger.info("Undoing previous " + lastUndoableCommand.getClass());
         } else {
             eventBus.post(new UndoFailedEvent(UndoFailedEvent.Error.NONTHING_TO_UNDO));
+
+            logger.warning("Undo failed: Nothing to undo");
         }
     }
 

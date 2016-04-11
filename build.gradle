@@ -12,7 +12,7 @@ plugins {
 }
 
 group 'cs2103jan2016-w13-4j'
-version '0.4'
+version '0.5'
 
 mainClassName = "jfdi.ui.MainSetUp"
 

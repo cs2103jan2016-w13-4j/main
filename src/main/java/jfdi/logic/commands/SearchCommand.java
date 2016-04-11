@@ -59,25 +59,46 @@ public class SearchCommand extends Command {
 
     @Override
     public void execute() {
-        results = taskDb.getAll().stream()
-                .map(this::constructCandidate)
+        ArrayList<TaskAttributes> fullMatches = taskDb.getAll().stream()
+                .map(this::constructFullMatchCancidate)
                 .filter(this::isValidCandidate)
                 .sorted(this::candidateCompare)
                 .map(ImmutableTriple::getRight)
                 .collect(Collectors.toCollection(ArrayList::new));
+
+        results = new ArrayList<>(fullMatches);
+
+        results.addAll(taskDb.getAll().stream()
+                .map(this::constructStemMatchCandidate)
+                .filter(this::isValidCandidate)
+                .sorted(this::candidateCompare)
+                .map(ImmutableTriple::getRight)
+                .filter(task -> !fullMatches.contains(task))
+                .collect(Collectors.toCollection(ArrayList::new)));
 
         logger.info(String.format("Search completed. %d results found.", results.size()));
 
         eventBus.post(new SearchDoneEvent(results, keywords));
     }
 
-    private ImmutableTriple<Long, Integer, TaskAttributes> constructCandidate(TaskAttributes task) {
+    private ImmutableTriple<Long, Integer, TaskAttributes> constructFullMatchCancidate(TaskAttributes task) {
+        String[] parts = task.getDescription().split("\\s+");
+        int wordCount = parts.length;
+
+        long rank = Arrays.stream(parts)
+            .filter(this::isFullMatch)
+            .count();
+
+        return new ImmutableTriple<Long, Integer, TaskAttributes>(rank, wordCount, task);
+    }
+
+    private ImmutableTriple<Long, Integer, TaskAttributes> constructStemMatchCandidate(TaskAttributes task) {
         String[] parts = task.getDescription().split("\\s+");
         int wordCount = parts.length;
 
         long rank = Arrays.stream(parts)
                 .map(stemmer::stem)
-                .filter(this::isKeyword)
+                .filter(this::isStemMatch)
                 .count();
 
         return new ImmutableTriple<Long, Integer, TaskAttributes>(rank, wordCount, task);
@@ -87,7 +108,16 @@ public class SearchCommand extends Command {
         return candidate.getLeft() > 0;
     }
 
-    private boolean isKeyword(String word) {
+    private boolean isFullMatch(String word) {
+        return keywords.stream()
+                .reduce(
+                    false,
+                    (isMatched, keyword) -> isMatched || word.equalsIgnoreCase(keyword),
+                    (isPreviouslyMatched, isNowMatched) -> isPreviouslyMatched || isNowMatched
+                );
+    }
+
+    private boolean isStemMatch(String word) {
         return keywords.stream()
                 .map(stemmer::stem)
                 .reduce(

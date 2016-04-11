@@ -27,7 +27,10 @@ public class MarkHandler extends CommandHandler {
     public void handleMarkTaskDoneEvent(MarkTaskDoneEvent e) {
 
         // check size of list of ids > 0
+        assert e.getScreenIds().size() > 0;
+
         // check size of id list == task list
+        assert e.getScreenIds().size() == e.getMarkedTasks().size();
 
         controller.updateNotiBubbles();
 

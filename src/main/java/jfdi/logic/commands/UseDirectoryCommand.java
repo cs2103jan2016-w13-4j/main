@@ -3,8 +3,8 @@
 package jfdi.logic.commands;
 
 import jfdi.logic.events.FilesReplacedEvent;
-import jfdi.logic.events.MoveDirectoryFailedEvent;
 import jfdi.logic.events.UseDirectoryDoneEvent;
+import jfdi.logic.events.UseDirectoryFailedEvent;
 import jfdi.logic.interfaces.Command;
 import jfdi.storage.exceptions.FilesReplacedException;
 import jfdi.storage.exceptions.InvalidFilePathException;
@@ -54,11 +54,17 @@ public class UseDirectoryCommand extends Command {
 
             pushToUndoStack();
             eventBus.post(new UseDirectoryDoneEvent(newDirectory));
+
+            logger.info("Direcroty switched to: " + newDirectory);
         } catch (FilesReplacedException e) {
             eventBus.post(new UseDirectoryDoneEvent(newDirectory));
             eventBus.post(new FilesReplacedEvent(newDirectory, e.getReplacedFilePairs()));
+
+            logger.warning("Destination files replaced.");
         } catch (InvalidFilePathException e) {
-            eventBus.post(new MoveDirectoryFailedEvent(newDirectory, MoveDirectoryFailedEvent.Error.INVALID_PATH));
+            eventBus.post(new UseDirectoryFailedEvent(newDirectory, UseDirectoryFailedEvent.Error.INVALID_PATH));
+
+            logger.warning("Invalid file path specified.");
         }
     }
 
@@ -68,6 +74,7 @@ public class UseDirectoryCommand extends Command {
             mainStorage.use(oldDirectory);
             parser.setAliases(aliasDb.getAll());
 
+            logger.info("Undo switching directory: Switching back to " + oldDirectory);
         } catch (FilesReplacedException e) {
             eventBus.post(new FilesReplacedEvent(oldDirectory, e.getReplacedFilePairs()));
         } catch (InvalidFilePathException e) {

@@ -1,7 +1,10 @@
+//@@author A0129538W
+
 package jfdi.test.ui;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import javafx.scene.input.KeyCode;
 
 public class TestScrolling extends UiTest {

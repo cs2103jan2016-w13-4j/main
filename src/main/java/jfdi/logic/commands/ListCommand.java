@@ -56,21 +56,25 @@ public class ListCommand extends Command {
                 tasks = tasks.stream()
                     .filter(TaskAttributes::isCompleted)
                     .collect(Collectors.toCollection(ArrayList::new));
+                logger.info("List of completed tasks requested.");
                 break;
             case INCOMPLETE:
                 tasks = tasks.stream()
                     .filter(task -> !task.isCompleted())
                     .collect(Collectors.toCollection(ArrayList::new));
+                logger.info("List of incomplete tasks requested.");
                 break;
             case OVERDUE:
                 tasks = taskDb.getOverdue().stream()
                     .sorted()
                     .collect(Collectors.toCollection(ArrayList::new));
+                logger.info("List of overdue tasks requested.");
                 break;
             case UPCOMING:
                 tasks = taskDb.getUpcoming().stream()
                     .sorted()
                     .collect(Collectors.toCollection(ArrayList::new));
+                logger.info("List of upcoming tasks requested.");
                 break;
             default:
                 break;

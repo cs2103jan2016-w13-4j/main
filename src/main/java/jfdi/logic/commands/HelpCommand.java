@@ -23,6 +23,8 @@ public class HelpCommand extends Command {
     @Override
     public void execute() {
         eventBus.post(new HelpRequestedEvent());
+
+        logger.info("User requested for help");
     }
 
     @Override

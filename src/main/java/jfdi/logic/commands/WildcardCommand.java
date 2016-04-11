@@ -43,8 +43,12 @@ public class WildcardCommand extends Command {
         if (!incompleteTasks.isEmpty()) {
             lucky = incompleteTasks.get(random.nextInt(incompleteTasks.size()));
             eventBus.post(new SurpriseEvent(lucky));
+
+            logger.info("Lucky task chosen: " + lucky.getDescription());
         } else {
             eventBus.post(new NoSurpriseEvent(NoSurpriseEvent.Error.NO_TASKS));
+
+            logger.warning("No surprise for everybody!");
         }
     }
 

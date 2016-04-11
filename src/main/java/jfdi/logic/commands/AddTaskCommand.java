@@ -85,12 +85,15 @@ public class AddTaskCommand extends Command {
 
             pushToUndoStack();
             eventBus.post(new AddTaskDoneEvent(task));
+            logger.info("Task added: #" + this.id + task.getDescription());
         } catch (InvalidTaskParametersException e) {
             eventBus.post(new AddTaskFailedEvent(
                 AddTaskFailedEvent.Error.EMPTY_DESCRIPTION));
+            logger.warning("Adding task failed: Description empty");
         } catch (DuplicateTaskException e) {
             eventBus.post(new AddTaskFailedEvent(
                 AddTaskFailedEvent.Error.DUPLICATED_TASK));
+            logger.warning("Adding task failed: Duplicate task");
         } catch (NoAttributesChangedException | InvalidIdException e) {
             // Should not happen for creating tasks
             assert false;
@@ -102,6 +105,7 @@ public class AddTaskCommand extends Command {
         try {
             taskDb.destroy(id);
 
+            logger.info("Undo add task: Deleting task #" + id);
         } catch (InvalidIdException e) {
             // Should not happen for creating tasks
             assert false;

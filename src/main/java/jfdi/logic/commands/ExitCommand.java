@@ -25,6 +25,8 @@ public class ExitCommand extends Command {
         // Nothing needs to be done.
         // Post an event to notify UI to exit.
         eventBus.post(new ExitCalledEvent());
+
+        logger.info("Exiting the program...");
     }
 
     @Override

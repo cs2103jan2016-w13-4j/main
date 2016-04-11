@@ -3,6 +3,7 @@
 package jfdi.logic;
 
 import com.google.common.eventbus.EventBus;
+import jfdi.common.utilities.JfdiLogger;
 import jfdi.logic.commands.InvalidCommand;
 import jfdi.logic.events.FilesReplacedEvent;
 import jfdi.logic.events.InitializationFailedEvent;
@@ -18,12 +19,15 @@ import jfdi.ui.UI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeSet;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
  * @author Liu Xinan
  */
 public class ControlCenter implements ILogic {
+
+    private static final Logger logger = JfdiLogger.getLogger();
 
     private static ControlCenter ourInstance;
 
@@ -49,6 +53,8 @@ public class ControlCenter implements ILogic {
 
     @Override
     public void handleInput(String input) {
+        logger.info("Handling input: " + input);
+
         Command command;
         try {
             command = parser.parse(input);
@@ -107,6 +113,8 @@ public class ControlCenter implements ILogic {
     }
 
     private void initStorage() {
+        logger.info("Initializing Storage...");
+
         // Set a list of permitted commands that can be aliased
         AliasAttributes.setCommandRegex(parser.getAllCommandRegexes());
         try {
@@ -117,10 +125,16 @@ public class ControlCenter implements ILogic {
             eventBus.post(new InitializationFailedEvent(InitializationFailedEvent.Error.INVALID_PATH,
                 e.getPath()));
         }
+
+        logger.info("Storage initialized successfully!");
     }
 
     private void initParser() {
+        logger.info("Initializing Parser...");
+
         parser.setAliases(aliasDb.getAll());
+
+        logger.info("Parser initialized successfully!");
     }
 
     //================================================================

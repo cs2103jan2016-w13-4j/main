@@ -19,7 +19,8 @@ public class TaskTest {
                 1,
                 Constants.TEST_TASK_DESCRIPTION_1,
                 Constants.TEST_TASK_STARTDATETIME,
-                Constants.TEST_TASK_ENDDATETIME
+                Constants.TEST_TASK_ENDDATETIME,
+                false
                 );
 
         // Check for equivalence in all attributes
@@ -33,7 +34,7 @@ public class TaskTest {
     @Test
     public void testUpdate() {
         // Create a new task
-        Task task = new Task(1, Constants.TEST_TASK_DESCRIPTION_1, null, null);
+        Task task = new Task(1, Constants.TEST_TASK_DESCRIPTION_1, null, null, false);
 
         // Update its attributes
         TaskAttributes taskAttributes = new TaskAttributes();

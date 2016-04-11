@@ -146,7 +146,7 @@ public class TaskAttributes implements Comparable<TaskAttributes> {
      * @return the corresponding Task entity
      */
     public Task toEntity() {
-        return new Task(id, description, startDateTime, endDateTime);
+        return new Task(id, description, startDateTime, endDateTime, isCompleted);
     }
 
     /**
